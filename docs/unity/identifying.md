@@ -58,5 +58,3 @@ As described above, sometimes a player may have one or more aliases and there ar
 You can merge players using `Talo.Players.Merge()`.
 
 Merge will take all the props, aliases and events from the right-hand player and merge them into the left-hand player. This means that duplicate props in the left-hand side will be replaced by the right-hand side's ones.
-
-TODO: example
