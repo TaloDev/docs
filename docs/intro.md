@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Talo Overview
+# Talo overview
 
 Welcome to Talo - an open-source backend for your games.
 

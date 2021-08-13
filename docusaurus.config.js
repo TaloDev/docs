@@ -1,5 +1,5 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github')
-const darkCodeTheme = require('prism-react-renderer/themes/dracula')
+const darkCodeTheme = require('prism-react-renderer/themes/nightOwl')
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -11,8 +11,12 @@ module.exports = {
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'TaloDev', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  projectName: 'docs', // Usually your repo name.
   themeConfig: {
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: true
+    },
     navbar: {
       title: 'Talo',
       logo: {
@@ -45,27 +49,14 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Tutorial',
-              to: '/docs/intro'
+              label: 'Unity SDK',
+              to: '/docs/unity/install'
+            },
+            {
+              label: 'Self-hosting',
+              to: '/docs/selfhosting/overview'
             }
           ]
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus'
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus'
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus'
-            },
-          ],
         },
         {
           title: 'More',
@@ -76,12 +67,21 @@ module.exports = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus'
+              href: 'https://github.com/TaloDev'
+            }
+          ]
+        },
+        {
+          title: 'Contact us',
+          items: [
+            {
+              label: 'hello@trytalo.com',
+              href: 'mailto:hello@trytalo.com'
             }
           ]
         }
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Try Talo Limited. Built with Docusaurus.`
+      copyright: `<br/>Copyright © ${new Date().getFullYear()} Try Talo Limited. Built with Docusaurus.`
     },
     prism: {
       theme: lightCodeTheme,

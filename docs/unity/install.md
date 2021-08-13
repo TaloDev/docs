@@ -4,14 +4,11 @@ sidebar_position: 1
 
 # Installation
 
-## Getting the latest version
-
-We publish our releases [on GitHub](https://github.com/TaloDev/unity/releases). Download the `.tar.gz` from the latest release to get started.
-
 ## Import into Unity
 
-Open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from tarball…` and locate your recently downloaded release file.
-Tip: put the package in your Assets folder.
+Open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from git URL…` and enter the following path: `https://github.com/TaloDev/unity?path=/Packages/com.trytalo.talo`.
+
+This will add the latest stable release to your project. If you want to update your SDK, simply repeat the process.
 
 ## Generate an access key
 
