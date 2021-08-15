@@ -1,64 +1,59 @@
-import React from 'react';
-import clsx from 'clsx';
-import styles from './HomepageFeatures.module.css';
+import React from 'react'
+import clsx from 'clsx'
+import styles from './HomepageFeatures.module.css'
+import Link from '@docusaurus/Link'
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('../../static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Unity SDK',
+    Svg: require('../../static/img/unity.svg').default,
+    unityIcon: true,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Track events, identify players and modify player props through our Unity package.
       </>
     ),
+    link: '/docs/unity/install'
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('../../static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Self-hosting',
+    Svg: require('../../static/img/tabler-icon-server.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Configure and host Talo on your own servers using Docker and our quickstart examples.
       </>
     ),
-  },
-  {
-    title: 'Powered by React',
-    Svg: require('../../static/img/undraw_docusaurus_react.svg').default,
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
-      </>
-    ),
-  },
-];
+    link: '/docs/selfhosting/overview'
+  }
+]
 
-function Feature({Svg, title, description}) {
+function Feature({Svg, title, description, link, unityIcon}) {
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} alt={title} />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <h3>{title}</h3>
-        <p>{description}</p>
-      </div>
+      <Link to={link}>
+        <div className={styles.feature}>
+          <div className={styles.titleIconWrapper}>
+            <Svg className={clsx(styles.featureSvg, { [styles.unityIcon]: unityIcon })} alt={title} />
+            <h3>{title}</h3>
+          </div>
+
+          <p className={styles.desc}>{description}</p>
+        </div>
+      </Link>
     </div>
-  );
+  )
 }
 
 export default function HomepageFeatures() {
   return (
     <section className={styles.features}>
-      <div className="container">
-        <div className="row">
+      <div className='container'>
+        <div className='row'>
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -4,8 +4,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/nightOwl')
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'Talo',
-  tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://docs.trytalo.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -31,15 +30,15 @@ module.exports = {
           label: 'Docs'
         },
         {
-          to: '/blog',
-          label: 'Blog',
+          href: 'https://github.com/TaloDev/backend',
+          label: 'GitHub',
           position: 'left'
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
+          href: 'https://dashboard.trytalo.com',
+          label: 'Dashboard',
           position: 'right'
-        },
+        }
       ],
     },
     footer: {
@@ -62,12 +61,8 @@ module.exports = {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: '/blog'
-            },
-            {
               label: 'GitHub',
-              href: 'https://github.com/TaloDev'
+              href: 'https://github.com/TaloDev/backend'
             }
           ]
         },
