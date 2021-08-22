@@ -30,7 +30,7 @@ module.exports = {
           label: 'Docs'
         },
         {
-          href: 'https://github.com/TaloDev/backend',
+          href: 'https://github.com/TaloDev',
           label: 'GitHub',
           position: 'left'
         },
@@ -58,11 +58,15 @@ module.exports = {
           ]
         },
         {
-          title: 'More',
+          title: 'Code',
           items: [
             {
-              label: 'GitHub',
+              label: 'Backend',
               href: 'https://github.com/TaloDev/backend'
+            },
+            {
+              label: 'Frontend',
+              href: 'https://github.com/TaloDev/frontend'
             }
           ]
         },
