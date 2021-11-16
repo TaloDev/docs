@@ -6,7 +6,7 @@ sidebar_position: 1
 
 ## Import into Unity
 
-Open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from git URL…` and enter the following path: `https://github.com/TaloDev/unity?path=/Packages/com.trytalo.talo`.
+Open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from git URL…` and enter the following path: `https://github.com/TaloDev/unity?path=/Packages/com.trytalo.talo#main`.
 
 This will add the latest stable release to your project. If you want to update your SDK, simply repeat the process.
 

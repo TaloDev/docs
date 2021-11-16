@@ -18,17 +18,22 @@ You can identify a player using `Talo.Players.Identify()`. The code sample below
 ```c# title="IdentifyPlayer.cs"
 using TaloGameServices;
 
-public class IdentifyPlayer: MonoBehaviour {
+public class IdentifyPlayer: MonoBehaviour
+{
   public string service = 'steam', identifier = '123456';
 
-  public void OnButtonClick() {
+  public void OnButtonClick()
+  {
     Identify();
   }
 
-  private async void Identify() {
-    try {
+  private async void Identify()
+  {
+    try
+    {
       await Talo.Players.Identify(service, identifier);
-    } catch (Exeception err) {
+    } catch (Exeception err)
+    {
       Debug.LogError(err.Message);
     }
   }
@@ -40,10 +45,13 @@ public class IdentifyPlayer: MonoBehaviour {
 Sometimes you might need to check if a player has been identified before. You can use `Talo.IdentityCheck()` to verify this - it throws an error if a player hasn't been identified yet:
 
 ```c#
-public void DoStuffIfIdentified() {
-  try {
+public void DoStuffIfIdentified()
+{
+  try
+  {
     Talo.IdentityCheck();
-  } catch (Exception err) {
+  } catch (Exception err)
+  {
     return;
   }
 

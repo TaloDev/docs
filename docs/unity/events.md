@@ -11,7 +11,8 @@ Events let you better understand what players are doing and can be useful for pu
 To track an event, simply call `Talo.Events.Track()` with an event name like "Level up". You can optionally attach properties to events by passing any number of extra `(string, string)` tuples to the function call:
 
 ```c# title="TrackLevelUpEvent.cs"
-private void LevelUp() {
+private void LevelUp()
+{
     level++;
 
     Talo.Events.Track(
