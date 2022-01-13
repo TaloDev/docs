@@ -10,7 +10,7 @@ const FeatureList = [
     unityIcon: true,
     description: (
       <>
-        Track events, identify players and modify player props through our Unity package.
+        Take full advantage of all of Talo's services including events, players, leaderboards and saves.
       </>
     ),
     link: '/docs/unity/install'

@@ -20,8 +20,8 @@ function HomepageHeader() {
 export default function Home() {
   return (
     <Layout
-      title='Docs'
-      description='Description will go into a meta tag in <head />'>
+      title='Talo Game Services'
+      description='An open-source backend for your games'>
       <HomepageHeader />
       <main>
         <HomepageFeatures />
