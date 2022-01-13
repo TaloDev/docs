@@ -10,7 +10,7 @@ Check out the `SavesPlayground` demo scene for additional examples.
 
 ## Loading saves
 
-Your player's saves are automatically loaded after [they are identified](/identified). Once your saves have been fetched, the `OnSavesLoaded` event is invoked.
+Your player's saves are automatically loaded after [they are identified](/docs/unity/identifying). Once your saves have been fetched, the `OnSavesLoaded` event is invoked.
 
 Saves can be accessed using `Talo.Saves.All` or `Talo.Saves.Latest`. To load a save, use `Talo.Saves.ChooseSave()` and pass in the save you want to load.
 
