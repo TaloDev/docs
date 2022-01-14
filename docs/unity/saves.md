@@ -29,25 +29,25 @@ Importantly, each Loadable must have a unique ID so that Talo knows which GameOb
 Below is an example of a simple cube that saves and loads its position, rotation and scale:
 
 ```c# title="LoadableCube.cs"
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TaloGameServices;
 
 public class LoadableCube : Loadable
 {
     public override void RegisterFields()
     {
-        savedFields.Add("x", transform.position.x);
-        savedFields.Add("y", transform.position.y);
-        savedFields.Add("z", transform.position.z);
+        RegisterField("x", transform.position.x);
+        RegisterField("y", transform.position.y);
+        RegisterField("z", transform.position.z);
 
-        savedFields.Add("r.x", transform.rotation.x);
-        savedFields.Add("r.y", transform.rotation.y);
-        savedFields.Add("r.z", transform.rotation.z);
+        RegisterField("r.x", transform.rotation.x);
+        RegisterField("r.y", transform.rotation.y);
+        RegisterField("r.z", transform.rotation.z);
 
-        savedFields.Add("s.x", transform.localScale.x);
-        savedFields.Add("s.y", transform.localScale.y);
-        savedFields.Add("s.z", transform.localScale.z);
+        RegisterField("s.x", transform.localScale.x);
+        RegisterField("s.y", transform.localScale.y);
+        RegisterField("s.z", transform.localScale.z);
     }
 
     public override void OnLoaded(Dictionary<string, object> data)
@@ -71,6 +71,25 @@ public class LoadableCube : Loadable
         );
     }
 }
+```
+
+### Destroyed loadables
+
+If an object is registered and then is found to be destroyed (i.e. if `Destroy(gameObject)` was used), a `meta.destroyed` key is saved as the only field for that object.
+
+You can handle destroyed objects using the `HandleDestroyed` function which will automatically destroy an object if it has the `meta.destroyed` key:
+
+```c#
+    public override void OnLoaded(Dictionary<string, object> data)
+    {
+        if (HandleDestroyed(data)) return;
+
+        transform.position = new Vector3(
+            (float)data["x"],
+            (float)data["y"],
+            (float)data["z"]
+        );
+    }
 ```
 
 ## Creating saves
