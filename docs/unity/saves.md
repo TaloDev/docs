@@ -14,7 +14,7 @@ Your player's saves are automatically loaded after [they are identified](/docs/u
 
 Saves can be accessed using `Talo.Saves.All` or `Talo.Saves.Latest`. To load a save, use `Talo.Saves.ChooseSave()` and pass in the save you want to load.
 
-Once your save has been loaded, the `OnSaveChosen` event will fire. Internally, this causes the `OnLoaded()` function in your Loadables to be called.
+Once your save has been chosen, the `OnSaveChosen` event will fire. Internally, this causes the `OnLoaded()` function in your Loadables to be called.
 
 Finally, when all your registered loadables have called their `OnLoaded()`, an `OnSaveLoadingCompleted()` event is fired, signalling that, for example, it's safe to hide your loading screen.
 
