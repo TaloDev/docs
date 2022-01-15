@@ -16,6 +16,8 @@ Saves can be accessed using `Talo.Saves.All` or `Talo.Saves.Latest`. To load a s
 
 Once your save has been loaded, the `OnSaveChosen` event will fire. Internally, this causes the `OnLoaded()` function in your Loadables to be called.
 
+Finally, when all your registered loadables have called their `OnLoaded()`, an `OnSaveLoadingCompleted()` event is fired, signalling that, for example, it's safe to hide your loading screen.
+
 ## Loadables
 
 Loadables are GameObjects that automatically have their data saved and loaded. To make a GameObject loadable, create a new MonoBehavior and extend the `Loadable` class and finally add your new component onto your GameObject.
