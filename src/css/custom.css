@@ -15,6 +15,7 @@
   --ifm-color-primary-lighter: rgb(102, 212, 189);
   --ifm-color-primary-lightest: rgb(146, 224, 208);
   --ifm-code-font-size: 95%;
+  --ifm-code-background: rgb(1, 22, 39) !important;
   --ifm-color-success: #10b981;
   --ifm-footer-background-color: #111827;
   --ifm-navbar-background-color: #111827;
