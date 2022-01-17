@@ -21,8 +21,8 @@ Save your access key somewhere securely.
 
 Once the package has been imported, right-click in your Resources folder, click `Create > Talo > Settings Asset`. Paste your newly-created access key into the access key field and you're ready to go.
 
-:::tip
-Your Talo settings must always be at the top-level in the Resources folder and named `Talo Settings`.
+:::caution
+Your settings asset must always be at the top-level in the Resources folder and named `Talo Settings`.
 :::
 
 ### Self-hosting
