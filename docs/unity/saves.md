@@ -10,7 +10,7 @@ Check out the `SavesPlayground` demo scene for additional examples.
 
 ## Loading saves
 
-Your player's saves are automatically loaded after [they are identified](/docs/unity/identifying). Once your saves have been fetched, the `OnSavesLoaded` event is invoked.
+Your player's saves are automatically loaded after [they are identified](/docs/unity/identifying). You can also manually load saves using `Talo.Saves.GetSaves()` which allows you to specify what kind of saves to load (online, offline or both). Once your saves have been fetched, the `OnSavesLoaded` event is invoked.
 
 Saves can be accessed using `Talo.Saves.All` or `Talo.Saves.Latest`. To load a save, use `Talo.Saves.ChooseSave()` and pass in the save you want to load.
 
@@ -98,6 +98,12 @@ You can handle destroyed objects using the `HandleDestroyed` function which will
 
 To create a save, use `Talo.Saves.CreateSave()`. Your new save will automatically become your chosen save (although the `OnSaveChosen` even will not fire). Internally, this causes the `RegisterFields()` function in your Loadables to be called.
 
+You can choose if your new save is available online, offline or both. Offline saves are created in the [`Application.persistentDataPath`](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) within a `saves.json`.
+
 ## Updating saves
 
 To update a save, use `Talo.Saves.UpdateSave()`. You can optionally pass in a new name for your save.
+
+## Online vs Offline saves
+
+When a save is created or saves are loaded with `SaveMode.BOTH`, the online version will be preferred if they are successfully retrieved. If not, (e.g. if your player is not connected to the internet), then the offline will be used.
