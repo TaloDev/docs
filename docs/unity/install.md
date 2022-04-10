@@ -9,7 +9,7 @@ sidebar_position: 1
 Open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from git URL…` and enter the following path: `https://github.com/TaloDev/unity-package.git`.
 
 :::tip
-You can install pre-release versions (found on the [releases page](https://github.com/TaloDev/unity/releases)) by adding `#version` to the git URL, e.g. https://github.com/TaloDev/unity-package.git#0.6.0-pre.0
+You can install any version (post-0.6.0 and found on the [releases page](https://github.com/TaloDev/unity/releases)) by adding `#version` to the git URL, e.g. https://github.com/TaloDev/unity-package.git#0.6.0-pre.0
 :::
 
 This will add the latest stable release to your project. If you want to update your SDK, simply repeat the process.
