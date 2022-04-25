@@ -13,7 +13,7 @@ You'll need to restart the backend container after modifying your .env file
 | Environment variable  | Required | Description                                                                                                       |
 |-----------------------|----------|-------------------------------------------------------------------------------------------------------------------|
 | JWT_SECRET            | Yes      | Your unique secret that signs all authenticated requests. Treat this as securely as you would a database password |
-| ALLOWED_ORIGIN        | No       | Used for settings CORS headers, usually your frontend's domain name                                               |
+| DASHBOARD_URL         | Yes      | The URL of your frontend. Used for setting CORS headers and in emails                                             |
 | DB_HOST               | Yes      | The host name for your database. If using containers, this is typically the name of your database service         |
 | DB_PORT               | Yes      | The port your database runs on, usually 3306                                                                      |
 | DB_NAME               | Yes      | The name of your database table                                                                                   |
