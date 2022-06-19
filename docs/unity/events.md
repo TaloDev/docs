@@ -32,3 +32,14 @@ Events are sent off in batches to prevent issues around rate limiting or using t
 1. The game loses focus
 2. The game is paused
 3. In WebGL builds, after the time in seconds defined in the `webGLEventFlushRate` setting has elapsed. Unity doesn't implement the `OnApplicationQuit` function for WebGL builds and as a result event tracking is slightly more unreliable. You can increase or decrease the `webGLEventFlushRate` but be wary of the reasons why events are batched described above.
+
+## Meta props
+
+Talo sends through some extra props with each event. These props are made up of the following metadata:
+- The player's operating system
+- The version of the game
+- The window mode (fullscreen, fullscreen windowed, maximized window or windowed)
+- The width of the game window
+- The height of the game window
+
+These properties are then attached as props to the player, providing you with extra tools for debugging possible bugs and configurations where they appear.
