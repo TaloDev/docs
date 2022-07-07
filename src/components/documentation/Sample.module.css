@@ -1,0 +1,12 @@
+.sampleTitleContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.sampleTitleContainer > button {
+  margin-top: -1.5px;
+  font-size: 14px;
+  padding: 4px 12px;
+  min-width: 68px;
+}

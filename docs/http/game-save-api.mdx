@@ -1,0 +1,29 @@
+import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+
+# Game save API
+
+## Endpoints
+
+<ServiceDocumentation service='GameSaveAPIService' />
+
+## Types
+
+### SaveContent
+
+```
+SaveContent {
+  objects: SavedObject[]
+}
+
+SavedObject {
+  id: UUID
+  name: string              // e.g. Unity GameObject hierarchy name
+  data: SavedObjectData[]
+}
+
+SavedObjectData {
+  key: string
+  value: string
+  type: string              // class to cast value to on-load, e.g. System.Boolean in C#
+}
+```

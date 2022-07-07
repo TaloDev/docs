@@ -24,6 +24,16 @@ const FeatureList = [
       </>
     ),
     link: '/docs/selfhosting/overview'
+  },
+  {
+    title: 'HTTP reference',
+    Svg: require('../../static/img/tabler-icon-world.svg').default,
+    description: (
+      <>
+        Documentation for Talo's available API endpoints and how to use them.
+      </>
+    ),
+    link: '/docs/http/authentication'
   }
 ]
 

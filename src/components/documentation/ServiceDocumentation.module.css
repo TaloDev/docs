@@ -1,0 +1,49 @@
+.url {
+  display: inline-block;
+  padding: 8px;
+}
+
+.descriptionText {
+  margin-top: calc(var(--ifm-heading-vertical-rhythm-bottom) * var(--ifm-leading));
+}
+
+.url > code {
+  width: 100%;
+  word-break: break-all;
+}
+
+.methodTag {
+  padding: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.get {
+  background-color: #15803d;
+}
+
+.post {
+  background-color: #1d4ed8;
+}
+
+.put {
+  background-color: #a21caf;
+}
+
+.patch {
+  background-color: #b45309;
+}
+
+.delete {
+  background-color: #b91c1c;
+}
+
+.nameCell, .requiredCell {
+  min-width: 140px;
+}
+
+.descriptionCell {
+  width: 100%;
+}

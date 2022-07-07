@@ -1,0 +1,25 @@
+import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+
+# Event API
+
+## Endpoints
+
+<ServiceDocumentation service='EventAPIService' />
+
+## Types
+
+### EventData
+
+```
+EventData {
+  aliasId: number     // ID of the player's alias
+  name: string        // name of the event
+  timestamp: number   // UNIX milisecond timestamp, e.g. 1656971058297
+  props?: Prop[]
+}
+
+Prop {
+  key: string
+  value: string
+}
+```
