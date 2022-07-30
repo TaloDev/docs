@@ -34,12 +34,22 @@ const FeatureList = [
       </>
     ),
     link: '/docs/http/authentication'
+  },
+  {
+    title: 'Integrations',
+    Svg: require('../../static/img/tabler-icon-exchange.svg').default,
+    description: (
+      <>
+        Learn how integrations like Steam work with Talo and how to configure them.
+      </>
+    ),
+    link: '/docs/integrations/steam'
   }
 ]
 
 function Feature({Svg, title, description, link, unityIcon}) {
   return (
-    <div className={clsx('col col--4')}>
+    <div>
       <Link to={link}>
         <div className={styles.feature}>
           <div className={styles.titleIconWrapper}>
@@ -58,7 +68,7 @@ export default function HomepageFeatures() {
   return (
     <section className={styles.features}>
       <div className='container'>
-        <div className='row'>
+        <div className={styles.grid}>
           {FeatureList.map((props, idx) => (
             <Feature key={idx} {...props} />
           ))}
