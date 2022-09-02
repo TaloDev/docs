@@ -40,10 +40,10 @@ const FeatureList = [
     Svg: require('../../static/img/tabler-icon-exchange.svg').default,
     description: (
       <>
-        Learn how integrations like Steam work with Talo and how to configure them.
+        Learn how integrations like Steamworks sync with Talo and how to configure them.
       </>
     ),
-    link: '/docs/integrations/steam'
+    link: '/docs/integrations/steamworks'
   }
 ]
 
