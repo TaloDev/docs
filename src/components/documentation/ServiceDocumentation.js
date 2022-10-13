@@ -77,7 +77,7 @@ export default function ServiceDocumentation({ service }) {
             {sections.filter((section) => section.params.length > 0).map((section) => {
               return (
                 <React.Fragment key={section.title}>
-                  <h4>{section.title}</h4>
+                  <h4 className={styles.sectionTitle}>{section.title}</h4>
                   <table>
                     <thead>
                       <tr>

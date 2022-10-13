@@ -1,6 +1,7 @@
 .url {
   display: inline-block;
   padding: 8px;
+  margin-bottom: calc(var(--ifm-heading-vertical-rhythm-top) * var(--ifm-leading))
 }
 
 .descriptionText {
@@ -46,4 +47,8 @@
 
 .descriptionCell {
   width: 100%;
+}
+
+.sectionTitle {
+  margin-top: 0 !important;
 }

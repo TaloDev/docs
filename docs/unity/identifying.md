@@ -40,6 +40,17 @@ public class IdentifyPlayer: MonoBehaviour
 }
 ```
 
+### OnIdentified event
+
+After a successful identification, the `Talo.Players.OnIdentified()` event will fire, returning the identified player. This allows you to, for example, immediately fetch that player's saves:
+
+```c#
+Talo.Players.OnIdentified += async (player) =>
+{
+  await Talo.Saves.GetSaves();
+};
+```
+
 ## Checking identification
 
 Sometimes you might need to check if a player has been identified before. You can use `Talo.IdentityCheck()` to verify this - it throws an error if a player hasn't been identified yet:
