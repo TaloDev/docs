@@ -104,6 +104,10 @@ You can choose if your new save is available online, offline or both. Offline sa
 
 To update a save, use `Talo.Saves.UpdateSave()`. You can optionally pass in a new name for your save.
 
+## Deleting saves
+
+You can delete a save by passing in the save's ID to `Talo.Saves.DeleteSave()`.
+
 ## Online vs Offline saves
 
 When a save is created or saves are loaded with `SaveMode.BOTH`, the online version will be preferred if they are successfully retrieved. If not, (e.g. if your player is not connected to the internet), then the offline will be used.
