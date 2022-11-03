@@ -10,7 +10,7 @@ Check out the `SavesPlayground` demo scene for additional examples.
 
 ## Loading saves
 
-Your player's saves are automatically loaded after [they are identified](/docs/unity/identifying). You can also manually load saves using `Talo.Saves.GetSaves()` which allows you to specify what kind of saves to load (online, offline or both). Once your saves have been fetched, the `OnSavesLoaded` event is invoked.
+You can load saves using `Talo.Saves.GetSaves()`. Once your saves have been fetched, the `OnSavesLoaded` event is invoked.
 
 Saves can be accessed using `Talo.Saves.All` or `Talo.Saves.Latest`. To load a save, use `Talo.Saves.ChooseSave()` and pass in the save you want to load.
 
@@ -96,9 +96,9 @@ You can handle destroyed objects using the `HandleDestroyed` function which will
 
 ## Creating saves
 
-To create a save, use `Talo.Saves.CreateSave()`. Your new save will automatically become your chosen save (although the `OnSaveChosen` even will not fire). Internally, this causes the `RegisterFields()` function in your Loadables to be called.
+To create a save, use `Talo.Saves.CreateSave()`. Your new save will automatically become your chosen save (although the `OnSaveChosen` event will not fire). Internally, this causes the `RegisterFields()` function in your Loadables to be called.
 
-You can choose if your new save is available online, offline or both. Offline saves are created in the [`Application.persistentDataPath`](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) within a `saves.json`.
+Offline copies of saves are created in the [`Application.persistentDataPath`](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) within a `saves.json`.
 
 ## Updating saves
 
@@ -108,6 +108,8 @@ To update a save, use `Talo.Saves.UpdateSave()`. You can optionally pass in a ne
 
 You can delete a save by passing in the save's ID to `Talo.Saves.DeleteSave()`.
 
-## Online vs Offline saves
+## Offline saves & syncing
 
-When a save is created or saves are loaded with `SaveMode.BOTH`, the online version will be preferred if they are successfully retrieved. If not, (e.g. if your player is not connected to the internet), then the offline will be used.
+Talo automatically creates offline versions of saves. When network access is restored, Talo will attempt to resync the saves, preferring the most recently updated save if an online AND offline save exists.
+
+Additionally, if a save is only available offline then it will be synced as soon as a network connection is available.
