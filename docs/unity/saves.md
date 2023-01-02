@@ -113,3 +113,7 @@ You can delete a save by passing in the save's ID to `Talo.Saves.DeleteSave()`.
 Talo automatically creates offline versions of saves. When network access is restored, Talo will attempt to resync the saves, preferring the most recently updated save if an online AND offline save exists.
 
 Additionally, if a save is only available offline then it will be synced as soon as a network connection is available.
+
+## Unloading saves
+
+You can "unload" a save using `Talo.Saves.UnloadCurrentSave()`. This fires the `OnSaveChosen` event with a `null` save (preventing Loadables from calling their `OnLoaded` event).
