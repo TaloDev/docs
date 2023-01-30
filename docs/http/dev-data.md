@@ -9,4 +9,4 @@ Usually, you'll want to separate out development data from live data and Talo au
 
 If the `X-Talo-Dev-Build` header is set to `1`, any data being sent will be marked as development data and can be separated out in the dashboard.
 
-To also include development data when fetching entities (like leaderboard entries), you should set the `X-Talo-Include-Dev-Data` to `1`.
+To also include development data when fetching entities (like leaderboard entries), you should set the `X-Talo-Include-Dev-Data` header to `1`.
