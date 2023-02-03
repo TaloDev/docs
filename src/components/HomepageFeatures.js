@@ -10,7 +10,7 @@ const FeatureList = [
     unityIcon: true,
     description: (
       <>
-        Take full advantage of all of Talo's services including events, players, leaderboards and saves.
+        Take full advantage of Talo through our convenient Unity package.
       </>
     ),
     link: '/docs/unity/install'
@@ -20,7 +20,7 @@ const FeatureList = [
     Svg: require('../../static/img/tabler-icon-server.svg').default,
     description: (
       <>
-        Configure and host Talo on your own servers using Docker and our quickstart examples.
+        Configure Talo on your own servers using Docker and our quickstart examples.
       </>
     ),
     link: '/docs/selfhosting/overview'
