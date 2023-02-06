@@ -10,19 +10,21 @@ Below is a list of configuration options that can be found in your .env file:
 You'll need to restart the backend container after modifying your .env file
 :::
 
-| Environment variable  | Required | Description                                                                                                       |
-|-----------------------|----------|-------------------------------------------------------------------------------------------------------------------|
-| JWT_SECRET            | Yes      | Your unique secret that signs all authenticated requests. Treat this as securely as you would a database password |
-| DASHBOARD_URL         | Yes      | The URL of your frontend. Used for setting CORS headers and in emails                                             |
-| DB_HOST               | Yes      | The host name for your database. If using containers, this is typically the name of your database service         |
-| DB_PORT               | Yes      | The port your database runs on, usually 3306                                                                      |
-| DB_NAME               | Yes      | The name of your database table                                                                                   |
-| DB_USER               | Yes      | The user which has access to your table                                                                           |
-| DB_PASS               | Yes      | The password for the database user                                                                                |
-| REDIS_PASSWORD        | Yes      | The password for your Redis instance                                                                              |
-| AUTO_CONFIRM_EMAIL    | No       | A boolean that defines whether users have their emails automatically confirmed after signing up                   |
-| FROM_EMAIL            | No       | The email address used to send emails from the backend                                                            |
-| RECOVERY_CODES_SECRET | No       | 32-character secret for encrypting your 2FA recovery codes, required to use 2FA                                   |
+| Environment variable     | Required | Description                                                                                                       |
+|--------------------------|----------|-------------------------------------------------------------------------------------------------------------------|
+| JWT_SECRET               | Yes      | Your unique secret that signs all authenticated requests. Treat this as securely as you would a database password |
+| API_SECRET               | Yes      | 32-character secret for encrypting API keys                                                                       |
+| DASHBOARD_URL            | Yes      | The URL of your frontend. Used for setting CORS headers and in emails                                             |
+| DB_HOST                  | Yes      | The host name for your database. If using containers, this is typically the name of your database service         |
+| DB_PORT                  | Yes      | The port your database runs on, usually 3306                                                                      |
+| DB_NAME                  | Yes      | The name of your database table                                                                                   |
+| DB_USER                  | Yes      | The user which has access to your table                                                                           |
+| DB_PASS                  | Yes      | The password for the database user                                                                                |
+| REDIS_PASSWORD           | Yes      | The password for your Redis instance                                                                              |
+| AUTO_CONFIRM_EMAIL       | No       | A boolean that defines whether users have their emails automatically confirmed after signing up                   |
+| FROM_EMAIL               | No       | The email address used to send emails from the backend                                                            |
+| RECOVERY_CODES_SECRET    | No       | 32-character secret for encrypting your 2FA recovery codes, required to use 2FA                                   |
+| STEAM_INTEGRATION_SECRET | No       | 32-character secret for encrypting your Steam API key, required to use the Steamworks integration                 |
 
 ## Third party configurations
 
