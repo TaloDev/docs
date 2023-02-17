@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Steam
+# Steamworks
 
 By using your [Web API Publisher key](https://partner.steamgames.com/doc/webapi_overview/auth), you can sync data between Talo and Steamworks.
 
