@@ -27,9 +27,9 @@ Or a number:
 var maxLevel = Talo.LiveConfig.GetProp<int>("maxLevel");
 ```
 
-## Example - polling the latest live config and updating the UI
+## Example - polling the live config and updating the UI
 
-You can attach this script a TextMeshPro GameObject to update the text value every 2 seconds.
+You can attach this script to a TextMeshPro GameObject to update the text value every 2 seconds:
 
 ```c#
 using UnityEngine;
