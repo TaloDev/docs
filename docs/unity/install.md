@@ -6,6 +6,8 @@ sidebar_position: 1
 
 ## Import into Unity
 
+### Using git (recommended)
+
 Open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from git URL…` and enter the following path: `https://github.com/TaloDev/unity-package.git`.
 
 :::tip
@@ -13,6 +15,12 @@ You can install any version (found on the [releases page](https://github.com/Tal
 :::
 
 This will add the latest stable release to your project. If you want to update your SDK, simply repeat the process.
+
+### Downloading from itch
+
+You can download the latest version of the Unity package from our [itch.io page](https://sleepystudios.itch.io/talo).
+
+Once downloaded, open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from tarball…` and select the `.tgz` file you downloaded earlier.
 
 ## Generate an access key
 
