@@ -8,6 +8,10 @@ Talo's save system allows you to persist your game's state across multiple sessi
 
 Check out the `SavesPlayground` demo scene for additional examples.
 
+:::tip
+You can visualise players' save files in the Talo dashboard. Just go to the player's profile, click `Saves` and choose the save you want to view.
+:::
+
 ## Loading saves
 
 You can load saves using `Talo.Saves.GetSaves()`. Once your saves have been fetched, the `OnSavesLoaded` event is invoked.
