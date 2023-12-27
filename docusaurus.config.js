@@ -1,5 +1,4 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github')
-const darkCodeTheme = require('prism-react-renderer/themes/nightOwl')
+const prisma = require('prism-react-renderer')
 const axios = require('axios')
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
@@ -89,8 +88,8 @@ module.exports = async function configCreatorAsync() {
         copyright: `<br/>Copyright © ${new Date().getFullYear()} Try Talo Limited. Built with Docusaurus.`
       },
       prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme
+        theme: prisma.themes.github,
+        darkTheme: prisma.themes.nightOwl
       }
     },
     presets: [
