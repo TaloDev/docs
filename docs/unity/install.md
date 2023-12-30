@@ -16,7 +16,7 @@ You can install any version (found on the [releases page](https://github.com/Tal
 
 This will add the latest stable release to your project. If you want to update your SDK, simply repeat the process.
 
-### Downloading from itch
+### Downloading from itch.io
 
 You can download the latest version of the Unity package from our [itch.io page](https://sleepystudios.itch.io/talo).
 
