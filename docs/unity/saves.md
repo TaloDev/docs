@@ -14,17 +14,17 @@ You can visualise players' save files in the Talo dashboard. Just go to the play
 
 ## Loading saves
 
-You can load saves using `Talo.Saves.GetSaves()`. Once your saves have been fetched, the `OnSavesLoaded` event is invoked.
+You can load saves using `Talo.Saves.GetSaves()`. Once your saves have been fetched, the `Talo.Saves.OnSavesLoaded` event is invoked.
 
 Saves can be accessed using `Talo.Saves.All` or `Talo.Saves.Latest`. To load a save, use `Talo.Saves.ChooseSave()` and pass in the save you want to load.
 
-Once your save has been chosen, the `OnSaveChosen` event will fire. Internally, this causes the `OnLoaded()` function in your Loadables to be called.
+Once your save has been chosen, the `Talo.Saves.OnSaveChosen` event will fire. Internally, this causes the `OnLoaded()` function in your Loadables to be called.
 
-Finally, when all your registered loadables have called their `OnLoaded()`, an `OnSaveLoadingCompleted()` event is fired, signalling that, for example, it's safe to hide your loading screen.
+Finally, when all your registered loadables have called their `OnLoaded()`, an `Talo.Saves.OnSaveLoadingCompleted()` event is fired, signalling that, for example, it's safe to hide your loading screen.
 
 ## Loadables
 
-Loadables are GameObjects that automatically have their data saved and loaded. To make a GameObject loadable, create a new MonoBehavior and extend the `Loadable` class and finally add your new component onto your GameObject.
+Loadables are GameObjects that automatically have their data saved and loaded. To make a GameObject loadable, create a new MonoBehavior, extend the `Loadable` class and finally add your new component onto your GameObject.
 
 Your Loadables must implement the following two methods:
 - `RegisterFields()`: this is where your saved data will be populated just before your save gets created or updated
@@ -34,7 +34,7 @@ Importantly, each Loadable must have a unique ID so that Talo knows which GameOb
 
 Below is an example of a simple cube that saves and loads its position, rotation and scale:
 
-```c# title="LoadableCube.cs"
+```csharp title="LoadableCube.cs"
 using System.Collections.Generic;
 using UnityEngine;
 using TaloGameServices;
@@ -85,17 +85,17 @@ If an object is registered and then is found to be destroyed (i.e. if `Destroy(g
 
 You can handle destroyed objects using the `HandleDestroyed` function which will automatically destroy an object if it has the `meta.destroyed` key:
 
-```c#
-    public override void OnLoaded(Dictionary<string, object> data)
-    {
-        if (HandleDestroyed(data)) return;
+```csharp
+public override void OnLoaded(Dictionary<string, object> data)
+{
+    if (HandleDestroyed(data)) return;
 
-        transform.position = new Vector3(
-            (float)data["x"],
-            (float)data["y"],
-            (float)data["z"]
-        );
-    }
+    transform.position = new Vector3(
+        (float)data["x"],
+        (float)data["y"],
+        (float)data["z"]
+    );
+}
 ```
 
 ## Creating saves

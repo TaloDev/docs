@@ -57,6 +57,10 @@ module.exports = async function configCreatorAsync() {
                 to: '/docs/unity/install'
               },
               {
+                label: 'Godot SDK',
+                to: '/docs/godot/install'
+              },
+              {
                 label: 'Self-hosting',
                 to: '/docs/selfhosting/overview'
               }
@@ -89,7 +93,8 @@ module.exports = async function configCreatorAsync() {
       },
       prism: {
         theme: prisma.themes.github,
-        darkTheme: prisma.themes.nightOwl
+        darkTheme: prisma.themes.nightOwl,
+        additionalLanguages: ['csharp', 'gdscript']
       }
     },
     presets: [

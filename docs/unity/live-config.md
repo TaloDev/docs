@@ -17,13 +17,13 @@ You can fetch the game config any time to refresh the state.
 
 You can query properties of the config using `Talo.LiveConfig.GetProp<T>()`, for example if you wanted to get a boolean value:
 
-```c#
+```csharp
 var halloweenEventEnabled = Talo.LiveConfig.GetProp<bool>("halloweenEventEnabled");
 ```
 
 Or a number:
 
-```c#
+```csharp
 var maxLevel = Talo.LiveConfig.GetProp<int>("maxLevel");
 ```
 
@@ -31,7 +31,7 @@ var maxLevel = Talo.LiveConfig.GetProp<int>("maxLevel");
 
 You can attach this script to a TextMeshPro GameObject to update the text value every 2 seconds:
 
-```c#
+```csharp
 using UnityEngine;
 using TaloGameServices;
 using TMPro;
