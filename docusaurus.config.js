@@ -53,11 +53,11 @@ module.exports = async function configCreatorAsync() {
             title: 'Docs',
             items: [
               {
-                label: 'Unity SDK',
+                label: 'Unity package',
                 to: '/docs/unity/install'
               },
               {
-                label: 'Godot SDK',
+                label: 'Godot plugin',
                 to: '/docs/godot/install'
               },
               {

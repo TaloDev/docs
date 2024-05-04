@@ -5,7 +5,7 @@ import Link from '@docusaurus/Link'
 
 const FeatureList = [
   {
-    title: 'Godot SDK',
+    title: 'Godot plugin',
     Svg: require('../../static/img/godot.svg').default,
     unityIcon: true,
     description: (
@@ -16,7 +16,7 @@ const FeatureList = [
     link: '/docs/godot/install'
   },
   {
-    title: 'Unity SDK',
+    title: 'Unity package',
     Svg: require('../../static/img/unity.svg').default,
     unityIcon: true,
     description: (
