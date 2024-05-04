@@ -5,7 +5,18 @@ import Link from '@docusaurus/Link'
 
 const FeatureList = [
   {
-    title: 'Unity SDK',
+    title: 'Godot plugin',
+    Svg: require('../../static/img/godot.svg').default,
+    unityIcon: true,
+    description: (
+      <>
+        Build your Godot game faster with our Talo plugin.
+      </>
+    ),
+    link: '/docs/godot/install'
+  },
+  {
+    title: 'Unity package',
     Svg: require('../../static/img/unity.svg').default,
     unityIcon: true,
     description: (
@@ -16,16 +27,6 @@ const FeatureList = [
     link: '/docs/unity/install'
   },
   {
-    title: 'Self-hosting',
-    Svg: require('../../static/img/tabler-icon-server.svg').default,
-    description: (
-      <>
-        Configure Talo on your own servers using Docker and our quickstart examples.
-      </>
-    ),
-    link: '/docs/selfhosting/overview'
-  },
-  {
     title: 'HTTP reference',
     Svg: require('../../static/img/tabler-icon-world.svg').default,
     description: (
@@ -34,6 +35,16 @@ const FeatureList = [
       </>
     ),
     link: '/docs/http/authentication'
+  },
+  {
+    title: 'Self-hosting',
+    Svg: require('../../static/img/tabler-icon-server.svg').default,
+    description: (
+      <>
+        Configure Talo on your own servers using Docker and our quickstart examples.
+      </>
+    ),
+    link: '/docs/selfhosting/overview'
   },
   {
     title: 'Integrations',

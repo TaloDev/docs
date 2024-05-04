@@ -14,21 +14,17 @@ Stats allow you to have far more control over quantitative data using the limits
 
 ## Tracking stats
 
-You can track a stat using the Stats API `Track()` function which takes your stat's `internalName` and the amount to change the stat by (default 1.0f):
+You can track a stat using the Stats API `track()` function which takes your stat's `internal_name` and the amount to change the stat by (default 1.0):
 
-```csharp title="PlayerDeathController.cs"
-public void OnDeath()
-{
-  Talo.Stats.Track('deaths')
-}
+```gdscript title="player.gd"
+func on_death() -> void:
+  Talo.stats.track('deaths')
 ```
 
-```csharp title="PlayerPotionController.cs"
-private float health;
+```gdscript title="player_potion.gd"
+var health: float
 
-public void OnHeal(Potion potion)
-{
+func on_heal(potion: Potion) -> void:
   health += potion.amount
-  Talo.Stats.Track('health-healed', potion.amount)
-}
+  Talo.stats.track('health-healed', potion.amount)
 ```
