@@ -28,7 +28,8 @@ func _on_pressed() -> void:
 Events are sent off in batches to prevent issues around rate limiting or using too much of your player's bandwidth. You can manually call `Talo.events.flush()` to send off the events currently waiting in the queue. Flushing also happens automatically when:
 
 1. The game loses focus
-2. The game is closed
+2. The game is paused
+3. The game is closed
 
 ## Meta props
 
