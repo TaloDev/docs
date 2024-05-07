@@ -7,7 +7,7 @@ const FeatureList = [
   {
     title: 'Godot plugin',
     Svg: require('../../static/img/godot.svg').default,
-    unityIcon: true,
+    engineIcon: true,
     description: (
       <>
         Build your Godot game faster with our Talo plugin.
@@ -18,7 +18,7 @@ const FeatureList = [
   {
     title: 'Unity package',
     Svg: require('../../static/img/unity.svg').default,
-    unityIcon: true,
+    engineIcon: true,
     description: (
       <>
         Take full advantage of Talo through our convenient Unity package.
@@ -58,13 +58,13 @@ const FeatureList = [
   }
 ]
 
-function Feature({Svg, title, description, link, unityIcon}) {
+function Feature({Svg, title, description, link, engineIcon }) {
   return (
     <div>
       <Link to={link}>
         <div className={styles.feature}>
           <div className={styles.titleIconWrapper}>
-            <Svg className={clsx(styles.featureSvg, { [styles.unityIcon]: unityIcon })} alt={title} />
+            <Svg className={clsx(styles.featureSvg, { [styles.engineIcon]: engineIcon })} alt={title} />
             <h3>{title}</h3>
           </div>
 

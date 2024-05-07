@@ -8,7 +8,7 @@ sidebar_position: 1
 
 ### Using the Asset Library
 
-The Godot Asset Library is the recommended way to download Godot plugins. Open the `AssetLib` tab in Godot and search for "Talo". Click into the asset and click `Download`.
+The Godot Asset Library is the recommended way to download Godot plugins. Open the `AssetLib` tab in Godot and search for "Talo". Click into the asset and click `Download`. Here's a [direct link](https://godotengine.org/asset-library/asset/2936) to the asset.
 
 ### Downloading from itch.io
 

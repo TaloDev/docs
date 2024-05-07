@@ -36,11 +36,11 @@
   border: 1px solid var(--ifm-color-primary);
 }
 
-.feature:hover .unityIcon {
+.feature:hover .engineIcon {
   fill: var(--ifm-color-primary);
 }
 
-.feature:hover .featureSvg:not(.unityIcon) {
+.feature:hover .featureSvg:not(.engineIcon) {
   stroke: var(--ifm-color-primary);
 }
 
@@ -57,7 +57,7 @@
   width: 24px;
 }
 
-.unityIcon {
+.engineIcon {
   fill: #fff;
 }
 
