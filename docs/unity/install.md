@@ -6,6 +6,10 @@ sidebar_position: 1
 
 ## Import into Unity
 
+:::caution
+Talo takes advantage of features from C# 9.0+. If you receive compilation errors after installing the package, you may need to make some configuration changes in your Unity project. For more info, [check out this article](https://learn.microsoft.com/en-us/visualstudio/gamedev/unity/unity-scripting-upgrade).
+:::
+
 ### Using git (recommended)
 
 Open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from git URL…` and enter the following path: `https://github.com/TaloDev/unity-package.git`.
