@@ -14,8 +14,10 @@ The Godot Asset Library is the recommended way to download Godot plugins. Open t
 
 You can download the latest version of the Godot plugin from our [itch.io page](https://sleepystudios.itch.io/talo-godot). Simply unzip the plugin and copy the `addons/talo` folder into your project.
 
+## Enable the plugin
+
 :::caution
-Remember to enable the plugin in the `Project > Project Settings > Plugins` window.
+After installing the plugin, you must enable it in the `Project > Project Settings > Plugins` window.
 :::
 
 ## Generate an access key
