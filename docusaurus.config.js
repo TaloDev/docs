@@ -4,8 +4,14 @@ const axios = require('axios')
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = async function configCreatorAsync() {
   const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://api.trytalo.com'
-  const res = await axios.get(`${baseUrl}/public/docs`)
-  const services = res.data.docs.services
+  let services = []
+
+  try {
+    const res = await axios.get(`${baseUrl}/public/docs`)
+    services = res.data.docs.services
+  } catch (err) {
+    console.error(err.message)
+  }
 
   return {
     title: 'Talo',
@@ -124,6 +130,13 @@ module.exports = async function configCreatorAsync() {
         baseUrl,
         services
       }
-    }
+    },
+    scripts: [
+      {
+        src: 'https://stats.sleepystudios.net/js/script.js',
+        defer: true,
+        'data-domain': 'docs.trytalo.com'
+      }
+    ]
   }
 }
