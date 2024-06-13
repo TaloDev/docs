@@ -10,11 +10,16 @@ To create a group, head over to [the dashboard](https://dashboard.trytalo.com), 
 
 ## Checking membership
 
-You can check if a player's group membership using `IsInGroup()` by providing the group ID.
+You can check if a player's group membership using `IsInGroupID()` by providing the group ID. Alternatively you can search by group name using `IsInGroupName()` too.
 
 ```csharp
+  public bool IsPowerUser()
+  {
+    return Talo.CurrentPlayer.IsInGroupID('9e56e835-eff6-4a6d-ac35-db8e7561af0e')
+  }
+
   public bool IsBetaTester()
   {
-    return Talo.CurrentPlayer.IsInGroup('9e56e835-eff6-4a6d-ac35-db8e7561af0e')
+    return Talo.CurrentPlayer.IsInGroupName('beta-testers')
   }
 ```
