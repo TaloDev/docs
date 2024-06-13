@@ -21,7 +21,7 @@ export default function Sample({ sample }) {
       </div>
 
       <CodeBlock
-        language='json'
+        language='javascript'
         showLineNumbers
       >
         {shown ? content : '{ ... }'}
