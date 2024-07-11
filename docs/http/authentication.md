@@ -13,3 +13,14 @@ curl \
 -H 'Content-type: application/json' \
 'https://api.trytalo.com/v1/events'
 ```
+
+## Player authentication
+
+When calling API endpoints on behalf of a player that is using [player authentication](https://trytalo.com/players#authentication) you must send the following headers:
+1. `x-talo-player`: the ID of the player
+2. `x-talo-alias`: the ID of the player's identified alias
+3. `x-talo-session`: the session token received after registering or logging-in a player
+
+:::tip
+The Godot plugin and Unity package will automatically populate these headers for you. If you're receiving session-related errors, visit the [Common errors](/docs/http/common-errors#missing-or-invalid-session) page for more information.
+:::

@@ -1,0 +1,113 @@
+import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+
+# Player auth API
+
+## Endpoints
+
+<ServiceDocumentation service='PlayerAuthAPIService' />
+
+## Error codes
+
+### `INVALID_CREDENTIALS`
+
+When authentication fails (i.e. wrong identifier or password), this error is returned. This error also occurs when trying to change a player password or email address and the current password they enter is incorrect.
+
+```javascript
+{
+  message: 'Incorrect identifier or password',
+  errorCode: 'INVALID_CREDENTIALS'
+}
+```
+```javascript
+{
+  message: 'Current password is incorrect',
+  errorCode: 'INVALID_CREDENTIALS'
+}
+```
+
+### `VERIFICATION_ALIAS_NOT_FOUND`
+
+When trying to verify a player login, this error is thrown if the `aliasId` is not valid.
+
+```javascript
+{
+  message: 'Player alias not found',
+  errorCode: 'VERIFICATION_ALIAS_NOT_FOUND'
+}
+```
+
+### `VERIFICATION_CODE_INVALID`
+
+When trying to verify a player login, this error is thrown if the `code` is not valid.
+
+```javascript
+{
+  message: 'Invalid code',
+  errorCode: 'VERIFICATION_CODE_INVALID'
+}
+```
+
+### `IDENTIFIER_TAKEN`
+
+When trying to create a new player, this error is thrown if the `identifier` is already taken.
+
+```javascript
+{
+  message: 'Player with identifier boz already exists',
+  errorCode: 'IDENTIFIER_TAKEN'
+}
+```
+### `MISSING_SESSION`
+
+Players that use Talo Authentication must provide a session token in the request headers. This error is thrown when the session token is missing.
+
+```javascript
+{
+  message: 'The x-talo-session header is required for this player',
+  errorCode: 'MISSING_SESSION'
+}
+```
+
+### `INVALID_SESSION`
+
+Players that use Talo Authentication must provide a session token in the request headers. This error is thrown when the session token is invalid.
+
+```javascript
+{
+  message: 'The x-talo-session header is invalid',
+  errorCode: 'INVALID_SESSION'
+}
+```
+
+### `NEW_PASSWORD_MATCHES_OLD_PASSWORD`
+
+When trying to change a player's password, this error is thrown if the new password matches the old password.
+
+```javascript
+{
+  message: 'Please choose a different password',
+  errorCode: 'NEW_PASSWORD_MATCHES_OLD_PASSWORD'
+}
+```
+
+### `NEW_EMAIL_MATCHES_OLD_EMAIL`
+
+When trying to change a player's email address, this error is thrown if the new email matches the old email.
+
+```javascript
+{
+  message: 'Please choose a different email address',
+  errorCode: 'NEW_EMAIL_MATCHES_OLD_EMAIL'
+}
+```
+
+### `PASSWORD_RESET_CODE_INVALID`
+
+When trying to reset a player password, this error is thrown if the reset code is incorrect or has expired.
+
+```javascript
+{
+  message: 'This code is either invalid or has expired',
+  errorCode: 'PASSWORD_RESET_CODE_INVALID'
+}
+```
