@@ -85,18 +85,18 @@ To change the logged in player's password, you need to provide their current pas
 ```gdscript
 signal password_change_success
 
-@onready var old_password: TextEdit = %OldPassword
+@onready var current_password: TextEdit = %CurrentPassword
 @onready var new_password: TextEdit = %NewPassword
 @onready var validation_label: Label = %ValidationLabel
 
 ...
 
-var res = await Talo.player_auth.change_password(old_password.text, new_password.text)
+var res = await Talo.player_auth.change_password(current_password.text, new_password.text)
 if res != OK:
   match Talo.player_auth.last_error.get_code():
     TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
       validation_label.text = "Current password is incorrect"
-    TaloAuthError.ErrorCode.NEW_PASSWORD_MATCHES_OLD_PASSWORD:
+    TaloAuthError.ErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD:
       validation_label.text = "New password must be different from the current password"
     _:
       validation_label.text = Talo.player_auth.last_error.get_string()    
@@ -151,6 +151,6 @@ else:
 
 As shown in the examples above, whenever a request fails you can query the last error returned using the `Talo.player_auth.last_error` variable.
 
-You can get the `TaloAuthError.ErrorCode` enum using the `get_code()` function or the raw string using the `get_string()` function.
+You can get the `TaloAuthError.ErrorCode` enum value using the `get_code()` function or the raw string using the `get_string()` function.
 
-You can all the authentication errors and their descriptions [here](/docs/http/player-auth-api#error-codes).
+You can view all the authentication errors and their descriptions [here](/docs/http/player-auth-api#error-codes).

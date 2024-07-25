@@ -79,25 +79,25 @@ Players that use Talo Authentication must provide a session token in the request
 }
 ```
 
-### `NEW_PASSWORD_MATCHES_OLD_PASSWORD`
+### `NEW_PASSWORD_MATCHES_CURRENT_PASSWORD`
 
-When trying to change a player's password, this error is thrown if the new password matches the old password.
+When trying to change a player's password, this error is thrown if the new password matches the current password.
 
 ```javascript
 {
   message: 'Please choose a different password',
-  errorCode: 'NEW_PASSWORD_MATCHES_OLD_PASSWORD'
+  errorCode: 'NEW_PASSWORD_MATCHES_CURRENT_PASSWORD'
 }
 ```
 
-### `NEW_EMAIL_MATCHES_OLD_EMAIL`
+### `NEW_EMAIL_MATCHES_CURRENT_EMAIL`
 
-When trying to change a player's email address, this error is thrown if the new email matches the old email.
+When trying to change a player's email address, this error is thrown if the new email matches the current email.
 
 ```javascript
 {
   message: 'Please choose a different email address',
-  errorCode: 'NEW_EMAIL_MATCHES_OLD_EMAIL'
+  errorCode: 'NEW_EMAIL_MATCHES_CURRENT_EMAIL'
 }
 ```
 
