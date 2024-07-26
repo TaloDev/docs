@@ -198,6 +198,12 @@ catch (Exception e)
 }
 ```
 
+## Toggling verification
+
+To toggle verification on and off, you can call the `Talo.PlayerAuth.ToggleVerification`. You'll need to provide the player's current password.
+
+If you're enabling verification and the player doesn't already have an email address set, you will need to provide one as the third parameter of the function call. Sending an email if there is already an existing one will overwrite the old email with the new email.
+
 ## Exceptions and error codes
 
 As shown in the examples above, whenever a request fails with an authentication-related error, a `PlayerAuthException` will be thrown.

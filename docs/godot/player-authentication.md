@@ -147,6 +147,12 @@ else:
   password_reset_success.emit()
 ```
 
+## Toggling verification
+
+To toggle verification on and off, you can call the `Talo.player_auth.toggle_verification`. You'll need to provide the player's current password.
+
+If you're enabling verification and the player doesn't already have an email address set, you will need to provide one as the third parameter of the function call. Sending an email if there is already an existing one will overwrite the old email with the new email.
+
 ## Getting the last error
 
 As shown in the examples above, whenever a request fails you can query the last error returned using the `Talo.player_auth.last_error` variable.

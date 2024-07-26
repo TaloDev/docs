@@ -10,7 +10,7 @@ import ServiceDocumentation from '@site/src/components/documentation/ServiceDocu
 
 ### `INVALID_CREDENTIALS`
 
-When authentication fails (i.e. wrong identifier or password), this error is returned. This error also occurs when trying to change a player password or email address and the current password they enter is incorrect.
+When authentication fails (i.e. wrong identifier or password), this error is returned. This error also occurs when trying to change a player password, trying to change an email address or toggling verification and the current password entered is incorrect.
 
 ```javascript
 {
@@ -109,5 +109,16 @@ When trying to reset a player password, this error is thrown if the reset code i
 {
   message: 'This code is either invalid or has expired',
   errorCode: 'PASSWORD_RESET_CODE_INVALID'
+}
+```
+
+### `VERIFICATION_EMAIL_REQUIRED`
+
+When attempting to toggle verification on, this error is thrown if the player does not have an email address set and one is not provided in the request.
+
+```javascript
+{
+  message: 'An email address is required to enable verification',
+  errorCode: 'VERIFICATION_EMAIL_REQUIRED'
 }
 ```
