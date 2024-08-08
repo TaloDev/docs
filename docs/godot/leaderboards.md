@@ -32,7 +32,7 @@ You can also get entries exclusively created by the current player using `Talo.l
 
 ## Creating entries
 
-Use `Talo.leaderboards.add_entry` to create an entry:
+Use `Talo.leaderboards.add_entry()` to create an entry:
 
 ```gdscript title="add_entry_button.gd"
 extends Button
@@ -49,3 +49,11 @@ func _on_pressed() -> void:
 This function returns a tuple of the entry and whether it was updated.
 
 Updated entries are only relevant if the leaderboard is set to unique. Leaderboard entries won't be updated if they are not better (depending on the sort mode) than the player's previous entry.
+
+## Entry cache
+
+After fetching your leaderboard entries you can take advantage of the internal cache to construct your UI, removing the need for any subsequent network requests.
+
+You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache. The same logic applies for `get_entries_for_current_player()` with `get_cached_entries_for_current_player()`.
+
+Similarly, updated results from `add_entry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.

@@ -35,7 +35,7 @@ You can also get entries exclusively created by the current player using `Talo.L
 
 ## Creating entries
 
-Use `Talo.Leaderboards.AddEntry` to create an entry:
+Use `Talo.Leaderboards.AddEntry()` to create an entry:
 
 ```csharp title="AddEntry.cs"
 string internalName = 'time-survived';
