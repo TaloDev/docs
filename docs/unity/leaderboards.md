@@ -51,3 +51,11 @@ public async void AddEntry()
 This function returns a tuple of the entry and whether it was updated.
 
 Updated entries are only relevant if the leaderboard is set to unique. Leaderboard entries won't be updated if they are not better (depending on the sort mode) than the player's previous entry.
+
+## Entry cache
+
+After fetching your leaderboard entries you can take advantage of the internal cache to construct your UI, removing the need for any subsequent network requests.
+
+You can use `Talo.Leaderboard.GetCachedEntries()` in the same way as `GetEntries()` above. Every entry fetched previously using `GetEntries()` will exist in the cache. The same logic applies for `GetEntriesForCurrentPlayer()` with `GetCachedEntriesForCurrentPlayer()`.
+
+Similarly, updated results from `AddEntry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
