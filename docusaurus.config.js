@@ -23,6 +23,10 @@ module.exports = async function configCreatorAsync() {
     organizationName: 'TaloDev', // Usually your GitHub org/user name.
     projectName: 'docs', // Usually your repo name.
     themeConfig: {
+      metadata: [
+        { name: 'og:image', content: 'https://trytalo.com/opengraph.png' },
+        { name: 'twitter:image', content: 'https://trytalo.com/opengraph.png' },
+      ],
       colorMode: {
         defaultMode: 'dark',
         disableSwitch: true
