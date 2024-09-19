@@ -8,4 +8,4 @@ Exporting to all platforms should require minimal changes. The only important ch
 
 The resources tab in the export window should look similar to this:
 
-![The Godot export window](/img/godot_export.png)
+![The Godot export window, showing the resources tab](/img/godot_export.png)
