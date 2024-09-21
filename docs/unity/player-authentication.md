@@ -204,6 +204,20 @@ To toggle verification on and off, you can call the `Talo.PlayerAuth.ToggleVerif
 
 If you're enabling verification and the player doesn't already have an email address set, you will need to provide one as the third parameter of the function call. By providing an email address for a player that already has one set, you will overwrite the existing email address with the newly provided email address.
 
+## Deleting accounts
+
+Player accounts can be deleted using `Talo.PlayerAuth.DeleteAccount`. You'll need to provide the player's current password. When an account is successfully deleted several things will happen internally:
+
+1. The alias will be anonymised. We'll go into more detail about this below.
+2. The current alias will be set to `null`.
+3. The auth session will be cleared.
+
+You'll need to handle these things by, for example, navigating back to a "Login" screen.
+
+### Anonymised aliases
+
+In order to preserve player data but allow players to delete aliases, the aliases must be anonymised. Anonymised aliases have their `identifier` scrubbed and are not displayed in the Talo dashboard or returned by any API.
+
 ## Exceptions and error codes
 
 As shown in the examples above, whenever a request fails with an authentication-related error, a `PlayerAuthException` will be thrown.
