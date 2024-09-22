@@ -59,3 +59,55 @@ After fetching your leaderboard entries you can take advantage of the internal c
 You can use `Talo.Leaderboard.GetCachedEntries()` in the same way as `GetEntries()` above. Every entry fetched previously using `GetEntries()` will exist in the cache. The same logic applies for `GetEntriesForCurrentPlayer()` with `GetCachedEntriesForCurrentPlayer()`.
 
 Similarly, updated results from `AddEntry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
+
+## Entry props
+
+Along with a score, you can also send a dictionary of `props` with an entry. The key/value pairs will be stringified and can be used to, filter leaderboards on specific properties. For example, you could send a `team` prop:
+
+```csharp
+private async void OnPostClick()
+{
+  var username = root.Q<TextField>().text;
+  var score = UnityEngine.Random.Range(0, 100);
+  var team = UnityEngine.Random.Range(0, 2) == 0 ? "Blue" : "Red";
+
+  await Talo.Players.Identify("username", username);
+  (LeaderboardEntry entry, bool updated) = await Talo.Leaderboards.AddEntry(
+    leaderboardName,
+    score,
+    ("team", team)
+  );
+
+  infoLabel.text = $"You scored {score} for the {team} team.";
+  if (updated) infoLabel.text += " Your highscore was updated!";
+
+  entriesList.Rebuild();
+}
+```
+
+You could then have a function that populates the leaderboard and checks if a team filter is active:
+
+```csharp
+private void OnFilterClick()
+{
+  filterIdx++;
+  filter = GetNextFilter(filterIdx);
+
+  infoLabel.text = $"Filtering on {filter.ToLower()}";
+  root.Q<Button>("filter-btn").text = $"{GetNextFilter(filterIdx + 1)} team scores";
+
+  if (filter == "All")
+  {
+    entriesList.itemsSource = Talo.Leaderboards.GetCachedEntries(leaderboardName);
+  }
+  else
+  {
+    entriesList.itemsSource = new List<LeaderboardEntry>(Talo.Leaderboards.GetCachedEntries(leaderboardName)
+      .FindAll((e) => e.GetProp("team", "") == filter));
+  }
+
+  entriesList.Rebuild();
+}
+```
+
+The code above is available in the leaderboards sample included with the Talo Unity package.

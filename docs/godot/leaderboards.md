@@ -57,3 +57,37 @@ After fetching your leaderboard entries you can take advantage of the internal c
 You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache. The same logic applies for `get_entries_for_current_player()` with `get_cached_entries_for_current_player()`.
 
 Similarly, updated results from `add_entry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
+
+## Entry props
+
+Along with a score, you can also send a dictionary of `props` with an entry. The key/value pairs will be stringified and can be used to, filter leaderboards on specific properties. For example, you could send a `team` prop:
+
+```gdscript
+func _on_submit_pressed() -> void:
+  await Talo.players.identify("username", username.text)
+  var score = RandomNumberGenerator.new().randi_range(0, 100)
+  var team = "Blue" if RandomNumberGenerator.new().randi_range(0, 1) == 0 else "Red"
+
+  var res = await Talo.leaderboards.add_entry(leaderboard_internal_name, score, { team = team })
+  info_label.text = "You scored %s points for the %s team!" % [score, team]
+
+  _build_entries()
+```
+
+You could then have a function that populates the leaderboard and checks if a team filter is active:
+
+```gdscript
+func _build_entries() -> void:
+  for child in entries_container.get_children():
+    child.queue_free()
+
+  var entries = Talo.leaderboards.get_cached_entries(leaderboard_internal_name)
+  if _filter != "All": # e.g. "Blue" or "Red"
+    entries = entries.filter(func (entry: TaloLeaderboardEntry): return entry.get_prop("team", "") == _filter)
+
+  for entry in entries:
+    entry.position = entries.find(entry)
+    _create_entry(entry)
+```
+
+The code above is available in the leaderboards sample included with the Talo Godot plugin.
