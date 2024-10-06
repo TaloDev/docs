@@ -19,7 +19,7 @@ You can track a stat using the Stats API `Track()` function which takes your sta
 ```csharp title="PlayerDeathController.cs"
 public void OnDeath()
 {
-  Talo.Stats.Track('deaths')
+    Talo.Stats.Track('deaths')
 }
 ```
 
@@ -28,7 +28,7 @@ private float health;
 
 public void OnHeal(Potion potion)
 {
-  health += potion.amount
-  Talo.Stats.Track('health-healed', potion.amount)
+    health += potion.amount
+    Talo.Stats.Track('health-healed', potion.amount)
 }
 ```

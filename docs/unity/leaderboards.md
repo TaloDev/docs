@@ -18,14 +18,15 @@ int page = 0;
 
 public async void FetchEntries()
 {
-  LeaderboardEntry[] entries = await Talo.Leaderboards.GetEntries(internalName, page);
-  if (entries.length == 0)
-  {
-    // No entries on page
-  } else
-  {
-    page++;
-  }
+    LeaderboardEntry[] entries = await Talo.Leaderboards.GetEntries(internalName, page);
+    if (entries.length == 0)
+    {
+      // No entries on page
+    }
+    else
+    {
+        page++;
+    }
 }
 ```
 
@@ -43,8 +44,8 @@ float score = 300f;
 
 public async void AddEntry()
 {
-  (LeaderboardEntry entry, bool updated) = await Talo.Leaderboards.AddEntry(internalName, score);
-  Debug.Log(entry.position);
+    (LeaderboardEntry entry, bool updated) = await Talo.Leaderboards.AddEntry(internalName, score);
+    Debug.Log(entry.position);
 }
 ```
 
@@ -67,21 +68,21 @@ Along with a score, you can also send a dictionary of `props` with an entry. The
 ```csharp
 private async void OnPostClick()
 {
-  var username = root.Q<TextField>().text;
-  var score = UnityEngine.Random.Range(0, 100);
-  var team = UnityEngine.Random.Range(0, 2) == 0 ? "Blue" : "Red";
+    var username = root.Q<TextField>().text;
+    var score = UnityEngine.Random.Range(0, 100);
+    var team = UnityEngine.Random.Range(0, 2) == 0 ? "Blue" : "Red";
 
-  await Talo.Players.Identify("username", username);
-  (LeaderboardEntry entry, bool updated) = await Talo.Leaderboards.AddEntry(
-    leaderboardName,
-    score,
-    ("team", team)
-  );
+    await Talo.Players.Identify("username", username);
+    (LeaderboardEntry entry, bool updated) = await Talo.Leaderboards.AddEntry(
+        leaderboardName,
+        score,
+        ("team", team)
+    );
 
-  infoLabel.text = $"You scored {score} for the {team} team.";
-  if (updated) infoLabel.text += " Your highscore was updated!";
+    infoLabel.text = $"You scored {score} for the {team} team.";
+    if (updated) infoLabel.text += " Your highscore was updated!";
 
-  entriesList.Rebuild();
+    entriesList.Rebuild();
 }
 ```
 
@@ -90,23 +91,23 @@ You could then have a function that populates the leaderboard and checks if a te
 ```csharp
 private void OnFilterClick()
 {
-  filterIdx++;
-  filter = GetNextFilter(filterIdx);
+    filterIdx++;
+    filter = GetNextFilter(filterIdx);
 
-  infoLabel.text = $"Filtering on {filter.ToLower()}";
-  root.Q<Button>("filter-btn").text = $"{GetNextFilter(filterIdx + 1)} team scores";
+    infoLabel.text = $"Filtering on {filter.ToLower()}";
+    root.Q<Button>("filter-btn").text = $"{GetNextFilter(filterIdx + 1)} team scores";
 
-  if (filter == "All")
-  {
-    entriesList.itemsSource = Talo.Leaderboards.GetCachedEntries(leaderboardName);
-  }
-  else
-  {
-    entriesList.itemsSource = new List<LeaderboardEntry>(Talo.Leaderboards.GetCachedEntries(leaderboardName)
-      .FindAll((e) => e.GetProp("team", "") == filter));
-  }
+    if (filter == "All")
+    {
+        entriesList.itemsSource = Talo.Leaderboards.GetCachedEntries(leaderboardName);
+    }
+    else
+    {
+        entriesList.itemsSource = new List<LeaderboardEntry>(Talo.Leaderboards.GetCachedEntries(leaderboardName)
+          .FindAll((e) => e.GetProp("team", "") == filter));
+    }
 
-  entriesList.Rebuild();
+    entriesList.Rebuild();
 }
 ```
 
