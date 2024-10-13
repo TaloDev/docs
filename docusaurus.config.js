@@ -137,7 +137,7 @@ module.exports = async function configCreatorAsync() {
     },
     scripts: [
       {
-        src: 'https://stats.trytalo.com/js/script.js',
+        src: 'https://pa.trytalo.com/js/script.js',
         defer: true,
         'data-domain': 'docs.trytalo.com'
       }
