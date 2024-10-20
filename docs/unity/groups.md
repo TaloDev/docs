@@ -15,11 +15,29 @@ You can check if a player's group membership using `IsInGroupID()` by providing 
 ```csharp
 public bool IsPowerUser()
 {
-    return Talo.CurrentPlayer.IsInGroupID('9e56e835-eff6-4a6d-ac35-db8e7561af0e')
+	return Talo.CurrentPlayer.IsInGroupID('9e56e835-eff6-4a6d-ac35-db8e7561af0e')
 }
 
 public bool IsBetaTester()
 {
-    return Talo.CurrentPlayer.IsInGroupName('beta-testers')
+	return Talo.CurrentPlayer.IsInGroupName('beta-testers')
 }
 ```
+
+## Fetching individual groups
+
+Groups in the `Player` class are stubs that only include an `id` and a `name`. To retrieve more data about a group, including its members, use the `Talo.PlayerGroups.Get()` function:
+
+```csharp
+try
+{
+	var group = await Talo.PlayerGroups.Get(groupId);
+	ResponseMessage.SetText($"{group.name} has {group.count} player(s)");
+}
+catch (Exception e)
+{
+	ResponseMessage.SetText(e.Message);
+}
+```
+
+Group members will only be visible if you've enabled the setting on your group in the Talo dashboard. If `membersVisible` is `false`, `members` will always be an empty array.
