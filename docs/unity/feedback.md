@@ -20,25 +20,25 @@ using System.Linq;
 
 public class GetCategories : MonoBehaviour
 {
-    public async void OnButtonClick()
-    {
-        await FetchCategories();
-    }
+	public async void OnButtonClick()
+	{
+		await FetchCategories();
+	}
 
-    private async Task FetchCategories()
-    {
-        var categories = await Talo.Feedback.GetCategories();
+	private async Task FetchCategories()
+	{
+		var categories = await Talo.Feedback.GetCategories();
 
-        if (categories.Length == 0)
-        {
-            Debug.Log("No categories found. Create some in the Talo dashboard!");
-        }
-        else
-        {
-            var mapped = categories.Select((c) => c.internalName);
-            Debug.Log($"Categories: " + string.Join(',', mapped)); // prints: "bugs, gameplay-feedback, terrain-issues"
-        }
-    }
+		if (categories.Length == 0)
+		{
+			Debug.Log("No categories found. Create some in the Talo dashboard!");
+		}
+		else
+		{
+			var mapped = categories.Select((c) => c.internalName);
+			Debug.Log($"Categories: " + string.Join(',', mapped)); // prints: "bugs, gameplay-feedback, terrain-issues"
+		}
+	}
 }
 ```
 
@@ -52,12 +52,12 @@ using TaloGameServices;
 
 public class SendFeedback : MonoBehaviour
 {
-    public string internalName, feedbackComment;
+	public string internalName, feedbackComment;
 
-    public async void OnButtonClick()
-    {
-        await Talo.Feedback.Send(internalName, feedbackComment);
-        Debug.Log($"Feedback sent for {internalName}: {feedbackComment}");
-    }
+	public async void OnButtonClick()
+	{
+		await Talo.Feedback.Send(internalName, feedbackComment);
+		Debug.Log($"Feedback sent for {internalName}: {feedbackComment}");
+	}
 }
 ```

@@ -26,7 +26,7 @@ extends Button
 @export var identifier: String
 
 func _on_pressed():
-  Talo.players.identify(service, identifier)
+	Talo.players.identify(service, identifier)
 ```
 
 ### The identified signal
@@ -37,10 +37,10 @@ After a successful identification, the `Talo.players.identified` signal will fir
 extends Label
 
 func _ready() -> void:
-  Talo.players.identified.connect(_on_identified)
+	Talo.players.identified.connect(_on_identified)
 
 func _on_identified(player: TaloPlayer) -> void:
-  text = player.get_prop("display_name")
+	text = player.get_prop("display_name")
 ```
 
 ## Checking identification
@@ -49,10 +49,10 @@ Sometimes you might need to check if a player has been identified before. You ca
 
 ```gdscript
 func do_stuff_if_authenticated() -> void:
-  if Talo.identity_check() != OK:
-    return
+	if Talo.identity_check() != OK:
+		return
 
-  # do stuff
+	# do stuff
 ```
 
 ## Merging players
@@ -72,15 +72,15 @@ extends Node
 var identity = "talo"
 
 func _ready() -> void:
-  Steam.steamInitEx()
-  Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
-  Steam.getAuthTicketForWebApi(identity)
+	Steam.steamInitEx()
+	Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
+	Steam.getAuthTicketForWebApi(identity)
 
 func _on_get_ticket_for_web_api(_auth_ticket: int, _result: int, _ticket_size: int, ticket_buffer: Array) -> void:
-  Talo.players.identify_steam(PackedByteArray(ticket_buffer).hex_encode(), identity)
+	Talo.players.identify_steam(PackedByteArray(ticket_buffer).hex_encode(), identity)
 
 func _process(_delta: float) -> void:
-  Steam.run_callbacks()
+	Steam.run_callbacks()
 ```
 
 The `identity` parameter is optional but strongly recommended. It's used to identify the service that is verifying the ticket. It can be anything you like but must be the same as the `identity` passed to Steam when fetching the ticket.

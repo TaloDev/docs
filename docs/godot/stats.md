@@ -18,13 +18,13 @@ You can track a stat using the Stats API `track()` function which takes your sta
 
 ```gdscript title="player.gd"
 func on_death() -> void:
-  Talo.stats.track('deaths')
+	Talo.stats.track('deaths')
 ```
 
 ```gdscript title="player_potion.gd"
 var health: float
 
 func on_heal(potion: Potion) -> void:
-  health += potion.amount
-  Talo.stats.track('health-healed', potion.amount)
+	health += potion.amount
+	Talo.stats.track('health-healed', potion.amount)
 ```

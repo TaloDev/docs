@@ -15,43 +15,43 @@ If you want the player to be able to verify their logins via email (two factor a
 ```csharp
 private async void OnRegisterClick()
 {
-    var username = root.Q<TextField>("username").text;
-    var password = root.Q<TextField>("password").text;
-    var enableVerification = root.Q<Toggle>("enable-verification").value;
-    var email = root.Q<TextField>("email").text;
+	var username = root.Q<TextField>("username").text;
+	var password = root.Q<TextField>("password").text;
+	var enableVerification = root.Q<Toggle>("enable-verification").value;
+	var email = root.Q<TextField>("email").text;
 
-    var validationLabel = root.Q<Label>("validation-label");
+	var validationLabel = root.Q<Label>("validation-label");
 
-    if (string.IsNullOrEmpty(username))
-    {
-        validationLabel.text = "Username is required";
-        return;
-    }
+	if (string.IsNullOrEmpty(username))
+	{
+		validationLabel.text = "Username is required";
+		return;
+	}
 
-    if (string.IsNullOrEmpty(password))
-    {
-        validationLabel.text = "Password is required";
-        return;
-    }
+	if (string.IsNullOrEmpty(password))
+	{
+		validationLabel.text = "Password is required";
+		return;
+	}
 
-    validationLabel.text = "";
+	validationLabel.text = "";
 
-    try
-    {
-        await Talo.PlayerAuth.Register(username, password, email, enableVerification);
-    }
-    catch (PlayerAuthException e)
-    {
-        validationLabel.text = e.GetErrorCode() switch
-        {
-            PlayerAuthErrorCode.IDENTIFIER_TAKEN => "Username is already taken",
-            _ => e.Message
-        };
-    }
-    catch (Exception e)
-    {
-        validationLabel.text = e.Message;
-    }
+	try
+	{
+		await Talo.PlayerAuth.Register(username, password, email, enableVerification);
+	}
+	catch (PlayerAuthException e)
+	{
+		validationLabel.text = e.GetErrorCode() switch
+		{
+			PlayerAuthErrorCode.IDENTIFIER_TAKEN => "Username is already taken",
+			_ => e.Message
+		};
+	}
+	catch (Exception e)
+	{
+		validationLabel.text = e.Message;
+	}
 }
 ```
 
@@ -66,43 +66,43 @@ The `Login()` function returns a boolean denoting whether or not verification is
 ```csharp
 private async void OnLoginClick()
 {
-    var username = root.Q<TextField>("username").text;
-    var password = root.Q<TextField>("password").text;
-    var validationLabel = root.Q<Label>("validation-label");
+	var username = root.Q<TextField>("username").text;
+	var password = root.Q<TextField>("password").text;
+	var validationLabel = root.Q<Label>("validation-label");
 
-    if (string.IsNullOrEmpty(username))
-    {
-        validationLabel.text = "Username is required";
-        return;
-    }
+	if (string.IsNullOrEmpty(username))
+	{
+		validationLabel.text = "Username is required";
+		return;
+	}
 
-    if (string.IsNullOrEmpty(password))
-    {
-        validationLabel.text = "Password is required";
-        return;
-    }
+	if (string.IsNullOrEmpty(password))
+	{
+		validationLabel.text = "Password is required";
+		return;
+	}
 
-    validationLabel.text = "";
+	validationLabel.text = "";
 
-    try
-    {
-        if (await Talo.PlayerAuth.Login(username, password))
-        {
-            SendMessageUpwards("GoToVerify", SendMessageOptions.RequireReceiver);
-        }
-    }
-    catch (PlayerAuthException e)
-    {
-        validationLabel.text = e.GetErrorCode() switch
-        {
-            PlayerAuthErrorCode.INVALID_CREDENTIALS => "Username or password is incorrect",
-            _ => e.Message
-        };
-    }
-    catch (Exception e)
-    {
-        validationLabel.text = e.Message;
-    }
+	try
+	{
+		if (await Talo.PlayerAuth.Login(username, password))
+		{
+			SendMessageUpwards("GoToVerify", SendMessageOptions.RequireReceiver);
+		}
+	}
+	catch (PlayerAuthException e)
+	{
+		validationLabel.text = e.GetErrorCode() switch
+		{
+			PlayerAuthErrorCode.INVALID_CREDENTIALS => "Username or password is incorrect",
+			_ => e.Message
+		};
+	}
+	catch (Exception e)
+	{
+		validationLabel.text = e.Message;
+	}
 }
 ```
 
@@ -113,33 +113,33 @@ If you need to verify a player's login, you need to call `Talo.PlayerAuth.Verify
 ```csharp
 private async void OnVerifyClick()
 {
-    var code = root.Q<TextField>("code").text;
-    var validationLabel = root.Q<Label>("validation-label");
+	var code = root.Q<TextField>("code").text;
+	var validationLabel = root.Q<Label>("validation-label");
 
-    if (string.IsNullOrEmpty(code))
-    {
-        validationLabel.text = "Verification code is required";
-        return;
-    }
+	if (string.IsNullOrEmpty(code))
+	{
+		validationLabel.text = "Verification code is required";
+		return;
+	}
 
-    validationLabel.text = "";
+	validationLabel.text = "";
 
-    try
-    {
-        await Talo.PlayerAuth.Verify(code);
-    }
-    catch (PlayerAuthException e)
-    {
-        validationLabel.text = e.GetErrorCode() switch
-        {
-            PlayerAuthErrorCode.VERIFICATION_CODE_INVALID => "Verification code is incorrect",
-            _ => e.Message
-        };
-    }
-    catch (Exception e)
-    {
-        validationLabel.text = e.Message;
-    }
+	try
+	{
+		await Talo.PlayerAuth.Verify(code);
+	}
+	catch (PlayerAuthException e)
+	{
+		validationLabel.text = e.GetErrorCode() switch
+		{
+			PlayerAuthErrorCode.VERIFICATION_CODE_INVALID => "Verification code is incorrect",
+			_ => e.Message
+		};
+	}
+	catch (Exception e)
+	{
+		validationLabel.text = e.Message;
+	}
 }
 ```
 
@@ -150,20 +150,20 @@ To change the logged in player's password, you need to provide their current pas
 ```csharp
 try
 {
-    await Talo.PlayerAuth.ChangePassword(currentPassword, newPassword);
+	await Talo.PlayerAuth.ChangePassword(currentPassword, newPassword);
 }
 catch (PlayerAuthException e)
 {
-    validationLabel.text = e.GetErrorCode() switch
-    {
-        PlayerAuthErrorCode.INVALID_CREDENTIALS => "Current password is incorrect",
-        PlayerAuthErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD => "New password must be different from the current password",
-        _ => e.Message
-    };
+	validationLabel.text = e.GetErrorCode() switch
+	{
+		PlayerAuthErrorCode.INVALID_CREDENTIALS => "Current password is incorrect",
+		PlayerAuthErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD => "New password must be different from the current password",
+		_ => e.Message
+	};
 }
 catch (Exception e)
 {
-    validationLabel.text = e.Message;
+	validationLabel.text = e.Message;
 }
 ```
 
@@ -182,19 +182,19 @@ To reset a password, pass the code from the email along with a new password to t
 ```csharp
 try
 {
-    await Talo.PlayerAuth.ResetPassword(code, newPassword);
+	await Talo.PlayerAuth.ResetPassword(code, newPassword);
 }
 catch (PlayerAuthException e)
 {
-    validationLabel.text = e.GetErrorCode() switch
-    {
-        PlayerAuthErrorCode.PASSWORD_RESET_CODE_INVALID => "Reset code is invalid",
-        _ => e.Message
-    };
+	validationLabel.text = e.GetErrorCode() switch
+	{
+		PlayerAuthErrorCode.PASSWORD_RESET_CODE_INVALID => "Reset code is invalid",
+		_ => e.Message
+	};
 }
 catch (Exception e)
 {
-    validationLabel.text = e.Message;
+	validationLabel.text = e.Message;
 }
 ```
 

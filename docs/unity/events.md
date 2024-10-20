@@ -13,15 +13,15 @@ To track an event, simply call `Talo.Events.Track()` with an event name like "Le
 ```csharp title="TrackLevelUpEvent.cs"
 private void LevelUp()
 {
-    level++;
+	level++;
 
-    Talo.Events.Track(
-      "Level up",
-      ("newLevel", $"{level}"),
-      ("timeTaken", $"{timeTaken}")
-    );
+	Talo.Events.Track(
+		"Level up",
+		("newLevel", $"{level}"),
+		("timeTaken", $"{timeTaken}")
+	);
 
-    timeTaken = 0;
+	timeTaken = 0;
 }
 ```
 

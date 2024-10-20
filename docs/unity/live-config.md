@@ -38,21 +38,21 @@ using TMPro;
 
 public class TextLoader : MonoBehaviour
 {
-    void Start()
-    {
-        var textUI = GetComponent<TextMeshProUGUI>();
+	void Start()
+	{
+		var textUI = GetComponent<TextMeshProUGUI>();
 
-        Talo.GameConfig.OnLiveConfigLoaded += (liveConfig) =>
-        {
-            textUI.text = liveConfig.GetProp("liveString", "Not set!");
-        };
+		Talo.GameConfig.OnLiveConfigLoaded += (liveConfig) =>
+		{
+			textUI.text = liveConfig.GetProp("liveString", "Not set!");
+		};
 
-        InvokeRepeating("GetConfig", 0f, 2f);
-    }
+		InvokeRepeating("GetConfig", 0f, 2f);
+	}
 
-    async void GetConfig()
-    {
-        await Talo.GameConfig.Get();
-    }
+	async void GetConfig()
+	{
+		await Talo.GameConfig.Get();
+	}
 }
 ```

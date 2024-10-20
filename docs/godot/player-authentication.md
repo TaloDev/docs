@@ -23,11 +23,11 @@ If you want the player to be able to verify their logins via email (two factor a
 
 var res = await Talo.player_auth.register(username.text, password.text, email.text, enable_verification.button_pressed)
 if res != OK:
-  match Talo.player_auth.last_error.get_code():
-    TaloAuthError.ErrorCode.IDENTIFIER_TAKEN:
-      validation_label.text = "Username is already taken"
-    _:
-      validation_label.text = Talo.player_auth.last_error.get_string()
+	match Talo.player_auth.last_error.get_code():
+		TaloAuthError.ErrorCode.IDENTIFIER_TAKEN:
+			validation_label.text = "Username is already taken"
+		_:
+			validation_label.text = Talo.player_auth.last_error.get_string()
 ```
 
 Once a player is registered, a session will automatically be created for them and they will be logged in.
@@ -49,14 +49,14 @@ signal verification_required
 
 var res = await Talo.player_auth.login(username.text, password.text)
 if res[0] != OK:
-  match Talo.player_auth.last_error.get_code():
-    TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
-      validation_label.text = "Username or password is incorrect"
-    _:
-      validation_label.text = Talo.player_auth.last_error.get_string()
+	match Talo.player_auth.last_error.get_code():
+		TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
+			validation_label.text = "Username or password is incorrect"
+		_:
+			validation_label.text = Talo.player_auth.last_error.get_string()
 else:
-  if res[1]:
-    verification_required.emit()
+	if res[1]:
+		verification_required.emit()
 ```
 
 ## Verifying logins
@@ -71,11 +71,11 @@ If you need to verify a player's login, you need to call `Talo.player_auth.verif
 
 var res = await Talo.player_auth.verify(code.text)
 if res != OK:
-  match Talo.player_auth.last_error.get_code():
-    TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
-      validation_label.text = "Verification code is incorrect"
-    _:
-      validation_label.text = Talo.player_auth.last_error.get_string()
+	match Talo.player_auth.last_error.get_code():
+		TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
+			validation_label.text = "Verification code is incorrect"
+		_:
+			validation_label.text = Talo.player_auth.last_error.get_string()
 ```
 
 ## Changing a player's password
@@ -93,15 +93,15 @@ signal password_change_success
 
 var res = await Talo.player_auth.change_password(current_password.text, new_password.text)
 if res != OK:
-  match Talo.player_auth.last_error.get_code():
-    TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
-      validation_label.text = "Current password is incorrect"
-    TaloAuthError.ErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD:
-      validation_label.text = "New password must be different from the current password"
-    _:
-      validation_label.text = Talo.player_auth.last_error.get_string()    
+	match Talo.player_auth.last_error.get_code():
+		TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
+			validation_label.text = "Current password is incorrect"
+		TaloAuthError.ErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD:
+			validation_label.text = "New password must be different from the current password"
+		_:
+			validation_label.text = Talo.player_auth.last_error.get_string()    
 else:
-  password_change_success.emit()
+	password_change_success.emit()
 ```
 
 ## Changing a player's email
@@ -120,7 +120,7 @@ signal forgot_password_success
 ...
 
 if await Talo.player_auth.forgot_password(email.text) == OK:
-  forgot_password_success.emit()
+	forgot_password_success.emit()
 ```
 
 If a player with the provided email exists, they'll receive a code that they'll use to set a new password.
@@ -138,13 +138,13 @@ signal password_reset_success
 
 var res = await Talo.player_auth.reset_password(code.text, new_password.text)
 if res != OK:
-  match Talo.player_auth.last_error.get_code():
-    TaloAuthError.ErrorCode.PASSWORD_RESET_CODE_INVALID:
-      validation_label.text = "Reset code is invalid"
-    _:
-      validation_label.text = Talo.player_auth.last_error.get_string()
+	match Talo.player_auth.last_error.get_code():
+		TaloAuthError.ErrorCode.PASSWORD_RESET_CODE_INVALID:
+			validation_label.text = "Reset code is invalid"
+		_:
+			validation_label.text = Talo.player_auth.last_error.get_string()
 else:
-  password_reset_success.emit()
+	password_reset_success.emit()
 ```
 
 ## Toggling verification

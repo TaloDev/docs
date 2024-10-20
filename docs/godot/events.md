@@ -16,11 +16,11 @@ extends Button
 var level = 1
 
 func _on_pressed() -> void:
-  level += 1
+	level += 1
 
-  Talo.events.track("Level up", {
-    "New level": level
-  })
+	Talo.events.track("Level up", {
+		"New level": level
+	})
 ```
 
 ## Flushing

@@ -16,13 +16,13 @@ To list all the available categories for your game, use the Feedback API `get_ca
 extends Button
 
 func _on_pressed() -> void:
-  var categories = await Talo.feedback.get_categories()
+	var categories = await Talo.feedback.get_categories()
 
-  if categories.size() == 0:
-    print("No categories found. Create some in the Talo dashboard!")
-  else:
-    var mapped = categories.map(func (c): return c.internal_name)
-    print("Category internal names: " + ", ".join(mapped)) # prints: "bugs, gameplay-feedback, terrain-issues"
+  	if categories.size() == 0:
+    	print("No categories found. Create some in the Talo dashboard!")
+	else:
+		var mapped = categories.map(func (c): return c.internal_name)
+		print("Category internal names: " + ", ".join(mapped)) # prints: "bugs, gameplay-feedback, terrain-issues"
 ```
 
 ## Sending feedback
@@ -36,6 +36,6 @@ extends Button
 @export var feedback_comment: String
 
 func _on_pressed() -> void:
-  await Talo.feedback.send(internal_name, feedback_comment)
-  print("Feedback sent for %s: %s" % [internal_name, feedback_comment])
+	await Talo.feedback.send(internal_name, feedback_comment)
+	print("Feedback sent for %s: %s" % [internal_name, feedback_comment])
 ```

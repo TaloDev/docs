@@ -18,12 +18,12 @@ extends Button
 @export var leaderboard_name: String
 
 func _on_pressed() -> void:
-  var res = await Talo.leaderboards.get_entries(leaderboard_name, 0)
-  var entries = res[0]
-  var count = res[1]
-  var is_last_page = res[2]
+	var res = await Talo.leaderboards.get_entries(leaderboard_name, 0)
+	var entries = res[0]
+	var count = res[1]
+	var is_last_page = res[2]
 
-  print("%s entries, is last page: %s" % [count, is_last_page])
+	print("%s entries, is last page: %s" % [count, is_last_page])
 ```
 
 ### Getting entries for the current player
@@ -40,10 +40,10 @@ extends Button
 @export var leaderboard_name: String
 
 func _on_pressed() -> void:
-  var score = RandomNumberGenerator.new().randi_range(1, 50)
-  var res = await Talo.leaderboards.add_entry(leaderboard_name, score)
+	var score = RandomNumberGenerator.new().randi_range(1, 50)
+	var res = await Talo.leaderboards.add_entry(leaderboard_name, score)
 
-  print("Added score: %s, new high score: %s" % [score, res[1]])
+	print("Added score: %s, new high score: %s" % [score, res[1]])
 ```
 
 This function returns a tuple of the entry and whether it was updated.
@@ -64,30 +64,30 @@ Along with a score, you can also send a dictionary of `props` with an entry. The
 
 ```gdscript
 func _on_submit_pressed() -> void:
-  await Talo.players.identify("username", username.text)
-  var score = RandomNumberGenerator.new().randi_range(0, 100)
-  var team = "Blue" if RandomNumberGenerator.new().randi_range(0, 1) == 0 else "Red"
+	await Talo.players.identify("username", username.text)
+	var score = RandomNumberGenerator.new().randi_range(0, 100)
+	var team = "Blue" if RandomNumberGenerator.new().randi_range(0, 1) == 0 else "Red"
 
-  var res = await Talo.leaderboards.add_entry(leaderboard_internal_name, score, { team = team })
-  info_label.text = "You scored %s points for the %s team!" % [score, team]
+	var res = await Talo.leaderboards.add_entry(leaderboard_internal_name, score, { team = team })
+	info_label.text = "You scored %s points for the %s team!" % [score, team]
 
-  _build_entries()
+	_build_entries()
 ```
 
 You could then have a function that populates the leaderboard and checks if a team filter is active:
 
 ```gdscript
 func _build_entries() -> void:
-  for child in entries_container.get_children():
-    child.queue_free()
+	for child in entries_container.get_children():
+		child.queue_free()
 
-  var entries = Talo.leaderboards.get_cached_entries(leaderboard_internal_name)
-  if _filter != "All": # e.g. "Blue" or "Red"
-    entries = entries.filter(func (entry: TaloLeaderboardEntry): return entry.get_prop("team", "") == _filter)
+	var entries = Talo.leaderboards.get_cached_entries(leaderboard_internal_name)
+	if _filter != "All": # e.g. "Blue" or "Red"
+		entries = entries.filter(func (entry: TaloLeaderboardEntry): return entry.get_prop("team", "") == _filter)
 
-  for entry in entries:
-    entry.position = entries.find(entry)
-    _create_entry(entry)
+	for entry in entries:
+		entry.position = entries.find(entry)
+		_create_entry(entry)
 ```
 
 The code above is available in the leaderboards sample included with the Talo Godot plugin.

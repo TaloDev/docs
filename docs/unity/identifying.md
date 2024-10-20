@@ -20,24 +20,24 @@ using TaloGameServices;
 
 public class IdentifyPlayer: MonoBehaviour
 {
-    public string service = 'steam', identifier = '123456';
+	public string service = 'steam', identifier = '123456';
 
-    public void OnButtonClick()
-    {
-        Identify();
-    }
+	public void OnButtonClick()
+	{
+		Identify();
+	}
 
-    private async void Identify()
-    {
-        try
-        {
-            await Talo.Players.Identify(service, identifier);
-        }
-        catch (Exeception err)
-        {
-            Debug.LogError(err.Message);
-        }
-    }
+	private async void Identify()
+	{
+		try
+		{
+			await Talo.Players.Identify(service, identifier);
+		}
+		catch (Exeception err)
+		{
+			Debug.LogError(err.Message);
+		}
+	}
 }
 ```
 
@@ -48,7 +48,7 @@ After a successful identification, the `Talo.Players.OnIdentified()` event will 
 ```csharp
 Talo.Players.OnIdentified += async (player) =>
 {
-    await Talo.Saves.GetSaves();
+	await Talo.Saves.GetSaves();
 };
 ```
 
@@ -59,16 +59,16 @@ Sometimes you might need to check if a player has been identified before. You ca
 ```csharp
 public void DoStuffIfIdentified()
 {
-    try
-    {
-      Talo.IdentityCheck();
-    }
-    catch (Exception err)
-    {
-        return;
-    }
+	try
+	{
+	  Talo.IdentityCheck();
+	}
+	catch (Exception err)
+	{
+		return;
+	}
 
-    // do stuff
+	// do stuff
 }
 ```
 
@@ -90,25 +90,25 @@ string identity = "talo";
 
 void SignInWithSteam()
 {
-    // It's not necessary to add event handlers if they are 
-    // already hooked up.
-    // Callback.Create return value must be assigned to a 
-    // member variable to prevent the GC from cleaning it up.
-    // Create the callback to receive events when the session ticket
-    // is ready to use in the web API.
-    // See GetAuthSessionTicket document for details.
-    m_AuthTicketForWebApiResponseCallback = Callback<GetTicketForWebApiResponse_t>.Create(OnAuthCallback);
+	// It's not necessary to add event handlers if they are 
+	// already hooked up.
+	// Callback.Create return value must be assigned to a 
+	// member variable to prevent the GC from cleaning it up.
+	// Create the callback to receive events when the session ticket
+	// is ready to use in the web API.
+	// See GetAuthSessionTicket document for details.
+	m_AuthTicketForWebApiResponseCallback = Callback<GetTicketForWebApiResponse_t>.Create(OnAuthCallback);
 
-    SteamUser.GetAuthTicketForWebApi(identity);
+	SteamUser.GetAuthTicketForWebApi(identity);
 }
 
 void OnAuthCallback(GetTicketForWebApiResponse_t callback)
 {
-    m_SessionTicket = BitConverter.ToString(callback.m_rgubTicket).Replace("-", string.Empty);
-    m_AuthTicketForWebApiResponseCallback.Dispose();
-    m_AuthTicketForWebApiResponseCallback = null;
+	m_SessionTicket = BitConverter.ToString(callback.m_rgubTicket).Replace("-", string.Empty);
+	m_AuthTicketForWebApiResponseCallback.Dispose();
+	m_AuthTicketForWebApiResponseCallback = null;
 
-    Talo.Players.IdentifySteam(m_SessionTicket, identity);
+	Talo.Players.IdentifySteam(m_SessionTicket, identity);
 }
 ```
 
