@@ -29,6 +29,10 @@ func _on_pressed():
 	Talo.players.identify(service, identifier)
 ```
 
+### Generating a semi-unique identifier
+
+You can easily create an identifier with `Talo.players.generate_identifier()`. This is useful for temporarily identifying players before you who they are and then merging them with an identified player later on.
+
 ### The identified signal
 
 After a successful identification, the `Talo.players.identified` signal will fire, returning the identified player. This allows you to, for example, put the player's name on a label:
