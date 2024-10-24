@@ -142,8 +142,16 @@ module.exports = async function configCreatorAsync() {
             title: 'Contact us',
             items: [
               {
-                label: 'hello@trytalo.com',
+                label: 'Discord',
+                href: 'https://discord.gg/2RWwxXVY3v'
+              },
+              {
+                label: 'Email',
                 href: 'mailto:hello@trytalo.com'
+              },
+              {
+                label: 'Twitter',
+                href: 'https://twitter.com/trytalo'
               }
             ]
           }
