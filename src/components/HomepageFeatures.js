@@ -27,7 +27,7 @@ const FeatureList = [
     link: '/docs/unity/install'
   },
   {
-    title: 'REST reference',
+    title: 'API reference',
     Svg: require('../../static/img/tabler-icon-world.svg').default,
     description: (
       <>

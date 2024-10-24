@@ -60,19 +60,60 @@ module.exports = async function configCreatorAsync() {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Features',
             items: [
               {
-                label: 'Unity package',
-                to: '/docs/unity/install'
+                label: 'Player management',
+                to: 'https://trytalo.com/players'
               },
+              {
+                label: 'Event tracking',
+                to: 'https://trytalo.com/events'
+              },
+              {
+                label: 'Leaderboards',
+                to: 'https://trytalo.com/leaderboards'
+              },
+              {
+                label: 'Game saves',
+                to: 'https://trytalo.com/saves'
+              },
+              {
+                label: 'Game stats',
+                to: 'https://trytalo.com/stats'
+              },
+              {
+                label: 'Game feedback',
+                to: 'https://trytalo.com/feedback'
+              },
+              {
+                label: 'Live config',
+                to: 'https://trytalo.com/live-config'
+              }
+            ]
+          },
+          {
+            title: 'Docs',
+            items: [
               {
                 label: 'Godot plugin',
                 to: '/docs/godot/install'
               },
               {
+                label: 'Unity package',
+                to: '/docs/unity/install'
+              },
+              {
+                label: 'API reference',
+                to: '/docs/http/authentication'
+              },
+              {
                 label: 'Self-hosting',
                 to: '/docs/selfhosting/overview'
+              },
+              {
+                label: 'Steamworks integration',
+                to: '/docs/integrations/steamworks'
               }
             ]
           },
