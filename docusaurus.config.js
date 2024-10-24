@@ -129,12 +129,12 @@ module.exports = async function configCreatorAsync() {
                 href: 'https://github.com/TaloDev/frontend'
               },
               {
-                label: 'Unity package',
-                href: 'https://github.com/TaloDev/unity'
-              },
-              {
                 label: 'Godot plugin',
                 href: 'https://github.com/TaloDev/godot'
+              },
+              {
+                label: 'Unity package',
+                href: 'https://github.com/TaloDev/unity'
               }
             ]
           },
