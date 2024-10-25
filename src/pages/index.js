@@ -9,9 +9,9 @@ function HomepageHeader() {
   return (
     <header className={styles.heroBanner}>
       <div className='container'>
-        <h1 className='hero__title'>{siteConfig.title}</h1>
+        <h1 className='hero__title'>Talo Game Services</h1>
         <p>An open-source backend for your games.</p>
-        <p>Talo lets you understand your players and cut out the guess-work.</p>
+        <p>Talo is an open-source backend for your game. You can integrate leaderboards, stats, event tracking, Steamworks and more with our Godot plugin or Unity package.</p>
       </div>
     </header>
   )
@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <Layout
       title='Talo Game Services'
-      description='An open-source backend for your games'>
+      description='Talo is an open-source backend for your game. You can integrate leaderboards, stats, event tracking, Steamworks and more with our Godot plugin or Unity package.'>
       <HomepageHeader />
       <main>
         <HomepageFeatures />

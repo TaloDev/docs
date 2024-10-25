@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: The Talo Unity package allows you to identify multiple aliases, authenticate and sync your players with Steamworks.
 ---
 
 # Identifying a player

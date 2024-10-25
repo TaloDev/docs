@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: The Talo Godot plugin allows you to identify multiple aliases, authenticate and sync your players with Steamworks.
 ---
 
 # Identifying a player

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: Talo's Godot plugin helps you build games faster - set up save files, leaderboards, stat tracking and more in minutes.
 ---
 
 # Installation

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: Talo's Steamworks integration can sync your players, stats and leaderboards. You can authenticate players and verify their ownership of your game.
 ---
 
 # Steamworks

@@ -14,7 +14,7 @@ module.exports = async function configCreatorAsync() {
   }
 
   return {
-    title: 'Talo',
+    title: 'Talo - the open source game backend',
     url: 'https://docs.trytalo.com',
     baseUrl: '/',
     onBrokenLinks: 'throw',

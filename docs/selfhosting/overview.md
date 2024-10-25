@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
-title: Overview
+title: Talo, an open-source and self-hostable game backend
+description: Talo is a self-hostable backend for your game. Talo makes it easy to stay in control of your data and infrastructure.
 ---
 
 # Self-hosting
