@@ -2,26 +2,33 @@ import ServiceDocumentation from '@site/src/components/documentation/ServiceDocu
 
 # Game save API
 
+Talo's save system allows you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored automatically from one of your player's saves.
+
+Learn more about game saves [here](https://trytalo.com/saves?utm_source=docs&utm_medium=api-docs).
+
 ## Endpoints
 
-<ServiceDocumentation service='GameSaveAPIService' />
+<ServiceDocumentation
+  service='GameSaveAPIService'
+  metaDescription="Talo's Game Save service lets you save and load game data. Saves work both online and offline and will automatically sync when the player is back online."
+/>
 
 ## Types
 
 ### SaveContent
 
-```
-SaveContent {
+```ts
+type SaveContent = {
   objects: SavedObject[]
 }
 
-SavedObject {
+type SavedObject = {
   id: UUID
   name: string              // e.g. Unity GameObject hierarchy name
   data: SavedObjectData[]
 }
 
-SavedObjectData {
+type SavedObjectData = {
   key: string
   value: string
   type: string              // class to cast value to on-load, e.g. System.Boolean in C#

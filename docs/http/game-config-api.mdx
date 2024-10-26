@@ -2,7 +2,16 @@ import ServiceDocumentation from '@site/src/components/documentation/ServiceDocu
 
 # Game config API
 
+Talo's live config allows you to configure your game directly in the dashboard. Your game can then fetch this config on-demand, allowing your game and players to have the latest information without downloading a new update.
+
+Live config runs on a collection of key-value pairs. For example, you could have a key of "maxLevel" which has value of "10". While running a beta test you can incrementally increase this maximum level to allow access to more content at your own pace.
+
+Learn more about live config [here](https://trytalo.com/live-config?utm_source=docs&utm_medium=api-docs).
+
 ## Endpoints
 
-<ServiceDocumentation service='GameConfigAPIService' />
+<ServiceDocumentation
+  service='GameConfigAPIService'
+  metaDescription="Talo's live config lets you update your game's easily configure events, tests and updates to your game directly from the web."
+/>
 
