@@ -4,8 +4,9 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import styles from './ServiceDocumentation.module.css'
 import clsx from 'clsx'
 import Sample from './Sample'
+import Head from '@docusaurus/Head'
 
-export default function ServiceDocumentation({ service }) {
+export default function ServiceDocumentation({ service, metaDescription }) {
   const { siteConfig } = useDocusaurusContext()
   const { routes } = useServiceDocs(service)
 
@@ -49,6 +50,11 @@ export default function ServiceDocumentation({ service }) {
 
   return (
     <>
+      <Head>
+        <meta name="description" content={metaDescription} />
+        <meta name="og:description" content={metaDescription} />
+      </Head>
+
       <hr />
 
       {routes.sort((a, b) => getSortOrder(a.method) - getSortOrder(b.method)).map((route, idx) => {

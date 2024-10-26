@@ -64,31 +64,31 @@ module.exports = async function configCreatorAsync() {
             items: [
               {
                 label: 'Player management',
-                to: 'https://trytalo.com/players'
+                to: 'https://trytalo.com/players?utm_source=docs&utm_medium=footer'
               },
               {
                 label: 'Event tracking',
-                to: 'https://trytalo.com/events'
+                to: 'https://trytalo.com/events?utm_source=docs&utm_medium=footer'
               },
               {
                 label: 'Leaderboards',
-                to: 'https://trytalo.com/leaderboards'
+                to: 'https://trytalo.com/leaderboards?utm_source=docs&utm_medium=footer'
               },
               {
                 label: 'Game saves',
-                to: 'https://trytalo.com/saves'
+                to: 'https://trytalo.com/saves?utm_source=docs&utm_medium=footer'
               },
               {
                 label: 'Game stats',
-                to: 'https://trytalo.com/stats'
+                to: 'https://trytalo.com/stats?utm_source=docs&utm_medium=footer'
               },
               {
                 label: 'Game feedback',
-                to: 'https://trytalo.com/feedback'
+                to: 'https://trytalo.com/feedback?utm_source=docs&utm_medium=footer'
               },
               {
                 label: 'Live config',
-                to: 'https://trytalo.com/live-config'
+                to: 'https://trytalo.com/live-config?utm_source=docs&utm_medium=footer'
               }
             ]
           },
@@ -151,12 +151,16 @@ module.exports = async function configCreatorAsync() {
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/trytalo'
+                href: 'https://x.com/trytalo'
+              },
+              {
+                label: 'Bluesky',
+                href: 'https://bsky.app/profile/trytalo.bsky.social'
               }
             ]
           }
         ],
-        copyright: `<br/>Copyright © ${new Date().getFullYear()} Try Talo Limited. Built with Docusaurus.`
+        copyright: `<br/>Copyright © ${new Date().getFullYear()} Talo Platform Ltd. Built with Docusaurus.`
       },
       prism: {
         theme: prisma.themes.github,
