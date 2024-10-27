@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+description: Players can have arbitrary properties that are persisted across all of their aliases and across sessions. Props can be viewed and modified from the dashboard.
 ---
 
 # Player props

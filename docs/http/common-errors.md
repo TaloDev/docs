@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: Talo is an open source game backend with an API, allowing you to easily create players, leaderboard entries and events for your game.
 ---
 
 # Common errors

@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: Talo player authentication for Unity games manages logging players in, registration and verification without needing to build any of your own infrastructure.
 ---
 
 # Player authentication

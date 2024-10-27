@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+description: Talo is a self-hostable game backend. Your players, data and analytics belong to you and Talo can be easily customised to suit your needs.
 ---
 
 # Configuration

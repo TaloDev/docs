@@ -1,5 +1,6 @@
 ---
 sidebar_position: 9
+description: Talo Groups are filters on your player-base that create distinct segments between players. Groups are built in the dashboard and visible in your Unity game.
 ---
 
 # Groups

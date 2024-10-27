@@ -1,5 +1,6 @@
 ---
 sidebar_position: 12
+description: Talo Feedback allows you to receive feedback directly from players in your Godot game. Feedback can be categorised, analysed and filtered to improve your game.
 ---
 
 # Feedback

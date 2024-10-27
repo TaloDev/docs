@@ -1,5 +1,6 @@
 ---
 sidebar_position: 12
+description: Talo Continuity is a resilience layer to keep your Unity game in sync if Talo can't be reached and when players are offline.
 ---
 
 # Continuity

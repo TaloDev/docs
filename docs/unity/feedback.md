@@ -1,5 +1,6 @@
 ---
 sidebar_position: 11
+description: Talo Feedback allows you to receive feedback directly from players in your Unity game. Feedback can be categorised, analysed and filtered to improve your game.
 ---
 
 # Feedback

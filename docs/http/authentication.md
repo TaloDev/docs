@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: Talo is an open source game backend with an API to easily authenticate players and add interactive elements to your game.
 ---
 
 # Authentication

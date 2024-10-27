@@ -1,5 +1,6 @@
 ---
 sidebar_position: 13
+description: Talo Continuity is a resilience layer to keep your Godot game in sync if Talo can't be reached and when players are offline.
 ---
 
 # Continuity
