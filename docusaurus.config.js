@@ -143,7 +143,7 @@ module.exports = async function configCreatorAsync() {
             items: [
               {
                 label: 'Discord',
-                href: 'https://discord.gg/2RWwxXVY3v'
+                href: 'https://trytalo.com/discord'
               },
               {
                 label: 'Email',
