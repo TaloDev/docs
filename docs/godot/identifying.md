@@ -69,7 +69,7 @@ Merge will take all the props, aliases and associated data (events, leaderboard 
 
 ## Steamworks integration
 
-If you have the Steamworks integration enabled, Talo can sync a Steam player using the Steam User Auth API ([as described here](/docs/integrations/steamworks#Authentication)). You can do this via the `Talo.players.identify_steam` function. Here's an example using [GodotSteam](http://godotsteam.com):
+If you have the Steamworks integration enabled, Talo can sync a Steam player using the Steam User Auth API ([as described here](/docs/integrations/steamworks#authentication)). You can do this via the `Talo.players.identify_steam` function. Here's an example using [GodotSteam](http://godotsteam.com):
 
 ```gdscript
 extends Node
