@@ -155,7 +155,7 @@ module.exports = async function configCreatorAsync() {
               },
               {
                 label: 'Bluesky',
-                href: 'https://bsky.app/profile/trytalo.bsky.social'
+                href: 'https://bsky.app/profile/trytalo.com'
               }
             ]
           }
