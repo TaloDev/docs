@@ -14,6 +14,10 @@ You should identify a player after they have authenticated and before you attemp
 
 ## Identifying
 
+:::caution
+If you are using **Talo Player Authentication**, you should never need to manually identify a player. Visit the [Player authentication docs](/docs/unity/player-authentication) to learn more about identifying players with authentication enabled.
+:::
+
 You can identify a player using `Talo.Players.Identify()`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground):
 
 ```csharp title="IdentifyPlayer.cs"
