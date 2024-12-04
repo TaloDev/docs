@@ -8,14 +8,14 @@ description: The Talo Unity package allows you to identify multiple aliases, aut
 ## Aliases
 
 Players within your Talo account can have multiple aliases.
-For example, a player could have a Steam login and an Epic login but both would be tied to the same player and they could use both to login.
+For example, a player could have Steam and Epic Games login credentials but both would be tied to them, allowing the player to use either to log in.
 
 You should identify a player after they have authenticated and before you attempt to track any events, add leaderboard entries or do anything related directly to the player.
 
 ## Identifying
 
 :::caution
-If you are using **Talo Player Authentication**, you should never need to manually identify a player. Visit the [Player authentication docs](/docs/unity/player-authentication) to learn more about identifying players with authentication enabled.
+If you are using **Talo Player Authentication**, you should never have to identify a player manually. Visit the [Player authentication docs](/docs/unity/player-authentication) to learn more about identifying players with authentication enabled.
 :::
 
 You can identify a player using `Talo.Players.Identify()`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground):
@@ -79,10 +79,11 @@ public void DoStuffIfIdentified()
 
 ## Merging players
 
-As described above, sometimes a player may have one or more aliases and there are times where you know for certain some aliases belong to the same players.
-You can merge players using `Talo.Players.Merge()` by proiding the IDs of both players.
+As described above, sometimes a player may have one or more aliases and there are times where you know for certain some aliases belong to the same player.
+.
+You can merge players using `Talo.Players.Merge()` by providing the IDs of both players.
 
-Merge will take all the props, aliases and associated data (events, leaderboard entries, saves, etc.) from Player 2 and merge them into Player 1. This means that duplicate props in Player 1 will be replaced by the ones from Player 2.
+The merge process takes all the props, aliases, and associated data (events, leaderboard entries, saves, etc.) from Player 2 and merge them into Player 1. This means that duplicate props in Player 1 will be replaced by the ones from Player 2.
 
 ## Steamworks integration
 
@@ -95,9 +96,9 @@ string identity = "talo";
 
 void SignInWithSteam()
 {
-	// It's not necessary to add event handlers if they are 
+	// It's not necessary to add event handlers if they are
 	// already hooked up.
-	// Callback.Create return value must be assigned to a 
+	// Callback.Create return value must be assigned to a
 	// member variable to prevent the GC from cleaning it up.
 	// Create the callback to receive events when the session ticket
 	// is ready to use in the web API.
@@ -117,4 +118,4 @@ void OnAuthCallback(GetTicketForWebApiResponse_t callback)
 }
 ```
 
-The `identity` parameter is optional but strongly recommended. It's used to identify the service that is verifying the ticket. It can be anything you like but must be the same as the `identity` passed to Steam when fetching the ticket.
+The `identity` parameter is optional but strongly recommended as it ensures proper identification of the service verifying the ticket. It can be anything you like but must be the same as the `identity` passed to Steam when fetching the ticket.

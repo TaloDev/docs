@@ -21,6 +21,7 @@ As with anything on the client-side, despite being built with security in mind, 
 
 ## Testing Continuity
 
-Continuity happens in the background and there are no direct APIs exposed for it. You can simulate being offline and toggle Continuity in the Talo Playground. Note: toggling these options will not update your `settings.cfg`.
+Continuity happens in the background and there are no direct APIs exposed for it. You can simulate being offline and toggle Continuity in the Talo Playground scene.
+Note: toggling these options will not update your `settings.cfg`.
 
 If you have [request logging enabled](install#create-and-update-settings), the replayed requests will be highlighted for you in the console.
