@@ -6,6 +6,10 @@ sidebar_position: 4
 
 Events let you better understand what players are doing and can be useful for putting together a timeline of events for debugging.
 
+:::tip
+Check out this blog post on [how to track events in Unity](https://trytalo.com/blog/event-tracking-unity?utm_source=docs&utm_medium=tip) for a detailed walkthrough
+:::
+
 ## Tracking
 
 To track an event, simply call `Talo.Events.Track()` with an event name like "Level up". You can optionally attach properties to events by passing any number of extra `(string, string)` tuples to the function call:

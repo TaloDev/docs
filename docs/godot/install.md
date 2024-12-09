@@ -7,6 +7,10 @@ description: Talo's Godot plugin helps you build games faster - set up save file
 
 ## Import into Godot
 
+:::tip
+Check out this blog post on [installing the Talo Godot plugin](https://trytalo.com/blog/godot-plugin-announcement?utm_source=docs&utm_medium=tip) for a detailed walkthrough
+:::
+
 ### Using the Asset Library
 
 The Godot Asset Library is the recommended way to download Godot plugins. Open the `AssetLib` tab in Godot and search for "Talo". Click into the asset and click `Download`. Here's a [direct link](https://godotengine.org/asset-library/asset/2936) to the asset.

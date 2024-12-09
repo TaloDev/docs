@@ -11,6 +11,10 @@ Continuity runs behind the scenes and catches server errors (like 502 Bad Gatewa
 
 Failed requests are cached and replayed when network connectivity is re-established. Internally, a health check endpoint is polled to assess Talo's availability.
 
+:::tip
+Check out this [blog post on Continuity](https://trytalo.com/blog/continuity-announcement?utm_source=docs&utm_medium=tip) for more details
+:::
+
 ## X-Talo-Continuity-Timestamp
 
 Replayed requests send a special header indicating the original time when the request was made. Talo uses this header to set the `createdAt` of various entities like feedback, leaderboard entries and player stats.

@@ -10,6 +10,10 @@ Talo Saves allow you to persist your game's state across multiple sessions. Each
 You can visualise players' save files in the Talo dashboard. Just go to the player's profile, click `Saves` and choose the save you want to view.
 :::
 
+:::tip
+Check out this blog post on [how to save and load data in Godot](https://trytalo.com/blog/game-saves-godot?utm_source=docs&utm_medium=tip) for a detailed walkthrough
+:::
+
 ## Loading saves
 
 You can load saves using `Talo.saves.get_saves()`. Once your saves have been fetched, the `Talo.saves.saves_loaded` signal is fired.

@@ -22,3 +22,7 @@ The repository comes with two Docker Compose examples:
 2. `nginx` - this example uses nginx as a web server, enables HTTPS and automatically configures domain names for your backend and frontend (e.g. https://dashboard.example.com and https://api.example.com) using reverse proxies. We've used [docker-nginx-certbot](https://github.com/JonasAlfredsson/docker-nginx-certbot) for automating and enabling SSL so make sure to have a look at the image's documentation. You should add an A record pointing to your server for each domain configured before starting the containers.
 
 2. `caddy` (recommended) - this example uses [caddy](https://caddyserver.com) as a web server, enables HTTPS and automatically configures domain names for your backend and frontend (e.g. https://dashboard.example.com and https://api.example.com) using reverse proxies. You should add an A record pointing to your server for each domain configured before starting the containers.
+
+:::tip
+Check out this blog post on [the caddy template](https://trytalo.com/blog/caddy-selfhosting?utm_source=docs&utm_medium=tip) for more details
+:::

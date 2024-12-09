@@ -6,6 +6,10 @@ sidebar_position: 10
 
 Live config lets you push state directly to your game from [the Talo dashboard](https://dashboard.trytalo.com) without needing to release an update.
 
+:::tip
+Check out this blog post on [how to release Unity game updates without new builds](https://trytalo.com/blog/live-config-unity?utm_source=docs&utm_medium=tip) for a detailed walkthrough
+:::
+
 ## Getting the live config
 
 The live config needs to be fetched before it can be queried. To do this call `Talo.GameConfig.Get()`.
