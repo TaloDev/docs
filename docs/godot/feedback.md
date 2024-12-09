@@ -40,3 +40,7 @@ func _on_pressed() -> void:
 	await Talo.feedback.send(internal_name, feedback_comment)
 	print("Feedback sent for %s: %s" % [internal_name, feedback_comment])
 ```
+
+:::tip
+If you'd like to attach additional metadata to the feedback (player props, game state, etc.), you could always append `feedback_comment` with said metadata, before giving it to the `send()` function.
+:::
