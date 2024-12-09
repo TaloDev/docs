@@ -1,0 +1,25 @@
+import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+
+# Game channel API
+
+Channels are a way to send messages between players in your game. You can use channels to create chat rooms, send notifications or create any other kind of messaging system you can think of.
+
+Learn more about channels [here](https://trytalo.com/channels?utm_source=docs&utm_medium=api-docs).
+
+## Endpoints
+
+<ServiceDocumentation
+  service='GameChannelAPIService'
+  metaDescription="Talo's Game Channel service lets you create channels for your game. Channels can be used for chat rooms, notifications and more."
+/>
+
+## Types
+
+### Prop
+
+```ts
+type Prop = {
+  key: string,
+  value: string
+}
+```
