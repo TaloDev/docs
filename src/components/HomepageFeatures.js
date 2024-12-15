@@ -37,6 +37,16 @@ const FeatureList = [
     link: '/docs/http/authentication'
   },
   {
+    title: 'Socket reference',
+    Svg: require('../../static/img/tabler-icon-topology-bus.svg').default,
+    description: (
+      <>
+        A reference guide for the available Talo socket message types and payloads.
+      </>
+    ),
+    link: '/docs/sockets/intro'
+  },
+  {
     title: 'Self-hosting',
     Svg: require('../../static/img/tabler-icon-server.svg').default,
     description: (

@@ -39,6 +39,7 @@ The first time you run your game with the Talo plugin enabled, it'll create a `s
 ```gdscript title="addons/talo/settings.cfg"
 access_key=""
 api_url="https://api.trytalo.com"
+socket_url="wss://api.trytalo.com"
 ```
 
 You can also add the following section for logging:

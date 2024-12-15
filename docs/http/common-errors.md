@@ -9,7 +9,7 @@ description: Talo is an open source game backend with an API, allowing you to ea
 
 `401 Unauthorized`
 
-The `Authorization` header is required, with its value set to `Bearer your-token`.
+The `Authorization` header is required, with its value set to `Bearer your-access-key-token`.
 
 ## Missing scopes
 
