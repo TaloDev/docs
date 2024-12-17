@@ -19,6 +19,8 @@ Talo will also add helpful `props` to your player such as app ownership details 
 
 More info is available in the [Godot plugin docs](/docs/godot/identifying#steamworks-integration) and [Unity package docs](/docs/unity/identifying#steamworks-integration).
 
+<hr/>
+
 ## Leaderboards
 
 Talo syncs leaderboards by mapping between the ID of the leaderboard in Talo and in Steamworks. If we cannot find a mapping, we will fall back to mapping between the Talo `Internal name` and the Steamworks `Name` (not the `Community name`). To ensure syncing works correctly, you may want to avoid manually updating the `Name` inside Steamworks.
