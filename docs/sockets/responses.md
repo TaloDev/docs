@@ -77,3 +77,64 @@ When a player leaves a channel, all channel members will be notified.
 | Authentication required | Scopes                  		    |
 | ----------------------- | ------------------------------- |
 | Yes                     | `read:gameChannels`            	|
+
+## Types
+
+### GameChannel
+
+```ts
+type GameChannel = {
+  id: number
+  name: string
+  owner: PlayerAlias
+  totalMessages: number
+  memberCount: number
+  props: Prop[]
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+### PlayerAlias
+
+```ts
+type PlayerAlias = {
+  id: number
+  service: string
+  identifier: string
+  player: Player
+  lastSeenAt: Date
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+### Player
+
+```ts
+type Player = {
+  id: number
+  props: Prop[]
+  devBuild: boolean
+  lastSeenAt: Date
+  createdAt: Date
+  groups: {
+    id: number
+    name: string
+  }[]
+  auth?: {
+    email: string
+    verificationEnabled: boolean
+    sessionCreatedAt: Date
+  }
+}
+```
+
+### Prop
+
+```ts
+type Prop = {
+  key: string
+  value: string | null
+}
+```
