@@ -78,6 +78,42 @@ When a player leaves a channel, all channel members will be notified.
 | ----------------------- | ------------------------------- |
 | Yes                     | `read:gameChannels`            	|
 
+
+### Ownership transferred
+
+This response is sent to channel members when the owner is updated.
+
+```typescript
+{
+  "res": "v1.channels.ownership-transferred",
+  "data": {
+    "channel": GameChannel
+    "newOwner": PlayerAlias
+  }
+}
+```
+
+| Authentication required | Scopes                  		    |
+| ----------------------- | ------------------------------- |
+| Yes                     | `read:gameChannels`            	|
+
+### Channel deleted
+
+When channels are deleted, all members will be notified.
+
+```typescript
+{
+  "res": "v1.channels.deleted",
+  "data": {
+    "channel": GameChannel
+  }
+}
+```
+
+| Authentication required | Scopes                  		    |
+| ----------------------- | ------------------------------- |
+| Yes                     | `read:gameChannels`            	|
+
 ## Types
 
 ### GameChannel
