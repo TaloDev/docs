@@ -37,7 +37,11 @@ To join or leave a channel, use `Talo.channels.join()` and `Talo.channels.leave(
 
 ## Updating channels
 
-The owner of a channel can update the channel using `Talo.channels.update()`. The name and owner of the channel can be updated using this function. To transfer ownership of the channel, you must pass the ID of the player alias that will own the channel. You can also update the props of the channel: keys will be overrided with new values and keys with a value of `null` will be deleted.
+The owner of a channel can update the channel using `Talo.channels.update()`. The name and owner of the channel can be updated using this function.
+
+To transfer ownership of the channel, you should specify the ID of the player alias that will own the channel. The new owner of the channel must be a member first before ownership can be transferred.
+
+You can also update the props of the channel: keys will be overrided with new values and keys with a value of `null` will be deleted.
 
 ## Deleting channels
 
