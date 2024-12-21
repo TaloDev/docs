@@ -42,5 +42,5 @@ func _on_pressed() -> void:
 ```
 
 :::tip
-If you'd like to attach additional metadata to the feedback (player props, game state, etc.), you could always append `feedback_comment` with said metadata, before giving it to the `send()` function.
+You can attach additional metadata (player props, game state, etc.) to feedback by appending it to the `feedback_comment` String before calling `send()`.
 :::
