@@ -21,11 +21,11 @@ You'll need to restart the backend container after modifying your .env file
 | DB_NAME                  | Yes      | The name of your database                                                                                              |
 | DB_USER                  | Yes      | The user which has access to your database                                                                             |
 | DB_PASS                  | Yes      | The password for the database user                                                                                     |
-| CLICKHOUSE_HOST          | Yes      | The host name for your Clickhouse instance. If using containers, this is typically the name of your Clickhouse service |
-| CLICKHOUSE_PORT          | No       | The port your Clickhouse instance runs on, usually 8123                                                                |
-| CLICKHOUSE_DB            | Yes      | The name of your Clickhouse database                                                                                   |
-| CLICKHOUSE_USER          | Yes      | The user which has access to your Clickhouse database                                                                  |
-| CLICKHOUSE_PASSWORD      | Yes      | The password for the Clickhouse database user                                                                          |
+| CLICKHOUSE_HOST          | Yes      | The host name for your ClickHouse instance. If using containers, this is typically the name of your ClickHouse service |
+| CLICKHOUSE_PORT          | No       | The port your ClickHouse instance runs on, usually 8123                                                                |
+| CLICKHOUSE_DB            | Yes      | The name of your ClickHouse database                                                                                   |
+| CLICKHOUSE_USER          | Yes      | The user which has access to your ClickHouse database                                                                  |
+| CLICKHOUSE_PASSWORD      | Yes      | The password for the ClickHouse database user                                                                          |
 | REDIS_PASSWORD           | Yes      | The password for your Redis instance                                                                                   |
 | AUTO_CONFIRM_EMAIL       | No       | A boolean that defines whether users have their emails automatically confirmed after signing up                        |
 | FROM_EMAIL               | No       | The email address used to send emails from the backend                                                                 |
