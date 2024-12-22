@@ -64,5 +64,5 @@ public class SendFeedback : MonoBehaviour
 ```
 
 :::tip
-If you'd like to attach additional metadata to the feedback (player props, game state, etc.), you could always append `feedbackComment` with said metadata, before giving it to the `Send()` function.
+You can attach additional metadata (player props, game state, etc.) to feedback by appending it to the `feedbackComment` string before calling `Send()`.
 :::
