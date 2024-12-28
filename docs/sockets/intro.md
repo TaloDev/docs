@@ -52,7 +52,7 @@ Responses use a similar message structure, except that `req` is replaced by `res
 ## Authentication
 
 The Talo Socket provides two layers of authentication:
-1. You must provide your access key. This identifies your game and the key's scopes are used to determine whether a client should be sent a message.
+1. You must provide a [socket ticket](/docs/http/socket-ticket-api) when opening a socket connection. This identifies your game and the key's scopes are used to determine whether a client is eligible to receive specific responses.
 2. When players are identified, a `socketToken` is stored against the player alias for 1 hour. While the socket token is valid, you can use it to authenticate your player with the socket.
 
 :::info
@@ -62,6 +62,15 @@ Not all requests and responses will need a player to be identified. However, you
 :::warning
 Unlike the HTTP API, players cannot be created during identification. To successfully identify a player, their alias must already exist in Talo.
 :::
+
+## Connecting to the socket server
+
+The default socket URL is `wss://api.trytalo.com`. When opening a socket connection, you must provide a socket ticket as a query parameter. The full URL should look like this:
+```
+wss://api.trytalo.com/socket?ticket=your-ticket-here
+```
+
+Your ticket should be a valid socket ticket, i.e. it was created within the last 5 minutes. Visit the [API docs](/docs/http/socket-ticket-api) for more information on how to obtain a socket ticket.
 
 ## Error responses
 

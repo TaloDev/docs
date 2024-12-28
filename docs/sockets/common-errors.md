@@ -6,9 +6,9 @@ sidebar_position: 2
 
 ## Missing authentication
 
-`401 Unauthorized`
+A valid socket ticket is required when opening a socket connection. Learn more about how to obtain a socket ticket and connect to the socket server [here](./intro.md#connecting-to-the-socket-server).
 
-The `Authorization` header is required when establishing the socket connection (during the handshake phase), with its value set to `Bearer your-access-key-token`.
+Connections without a valid ticket will be closed immediately.
 
 ## Invalid message
 
