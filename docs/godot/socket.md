@@ -15,6 +15,10 @@ Ideally you should never need to use the socket directly because individual serv
 
 The socket connection is automatically established (this can disabled by setting `auto_connect_socket` to `false` in your config). When a player gets identified, they also get automatically identified with the socket server.
 
+## Obtaining a socket ticket
+
+To connect to the socket server, you need to obtain a socket ticket. This is done by calling `Talo.socket_tickets.create_ticket()`. Opening a socket connection using `Talo.socket.open_connection()` will automatically obtain a ticket and pass it as a query parameter to the socket URL.
+
 ## Receiving messages
 
 The `message_received` signal provides you with a [response](../sockets/responses.md) and payload. For example, if you were building a chat system, you would connect a function similar to the one below to listen for new chat messages:
@@ -38,7 +42,7 @@ Generally, sending messages is handled by functions in services like `Talo.chann
 
 The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors.md#rate-limit-exceeded). The socket will emit a `connection_closed` signal with a status code and reason.
 
-The recommended way of re-establishing a connection is calling `Talo.socket.init_connection()` and then re-identifying your player. This is the same logic that gets used internally when your game opens.
+The recommended way of re-establishing a connection is calling `Talo.socket.open_connection()` and then re-identifying your player. This is the same logic that gets used internally when your game opens.
 
 ## Closing the connection
 
