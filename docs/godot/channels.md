@@ -20,12 +20,12 @@ var page = 0
 var res = await Talo.channels.get_channels(page)
 var channels: Array[GameChannel] = res[0]
 var count: int = res[1]
-var isLastPage: bool = res[2]
+var is_last_page: bool = res[2]
 ```
 
 ## Listing subscribed channels
 
-You can use `Talo.channels.get_subscribed_channels()` to find out which channels the current player is subscribed to. This returns an array of `TaloGameChannel`.
+You can use `Talo.channels.get_subscribed_channels()` to find out which channels the current player is subscribed to. This returns an array of `TaloChannel`.
 
 ## Creating a channel
 

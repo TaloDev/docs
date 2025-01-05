@@ -36,7 +36,20 @@ func _on_message_received(res: String, data: Dictionary) -> void:
 
 ## Sending messages
 
-Generally, sending messages is handled by functions in services like `Talo.channels.send_message()` where the correct data is prepared and sent for you. You can also use the `Talo.socket.send(req, data)` function to send your own [requests](../sockets/requests.md).
+Generally, sending messages is handled by functions in services like `Talo.channels.send_message()` where the correct data is prepared and sent for you. You can also use the `Talo.socket.send(req, data)` function to send your own [requests](../sockets/requests.md):
+
+```gdscript
+func send_message(channel_id: int, message: String) -> void:
+	if Talo.identity_check() != OK:
+		return
+
+	Talo.socket.send("v1.channels.message", {
+		channel = {
+			id = channel_id
+		},
+		message = message
+	})
+```
 
 ## Handling connection closures
 
