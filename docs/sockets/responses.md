@@ -114,34 +114,33 @@ When channels are deleted, all members will be notified.
 | ----------------------- | ------------------------------- |
 | Yes                     | `read:gameChannels`            	|
 
-## Types
+## Live config
 
-### GameChannel
+### Live config updated
 
-```ts
-type GameChannel = {
-  id: number
-  name: string
-  owner: PlayerAlias
-  totalMessages: number
-  memberCount: number
-  props: Prop[]
-  createdAt: Date
-  updatedAt: Date
+This response is sent to all players when the live config is updated from the Talo dashboard.
+
+```typescript
+{
+  "res": "v1.live-config.updated",
+  "data": {
+    "config": Prop[]
+  }
 }
 ```
 
-### PlayerAlias
+| Authentication required | Scopes                  	    |
+| ----------------------- | ----------------------------- |
+| Yes                     | `read:gameConfig`            	|
+
+## Types
+
+### Prop
 
 ```ts
-type PlayerAlias = {
-  id: number
-  service: string
-  identifier: string
-  player: Player
-  lastSeenAt: Date
-  createdAt: Date
-  updatedAt: Date
+type Prop = {
+  key: string
+  value: string
 }
 ```
 
@@ -166,11 +165,31 @@ type Player = {
 }
 ```
 
-### Prop
+### PlayerAlias
 
 ```ts
-type Prop = {
-  key: string
-  value: string | null
+type PlayerAlias = {
+  id: number
+  service: string
+  identifier: string
+  player: Player
+  lastSeenAt: Date
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+### GameChannel
+
+```ts
+type GameChannel = {
+  id: number
+  name: string
+  owner: PlayerAlias
+  totalMessages: number
+  memberCount: number
+  props: Prop[]
+  createdAt: Date
+  updatedAt: Date
 }
 ```

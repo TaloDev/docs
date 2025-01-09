@@ -31,9 +31,29 @@ Or a number:
 var maxLevel = Talo.LiveConfig.GetProp<int>("maxLevel");
 ```
 
-## Example - polling the live config and updating the UI
+This function also has a second argument which is the default value to return if the property is not found.
 
-You can attach this script to a TextMeshPro GameObject to update the text value every 2 seconds:
+## Listening for live config updates
+
+You can listen for live config updates by connecting to the `Talo.GameConfig.OnLiveConfigUpdated` event:
+
+```csharp
+void Start()
+{
+	var textUI = GetComponent<TextMeshProUGUI>();
+
+	Talo.GameConfig.OnLiveConfigUpdated += (liveConfig) =>
+	{
+		textUI.text = liveConfig.GetProp("liveString", "Not set!");
+	};
+}
+```
+
+The `OnLiveConfigUpdated` event is fired via the [Talo Socket](./sockets) whenever the live config is updated from the Talo dashboard.
+
+### Alternative example - polling the live config with a timer
+
+If you prefer not to use the Talo Socket, you can attach this example script to a TextMeshPro GameObject to update the text value every 2 seconds:
 
 ```csharp
 using UnityEngine;
