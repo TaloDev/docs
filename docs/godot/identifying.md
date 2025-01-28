@@ -63,7 +63,6 @@ func do_stuff_if_authenticated() -> void:
 ## Merging players
 
 As described above, sometimes a player may have one or more aliases and there are times where you know for certain some aliases belong to the same player.
-.
 You can merge players using `Talo.players.merge()` by providing the IDs of both players.
 
 The merge process takes all the props, aliases, and associated data (events, leaderboard entries, saves, etc.) from Player 2 and merge them into Player 1. This means that duplicate props in Player 1 will be replaced by the ones from Player 2.
