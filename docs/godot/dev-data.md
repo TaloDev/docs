@@ -11,3 +11,8 @@ If the [`OS.has_feature("debug")`](https://docs.godotengine.org/en/stable/tutori
 
 Similarly, if the flag is set, development data will be included when fetching entities like leaderboard entries.
 
+## Exporting your project
+
+In order to correctly separate development data from production data, you need to ensure you are creating a "release" build by unticking `Export With Debug` before exporting your game:
+
+![The Godot export window, showing the unticked export with debug option](/img/godot_export_debug.png)
