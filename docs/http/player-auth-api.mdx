@@ -6,6 +6,16 @@ Talo provides a powerful and secure authentication system out of the box. You ca
 
 Learn more about player authentication [here](https://trytalo.com/players#authentication?utm_source=docs&utm_medium=api-docs).
 
+## Identifying players using Talo Authentication
+
+Once you have registered a player, you can identify them using the [identify](/docs/http/player-api) endpoint. You will need to ensure that:
+
+1. The `identifier` is the one you used to register the player (email, username, etc.)
+2. The `service` is set to `talo`
+3. The `x-talo-session` header contains the session token you received from the login/register endpoint
+
+To create a new session token, you will need to go through the login flow again for the player.
+
 ## Endpoints
 
 <ServiceDocumentation
