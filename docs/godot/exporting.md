@@ -13,6 +13,6 @@ The resources tab in the export window should look similar to this:
 
 ## Separating development data
 
-In order to correctly [separate development data](/docs/godot/development-data) from production data, you need to ensure you are creating a "release" build by unticking `Export With Debug` before exporting your game:
+In order to correctly [separate development data](/docs/godot/dev-data) from production data, you need to ensure you are creating a "release" build by unticking `Export With Debug` before exporting your game:
 
 ![The Godot export window, showing the unticked export with debug option](/img/godot_export_debug.png)
