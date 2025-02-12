@@ -35,6 +35,10 @@ To create a channel, call `Talo.channels.create()` with a channel name and (opti
 
 To join or leave a channel, use `Talo.channels.join()` and `Talo.channels.leave()` respectively. Both functions take the ID of the channel as the only parameter. If you attempt to join a channel and the current player is already in that channel, nothing will happen. Leaving a channel also follows the same pattern.
 
+## Finding a channel
+
+You can find a channel by its ID using `Talo.channels.find()`. This function takes a channel ID integer and returns a `TaloChannel` object.
+
 ## Updating channels
 
 The owner of a channel can update the channel using `Talo.channels.update()`. The name and owner of the channel can be updated using this function.
