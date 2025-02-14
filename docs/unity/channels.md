@@ -31,6 +31,10 @@ You can use `Talo.Channels.GetSubscribedChannels()` which returns a `Channel[]` 
 
 To create a channel, call `Talo.Channels.Create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (a dictionary of string key/value pairs) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
 
+## Finding a channel
+
+You can find a channel by its ID using `Talo.Channels.Find()`. This function takes a channel ID integer and returns a `Channel` object.
+
 ## Joining and leaving channels
 
 To join or leave a channel, use `Talo.Channels.Join()` and `Talo.Channels.Leave()` respectively. Both functions take the ID of the channel as the only parameter. If you attempt to join a channel and the current player is already in that channel, nothing will happen. Leaving a channel also follows the same pattern.
