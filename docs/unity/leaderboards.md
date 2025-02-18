@@ -33,6 +33,15 @@ public async void FetchEntries()
 ### Getting entries for the current player
 
 You can also get entries exclusively created by the current player using `Talo.Leaderboards.GetEntriesForCurrentPlayer()`.
+### Getting archived entries
+
+If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly) you can get archived entries using the final parameter (`includeArchived`) of `GetEntries()` or `GetEntriesForCurrentPlayer()`.
+
+```csharp
+var res = await Talo.Leaderboards.GetEntries(leaderboardName, page, includeArchived: includeArchived)
+// or
+var res = await Talo.Leaderboards.GetEntriesForCurrentPlayer(leaderboardName, page, includeArchived)
+```
 
 ## Creating entries
 

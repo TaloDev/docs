@@ -34,6 +34,16 @@ func _on_pressed() -> void:
 
 You can also get entries exclusively created by the current player using `Talo.leaderboards.get_entries_for_current_player()`.
 
+### Getting archived entries
+
+If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly) you can get archived entries using the final parameter (`include_archived`) of `get_entries()` or `get_entries_for_current_player()`.
+
+```gdscript
+var res = await Talo.leaderboards.get_entries(leaderboard_name, 0, -1, true)
+# or
+var res = await Talo.leaderboards.get_entries_for_current_player(leaderboard_name, 0, true)
+```
+
 ## Creating entries
 
 Use `Talo.leaderboards.add_entry()` to create an entry:
