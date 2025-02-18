@@ -50,3 +50,24 @@ You can also update the props of the channel: keys will be overrided with new va
 ## Deleting channels
 
 The owner of a channel can delete the channel using `Talo.Channels.Delete()`. All other members of the channel will be unsubscribed automatically.
+
+## Listening for messages
+
+To listen for messages, you can subscribe to the `Talo.Channels.OnMessageReceived` event. This event provides the `Channel`, the sender's `PlayerAlias` and the message.
+
+Here's an example of how to use this event to update a chat UI:
+
+```csharp
+private void Start()
+{
+    Talo.Channels.OnMessageReceived += OnMessageReceived;
+}
+
+private void OnMessageReceived(Channel channel, PlayerAlias sender, string message)
+{
+	if (channel.id == _activeChannelId)
+	{
+		AddChatMessage($"[{channel.name}] {sender.identifier}: {message}");
+	}
+}
+```
