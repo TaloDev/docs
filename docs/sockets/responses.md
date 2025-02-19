@@ -21,6 +21,25 @@ If the player is successfully identified, this response will be sent.
 | ------------------------ | ----------------------- |
 | Yes                      | None                    |
 
+### Presence updated
+
+This response is sent when a player's presence is updated.
+
+```typescript
+{
+  "res": "v1.players.presence.updated",
+  "data": {
+    "presence": PlayerPresence
+    "onlineChanged": boolean
+    "customStatusChanged": boolean
+  }
+}
+```
+
+| Authentication required  | Scopes                  |
+| ------------------------ | ----------------------- |
+| Yes                      | `read:players`          |
+
 ## Channels
 
 ### Receiving a message
@@ -32,7 +51,7 @@ If a player is subscribed to a channel where a message has been sent, they will 
   "res": "v1.channels.message",
   "data": {
     "channel": GameChannel
-    "message": string,
+    "message": string
     "playerAlias": PlayerAlias
   }
 }
@@ -175,6 +194,17 @@ type PlayerAlias = {
   player: Player
   lastSeenAt: Date
   createdAt: Date
+  updatedAt: Date
+}
+```
+
+### PlayerPresence
+
+```ts
+type PlayerPresence = {
+  online: boolean
+  customStatus: string
+  playerAlias: PlayerAlias,
   updatedAt: Date
 }
 ```

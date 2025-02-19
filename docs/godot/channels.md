@@ -50,3 +50,19 @@ You can also update the props of the channel: keys will be overrided with new va
 ## Deleting channels
 
 The owner of a channel can delete the channel using `Talo.channels.delete()`. All other members of the channel will be unsubscribed automatically.
+
+## Listening for messages
+
+To listen for messages, you can use the `Talo.channels.message_received` signal. This signal will return the `TaloPlayerChannel`, the sender's`TaloPlayerAlias` and the message.
+
+Here's an example of how to use this signal to update a chat UI:
+
+```gdscript
+func _ready():
+	Talo.channels.message_received.connect(_on_message_received)
+
+func _on_message_received(channel: TaloChannel, player_alias: TaloPlayerAlias, message: String) -> void:
+	if channel.id == _active_channel_id:
+		_add_chat_message("[%s] %s: %s" % [channel.display_name, player_alias.identifier, message])
+
+```
