@@ -8,6 +8,10 @@ Talo leaderboards are highly customisable - for example you can configure the so
 
 To create a leaderboard, head over to [the dashboard](https://dashboard.trytalo.com), visit the leaderboards page and create your first leaderboard. Take note of the `Internal name` as this is how you'll be referring to your leaderboard.
 
+:::tip
+Check out this blog post on [how to add leaderboards to your Unity game](https://trytalo.com/blog/leaderboards-unity?utm_source=docs&utm_medium=tip) for a detailed walkthrough
+:::
+
 ## Getting entries
 
 Leaderboard entries are paginated: a maximum of 50 entries come back with each request. Use `Talo.Leaderboards.GetEntries()` to retrieve an array of entries:
