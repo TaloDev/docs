@@ -18,9 +18,9 @@ This function returns an array with 3 items: the channels, the total number of c
 ```gdscript
 var page = 0
 var res = await Talo.channels.get_channels(page)
-var channels: Array[GameChannel] = res[0]
-var count: int = res[1]
-var is_last_page: bool = res[2]
+var channels: Array[GameChannel] = res.channels
+var count: int = res.count
+var is_last_page: bool = res.is_last_page
 ```
 
 ## Listing subscribed channels
@@ -63,6 +63,14 @@ func _ready():
 
 func _on_message_received(channel: TaloChannel, player_alias: TaloPlayerAlias, message: String) -> void:
 	if channel.id == _active_channel_id:
-		_add_chat_message("[%s] %s: %s" % [channel.display_name, player_alias.identifier, message])
+		_add_chat_message("[%s] %s: %s" % [channel.name, player_alias.identifier, message])
 
 ```
+
+### Listening for other events
+
+You can also listen for the following signals:
+- `player_joined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
+- `player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that left.
+- `channel_ownership_transferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
+- `channel_deleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
