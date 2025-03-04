@@ -23,9 +23,9 @@ extends Button
 
 func _on_pressed() -> void:
 	var res = await Talo.leaderboards.get_entries(leaderboard_name, 0)
-	var entries = res[0]
-	var count = res[1]
-	var is_last_page = res[2]
+	var entries: Array[TaloLeaderboardEntry] = res.entries
+	var count: int = res.count
+	var is_last_page: bool = res.is_last_page
 
 	print("%s entries, is last page: %s" % [count, is_last_page])
 ```
@@ -57,7 +57,7 @@ func _on_pressed() -> void:
 	var score = RandomNumberGenerator.new().randi_range(1, 50)
 	var res = await Talo.leaderboards.add_entry(leaderboard_name, score)
 
-	print("Added score: %s, new high score: %s" % [score, res[1]])
+	print("Added score: %s, new high score: %s" % [score, "yes" if res.updated else "no"])
 ```
 
 This function returns a tuple of the entry and whether it was updated.
