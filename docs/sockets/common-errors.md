@@ -131,4 +131,4 @@ A request listener can throw an error specific to its own internal logic. These 
 }
 ```
 
-Unidentified players are limited to 10 requests per second and identified players are limited to 100 requests per second. If this is exceeded, you will receive a rate limit error. After 3 warnings, the connection will be closed and you will need to re-establish a connection to the socket server.
+Unidentified players are limited to 25 requests per second and identified players are limited to 250 requests per second. If this is exceeded, you will receive a rate limit error. After 3 warnings, the connection will be closed and you will need to re-establish a connection to the socket server.
