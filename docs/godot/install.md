@@ -15,6 +15,8 @@ Check out this blog post on [installing the Talo Godot plugin](https://trytalo.c
 
 The Godot Asset Library is the recommended way to download Godot plugins. Open the `AssetLib` tab in Godot and search for "Talo". Click into the asset and click `Download`. Here's a [direct link](https://godotengine.org/asset-library/asset/2936) to the asset.
 
+![Talo in the Godot AssetLib tab](/img/godot-install-assetlib.png)
+
 ### Downloading from itch.io
 
 You can download the latest version of the Godot plugin from our [itch.io page](https://sleepystudios.itch.io/talo-godot). Simply unzip the plugin and copy the `addons/talo` folder into your project.
@@ -24,6 +26,8 @@ You can download the latest version of the Godot plugin from our [itch.io page](
 :::caution
 After installing the plugin, you must enable it in the `Project > Project Settings > Plugins` window.
 :::
+
+![Enabling the Talo plugin](/img/godot-install-enable.png)
 
 ## Generate an access key
 
