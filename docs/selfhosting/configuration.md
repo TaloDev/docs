@@ -31,6 +31,7 @@ You'll need to restart the backend container after modifying your .env file
 | FROM_EMAIL               | No       | The email address used to send emails from the backend                                                                 |
 | RECOVERY_CODES_SECRET    | No       | 32-character secret for encrypting your 2FA recovery codes, required to use 2FA                                        |
 | STEAM_INTEGRATION_SECRET | No       | 32-character secret for encrypting your Steam API key, required to use the Steamworks integration                      |
+| REGISTRATION_MODE		   | No		  | Controls how registrations work: 'open' (default, open to anyone), 'exclusive' (invite-only) or 'disabled'			   |
 
 ## Third party configurations
 
