@@ -43,7 +43,7 @@ private async void OnRegisterClick()
 	}
 	catch (PlayerAuthException e)
 	{
-		validationLabel.text = e.GetErrorCode() switch
+		validationLabel.text = e.ErrorCode switch
 		{
 			PlayerAuthErrorCode.IDENTIFIER_TAKEN => "Username is already taken",
 			_ => e.Message
@@ -94,7 +94,7 @@ private async void OnLoginClick()
 	}
 	catch (PlayerAuthException e)
 	{
-		validationLabel.text = e.GetErrorCode() switch
+		validationLabel.text = e.ErrorCode switch
 		{
 			PlayerAuthErrorCode.INVALID_CREDENTIALS => "Username or password is incorrect",
 			_ => e.Message
@@ -131,7 +131,7 @@ private async void OnVerifyClick()
 	}
 	catch (PlayerAuthException e)
 	{
-		validationLabel.text = e.GetErrorCode() switch
+		validationLabel.text = e.ErrorCode switch
 		{
 			PlayerAuthErrorCode.VERIFICATION_CODE_INVALID => "Verification code is incorrect",
 			_ => e.Message
@@ -155,7 +155,7 @@ try
 }
 catch (PlayerAuthException e)
 {
-	validationLabel.text = e.GetErrorCode() switch
+	validationLabel.text = e.ErrorCode switch
 	{
 		PlayerAuthErrorCode.INVALID_CREDENTIALS => "Current password is incorrect",
 		PlayerAuthErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD => "New password must be different from the current password",
@@ -187,7 +187,7 @@ try
 }
 catch (PlayerAuthException e)
 {
-	validationLabel.text = e.GetErrorCode() switch
+	validationLabel.text = e.ErrorCode switch
 	{
 		PlayerAuthErrorCode.PASSWORD_RESET_CODE_INVALID => "Reset code is invalid",
 		_ => e.Message
@@ -223,6 +223,6 @@ When an alias is deleted, all leaderboard entries and game feedback associated w
 
 As shown in the examples above, whenever a request fails with an authentication-related error, a `PlayerAuthException` will be thrown.
 
-The exception provides a `GetErrorCode()` function that returns a matching `PlayerAuthErrorCode` enum value for the error response.
+The exception provides a `ErrorCode` property that returns a matching `PlayerAuthErrorCode` enum value for the error response.
 
 You can view all the authentication errors and their descriptions [here](/docs/http/player-auth-api#error-codes).

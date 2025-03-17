@@ -76,7 +76,7 @@ You can choose to manually end the socket connection using `Talo.Socket.CloseCon
 
 ## Error handling
 
-The Talo Socket exposes an `OnErrorReceived` event that fires when a `v1.error` response is received. You can check the error code (using the `TaloSocketError.ErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:
+The Talo Socket exposes an `OnErrorReceived` event that fires when a `v1.error` response is received. You can check the error code (using the `SocketErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:
 
 ```csharp
 Talo.Socket.OnErrorReceived += (SocketError err) => {
