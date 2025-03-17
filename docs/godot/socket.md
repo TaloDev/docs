@@ -60,3 +60,20 @@ The recommended way of re-establishing a connection is calling `Talo.socket.open
 ## Closing the connection
 
 You can choose to manually end the socket connection using `Talo.socket.close_connection(status_code, reason)`.
+
+## Error handling
+
+The Talo Socket exposes an `error_received` signal that is emitted when a `v1.error` response is received. You can check the error code (using the `TaloSocketError.ErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:
+
+```gdscript
+Talo.socket.error_received.connect(
+	func (err: TaloSocketError):
+		print("%s %s %s %s" % [err.req, err.code, err.message, err.cause])
+
+		match err.code:
+			TaloSocketError.ErrorCode.NO_PLAYER_FOUND:
+				print("Player not identified yet!")
+			TaloSocketError.ErrorCode.RATE_LIMIT_EXCEEDED:
+				print("Rate limited!")
+)
+```

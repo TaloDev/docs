@@ -73,3 +73,26 @@ The recommended way of re-establishing a connection is calling `Talo.Socket.Open
 ## Closing the connection
 
 You can choose to manually end the socket connection using `Talo.Socket.CloseConnection()`.
+
+## Error handling
+
+The Talo Socket exposes an `OnErrorReceived` event that fires when a `v1.error` response is received. You can check the error code (using the `TaloSocketError.ErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:
+
+```csharp
+Talo.Socket.OnErrorReceived += (SocketError err) => {
+	try {
+		err.Throw();
+	} catch (SocketException e) {
+		Debug.Log($"Socket error: {e.Req} - {e.ErrorCode}{(string.IsNullOrEmpty(e.Cause) ? "" : " - " + e.Cause)}");
+
+		switch (e.ErrorCode) {
+			case SocketErrorCode.NO_PLAYER_FOUND:
+				Debug.LogError("Player not identified yet!");
+				break;
+			case SocketErrorCode.RATE_LIMIT_EXCEEDED:
+				Debug.LogError("Rate limited!");
+				break;
+		}
+	}
+};
+```
