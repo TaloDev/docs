@@ -36,3 +36,34 @@ public void OnHeal(Potion potion)
 	Talo.Stats.Track('health-healed', potion.amount)
 }
 ```
+
+## Stat values
+
+After updating a stat using `Track()`, you can check the updated value for the player stat and global stat:
+
+```csharp
+var res = await Talo.Stats.Track('gold-collected', 104);
+Debug.Log($"{res.playerStat.value}, {stat.playerStat.stat.globalValue}")
+```
+
+## Stat history
+
+You can fetch a history of updates to a stat for the current player using `Talo.Stats.GetHistory()`. These results are paginated and can be filtered by specific start and end dates too:
+
+```csharp
+private async void FetchHistory()
+{
+	try
+	{
+		var res = await Talo.Stats.GetHistory(statInternalName);
+
+		// e.g. "gold-collected changed by 100, 46, 82, 19, 104"
+		Debug.Log($"{statInternalName} changed by: {string.Join(", ", res.history.Select((item) => item.change))}");
+	}
+	catch (Exception err)
+	{
+		Debug.LogError(err.Message);
+		throw err;
+	}
+}
+```
