@@ -50,3 +50,21 @@ func fetch_history() -> void:
 	# e.g. "gold-collected changed by 100, 46, 82, 19, 104"
 	print("%s changed by: %s" % [stat_name, ", ".join(changes)])
 ```
+
+## Global stat history
+
+For global stats, you can also fetch a history of updates from all players using `Talo.stats.get_global_history()`. This API is similar to the player stat history except that it is filterable by individual players and it returns metrics about the stat global value during the filtered time period:
+
+```gdscript
+func fetch_global_history() -> void:
+	var res := await Talo.stats.get_global_history(stat_name)
+	var global_value := res.global_value
+
+	print("Min: %s, max: %s, median: %s, average: %s, average change: %s" % [
+		global_value.min_value,
+		global_value.max_value,
+		global_value.median_value,
+		global_value.average_value,
+		global_value.average_change
+	])
+```
