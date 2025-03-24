@@ -8,9 +8,22 @@ Talo stats let you track individual player data as well as aggregated global dat
 
 To create a stat, head over to [the dashboard](https://dashboard.trytalo.com), visit the stats page and create your first stat. Take note of the `Internal name` as this is how you'll be referring to your stat.
 
-## Difference between stats and events
+## Getting stats
 
-Stats allow you to have far more control over quantitative data using the limits you can set in the dashboard.
+You can list all available stats using `Talo.stats.get_stats()`. This will return all the constraint data defined in the dashboard like the `default_value`, `max_change` and `max_value`. This will also return the global values for global stats:
+
+```gdscript
+var res := await Talo.stats.get_stats()
+var all_stats := PackedStringArray(res.map(func(item: TaloStat): return item.internal_name))
+var internal_names := ", ".join(all_stats)
+
+## e.g. Stats: gold-collected, health-healed, deaths
+print("Stats: %s" % [internal_names])
+```
+
+### Fetching individual stats
+
+If you already have the internal name of a stat, you can use `Talo.stats.find()` and pass in the internal name to return data for a single stat.
 
 ## Tracking stats
 
@@ -29,7 +42,7 @@ func on_heal(potion: Potion) -> void:
 	Talo.stats.track('health-healed', potion.amount)
 ```
 
-## Stat values
+### Stat values
 
 After updating a stat using `track()`, you can check the updated value for the player stat and global stat:
 

@@ -12,9 +12,20 @@ To create a stat, head over to [the dashboard](https://dashboard.trytalo.com), v
 Check out this blog post on [how to track player stats in Unity](https://trytalo.com/blog/stat-tracking-unity?utm_source=docs&utm_medium=tip) for a detailed walkthrough
 :::
 
-## Difference between stats and events
+## Getting stats
 
-Stats allow you to have far more control over quantitative data using the limits you can set in the dashboard.
+You can list all available stats using `Talo.Stats.GetStats()`. This will return all the constraint data defined in the dashboard like the `defaultValue`, `maxChange` and `maxValue`. This will also return the global values for global stats:
+
+```csharp
+var res = await Talo.Stats.GetStats();
+var internalNames = res.Length > 0 ? string.Join(", ", res.Select((item) => item.internalName)) : "no stats";
+// e.g. Stats: gold-collected, health-healed, deaths
+Debug.Log($"Stats: {internalNames}");
+```
+
+### Fetching individual stats
+
+If you already have the internal name of a stat, you can use `Talo.Stats.Find()` and pass in the internal name to return data for a single stat.
 
 ## Tracking stats
 
@@ -37,7 +48,7 @@ public void OnHeal(Potion potion)
 }
 ```
 
-## Stat values
+### Stat values
 
 After updating a stat using `Track()`, you can check the updated value for the player stat and global stat:
 
