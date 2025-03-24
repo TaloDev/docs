@@ -16,8 +16,8 @@ To get all available channels for your game, use the `Talo.channels.get_channels
 This function returns an array with 3 items: the channels, the total number of channels (if they weren't paginated) and if this is the last page.
 
 ```gdscript
-var page = 0
-var res = await Talo.channels.get_channels(page)
+var page := 0
+var res := await Talo.channels.get_channels(page)
 var channels: Array[GameChannel] = res.channels
 var count: int = res.count
 var is_last_page: bool = res.is_last_page

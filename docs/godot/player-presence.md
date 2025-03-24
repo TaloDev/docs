@@ -12,7 +12,7 @@ The player presence API allows you to automatically track the presence of player
 To get a player's presence, use the `Talo.player_presence.get_presence()` function. This function has a single argument which is the ID of the player you want to get the presence of.
 
 ```gdscript
-var presence = await Talo.player_presence.get_presence(player_id)
+var presence := await Talo.player_presence.get_presence(player_id)
 ```
 
 This function returns a `TaloPlayerPresence` object:
@@ -33,7 +33,7 @@ The `player_alias` represents the last alias used to update the player's presenc
 To update a player's presence, use the `Talo.player_presence.update_presence()` function. You can provide the new `online` status and an optional `custom_status`.
 
 ```gdscript
-var res = await Talo.player_presence.update_presence(online, custom_status)
+var res := await Talo.player_presence.update_presence(online, custom_status)
 ```
 
 This function returns a `TaloPlayerPresence` object.

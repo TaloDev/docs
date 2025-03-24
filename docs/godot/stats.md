@@ -47,7 +47,7 @@ func on_heal(potion: Potion) -> void:
 After updating a stat using `track()`, you can check the updated value for the player stat and global stat:
 
 ```gdscript
-var res = await Talo.stats.track(stat_name)
+var res := await Talo.stats.track(stat_name)
 print("%s, %s" % [res.value, res.stat.global_value])
 ```
 
@@ -57,7 +57,7 @@ You can fetch a history of updates to a stat for the current player using `Talo.
 
 ```gdscript
 func fetch_history() -> void:
-	var res = await Talo.stats.get_history(stat_name)
+	var res := await Talo.stats.get_history(stat_name)
 	var changes := PackedStringArray(res.history.map(func(item): return str(item.change)))
 
 	# e.g. "gold-collected changed by 100, 46, 82, 19, 104"
