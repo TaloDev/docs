@@ -48,6 +48,6 @@ extends Node
 
 # signal from a Timer node
 func _on_timer_timeout() -> void:
-	var config = await Talo.game_config.get_live_config()
+	var config := await Talo.game_config.get_live_config()
 	label.text = config.get_prop("live_string", "Not set!")
 ```

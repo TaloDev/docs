@@ -13,7 +13,7 @@ To track an event, simply call `Talo.events.track()` with an event name like "Le
 ```gdscript title="level_up_button.gd"
 extends Button
 
-var level = 1
+var level := 1
 
 func _on_pressed() -> void:
 	level += 1

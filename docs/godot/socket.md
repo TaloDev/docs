@@ -30,7 +30,7 @@ func _ready() -> void:
 func _on_message_received(res: String, data: Dictionary) -> void:
 	if res == "v1.channels.message":
 		if data.channel.id == _active_channel_id:
-			var alias = TaloPlayerAlias.new(data.playerAlias)
+			var alias := TaloPlayerAlias.new(data.playerAlias)
 			_add_chat_message("[%s] %s: %s" % [data.channel.name, alias.identifier, data.message])
 ```
 

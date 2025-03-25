@@ -22,7 +22,7 @@ extends Button
 @export var leaderboard_name: String
 
 func _on_pressed() -> void:
-	var res = await Talo.leaderboards.get_entries(leaderboard_name, 0)
+	var res := await Talo.leaderboards.get_entries(leaderboard_name, 0)
 	var entries: Array[TaloLeaderboardEntry] = res.entries
 	var count: int = res.count
 	var is_last_page: bool = res.is_last_page
@@ -39,9 +39,9 @@ You can also get entries exclusively created by the current player using `Talo.l
 If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly) you can get archived entries using the final parameter (`include_archived`) of `get_entries()` or `get_entries_for_current_player()`.
 
 ```gdscript
-var res = await Talo.leaderboards.get_entries(leaderboard_name, 0, -1, true)
+var res := await Talo.leaderboards.get_entries(leaderboard_name, 0, -1, true)
 # or
-var res = await Talo.leaderboards.get_entries_for_current_player(leaderboard_name, 0, true)
+var res := await Talo.leaderboards.get_entries_for_current_player(leaderboard_name, 0, true)
 ```
 
 ## Creating entries
@@ -54,8 +54,8 @@ extends Button
 @export var leaderboard_name: String
 
 func _on_pressed() -> void:
-	var score = RandomNumberGenerator.new().randi_range(1, 50)
-	var res = await Talo.leaderboards.add_entry(leaderboard_name, score)
+	var score := RandomNumberGenerator.new().randi_range(1, 50)
+	var res := await Talo.leaderboards.add_entry(leaderboard_name, score)
 
 	print("Added score: %s, new high score: %s" % [score, "yes" if res.updated else "no"])
 ```
@@ -79,10 +79,10 @@ Along with a score, you can also send a dictionary of `props` with an entry. The
 ```gdscript
 func _on_submit_pressed() -> void:
 	await Talo.players.identify("username", username.text)
-	var score = RandomNumberGenerator.new().randi_range(0, 100)
-	var team = "Blue" if RandomNumberGenerator.new().randi_range(0, 1) == 0 else "Red"
+	var score := RandomNumberGenerator.new().randi_range(0, 100)
+	var team := "Blue" if RandomNumberGenerator.new().randi_range(0, 1) == 0 else "Red"
 
-	var res = await Talo.leaderboards.add_entry(leaderboard_internal_name, score, { team = team })
+	var res := await Talo.leaderboards.add_entry(leaderboard_internal_name, score, { team = team })
 	info_label.text = "You scored %s points for the %s team!" % [score, team]
 
 	_build_entries()
@@ -95,7 +95,7 @@ func _build_entries() -> void:
 	for child in entries_container.get_children():
 		child.queue_free()
 
-	var entries = Talo.leaderboards.get_cached_entries(leaderboard_internal_name)
+	var entries := Talo.leaderboards.get_cached_entries(leaderboard_internal_name)
 	if _filter != "All": # e.g. "Blue" or "Red"
 		entries = entries.filter(func (entry: TaloLeaderboardEntry): return entry.get_prop("team", "") == _filter)
 

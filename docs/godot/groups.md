@@ -26,7 +26,7 @@ func is_beta_tester():
 Groups in the `TaloPlayer` class are stubs that only include an `id` and a `name`. To retrieve more data about a group, including its members, use the `Talo.player_groups.get_group()` function:
 
 ```gdscript
-var group = await Talo.player_groups.get_group(group_id)
+var group := await Talo.player_groups.get_group(group_id)
 if group != null:
 	print("%s has %s player(s)" % [group.name, group.count])
 else:

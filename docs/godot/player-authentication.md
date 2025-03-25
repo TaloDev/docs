@@ -72,7 +72,7 @@ If you need to verify a player's login, you need to call `Talo.player_auth.verif
 
 ...
 
-var res = await Talo.player_auth.verify(code.text)
+var res := await Talo.player_auth.verify(code.text)
 if res != OK:
 	match Talo.player_auth.last_error.get_code():
 		TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
