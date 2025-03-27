@@ -81,7 +81,7 @@ private async void FetchHistory()
 
 ## Global stat history
 
-For global stats, you can also fetch a history of updates from all players using `Talo.Stats.GetGlobalHistory()`. This API is similar to the player stat history except that it is filterable by individual players and it returns metrics about the stat global value during the filtered time period:
+For global stats, you can also fetch a history of updates from all players using `Talo.Stats.GetGlobalHistory()`. This API is similar to the player stat history except that it is filterable by individual players and it returns metrics about the stat during the filtered time period:
 
 ```csharp
 private async void FetchGlobalHistory()
@@ -89,8 +89,17 @@ private async void FetchGlobalHistory()
 	try
 	{
 		var res = await Talo.Stats.GetGlobalHistory(statInternalName);
+		var globalMetrics = res.globalValue;
+		var playerMetrics = res.playerValue;
 
-		ResponseMessage.SetText($"Min: {res.globalValue.minValue}, max: {res.globalValue.maxValue}, median: {res.globalValue.medianValue}, average: {res.globalValue.averageValue}, average change: {res.globalValue.averageChange}");
+		Debug.Log(
+			$"Min: {globalMetrics.minValue}, " +
+			$"max: {globalMetrics.maxValue}, " +
+			$"median: {globalMetrics.medianValue}, " +
+			$"average: {globalMetrics.averageValue}, " +
+			$"average change: {globalMetrics.averageChange}, " +
+			$"average player value: {playerMetrics.averageValue}"
+		);
 	}
 	catch (Exception err)
 	{
