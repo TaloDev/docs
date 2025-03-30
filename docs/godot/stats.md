@@ -8,6 +8,10 @@ Talo stats let you track individual player data as well as aggregated global dat
 
 To create a stat, head over to [the dashboard](https://dashboard.trytalo.com), visit the stats page and create your first stat. Take note of the `Internal name` as this is how you'll be referring to your stat.
 
+:::tip
+Check out this blog post on [how to track player stats in Godot](https://trytalo.com/blog/stat-tracking-godot?utm_source=docs&utm_medium=tip) for a detailed walkthrough
+:::
+
 ## Getting stats
 
 You can list all available stats using `Talo.stats.get_stats()`. This will return all the constraint data defined in the dashboard like the `default_value`, `max_change` and `max_value`. This will also return the global values for global stats:
