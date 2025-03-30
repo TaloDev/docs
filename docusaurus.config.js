@@ -198,7 +198,7 @@ module.exports = async function configCreatorAsync() {
     },
     scripts: [
       {
-        src: 'https://p.trytalo.com/js/script.js',
+        src: 'https://p.trytalo.com/js/script.outbound-links.js',
         defer: true,
         'data-domain': 'docs.trytalo.com'
       }
