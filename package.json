@@ -17,11 +17,11 @@
     "node": "20.x"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.6.2",
-    "@docusaurus/preset-classic": "^3.6.2",
+    "@docusaurus/core": "^3.7.0",
+    "@docusaurus/preset-classic": "^3.7.0",
     "@mdx-js/react": "^3.0.1",
     "@svgr/webpack": "^8.1.0",
-    "axios": "^1.6.8",
+    "axios": "^1.8.4",
     "clsx": "^2.1.1",
     "file-loader": "^6.2.0",
     "prism-react-renderer": "^2.3.1",
