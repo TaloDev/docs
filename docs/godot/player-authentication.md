@@ -37,7 +37,10 @@ Once a player is registered, a session will automatically be created for them an
 
 To start a session, call the `Talo.player_auth.login()` function with the username and password the player provided.
 
-The `login()` function returns a tuple of `[Error, bool]`. The `Error` refers to the result of the login operation and the `bool` refers to whether the player needs to verify their details before creating the session.
+The `login()` function returns a `Talo.player_auth.LoginResult` which maps to:
+1. A successful login
+2. A successful login but the player must verify their details before creating the session
+3. An unsuccessful login attempt
 
 ```gdscript
 signal verification_required

@@ -60,7 +60,7 @@ func _on_pressed() -> void:
 	print("Added score: %s, new high score: %s" % [score, "yes" if res.updated else "no"])
 ```
 
-This function returns a tuple of the entry and whether it was updated.
+This function returns an `AddEntryResult` that includes the updated entry and whether their highscore should be updated.
 
 Updated entries are only relevant if the leaderboard is set to unique. Leaderboard entries won't be updated if they are not better (depending on the sort mode) than the player's previous entry.
 
