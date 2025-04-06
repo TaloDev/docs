@@ -57,7 +57,7 @@ func _on_pressed() -> void:
 	var score := RandomNumberGenerator.new().randi_range(1, 50)
 	var res := await Talo.leaderboards.add_entry(leaderboard_name, score)
 
-	print("Added score: %s, new high score: %s" % [score, "yes" if res.updated else "no"])
+	print("Added score: %s, at position: %s, new high score: %s" % [score, res.position, "yes" if res.updated else "no"])
 ```
 
 This function returns an `AddEntryResult` that includes the updated entry and whether their highscore should be updated.
