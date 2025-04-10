@@ -14,10 +14,6 @@ You should identify a player after they have authenticated and before you attemp
 
 ## Identifying
 
-:::caution
-If you are using **Talo Player Authentication**, you should never have to identify a player manually. Visit the [Player authentication docs](/docs/godot/player-authentication) to learn more about identifying players with authentication enabled.
-:::
-
 You can identify a player using `Talo.players.identify()`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground scene):
 
 ```gdscript title="identify_button.gd"
@@ -29,6 +25,12 @@ extends Button
 func _on_pressed():
 	Talo.players.identify(service, identifier)
 ```
+
+:::caution
+If you are using **Talo Player Authentication**, `Talo.players.identify()` will be invoked automatically and the `Talo.players.identified` signal will also fire as normal.
+
+Visit the [Player authentication docs](/docs/godot/player-authentication) to learn more about identifying players with authentication enabled.
+:::
 
 ### Generating a mostly-unique identifier
 
