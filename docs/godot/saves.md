@@ -77,7 +77,7 @@ As you can see, each field needs to be registered with the `register_field()` fu
 
 ## Loading data
 
-As described above, when a saved object from the save is paired up with a loadable, the loadable is hydrated with the data from the saved object. This calls the `on_loaded()` function of the loadable, where you can set the properties of the node:
+As described above, when a saved object is paired up with a loadable, the loadable is hydrated with the data from the saved object. This calls the `on_loaded()` function of the loadable, where you can set the properties of the node:
 
 ```gdscript
 func on_loaded(data: Dictionary):
@@ -85,7 +85,6 @@ func on_loaded(data: Dictionary):
 
 	spawn_point = data.get("spawn_point", Vector2.ZERO)
 	character_body.position = spawn_point
-	character_body.destination = spawn_point
 
 	spawn_level = data.get("spawn_level", "starting_zone")
 	# check if we need to change the scene
@@ -95,7 +94,7 @@ func on_loaded(data: Dictionary):
 
 If a node is registered but is no longer valid when updating/creating a save (i.e. if `queue_free()` was used), a `meta.destroyed` key is saved as the only field for that object.
 
-You can handle destroyed objects using the `HandleDestroyed` function which will automatically destroy an object if it has the `meta.destroyed` key:
+You can handle destroyed objects using the `HandleDestroyed` function which will automatically `queue_free()` an object if it has the `meta.destroyed` key:
 
 ```gdscript
 func on_loaded(data: Dictionary) -> void:
@@ -113,7 +112,7 @@ Saves can be accessed using `Talo.saves.all` or `Talo.saves.latest`. To load a s
 
 Once your save has been chosen, the `Talo.saves.save_chosen` signal will fire.
 
-Finally, when all your registered Loadables have called their `on_loaded()`, an `Talo.saves.save_loading_completed()` signal is fired, signalling that, for example, it's safe to hide your loading screen.
+Finally, when all your registered Loadables have called their `on_loaded()`, an `Talo.saves.save_loading_completed` signal is fired, signalling that, for example, it's safe to hide your loading screen.
 
 ## Creating saves
 
