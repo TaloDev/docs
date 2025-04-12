@@ -123,6 +123,10 @@ Finally, when all your registered Loadables have called their `on_loaded()`, an 
 
 ![Flowchart showing loading a save](/img/saves-flowchart.png)
 
+:::tip
+You can find more details including code samples in our [Godot saves deep dive](https://trytalo.com/blog/saves-deep-dive-godot?utm_source=docs&utm_medium=tip) post
+:::
+
 ## Creating saves
 
 To create a save, use `Talo.saves.create_save()`. Your new save will automatically become your chosen save (although the `save_chosen` signal will not fire).
