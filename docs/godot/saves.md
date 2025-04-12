@@ -10,6 +10,13 @@ Talo Saves allow you to persist your game's state across multiple sessions. Each
 Check out this blog post on [how to save and load data in Godot](https://trytalo.com/blog/game-saves-godot?utm_source=docs&utm_medium=tip) for a detailed walkthrough
 :::
 
+## Saves demos
+
+As part of the Godot plugin, we've included a few demos to help you get started:
+1. [Playground saves](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/playground) - allows you to create/save/load/update/delete a very basic save
+2. [Stateful buttons](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/stateful_buttons) - a simple demo focused on saving/loading functionality
+3. [Scene-based saves](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/multiscene_saves) - a full demo showing how data gets persisted between scenes with a player and other loadables
+
 ## Loadables
 
 Talo's game saves let you easily save and load specific nodes in your game. To do this, your nodes need to extend the `TaloLoadable` node. Generally this is the parent node for scenes but you can also have it as a child node (e.g. you may want your loadable to be a child of a parent `CharacterBody2D`).
@@ -114,15 +121,21 @@ Once your save has been chosen, the `Talo.saves.save_chosen` signal will fire.
 
 Finally, when all your registered Loadables have called their `on_loaded()`, an `Talo.saves.save_loading_completed` signal is fired, signalling that, for example, it's safe to hide your loading screen.
 
+![Flowchart showing loading a save](/img/saves-flowchart.png)
+
 ## Creating saves
 
 To create a save, use `Talo.saves.create_save()`. Your new save will automatically become your chosen save (although the `save_chosen` signal will not fire).
 
 Offline copies of saves are created in the [user data](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) within a `saves.json`.
 
+This will register all the fields for loadables in the scene to create the save file.
+
 ## Updating saves
 
 To update a save, use `Talo.saves.update_save()`. You can optionally pass in a new name for your save. You can also update the current save using `Talo.saves.update_current_save()`.
+
+This will get the latest data for all loadables in the scene and check if any loadables should be marked as destroyed.
 
 ## Deleting saves
 
