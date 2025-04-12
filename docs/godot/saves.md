@@ -4,7 +4,7 @@ sidebar_position: 6
 
 # Saves
 
-Talo Saves allow you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
+Talo Saves allow you to solve the provlem of saving and loading your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
 
 :::tip
 Check out this blog post on [how to save and load data in Godot](https://trytalo.com/blog/game-saves-godot?utm_source=docs&utm_medium=tip) for a detailed walkthrough
