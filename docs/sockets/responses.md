@@ -133,6 +133,24 @@ When channels are deleted, all members will be notified.
 | ----------------------- | ------------------------------- |
 | Yes                     | `read:gameChannels`            	|
 
+### Channel updated
+
+This response is sent to channel members when any of the channel's properties (including its name and props) are updated.
+
+```typescript
+{
+  "res": "v1.channels.updated",
+  "data": {
+    "channel": GameChannel
+    "changedProperties": string[]
+  }
+}
+```
+
+| Authentication required | Scopes                  		    |
+| ----------------------- | ------------------------------- |
+| Yes                     | `read:gameChannels`            	|
+
 ## Live config
 
 ### Live config updated
