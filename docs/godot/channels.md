@@ -102,8 +102,8 @@ func _on_message_received(channel: TaloChannel, player_alias: TaloPlayerAlias, m
 ### Listening for other events
 
 You can also listen for the following signals:
-- `player_joined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
-- `player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that left.
-- `channel_ownership_transferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
-- `channel_deleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
-- `channel_updated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and an `Array[String]` of properties that were changed.
+- `Talo.channels.player_joined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
+- `Talo.channels.player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that left.
+- `Talo.channels.channel_ownership_transferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
+- `Talo.channels.channel_deleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
+- `Talo.channels.channel_updated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and an `Array[String]` of properties that were changed.
