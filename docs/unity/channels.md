@@ -71,3 +71,12 @@ private void OnMessageReceived(Channel channel, PlayerAlias sender, string messa
 	}
 }
 ```
+
+### Listening for other events
+
+You can also listen for the following events:
+- `Talo.Channels.OnChannelJoined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
+- `Talo.Channels.OnChannelLeft`: Emitted when a player leaves a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that left.
+- `Talo.Channels.OnOwnershipTransferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
+- `Talo.Channels.OnChannelDeleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
+- `Talo.Channels.OnChannelUpdated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and a `string[]` of properties that were changed.
