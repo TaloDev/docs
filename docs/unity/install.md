@@ -9,29 +9,23 @@ description: Talo's Unity package helps you build games faster - set up save fil
 Talo takes advantage of features from C# 9.0+. If you receive compilation errors after installing the package, you may need to make some configuration changes in your Unity project. For more info, [check out this article](https://learn.microsoft.com/en-us/visualstudio/gamedev/unity/unity-scripting-upgrade).
 :::
 
-## Prerequisites
-
-Talo uses [unity-websocket](https://github.com/mikerochip/unity-websocket) as a WebSocket client. You will need to install this package either via a local file, an OpenUPM scoped registry or using git (see below).
-
 ## Import into Unity
 
-### Using git (recommended)
+### Using the Unity Asset Store (recommended)
 
-Open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from git URL…` and enter the following path: `https://github.com/TaloDev/unity-package.git`.
+The easiest way to add Talo to your project is by downloading it from the Unity Asset Store. Simply visit the [Talo Asset Store page](https://assetstore.unity.com/packages/tools/game-toolkits/talo-game-services-292832) and click "Add to My Assets".
 
-![Importing a git url into the Unity Package Manager](/img/unity-package-manager.png)
+To add Talo to your project, open the `Window > My Assets` window, find `Talo Game Services` and click `Download`.
 
-:::tip
-You can install any version (found on the [releases page](https://github.com/TaloDev/unity/releases)) by adding `#version` to the git URL, e.g. https://github.com/TaloDev/unity-package.git#0.20.0
-:::
+![Importing Talo into a Unity project](/img/unity-my-assets.png)
 
-This will add the latest stable release to your project. If you want to update your package, simply repeat the process.
+If you want to update your package, simply repeat the same process.
 
 ### Downloading from itch.io
 
 You can download the latest version of the Unity package from our [itch.io page](https://sleepystudios.itch.io/talo-unity).
 
-Once downloaded, open the Package Manager (under the Window tab) in Unity. Click the `+` dropdown, `Add package from tarball…` and select the `.tgz` file you downloaded earlier.
+Once downloaded, you can simply import the `.unitypackage` file by dragging it into your project.
 
 ## Generate an access key
 
