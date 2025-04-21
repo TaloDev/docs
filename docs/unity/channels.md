@@ -51,6 +51,25 @@ You can also update the props of the channel: keys will be overrided with new va
 
 The owner of a channel can delete the channel using `Talo.Channels.Delete()`. All other members of the channel will be unsubscribed automatically.
 
+## Private channels
+
+You can also create an invite-only private channels using `Talo.Channels.CreatePrivate()`.
+
+Private channels will not be listed when using `Talo.Channels.GetChannels()`. They also cannot be joined in the same way: the channel owner must invite players to a private channel.
+
+### Channel invites
+
+To create a channel invite, use `Talo.Channels.Invite()` with a channel ID and player alias ID.
+
+Invited players will automatically join the channel.
+
+```csharp
+var channel = await Talo.Channels.CreatePrivate("channel name");
+await Talo.Channels.Invite(channel.id, inviteePlayerAlias.id);
+```
+
+Note: you can use invites for public channels too.
+
 ## Listening for messages
 
 To listen for messages, you can subscribe to the `Talo.Channels.OnMessageReceived` event. This event provides the `Channel`, the sender's `PlayerAlias` and the message.
