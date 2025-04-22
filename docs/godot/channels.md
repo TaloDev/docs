@@ -31,6 +31,14 @@ You can use `Talo.channels.get_subscribed_channels()` to find out which channels
 
 To create a channel, call `Talo.channels.create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (a dictionary of string key/value pairs) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
 
+```gdscript
+var channel := await Talo.channels.create("channel name", true, {})
+
+print(channel.name) # channel name
+print(channel.auto_cleanup) # true
+print(channel.props) # {}
+```
+
 ## Joining and leaving channels
 
 To join or leave a channel, use `Talo.channels.join()` and `Talo.channels.leave()` respectively. Both functions take the ID of the channel as the only parameter. If you attempt to join a channel and the current player is already in that channel, nothing will happen. Leaving a channel also follows the same pattern.
@@ -51,6 +59,30 @@ You can also update the props of the channel: keys will be overrided with new va
 
 The owner of a channel can delete the channel using `Talo.channels.delete()`. All other members of the channel will be unsubscribed automatically.
 
+## Private channels
+
+You can also create an invite-only private channels by providing `Talo.channels.create()` with a last parameter set to `true`:
+
+```gdscript
+var channel := await Talo.channels.create("channel name", true, {}, true)
+print(channel.private) # true
+```
+
+Private channels will not be listed when using `Talo.channels.get_channels()`. They also cannot be joined in the same way: the channel owner must invite players to a private channel.
+
+### Channel invites
+
+To create a channel invite, use `Talo.channels.invite()` with a channel ID and player alias ID.
+
+Invited players will automatically join the channel.
+
+```gdscript
+var channel := await Talo.channels.create("channel name", true, {}, true)
+await Talo.channels.invite(channel.id, invitee_player_alias.id)
+```
+
+Note: you can use invites for public channels too.
+
 ## Listening for messages
 
 To listen for messages, you can use the `Talo.channels.message_received` signal. This signal will return the `TaloPlayerChannel`, the sender's`TaloPlayerAlias` and the message.
@@ -70,7 +102,8 @@ func _on_message_received(channel: TaloChannel, player_alias: TaloPlayerAlias, m
 ### Listening for other events
 
 You can also listen for the following signals:
-- `player_joined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
-- `player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that left.
-- `channel_ownership_transferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
-- `channel_deleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
+- `Talo.channels.player_joined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
+- `Talo.channels.player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that left.
+- `Talo.channels.channel_ownership_transferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
+- `Talo.channels.channel_deleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
+- `Talo.channels.channel_updated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and an `Array[String]` of properties that were changed.
