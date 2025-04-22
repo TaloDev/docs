@@ -25,7 +25,7 @@ If you want to update your package, simply repeat the same process.
 
 You can download the latest version of the Unity package from our [itch.io page](https://sleepystudios.itch.io/talo-unity).
 
-Once downloaded, you can simply import the `.unitypackage` file by dragging it into your project.
+Once downloaded, you can simply unzip the file and double-click `talo.unitypackage` to import it into your project.
 
 ## Generate an access key
 
