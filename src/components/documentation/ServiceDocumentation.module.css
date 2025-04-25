@@ -5,7 +5,7 @@
 }
 
 .descriptionText {
-  margin-top: calc(var(--ifm-heading-vertical-rhythm-bottom) * var(--ifm-leading));
+  margin-top: 0;
 }
 
 .url > code {
@@ -51,4 +51,22 @@
 
 .sectionTitle {
   margin-top: 0 !important;
+  background-color: var(--ifm-table-head-background);
+  padding: 16px;
+}
+
+.section {
+  border: 2px solid var(--ifm-table-head-background);
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.sectionContent {
+  padding: 8px 24px;
+}
+
+.sectionEmptyText {
+  margin-left: -8px;
+  margin-top: -8px;
+  margin-bottom: 4px;
 }

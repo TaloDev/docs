@@ -80,30 +80,41 @@ export default function ServiceDocumentation({ service, metaDescription }) {
 
             {getRouteDescription(route)}
 
-            {sections.filter((section) => section.params.length > 0).map((section) => {
+            {sections.filter((section) => {
+              if (route.method === 'GET') {
+                return section.title !== 'Body keys'
+              }
+            }).map((section) => {
               return (
-                <React.Fragment key={section.title}>
+                <div key={section.title} className={styles.section}>
                   <h4 className={styles.sectionTitle}>{section.title}</h4>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Key</th>
-                        <th>Required</th>
-                        <th>Description</th>
-                      </tr>
-                    </thead>
 
-                    <tbody>
-                      {section.params.sort((a, b) => a.name.localeCompare(b.name)).map((param, idx) => (
-                        <tr key={idx}>
-                          <td className={styles.nameCell}><code>{param.name}</code></td>
-                          <td className={styles.requiredCell}>{getParamRequiredText(param.required)}</td>
-                          <td className={styles.descriptionCell} dangerouslySetInnerHTML={{ __html: getParamDescriptionText(param.description) }} />
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </React.Fragment>
+                  <div className={styles.sectionContent}>
+                    {section.params.length === 0 && <p className={styles.sectionEmptyText}>None available</p>}
+
+                    {section.params.length > 0 &&
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Key</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {section.params.sort((a, b) => a.name.localeCompare(b.name)).map((param, idx) => (
+                            <tr key={idx}>
+                              <td className={styles.nameCell}><code>{param.name}</code></td>
+                              <td className={styles.requiredCell}>{getParamRequiredText(param.required)}</td>
+                              <td className={styles.descriptionCell} dangerouslySetInnerHTML={{ __html: getParamDescriptionText(param.description) }} />
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    }
+                  </div>
+                </div>
               )
             })}
 
