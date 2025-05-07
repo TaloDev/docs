@@ -14,15 +14,19 @@ Check out this blog post on [how to build quick & easy leaderboards in Godot](ht
 
 ## Getting entries
 
-Leaderboard entries are paginated: a maximum of 50 entries come back with each request. Use `Talo.leaderboards.get_entries()` to retrieve an array of entries:
+Leaderboard entries are paginated: a maximum of 50 entries come back with each request. Use `Talo.leaderboards.get_entries_with_options()` to retrieve an array of entries:
 
 ```gdscript title="get_entries_button.gd"
 extends Button
 
 @export var leaderboard_name: String
+var current_page: int = 0
 
 func _on_pressed() -> void:
-	var res := await Talo.leaderboards.get_entries(leaderboard_name, 0)
+	var options := GetEntriesOptions.new()
+	options.page = current_page
+
+	var res := await Talo.leaderboards.get_entries_with_options(leaderboard_name, options)
 	var entries: Array[TaloLeaderboardEntry] = res.entries
 	var count: int = res.count
 	var is_last_page: bool = res.is_last_page
@@ -32,16 +36,24 @@ func _on_pressed() -> void:
 
 ### Getting entries for the current player
 
-You can also get entries exclusively created by the current player using `Talo.leaderboards.get_entries_for_current_player()`.
+You can also get entries exclusively created by the current player using the `alias_id` option:
+
+```gdscript
+var options := GetEntriesOptions.new()
+options.alias_id = Talo.current_alias.id
+
+var res := await Talo.leaderboards.get_entries_with_options(internal_name, options)
+```
 
 ### Getting archived entries
 
-If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly) you can get archived entries using the final parameter (`include_archived`) of `get_entries()` or `get_entries_for_current_player()`.
+If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly), you can get archived entries using the `include_archived` option:
 
 ```gdscript
-var res := await Talo.leaderboards.get_entries(leaderboard_name, 0, -1, true)
-# or
-var res := await Talo.leaderboards.get_entries_for_current_player(leaderboard_name, 0, true)
+var options := GetEntriesOptions.new()
+options.include_archived = true
+
+var res := await Talo.leaderboards.get_entries_with_options(internal_name, options)
 ```
 
 ## Creating entries
@@ -68,7 +80,7 @@ Updated entries are only relevant if the leaderboard is set to unique. Leaderboa
 
 After fetching your leaderboard entries you can take advantage of the internal cache to construct your UI, removing the need for any subsequent network requests.
 
-You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache. The same logic applies for `get_entries_for_current_player()` with `get_cached_entries_for_current_player()`.
+You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache. You can also use `get_cached_entries_for_current_player()` to replicate the `alias_id` filter option.
 
 Similarly, updated results from `add_entry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
 
@@ -105,3 +117,26 @@ func _build_entries() -> void:
 ```
 
 The code above is available in the leaderboards sample included with the Talo Godot plugin.
+
+### Getting entries by their props
+
+The example above assumes we've fetched all of the leaderboard entries so we can filter on them. It's generally more efficient to filter by prop keys and values when fetching leaderboard entries.
+
+The following code will only fetch leaderboard entries that have the "team" key:
+
+```gdscript
+var options := GetEntriesOptions.new()
+options.prop_key = "team"
+
+var res := await Talo.leaderboards.get_entries_with_options(internal_name, options)
+```
+
+You can also filter by a prop value. This code will now make sure there is a "team" key and its value is "Blue":
+
+```gdscript
+var options := GetEntriesOptions.new()
+options.prop_key = "team"
+options.prop_value = "Blue"
+
+var res := await Talo.leaderboards.get_entries_with_options(internal_name, options)
+```

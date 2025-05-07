@@ -22,7 +22,7 @@ int page = 0;
 
 public async void FetchEntries()
 {
-	LeaderboardEntry[] entries = await Talo.Leaderboards.GetEntries(internalName, page);
+	var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() { page = page });
 	if (entries.length == 0)
 	{
 	  // No entries on page
@@ -36,15 +36,24 @@ public async void FetchEntries()
 
 ### Getting entries for the current player
 
-You can also get entries exclusively created by the current player using `Talo.Leaderboards.GetEntriesForCurrentPlayer()`.
-### Getting archived entries
-
-If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly) you can get archived entries using the final parameter (`includeArchived`) of `GetEntries()` or `GetEntriesForCurrentPlayer()`.
+You can also get entries exclusively created by the current player using the `aliasId` option:
 
 ```csharp
-var res = await Talo.Leaderboards.GetEntries(leaderboardName, page, includeArchived: includeArchived)
-// or
-var res = await Talo.Leaderboards.GetEntriesForCurrentPlayer(leaderboardName, page, includeArchived)
+var entries = await Talo.Leaderboards.GetEntriesForCurrentPlayer(internalName, new GetEntriesOptions() {
+	page = page,
+	aliasId = Talo.CurrentAlias.id
+});
+```
+
+### Getting archived entries
+
+If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly), you can get archived entries using the `includeArchived` option:
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
+	page = page,
+	includeArchived = true
+});
 ```
 
 ## Creating entries
@@ -70,7 +79,7 @@ Updated entries are only relevant if the leaderboard is set to unique. Leaderboa
 
 After fetching your leaderboard entries you can take advantage of the internal cache to construct your UI, removing the need for any subsequent network requests.
 
-You can use `Talo.Leaderboard.GetCachedEntries()` in the same way as `GetEntries()` above. Every entry fetched previously using `GetEntries()` will exist in the cache. The same logic applies for `GetEntriesForCurrentPlayer()` with `GetCachedEntriesForCurrentPlayer()`.
+You can use `Talo.Leaderboard.GetCachedEntries()` in the same way as `GetEntries()` above. Every entry fetched previously using `GetEntries()` will exist in the cache. You can also use `GetCachedEntriesForCurrentPlayer()` to replicate the `aliasId` filter option.
 
 Similarly, updated results from `AddEntry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
 
@@ -125,3 +134,26 @@ private void OnFilterClick()
 ```
 
 The code above is available in the leaderboards sample included with the Talo Unity package.
+
+### Getting entries by their props
+
+The example above assumes we've fetched all of the leaderboard entries so we can filter on them. It's generally more efficient to filter by prop keys and values when fetching leaderboard entries.
+
+The following code will only fetch leaderboard entries that have the "team" key:
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
+	page = page,
+	propKey = "team"
+});
+```
+
+You can also filter by a prop value. This code will now make sure there is a "team" key and its value is "Blue":
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
+	page = page,
+	propKey = "team",
+	propValue = "Blue"
+});
+```
