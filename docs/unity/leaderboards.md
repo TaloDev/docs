@@ -22,7 +22,7 @@ int page = 0;
 
 public async void FetchEntries()
 {
-	LeaderboardEntry[] entries = await Talo.Leaderboards.GetEntries(internalName, page);
+	LeaderboardEntry[] entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() { page = page });
 	if (entries.length == 0)
 	{
 	  // No entries on page
@@ -36,15 +36,21 @@ public async void FetchEntries()
 
 ### Getting entries for the current player
 
-You can also get entries exclusively created by the current player using `Talo.Leaderboards.GetEntriesForCurrentPlayer()`.
-### Getting archived entries
-
-If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly) you can get archived entries using the final parameter (`includeArchived`) of `GetEntries()` or `GetEntriesForCurrentPlayer()`.
+You can also get entries exclusively created by the current player using `Talo.Leaderboards.GetEntriesForCurrentPlayer()`. This automatically sets the `aliasId` option:
 
 ```csharp
-var res = await Talo.Leaderboards.GetEntries(leaderboardName, page, includeArchived: includeArchived)
-// or
-var res = await Talo.Leaderboards.GetEntriesForCurrentPlayer(leaderboardName, page, includeArchived)
+var entries = await Talo.Leaderboards.GetEntriesForCurrentPlayer(internalName, new GetEntriesOptions() { page = page });
+```
+
+### Getting archived entries
+
+If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly), you can get archived entries using the `includeArchived` option:
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
+	page = page,
+	includeArchived = true
+});
 ```
 
 ## Creating entries
@@ -125,3 +131,26 @@ private void OnFilterClick()
 ```
 
 The code above is available in the leaderboards sample included with the Talo Unity package.
+
+### Getting entries by their props
+
+The example above assumes we've fetched all of the leaderboard entries so we can filter on them. It's generally more efficient to filter by prop keys and values when fetching leaderboard entries.
+
+The following code will only fetch leaderboard entries that have the "team" key:
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
+	page = page,
+	propKey = "team"
+});
+```
+
+You can also filter by a prop value. This code will now make sure there is a "team" key and its value is "Blue":
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
+	page = page,
+	propKey = "team",
+	propValue = "Blue"
+});
+```
