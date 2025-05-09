@@ -70,6 +70,15 @@ await Talo.Channels.Invite(channel.id, inviteePlayerAlias.id);
 
 Note: you can use invites for public channels too.
 
+## Getting channel members
+
+You can fetch a list of channel members using `Talo.Channels.GetMembers()`. This will return a `PlayerAlias[]`:
+
+```csharp
+var members = await Talo.Channels.GetMembers(channel.id);
+Debug.Log(string.Join(", ", members.Select((m) => m.identifier)));
+```
+
 ## Listening for messages
 
 To listen for messages, you can subscribe to the `Talo.Channels.OnMessageReceived` event. This event provides the `Channel`, the sender's `PlayerAlias` and the message.

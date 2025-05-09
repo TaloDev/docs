@@ -83,9 +83,18 @@ await Talo.channels.invite(channel.id, invitee_player_alias.id)
 
 Note: you can use invites for public channels too.
 
+## Getting channel members
+
+You can fetch a list of channel members using `Talo.channels.get_members()`. This will return an `Array[TaloPlayerAlias]`:
+
+```gdscript
+var members := await Talo.channels.get_members(id)
+print(members.map((func (member): return member.identifier)))
+```
+
 ## Listening for messages
 
-To listen for messages, you can use the `Talo.channels.message_received` signal. This signal will return the `TaloPlayerChannel`, the sender's`TaloPlayerAlias` and the message.
+To listen for messages, you can use the `Talo.channels.message_received` signal. This signal will return the `TaloPlayerChannel`, the sender's `TaloPlayerAlias` and the message.
 
 Here's an example of how to use this signal to update a chat UI:
 
