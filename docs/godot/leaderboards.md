@@ -20,9 +20,13 @@ Leaderboard entries are paginated: a maximum of 50 entries come back with each r
 extends Button
 
 @export var leaderboard_name: String
+var current_page: int = 0
 
 func _on_pressed() -> void:
-	var res := await Talo.leaderboards.get_entries(leaderboard_name, 0)
+	var options := Talo.leaderboards.GetEntriesOptions.new()
+	options.page = current_page
+
+	var res := await Talo.leaderboards.get_entries(leaderboard_name, options)
 	var entries: Array[TaloLeaderboardEntry] = res.entries
 	var count: int = res.count
 	var is_last_page: bool = res.is_last_page
@@ -32,16 +36,24 @@ func _on_pressed() -> void:
 
 ### Getting entries for the current player
 
-You can also get entries exclusively created by the current player using `Talo.leaderboards.get_entries_for_current_player()`.
+You can also get entries exclusively created by the current player using `Talo.leaderboards.get_entries_for_current_player()`. This automatically sets the `alias_id` option:
+
+```gdscript
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.page = page
+
+var res := await Talo.leaderboards.get_entries_for_current_player(internal_name, options)
+```
 
 ### Getting archived entries
 
-If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly) you can get archived entries using the final parameter (`include_archived`) of `get_entries()` or `get_entries_for_current_player()`.
+If your leaderboard uses refresh intervals (i.e. daily, weekly, monthly, yearly), you can get archived entries using the `include_archived` option:
 
 ```gdscript
-var res := await Talo.leaderboards.get_entries(leaderboard_name, 0, -1, true)
-# or
-var res := await Talo.leaderboards.get_entries_for_current_player(leaderboard_name, 0, true)
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.include_archived = true
+
+var res := await Talo.leaderboards.get_entries(internal_name, options)
 ```
 
 ## Creating entries
@@ -105,3 +117,26 @@ func _build_entries() -> void:
 ```
 
 The code above is available in the leaderboards sample included with the Talo Godot plugin.
+
+### Getting entries by their props
+
+The example above assumes we've fetched all of the leaderboard entries so we can filter on them. It's generally more efficient to filter by prop keys and values when fetching leaderboard entries.
+
+The following code will only fetch leaderboard entries that have the "team" key:
+
+```gdscript
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.prop_key = "team"
+
+var res := await Talo.leaderboards.get_entries(internal_name, options)
+```
+
+You can also filter by a prop value. This code will now make sure there is a "team" key and its value is "Blue":
+
+```gdscript
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.prop_key = "team"
+options.prop_value = "Blue"
+
+var res := await Talo.leaderboards.get_entries(internal_name, options)
+```
