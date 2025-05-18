@@ -23,6 +23,10 @@ You can retrieve the current player's props using `Talo.CurrentPlayer.props`. To
 
 You can set props using `Talo.CurrentPlayer.SetProp()`. If a prop with specified key doesn't exist it'll be created, otherwise the existing prop with the same key will be updated.
 
+:::warning
+Player props are not linearisable - simultaneous requests may be applied out of order. You should avoid setting or deleting props in `Update()` functions.
+:::
+
 ### Deleting props
 
 Props can be deleted with `Talo.CurrentPlayer.DeleteProp()` or by using `Talo.CurrentPlayer.SetProp()` and setting the value to `null`.
