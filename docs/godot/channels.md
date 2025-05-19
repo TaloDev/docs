@@ -11,21 +11,55 @@ You can learn more about channel [here](https://trytalo.com/channels).
 
 ## Listing channels
 
-To get all available channels for your game, use the `Talo.channels.get_channels()` function. This is a paginated function which takes a single `page` parameter.
+To get all available channels for your game, use the `Talo.channels.get_channels()` function. This is a paginated function which takes a single `options` parameter.
 
 This function returns an array with 3 items: the channels, the total number of channels (if they weren't paginated) and if this is the last page.
 
 ```gdscript
-var page := 0
-var res := await Talo.channels.get_channels(page)
+var options := Talo.channels.GetChannelsOptions.new()
+options.page = 0
+var res := await Talo.channels.get_channels(options)
+
 var channels: Array[GameChannel] = res.channels
 var count: int = res.count
 var is_last_page: bool = res.is_last_page
 ```
 
+### Filtering by prop keys and values
+
+The following code will only fetch channels that have the "guildId" key:
+
+```gdscript
+var options := Talo.channels.GetChannelsOptions.new()
+options.page = 0
+options.prop_key = "guildId"
+var res := await Talo.channels.get_channels(options)
+```
+
+You can also filter by a prop value. This code will now make sure there is a "guildId" key and its value is "157":
+
+```gdscript
+var options := Talo.channels.GetChannelsOptions.new()
+options.page = 0
+options.prop_key = "guildId"
+options.prop_value = "157"
+var res := await Talo.channels.get_channels(options)
+```
+
 ## Listing subscribed channels
 
 You can use `Talo.channels.get_subscribed_channels()` to find out which channels the current player is subscribed to. This returns an array of `TaloChannel`.
+
+### Filtering by prop keys and values
+
+Similar to `get_channels()`, you can filter by prop keys and values by providing options:
+
+```gdscript
+var options := Talo.channels.GetSubscribedChannelsOptions.new()
+options.prop_key = "guildId"
+options.prop_value = "157"
+var res := await Talo.channels.get_subscribed_channels(options)
+```
 
 ## Creating a channel
 

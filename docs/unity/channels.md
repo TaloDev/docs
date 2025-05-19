@@ -17,15 +17,41 @@ This function returns an array with 3 items: the channels, the total number of c
 
 ```csharp
 var page = 0
-var res = await Talo.Channels.GetChannels(page)
+var res = await Talo.Channels.GetChannels(new GetChannelsOptions { page = page })
+
 var channels: Channel[] = res.channels
 var count: int = res.count
 var isLastPage: bool = res.isLastPage
 ```
 
+### Filtering by prop keys and values
+
+The following code will only fetch channels that have the "guildId" key:
+
+```csharp
+var options = new GetChannelsOptions() { page = page, propKey = "guildId" }
+var res = await Talo.Channels.GetChannels(options)
+```
+
+You can also filter by a prop value. This code will now make sure there is a "guildId" key and its value is "157":
+
+```csharp
+var options = new GetChannelsOptions() { page = page, propKey = "guildId", propValue = "157" }
+var res = await Talo.Channels.GetChannels(options)
+```
+
 ## Listing subscribed channels
 
 You can use `Talo.Channels.GetSubscribedChannels()` which returns a `Channel[]` to find out which channels the current player is subscribed to.
+
+### Filtering by prop keys and values
+
+Similar to `GetChannels()`, you can filter by prop keys and values by providing options:
+
+```csharp
+var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" }
+var res = await Talo.Channels.GetSubscribedChannels(options)
+```
 
 ## Creating a channel
 
