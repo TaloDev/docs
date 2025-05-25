@@ -57,6 +57,10 @@ var res = await Talo.Channels.GetSubscribedChannels(options)
 
 To create a channel, call `Talo.Channels.Create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (a dictionary of string key/value pairs) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
 
+```csharp
+var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = channelName, autoCleanup = true }
+```
+
 ## Finding a channel
 
 You can find a channel by its ID using `Talo.Channels.Find()`. This function takes a channel ID integer and returns a `Channel` object.
@@ -79,7 +83,7 @@ The owner of a channel can delete the channel using `Talo.Channels.Delete()`. Al
 
 ## Private channels
 
-You can also create an invite-only private channels using `Talo.Channels.CreatePrivate()`.
+You can also create an invite-only private channels using the `isPrivate` option.
 
 Private channels will not be listed when using `Talo.Channels.GetChannels()`. They also cannot be joined in the same way: the channel owner must invite players to a private channel.
 
@@ -90,11 +94,21 @@ To create a channel invite, use `Talo.Channels.Invite()` with a channel ID and p
 Invited players will automatically join the channel.
 
 ```csharp
-var channel = await Talo.Channels.CreatePrivate("channel name");
+var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", isPrivate = true }
 await Talo.Channels.Invite(channel.id, inviteePlayerAlias.id);
 ```
 
 Note: you can use invites for public channels too.
+
+## Temporary membership channels
+
+If players should only be members of a channel while they're online, you can choose to the enable the `temporary_membership` option when creating your channel:
+
+```csharp
+var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", temporaryMembership = true }
+```
+
+Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.Channels.OnChannelLeft` event will fire with the reason `ChannelLeavingReason.TemporaryMembership`.
 
 ## Getting channel members
 
@@ -130,7 +144,7 @@ private void OnMessageReceived(Channel channel, PlayerAlias sender, string messa
 
 You can also listen for the following events:
 - `Talo.Channels.OnChannelJoined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
-- `Talo.Channels.OnChannelLeft`: Emitted when a player leaves a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that left.
+- `Talo.Channels.OnChannelLeft`: Emitted when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and the `ChannelLeavingReason`.
 - `Talo.Channels.OnOwnershipTransferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
 - `Talo.Channels.OnChannelDeleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
 - `Talo.Channels.OnChannelUpdated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and a `string[]` of properties that were changed.

@@ -66,7 +66,11 @@ var res := await Talo.channels.get_subscribed_channels(options)
 To create a channel, call `Talo.channels.create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (a dictionary of string key/value pairs) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
 
 ```gdscript
-var channel := await Talo.channels.create("channel name", true, {})
+var options := Talo.channels.CreateChannelOptions.new()
+options.name = "channel name"
+options.auto_cleanup = true
+options.props = {}
+var channel := await Talo.channels.create(options)
 
 print(channel.name) # channel name
 print(channel.auto_cleanup) # true
@@ -95,10 +99,15 @@ The owner of a channel can delete the channel using `Talo.channels.delete()`. Al
 
 ## Private channels
 
-You can also create an invite-only private channels by providing `Talo.channels.create()` with a last parameter set to `true`:
+You can also create an invite-only private channels using the `private` option:
 
 ```gdscript
-var channel := await Talo.channels.create("channel name", true, {}, true)
+var options := Talo.channels.CreateChannelOptions.new()
+options.name = "channel name"
+options.auto_cleanup = true
+options.private = true
+
+var channel := await Talo.channels.create(options)
 print(channel.private) # true
 ```
 
@@ -111,11 +120,30 @@ To create a channel invite, use `Talo.channels.invite()` with a channel ID and p
 Invited players will automatically join the channel.
 
 ```gdscript
-var channel := await Talo.channels.create("channel name", true, {}, true)
+var options := Talo.channels.CreateChannelOptions.new()
+options.name = "channel name"
+options.auto_cleanup = true
+options.private = true
+
+var channel := await Talo.channels.create(options)
 await Talo.channels.invite(channel.id, invitee_player_alias.id)
 ```
 
 Note: you can use invites for public channels too.
+
+## Temporary membership channels
+
+If players should only be members of a channel while they're online, you can choose to the enable the `temporary_membership` option when creating your channel:
+
+```gdscript
+var options := Talo.channels.CreateChannelOptions.new()
+options.name = "channel name"
+options.temporary_membership = true
+
+var channel := await Talo.channels.create(options)
+```
+
+Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.channels.player_left` signal will fire with the reason `Talo.channels.ChannelLeavingReason.TEMPORARY_MEMBERSHIP`.
 
 ## Getting channel members
 
@@ -146,7 +174,7 @@ func _on_message_received(channel: TaloChannel, player_alias: TaloPlayerAlias, m
 
 You can also listen for the following signals:
 - `Talo.channels.player_joined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
-- `Talo.channels.player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that left.
+- `Talo.channels.player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and a `Talo.channels.ChannelLeavingReason`.
 - `Talo.channels.channel_ownership_transferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
 - `Talo.channels.channel_deleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
 - `Talo.channels.channel_updated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and an `Array[String]` of properties that were changed.
