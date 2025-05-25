@@ -84,11 +84,19 @@ When a player joins a channel, all channel members will be notified.
 When a player leaves a channel, all channel members will be notified.
 
 ```typescript
+enum GameChannelLeavingReason {
+  DEFAULT,
+  TEMPORARY_MEMBERSHIP
+}
+
 {
   "res": "v1.channels.player-left",
   "data": {
     "channel": GameChannel
-    "playerAlias": PlayerAlias
+    "playerAlias": PlayerAlias,
+    "meta": {
+      "reason": GameChannelLeavingReason
+    }
   }
 }
 ```
