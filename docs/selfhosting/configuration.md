@@ -23,7 +23,7 @@ You'll need to restart the backend container after modifying your .env file
 | DB_PASS                  | Yes      | The password for the database user                                                                                     |
 | EMAIL_DRIVER             | No       | This can be set to 'log' (default, prints to the console) or 'relay' (send via an external SMTP server)                |
 | EMAIL_HOST               | No       | The host for the 'relay' server, e.g. smtp.mailserver.com                                                              |
-| EMAIL_PORT               | No       | The port for the 'relay' server, typically 465                                                                         |
+| EMAIL_PORT               | No       | The port for the 'relay' server, typically 587 or 465                                                                         |
 | EMAIL_USERNAME           | No       | The username for the 'relay' server, e.g. example@mailserver.com                                                       |
 | EMAIL_PASSWORD           | No       | The password for the 'relay' server                                                                                    |
 | EMAIL_DEBUG              | No       | Set this environment variable to print debug info about emails to the console                                          |
