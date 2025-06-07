@@ -148,3 +148,62 @@ You can also listen for the following events:
 - `Talo.Channels.OnOwnershipTransferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
 - `Talo.Channels.OnChannelDeleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
 - `Talo.Channels.OnChannelUpdated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and a `string[]` of properties that were changed.
+
+## Channel storage
+
+Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel. In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
+
+### Getting storage props
+
+To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
+
+```csharp
+var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" }
+var res = await Talo.Channels.GetSubscribedChannels(options);
+
+var channel = res[0]
+var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold")
+```
+
+After fetching a prop, you can access the `value`, `createdBy`, `lastUpdatedBy` (and more) from the `ChannelStorageProp` class.
+
+### Updating storage props
+
+Any player can update the global store using `Talo.Channels.SetStorageProps()`:
+
+```csharp
+await Talo.Channels.SetStorageProps(
+	channel.id,
+	("prop1", "value1"),
+	("prop2", "value2")
+)
+```
+
+This method accepts any number of prop `(string, string)` tuples. You can set a prop value to `null` to delete it.
+
+
+### Listening for storage updates
+
+The `Talo.Channels.OnChannelStoragePropsUpdated` event will fire when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
+
+```csharp
+void Start()
+{
+	Talo.Channels.OnChannelStoragePropsUpdated += OnChannelStoragePropsUpdated;
+}
+
+void OnChannelStoragePropsUpdated(Channel channel, ChannelStorageProp[] upsertedProps, ChannelStorageProp[] deletedProps)
+{
+	foreach (var prop in upsertedProps)
+	{
+		// e.g. "shared-gold: 80 upserted by jim"
+		Debug.Log($"{prop.key}:{prop.value} upserted by {prop.lastUpdatedBy.identifier}")
+	}
+
+	foreach (var prop in deletedProps)
+	{
+		// e.g. "shared-gold deleted by jim, previous value was 80"
+		Debug.Log($"{prop.key} deleted by {prop.lastUpdatedBy.identifier}, previous value was {prop.value}")
+	}
+}
+```
