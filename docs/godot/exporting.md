@@ -11,6 +11,10 @@ The resources tab in the export window should look similar to this:
 
 ![The Godot export window, showing the resources tab](/img/godot-export.png)
 
+## Android exports
+
+When exporting to Android, make sure to enable the `INTERNET` permission in the Android export preset before exporting the project.
+
 ## Separating development data
 
 In order to correctly [separate development data](/docs/godot/dev-data) from production data, you need to ensure you are creating a "release" build by unticking `Export With Debug` before exporting your game:
