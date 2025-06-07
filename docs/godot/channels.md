@@ -154,6 +154,8 @@ var members := await Talo.channels.get_members(id)
 print(members.map((func (member): return member.identifier)))
 ```
 
+Note: the current player can only fetch channel members for channels they are part of.
+
 ## Listening for messages
 
 To listen for messages, you can use the `Talo.channels.message_received` signal. This signal will return the `TaloPlayerChannel`, the sender's `TaloPlayerAlias` and the message.

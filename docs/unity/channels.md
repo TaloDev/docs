@@ -119,6 +119,8 @@ var members = await Talo.Channels.GetMembers(channel.id);
 Debug.Log(string.Join(", ", members.Select((m) => m.identifier)));
 ```
 
+Note: the current player can only fetch channel members for channels they are part of.
+
 ## Listening for messages
 
 To listen for messages, you can subscribe to the `Talo.Channels.OnMessageReceived` event. This event provides the `Channel`, the sender's `PlayerAlias` and the message.
