@@ -14,7 +14,7 @@ Check out this blog post on [how to save and load data in Godot](https://trytalo
 
 As part of the Godot plugin, we've included a few demos to help you get started:
 1. [Playground saves](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/playground) - allows you to create/load/update/delete a very basic save
-2. [Stateful buttons](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/stateful_buttons) - a simple demo focused on saving/loading functionality
+2. [Persistent buttons](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/persistent_buttons) - a simple demo focused on saving/loading functionality
 3. [Scene-based saves](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/multiscene_saves) - a full demo showing how data gets persisted between scenes with a player and other loadables
 
 ## Loadables
