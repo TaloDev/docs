@@ -178,3 +178,58 @@ You can also listen for the following signals:
 - `Talo.channels.channel_ownership_transferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
 - `Talo.channels.channel_deleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
 - `Talo.channels.channel_updated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and an `Array[String]` of properties that were changed.
+
+## Channel storage
+
+Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel. In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
+
+### Getting storage props
+
+To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
+
+```gdscript
+var options := Talo.channels.GetSubscribedChannelsOptions.new()
+options.prop_key = "guildId"
+options.prop_value = "157"
+var res := await Talo.channels.get_subscribed_channels(options)
+
+var channel := res[0]
+var prop := await Talo.channels.get_storage_prop(channel.id, "shared-gold")
+```
+
+After fetching a prop, you can access the `value`, `created_by_alias`, `last_updated_by_alias` (and more) from the `TaloChannelStorageProp` class.
+
+### Updating storage props
+
+Any player can update the global store using `Talo.channels.set_storage_props()`:
+
+```gdscript
+await Talo.channels.set_storage_props(channel.id, {
+	prop1: "value1",
+	prop2: "value2"
+})
+```
+
+This method accepts a dictionary of prop keys and values. You can set a prop value to `null` to delete it.
+
+### Listening for storage updates
+
+The `Talo.channels.channel_storage_props_updated` signal will fire when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
+
+```gdscript
+func _ready() -> void:
+	Talo.channels.channel_storage_props_updated.connect(_on_channel_props_updated)
+
+func _on_channel_props_updated(channel: TaloChannel, upserted_props: Array[TaloChannelStorageProp], deleted_props: Array[TaloChannelStorageProp]) -> void:
+	if channel.id != demo_channel.id:
+		return
+
+	for prop in upserted_props:
+		# e.g. "shared-gold: 80 upserted by jim"
+		print("%s:%s upserted by %s" % [prop.key, prop.value, prop.last_updated_by_alias.identifier])
+
+	for prop in deleted_props:
+		# e.g. "shared-gold deleted by jim, previous value was 80"
+		print("%s deleted by %s, previous value was %s" % [prop.key, prop.last_updated_by_alias.identifier, prop.value])
+
+```
