@@ -146,9 +146,13 @@ private void OnMessageReceived(Channel channel, PlayerAlias sender, string messa
 
 You can also listen for the following events:
 - `Talo.Channels.OnChannelJoined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
+
 - `Talo.Channels.OnChannelLeft`: Emitted when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and the `ChannelLeavingReason`.
+
 - `Talo.Channels.OnOwnershipTransferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
+
 - `Talo.Channels.OnChannelDeleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
+
 - `Talo.Channels.OnChannelUpdated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and a `string[]` of properties that were changed.
 
 ## Channel storage
@@ -160,14 +164,27 @@ Channel storage is a shared pool of props (key/value pairs) that can be read, cr
 To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
 
 ```csharp
-var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" }
+var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" };
 var res = await Talo.Channels.GetSubscribedChannels(options);
 
-var channel = res[0]
+var channel = res[0];
 var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold")
 ```
 
 After fetching a prop, you can access the `value`, `createdBy`, `lastUpdatedBy` (and more) from the `ChannelStorageProp` class.
+
+#### Cache-busting
+
+Talo keeps an internal cache of storage props which is automatically updated whenever props are created, updated or deleted. By default, Talo will pull from the internal cache which is generally up-to-date. To guarantee fetching the freshest data, you can skip the internal cache with the final parameter of `GetStorageProp()`:
+
+```csharp
+// checks the internal cache first,
+// if the key isn't set, fetches the latest data directly from the database
+var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", false /* default */);
+
+// fetches the latest data directly from the database
+var freshProp = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", true);
+```
 
 ### Updating storage props
 
@@ -178,11 +195,27 @@ await Talo.Channels.SetStorageProps(
 	channel.id,
 	("prop1", "value1"),
 	("prop2", "value2")
-)
+);
 ```
 
 This method accepts any number of prop `(string, string)` tuples. You can set a prop value to `null` to delete it.
 
+#### Handling failures
+
+Sometimes, setting props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.Channels.OnChannelStoragePropsFailedToSet` event lets you listen for these errors:
+
+```csharp
+void Start()
+{
+	Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, ChannelStoragePropError[] errors) => {
+		foreach (var prop in errors)
+		{
+			// shared-gold: Prop value length (596) exceeds 512 characters
+			Debug.Log($"{prop.key}: {prop.error}");
+		}
+	};
+}
+```
 
 ### Listening for storage updates
 
@@ -199,13 +232,13 @@ void OnChannelStoragePropsUpdated(Channel channel, ChannelStorageProp[] upserted
 	foreach (var prop in upsertedProps)
 	{
 		// e.g. "shared-gold: 80 upserted by jim"
-		Debug.Log($"{prop.key}:{prop.value} upserted by {prop.lastUpdatedBy.identifier}")
+		Debug.Log($"{prop.key}:{prop.value} upserted by {prop.lastUpdatedBy.identifier}");
 	}
 
 	foreach (var prop in deletedProps)
 	{
 		// e.g. "shared-gold deleted by jim, previous value was 80"
-		Debug.Log($"{prop.key} deleted by {prop.lastUpdatedBy.identifier}, previous value was {prop.value}")
+		Debug.Log($"{prop.key} deleted by {prop.lastUpdatedBy.identifier}, previous value was {prop.value}");
 	}
 }
 ```
