@@ -159,6 +159,25 @@ This response is sent to channel members when any of the channel's properties (i
 | ----------------------- | ------------------------------- |
 | Yes                     | `read:gameChannels`            	|
 
+### Channel storage updated
+
+Channel members will receive this when storage props are created, updated or deleted.
+
+```typescript
+{
+  "res": "v1.channels.storage.updated",
+  "data": {
+    "channel": GameChannel
+    "upsertedProps": GameChannelStorageProp[]
+    "deletedProps": GameChannelStorageProp[]
+  }
+}
+```
+
+| Authentication required | Scopes                  		    |
+| ----------------------- | ------------------------------- |
+| Yes                     | `read:gameChannels`            	|
+
 ## Live config
 
 ### Live config updated
@@ -245,6 +264,17 @@ type GameChannel = {
   totalMessages: number
   memberCount: number
   props: Prop[]
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+```ts
+type GameChannelStorageProp = {
+  key: string
+  value: string
+  createdBy: PlayerAlias
+  lastUpdatedBy: PlayerAlias
   createdAt: Date
   updatedAt: Date
 }

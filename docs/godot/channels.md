@@ -154,6 +154,8 @@ var members := await Talo.channels.get_members(id)
 print(members.map((func (member): return member.identifier)))
 ```
 
+Note: the current player can only fetch channel members for channels they are part of.
+
 ## Listening for messages
 
 To listen for messages, you can use the `Talo.channels.message_received` signal. This signal will return the `TaloPlayerChannel`, the sender's `TaloPlayerAlias` and the message.
@@ -170,11 +172,97 @@ func _on_message_received(channel: TaloChannel, player_alias: TaloPlayerAlias, m
 
 ```
 
-### Listening for other events
+### Listening for other signals
 
 You can also listen for the following signals:
 - `Talo.channels.player_joined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
+
 - `Talo.channels.player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and a `Talo.channels.ChannelLeavingReason`.
+
 - `Talo.channels.channel_ownership_transferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
+
 - `Talo.channels.channel_deleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
+
 - `Talo.channels.channel_updated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and an `Array[String]` of properties that were changed.
+
+## Channel storage
+
+Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel. In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
+
+### Getting storage props
+
+To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
+
+```gdscript
+var options := Talo.channels.GetSubscribedChannelsOptions.new()
+options.prop_key = "guildId"
+options.prop_value = "157"
+var res := await Talo.channels.get_subscribed_channels(options)
+
+var channel := res[0]
+var prop := await Talo.channels.get_storage_prop(channel.id, "shared-gold")
+```
+
+After fetching a prop, you can access the `value`, `created_by_alias`, `last_updated_by_alias` (and more) from the `TaloChannelStorageProp` class.
+
+#### Cache-busting
+
+Talo keeps an internal cache of storage props which is automatically updated whenever props are created, updated or deleted. By default, Talo will pull from the internal cache which is generally up-to-date. To guarantee fetching the freshest data, you can skip the internal cache with the final parameter of `get_storage_prop()`:
+
+```gdscript
+# checks the internal cache first,
+# if the key isn't set, fetches the latest data directly from the database
+var prop := await Talo.channels.get_storage_prop(channel.id, "shared-gold", false) # default
+
+# fetches the latest data directly from the database
+var freshProp := await Talo.channels.get_storage_prop(channel.id, "shared-gold", true)
+```
+
+### Updating storage props
+
+Any player can update the global store using `Talo.channels.set_storage_props()`:
+
+```gdscript
+await Talo.channels.set_storage_props(channel.id, {
+	prop1: "value1",
+	prop2: "value2"
+})
+```
+
+This method accepts a dictionary of prop keys and values. You can set a prop value to `null` to delete it.
+
+#### Handling failures
+
+Sometimes, setting props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.channels.channel_storage_props_failed_to_set` signal lets you listen for these errors:
+
+```gdscript
+func _ready() -> void
+	Talo.channels.channel_storage_props_failed_to_set.connect(
+		func (channel: TaloChannel, failed_props: Array[TaloChannelStoragePropError]):
+			for prop in failed_props:
+				# shared-gold: Prop value length (596) exceeds 512 characters
+				print("%s: %s" % [prop.key, prop.error])
+	)
+```
+
+### Listening for storage updates
+
+The `Talo.channels.channel_storage_props_updated` signal will fire when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
+
+```gdscript
+func _ready() -> void:
+	Talo.channels.channel_storage_props_updated.connect(_on_channel_props_updated)
+
+func _on_channel_props_updated(channel: TaloChannel, upserted_props: Array[TaloChannelStorageProp], deleted_props: Array[TaloChannelStorageProp]) -> void:
+	if channel.id != demo_channel.id:
+		return
+
+	for prop in upserted_props:
+		# e.g. "shared-gold: 80 upserted by jim"
+		print("%s:%s upserted by %s" % [prop.key, prop.value, prop.last_updated_by_alias.identifier])
+
+	for prop in deleted_props:
+		# e.g. "shared-gold deleted by jim, previous value was 80"
+		print("%s deleted by %s, previous value was %s" % [prop.key, prop.last_updated_by_alias.identifier, prop.value])
+
+```
