@@ -55,6 +55,8 @@ var res := await Talo.stats.track(stat_name)
 print("%s, %s" % [res.value, res.stat.global_value])
 ```
 
+You can also get the current value of a stat for a player using `Talo.stats.find_player_stat()`.
+
 ## Stat history
 
 You can fetch a history of updates to a stat for the current player using `Talo.stats.get_history()`. These results are paginated and can be filtered by specific start and end dates too:
