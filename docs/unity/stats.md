@@ -57,6 +57,8 @@ var res = await Talo.Stats.Track('gold-collected', 104);
 Debug.Log($"{res.playerStat.value}, {stat.playerStat.stat.globalValue}")
 ```
 
+You can also get the current value of a stat for a player using `Talo.Stats.FindPlayerStat()`.
+
 ## Stat history
 
 You can fetch a history of updates to a stat for the current player using `Talo.Stats.GetHistory()`. These results are paginated and can be filtered by specific start and end dates too:
