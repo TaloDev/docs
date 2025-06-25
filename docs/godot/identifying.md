@@ -27,7 +27,7 @@ func _on_pressed():
 ```
 
 :::caution
-If you are using **Talo Player Authentication**, `Talo.players.identify()` will be invoked automatically and the `Talo.players.identified` signal will also fire as normal.
+If you are using **Talo Player Authentication**, `Talo.players.identify()` will be invoked automatically and the `Talo.players.identified` signal will also emit as normal.
 
 Visit the [Player authentication docs](/docs/godot/player-authentication) to learn more about identifying players with authentication enabled.
 :::
@@ -38,7 +38,7 @@ You can easily create an identifier with `Talo.players.generate_identifier()`. T
 
 ### The "identified" signal
 
-After a successful identification, the `Talo.players.identified` signal will fire, returning the identified player. This allows you to, for example, put the player's name on a label:
+After a successful identification, the `Talo.players.identified` signal will emit, returning the identified player. This allows you to, for example, put the player's name on a label:
 
 ```gdscript title="player_name.gd"
 extends Label

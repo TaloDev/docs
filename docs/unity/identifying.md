@@ -43,14 +43,14 @@ public class IdentifyPlayer: MonoBehaviour
 ```
 
 :::caution
-If you are using **Talo Player Authentication**, `Talo.Players.Identify()` will be invoked automatically and the `Talo.Players.OnIdentified` event will also fire as normal.
+If you are using **Talo Player Authentication**, `Talo.Players.Identify()` will be invoked automatically and the `Talo.Players.OnIdentified` event will also invoke as normal.
 
 Visit the [Player authentication docs](/docs/unity/player-authentication) to learn more about identifying players with authentication enabled.
 :::
 
 ### The "OnIdentified" event
 
-After a successful identification, the `Talo.Players.OnIdentified()` event will fire, returning the identified player. This allows you to, for example, immediately fetch that player's saves:
+After a successful identification, the `Talo.Players.OnIdentified()` event will invoke, returning the identified player. This allows you to, for example, immediately fetch that player's saves:
 
 ```csharp
 Talo.Players.OnIdentified += async (player) =>

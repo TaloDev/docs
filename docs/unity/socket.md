@@ -66,7 +66,7 @@ public void SendMessage(int channelId, string message)
 
 ## Handling connection closures
 
-The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors.md#rate-limit-exceeded). The socket will emit a `OnConnectionClosed` event with a status code and reason.
+The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors.md#rate-limit-exceeded). The socket will invoke a `OnConnectionClosed` event with a status code and reason.
 
 The recommended way of re-establishing a connection is calling `Talo.Socket.OpenConnection()` and then re-identifying your player. This is the same logic that gets used internally when your game opens.
 
@@ -76,7 +76,7 @@ You can choose to manually end the socket connection using `Talo.Socket.CloseCon
 
 ## Error handling
 
-The Talo Socket exposes an `OnErrorReceived` event that fires when a `v1.error` response is received. You can check the error code (using the `SocketErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:
+The Talo Socket exposes an `OnErrorReceived` event that invokes when a `v1.error` response is received. You can check the error code (using the `SocketErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:
 
 ```csharp
 Talo.Socket.OnErrorReceived += (SocketError err) => {

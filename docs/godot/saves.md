@@ -117,7 +117,7 @@ You can load saves using `Talo.saves.get_saves()`. Once your saves have been fet
 
 Saves can be accessed using `Talo.saves.all` or `Talo.saves.latest`. To load a save, use `Talo.saves.choose_save()` and pass in the save you want to load.
 
-Once your save has been chosen, the `Talo.saves.save_chosen` signal will fire.
+Once your save has been chosen, the `Talo.saves.save_chosen` signal will emit.
 
 Finally, when all your registered Loadables have called their `on_loaded()`, an `Talo.saves.save_loading_completed` signal is emitted, signalling that, for example, it's safe to hide your loading screen.
 
@@ -129,7 +129,7 @@ You can find more details including code samples in our [Godot saves deep dive](
 
 ## Creating saves
 
-To create a save, use `Talo.saves.create_save()`. Your new save will automatically become your chosen save (although the `save_chosen` signal will not fire).
+To create a save, use `Talo.saves.create_save()`. Your new save will automatically become your chosen save (although the `save_chosen` signal will not emit).
 
 Offline copies of saves are created in the [user data](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) within a `saves.json`.
 
@@ -153,4 +153,4 @@ Additionally, if a save is only available offline then it will be synced as soon
 
 ## Unloading saves
 
-You can "unload" a save using `Talo.saves.unload_current_save()`. This fires the `save_chosen` signal with a `null` save (preventing Loadables from calling their `on_loaded` event).
+You can "unload" a save using `Talo.saves.unload_current_save()`. This emits the `save_chosen` signal with a `null` save (preventing Loadables from calling their `on_loaded` event).
