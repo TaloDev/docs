@@ -65,6 +65,33 @@ match res:
 		pass
 ```
 
+### Automatic logins
+
+After a successful login, the player's session token is stored locally. If a token is found when the game is opened, Talo will automatically identify the player.
+
+You can disable this by adding this to your `settings.cfg`:
+
+```
+[player_auth]
+auto_start_session=false
+```
+
+You can manually trigger this behaviour using `Talo.player_auth.start_session()`.
+
+### The "session_found" and "session_not_found" signals
+
+When `Talo.player_auth.start_session()` is called (automatically or manually), either the `Talo.player_auth.session_found` or the `Talo.player_auth.session_not_found` signal will be emitted if a token is found.
+
+You can use these signals when deciding whether or not to show a splash screen or login screen:
+
+```gdscript
+func _ready() -> void:
+	# auto_start_session should be disabled
+	Talo.player_auth.session_found.connect(func (): go_to_loading())
+	Talo.player_auth.session_not_found.connect(func (): go_to_login())
+	Talo.player_auth.start_session()
+```
+
 ## Verifying logins
 
 If you need to verify a player's login, you need to call `Talo.player_auth.verify()` with the `code` sent to the player's email:

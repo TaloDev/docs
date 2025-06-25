@@ -58,3 +58,7 @@ responses=true
 ### Self-hosting
 
 If you're self-hosting Talo, you can configure your custom endpoint here in the `settings.cfg`.
+
+### Settings reference
+
+You can visit the [settings reference](/docs/godot/settings-reference.md) for a detailed overview of Talo's configuration options.

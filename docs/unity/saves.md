@@ -20,7 +20,7 @@ Saves can be accessed using `Talo.Saves.All` or `Talo.Saves.Latest`. To load a s
 
 Once your save has been chosen, the `Talo.Saves.OnSaveChosen` event will fire. Internally, this causes the `OnLoaded()` function in your Loadables to be called.
 
-Finally, when all your registered loadables have called their `OnLoaded()`, an `Talo.Saves.OnSaveLoadingCompleted()` event is fired, signalling that, for example, it's safe to hide your loading screen.
+Finally, when all your registered loadables have called their `OnLoaded()`, an `Talo.Saves.OnSaveLoadingCompleted()` event is invoked, signalling that, for example, it's safe to hide your loading screen.
 
 ## Loadables
 
@@ -28,7 +28,7 @@ Loadables are GameObjects that automatically have their data saved and loaded. T
 
 Your Loadables must implement the following two methods:
 - `RegisterFields()`: this is where your saved data will be populated just before your save gets created or updated
-- `OnLoaded()`: this is called after the `OnSaveChosen` event is fired and this is where you will modify your GameObject with its saved data
+- `OnLoaded()`: this is called after the `OnSaveChosen` event is invoked and this is where you will modify your GameObject with its saved data
 
 Importantly, each Loadable must have a unique ID so that Talo knows which GameObject to load with which data. The name of the GameObject and names of all of its parents are also saved (for example `SpaceShip.EngineRoom.Interactables.OffButton`).
 

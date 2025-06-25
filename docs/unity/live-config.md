@@ -49,7 +49,7 @@ void Start()
 }
 ```
 
-The `OnLiveConfigUpdated` event is fired via the [Talo Socket](./socket) whenever the live config is updated from the Talo dashboard.
+The `OnLiveConfigUpdated` event is invoked via the [Talo Socket](./socket) whenever the live config is updated from the Talo dashboard.
 
 ### Alternative example - polling the live config with a timer
 

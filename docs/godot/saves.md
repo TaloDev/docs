@@ -113,13 +113,13 @@ func on_loaded(data: Dictionary) -> void:
 
 ## Loading saves
 
-You can load saves using `Talo.saves.get_saves()`. Once your saves have been fetched, the `Talo.saves.saves_loaded` signal is fired.
+You can load saves using `Talo.saves.get_saves()`. Once your saves have been fetched, the `Talo.saves.saves_loaded` signal is emitted.
 
 Saves can be accessed using `Talo.saves.all` or `Talo.saves.latest`. To load a save, use `Talo.saves.choose_save()` and pass in the save you want to load.
 
 Once your save has been chosen, the `Talo.saves.save_chosen` signal will fire.
 
-Finally, when all your registered Loadables have called their `on_loaded()`, an `Talo.saves.save_loading_completed` signal is fired, signalling that, for example, it's safe to hide your loading screen.
+Finally, when all your registered Loadables have called their `on_loaded()`, an `Talo.saves.save_loading_completed` signal is emitted, signalling that, for example, it's safe to hide your loading screen.
 
 ![Flowchart showing loading a save](/img/saves-flowchart.png)
 

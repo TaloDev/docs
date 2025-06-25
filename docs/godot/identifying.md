@@ -36,7 +36,7 @@ Visit the [Player authentication docs](/docs/godot/player-authentication) to lea
 
 You can easily create an identifier with `Talo.players.generate_identifier()`. This is useful for temporarily identifying players before you know who they are, and then merging them with an identified player later on.
 
-### The identified signal
+### The "identified" signal
 
 After a successful identification, the `Talo.players.identified` signal will fire, returning the identified player. This allows you to, for example, put the player's name on a label:
 
@@ -48,6 +48,18 @@ func _ready() -> void:
 
 func _on_identified(player: TaloPlayer) -> void:
 	text = player.get_prop("display_name")
+```
+
+### The "identification_started" and "identification_failed" signals
+
+When `Talo.players.identify()` is called, the `Talo.players.identification_started` signal is emitted.
+
+If identification fails, the `Talo.players.identification_failed` signal is emitted.
+
+```gdscript
+func _ready() -> void:
+    Talo.players.identification_started.connect(func (): go_to_loading())
+    Talo.players.identification_failed.connect(func (): go_to_login())
 ```
 
 ## Checking identification

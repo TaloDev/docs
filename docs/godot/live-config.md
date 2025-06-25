@@ -35,7 +35,7 @@ func _on_live_config_updated(live_config: TaloLiveConfig) -> void:
 	label.text = live_config.get_prop("live_string", "Not set!")
 ```
 
-The `live_config_updated` signal is fired via the [Talo Socket](./socket) whenever the live config is updated from the Talo dashboard.
+The `live_config_updated` signal is emitted via the [Talo Socket](./socket) whenever the live config is updated from the Talo dashboard.
 
 ### Alternative example - polling the live config with a timer
 

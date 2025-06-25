@@ -48,7 +48,7 @@ If you are using **Talo Player Authentication**, `Talo.Players.Identify()` will 
 Visit the [Player authentication docs](/docs/unity/player-authentication) to learn more about identifying players with authentication enabled.
 :::
 
-### OnIdentified event
+### The "OnIdentified" event
 
 After a successful identification, the `Talo.Players.OnIdentified()` event will fire, returning the identified player. This allows you to, for example, immediately fetch that player's saves:
 
@@ -58,6 +58,12 @@ Talo.Players.OnIdentified += async (player) =>
 	await Talo.Saves.GetSaves();
 };
 ```
+
+### The "OnIdentificationStarted" and "OnIdentificationFailed" events
+
+When `Talo.Players.Identify()` is called, the `Talo.Players.OnIdentificationStarted` event is invoked.
+
+If identification fails, the `Talo.Players.OnIdentificationFailed` event is invoked.
 
 ## Checking identification
 

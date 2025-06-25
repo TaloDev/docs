@@ -107,6 +107,30 @@ private async void OnLoginClick()
 }
 ```
 
+### Automatic logins
+
+After a successful login, the player's session token is stored locally. If a token is found when the game is opened, Talo will automatically identify the player.
+
+You can disable this behaviour by toggling off the `autoStartSession` setting in your Talo Settings Asset.
+
+You can manually trigger this behaviour using `Talo.PlayerAuth.StartSession()`.
+
+### The "OnSessionFound" and "OnSessionNotFound" events
+
+When `Talo.PlayerAuth.StartSession()` is called (automatically or manually), either the `Talo.PlayerAuth.OnSessionFound` or the `Talo.PlayerAuth.OnSessionNotFound` event will be invoked if a token is found.
+
+You can use these events when deciding whether or not to show a splash screen or login screen:
+
+```csharp
+private void Start()
+{
+	// autoStartSession should be disabled
+	Talo.PlayerAuth.OnSessionFound += () => GoToLoading();
+	Talo.PlayerAuth.OnSessionNotFound += () => GoToLogin();
+	Talo.PlayerAuth.StartSession();
+}
+```
+
 ## Verifying logins
 
 If you need to verify a player's login, you need to call `Talo.PlayerAuth.Verify()` with the `code` sent to the player's email:
