@@ -108,7 +108,7 @@ If players should only be members of a channel while they're online, you can cho
 var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", temporaryMembership = true }
 ```
 
-Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.Channels.OnChannelLeft` event will fire with the reason `ChannelLeavingReason.TemporaryMembership`.
+Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.Channels.OnChannelLeft` event will invoke with the reason `ChannelLeavingReason.TemporaryMembership`.
 
 ## Getting channel members
 
@@ -145,15 +145,15 @@ private void OnMessageReceived(Channel channel, PlayerAlias sender, string messa
 ### Listening for other events
 
 You can also listen for the following events:
-- `Talo.Channels.OnChannelJoined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
+- `Talo.Channels.OnChannelJoined`: Invoked when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
 
-- `Talo.Channels.OnChannelLeft`: Emitted when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and the `ChannelLeavingReason`.
+- `Talo.Channels.OnChannelLeft`: Invoked when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and the `ChannelLeavingReason`.
 
-- `Talo.Channels.OnOwnershipTransferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
+- `Talo.Channels.OnOwnershipTransferred`: Invoked when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
 
-- `Talo.Channels.OnChannelDeleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
+- `Talo.Channels.OnChannelDeleted`: Invoked when a channel is deleted. Returns the `TaloChannel` that was deleted.
 
-- `Talo.Channels.OnChannelUpdated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and a `string[]` of properties that were changed.
+- `Talo.Channels.OnChannelUpdated`: Invoked when a channel is updated. Returns the `TaloChannel` that was updated and a `string[]` of properties that were changed.
 
 ## Channel storage
 
@@ -219,7 +219,7 @@ void Start()
 
 ### Listening for storage updates
 
-The `Talo.Channels.OnChannelStoragePropsUpdated` event will fire when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
+The `Talo.Channels.OnChannelStoragePropsUpdated` event will invoke when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
 
 ```csharp
 void Start()

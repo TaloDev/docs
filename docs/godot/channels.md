@@ -143,7 +143,7 @@ options.temporary_membership = true
 var channel := await Talo.channels.create(options)
 ```
 
-Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.channels.player_left` signal will fire with the reason `Talo.channels.ChannelLeavingReason.TEMPORARY_MEMBERSHIP`.
+Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.channels.player_left` signal will emit with the reason `Talo.channels.ChannelLeavingReason.TEMPORARY_MEMBERSHIP`.
 
 ## Getting channel members
 
@@ -247,7 +247,7 @@ func _ready() -> void
 
 ### Listening for storage updates
 
-The `Talo.channels.channel_storage_props_updated` signal will fire when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
+The `Talo.channels.channel_storage_props_updated` signal will emit when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
 
 ```gdscript
 func _ready() -> void:

@@ -45,3 +45,7 @@ Your settings asset must always be at the top-level in the Resources folder and 
 ### Self-hosting
 
 If you're self-hosting Talo, you can configure your custom endpoint here in the Settings Asset.
+
+### Settings reference
+
+You can visit the [settings reference](/docs/unity/settings-reference.md) for a detailed overview of Talo's configuration options.
