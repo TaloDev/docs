@@ -21,6 +21,12 @@ enabled=true
 auto_start_session=false
 ```
 
+:::warning
+Godot does not export `.cfg` files by default.
+
+Follow the steps in the [exporting your project docs](/docs/godot/exporting.md) to ensure your settings file is exported.
+:::
+
 ## Accessing settings
 
 You can use the `Talo.settings` object to get or set individual options. You will need to call `Talo.settings.save_config()` after modifying a setting to persist the change.
