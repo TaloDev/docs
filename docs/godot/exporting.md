@@ -11,9 +11,11 @@ The resources tab in the export window should look similar to this:
 
 ![The Godot export window, showing the resources tab](/img/godot-export.png)
 
-## Android exports
+## Android exports
 
-When exporting to Android, make sure to enable the `INTERNET` permission in the Android export preset before exporting the project.
+:::warning
+When exporting to Android, you must enable the `INTERNET` permission in the export preset before exporting the project.
+:::
 
 ## Separating development data
 
