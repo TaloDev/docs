@@ -23,6 +23,8 @@ Talo's game saves let you easily save and load specific nodes in your game. To d
 
 Once a loadable has entered the tree, its `_ready()` function registers it with the saves manager. We need to register all the Loadables in the scene so that when we load our save, we can match the content in the save file with the structure of the scene.
 
+Importantly, each Loadable _must_ have a unique `id` so that Talo knows which node to load with which data.
+
 ## Saved objects
 
 Save files are collections of "saved objects". Here's what a typical saved object looks like:
@@ -55,7 +57,7 @@ Save files are collections of "saved objects". Here's what a typical saved objec
 You can visualise players' save files as node graphs in the Talo dashboard. Just go to the player's profile, click `Saves` and choose the save you want to view.
 :::
 
-Saved objects must have a unique `id`: this is used to match up saved objects with the corresponding loadable. The `name` in a saved object refers to the `NodePath` of the loadable in the scene.
+Saved objects must have a unique `id`: this comes from the loadable and is used to match the saved object with the correct loadable. The `name` in a saved object refers to the `NodePath` of the loadable in the scene.
 
 The most interesting part is the `data` which contains the fields we register in the loadable (explained below) as well as the original `type` of the data. Notice that all values are serialised into strings. This is so that when the data is loaded, it can be easily converted back into its original type.
 
@@ -119,7 +121,7 @@ Saves can be accessed using `Talo.saves.all` or `Talo.saves.latest`. To load a s
 
 Once your save has been chosen, the `Talo.saves.save_chosen` signal will emit.
 
-Finally, when all your registered Loadables have called their `on_loaded()`, an `Talo.saves.save_loading_completed` signal is emitted, signalling that, for example, it's safe to hide your loading screen.
+Finally, when all your registered Loadables have called their `on_loaded()`, an `Talo.saves.save_loading_completed` signal is emitted which can be used hide your loading screen.
 
 ![Flowchart showing loading a save](/img/saves-flowchart.png)
 
@@ -153,4 +155,4 @@ Additionally, if a save is only available offline then it will be synced as soon
 
 ## Unloading saves
 
-You can "unload" a save using `Talo.saves.unload_current_save()`. This emits the `save_chosen` signal with a `null` save (preventing Loadables from calling their `on_loaded` event).
+You can unload a save using `Talo.saves.unload_current_save()`. This emits the `save_chosen` signal with a `null` save (preventing Loadables from calling their `on_loaded` event).
