@@ -41,6 +41,7 @@ You'll need to restart the backend container after modifying your .env file
 | HYPERDX_API_KEY             | No       | Your HyperDX API key - used to enable the integration                                                                  |
 | HDX_NODE_BETA_MODE          | No       | Set to '1' to enable HyperDX trace attributes                                                                          |
 | OTEL_EXPORTER_OTLP_ENDPOINT | No       | The open telemetry collector endpoint where traces will be sent e.g. https://in-otel.hyperdx.io                        |
+| NO_PROXY                    | No       | Set to '1' to _not_ use the `X-Forwarded-For` header for player auth activity IP addresses                             |
 
 ## Third party configurations
 
