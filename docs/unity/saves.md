@@ -6,39 +6,61 @@ sidebar_position: 6
 
 Talo Saves allow you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
 
-Check out the `SavesPlayground` demo scene for additional examples.
-
-:::tip
-You can visualise players' save files in the Talo dashboard. Just go to the player's profile, click `Saves` and choose the save you want to view.
-:::
-
-## Loading saves
-
-You can load saves using `Talo.Saves.GetSaves()`. Once your saves have been fetched, the `Talo.Saves.OnSavesLoaded` event is invoked.
-
-Saves can be accessed using `Talo.Saves.All` or `Talo.Saves.Latest`. To load a save, use `Talo.Saves.ChooseSave()` and pass in the save you want to load.
-
-Once your save has been chosen, the `Talo.Saves.OnSaveChosen` event will invoke. Internally, this causes the `OnLoaded()` function in your Loadables to be called.
-
-Finally, when all your registered loadables have called their `OnLoaded()`, an `Talo.Saves.OnSaveLoadingCompleted()` event is invoked, signalling that, for example, it's safe to hide your loading screen.
+Check out the [SavesDemo sample](https://github.com/TaloDev/unity/tree/develop/Assets/Talo%20Game%20Services/Talo/Samples/SavesDemo) (included with the Unity package) for a full example showing choosing saves, managing saves and persisting save data across different scenes.
 
 ## Loadables
 
 Loadables are GameObjects that automatically have their data saved and loaded. To make a GameObject loadable, create a new MonoBehavior, extend the `Loadable` class and finally add your new component onto your GameObject.
 
-Your Loadables must implement the following two methods:
-- `RegisterFields()`: this is where your saved data will be populated just before your save gets created or updated
-- `OnLoaded()`: this is called after the `OnSaveChosen` event is invoked and this is where you will modify your GameObject with its saved data
+Once a loadable has entered the scene, its `OnEnable()` function registers it with the saves manager. We need to register all the Loadables in the scene so that when we load our save, we can match the content in the save file with the structure of the scene.
 
-Importantly, each Loadable must have a unique ID so that Talo knows which GameObject to load with which data. The name of the GameObject and names of all of its parents are also saved (for example `SpaceShip.EngineRoom.Interactables.OffButton`).
+Importantly, each Loadable _must_ have a unique `Id` so that Talo knows which node to load with which data.
 
-Below is an example of a simple cube that saves and loads its position, rotation and scale:
+## Saved objects
 
-```csharp title="LoadableCube.cs"
-using System.Collections.Generic;
-using UnityEngine;
-using TaloGameServices;
+Save files are collections of "saved objects". Here's what a typical saved object looks like:
 
+```typescript
+{
+	id: "level1cube2",
+	name: "Level1.Cubes.Cube2"
+	data: [
+		{
+			key: "x",
+			type: "System.Single",
+			value: "0.4036766"
+		},
+		{
+			key: "y",
+			type: "System.Single",
+			value: "0.4561406"
+		},
+		{
+			key: "z",
+			type: "System.Single",
+			value: "0"
+		}
+	],
+},
+```
+
+:::tip
+You can visualise players' save files as node graphs in the Talo dashboard. Just go to the player's profile, click `Saves` and choose the save you want to view.
+:::
+
+Saved objects must have a unique `id`: this comes from the loadable and is used to match the saved object with the correct loadable. The `name` in a saved object refers to the name of the GameObject and names of all of its parents.
+
+The most interesting part is the `data` which contains the fields we register in the loadable (explained below) as well as the original `type` of the data. Notice that all values are serialised into strings. This is so that when the data is loaded, it can be easily converted back into its original type.
+
+### Data hydration
+
+When saves are created, all the loadable GameObjects in your scene will be serialised into saved objects. Similarly, when a save is loaded, each saved object is paired up with a matching loadable. Once paired up, the loadable is hydrated with the latest data from the saved object. Hydrating the loadable calls the loadable's `OnLoaded()` function with the data containing each value converted back to its original type.
+
+## Registering fields
+
+In order to save and load data, we need to tell Talo what we want to save. Here's an example of what that would look like for the cube saved object above:
+
+```csharp
 public class LoadableCube : Loadable
 {
 	public override void RegisterFields()
@@ -55,27 +77,35 @@ public class LoadableCube : Loadable
 		RegisterField("s.y", transform.localScale.y);
 		RegisterField("s.z", transform.localScale.z);
 	}
+}
+```
 
-	public override void OnLoaded(Dictionary<string, object> data)
-	{
-		transform.position = new Vector3(
-			(float)data["x"],
-			(float)data["y"],
-			(float)data["z"]
-		);
+As you can see, each field needs to be registered with the `RegisterField()` function. The `RegisterFields()` function is called just before data is serialised to ensure we have the latest data.
 
-		transform.rotation = Quaternion.Euler(
-			(float)data["r.x"],
-			(float)data["r.y"],
-			(float)data["r.z"]
-		);
+## Loading data
 
-		transform.localScale = new Vector3(
-			(float)data["s.x"],
-			(float)data["s.y"],
-			(float)data["s.z"]
-		);
-	}
+As described above, when a saved object is paired up with a loadable, the loadable is hydrated with the data from the saved object. This calls the `OnLoaded()` function of the loadable, where you can set the properties of the GameObject:
+
+```csharp
+public override void OnLoaded(Dictionary<string, object> data)
+{
+	transform.position = new Vector3(
+		(float)data["x"],
+		(float)data["y"],
+		(float)data["z"]
+	);
+
+	transform.rotation = Quaternion.Euler(
+		(float)data["r.x"],
+		(float)data["r.y"],
+		(float)data["r.z"]
+	);
+
+	transform.localScale = new Vector3(
+		(float)data["s.x"],
+		(float)data["s.y"],
+		(float)data["s.z"]
+	);
 }
 ```
 
@@ -97,6 +127,18 @@ public override void OnLoaded(Dictionary<string, object> data)
 	);
 }
 ```
+
+## Loading saves
+
+You can load saves using `Talo.Saves.GetSaves()`. Once your saves have been fetched, the `Talo.Saves.OnSavesLoaded` event is invoked.
+
+Saves can be accessed using `Talo.Saves.All`, `Talo.Saves.Latest` or `Talo.Saves.Current`. To load a save, use `Talo.Saves.ChooseSave()` and pass in the save you want to load.
+
+Once your save has been chosen, the `Talo.Saves.OnSaveChosen` event will be invoked. Internally, this causes the `OnLoaded()` function in your Loadables to be called.
+
+Finally, when all your registered loadables have called their `OnLoaded()`, an `Talo.Saves.OnSaveLoadingCompleted()` event is invoked which can be used to hide your loading screen.
+
+![Flowchart showing loading a save](/img/saves-flowchart.png)
 
 ## Creating saves
 
@@ -120,4 +162,6 @@ Additionally, if a save is only available offline then it will be synced as soon
 
 ## Unloading saves
 
-You can "unload" a save using `Talo.Saves.UnloadCurrentSave()`. This invokes the `OnSaveChosen` event with a `null` save (preventing Loadables from calling their `OnLoaded` event).
+You can unload a save using `Talo.Saves.UnloadCurrentSave()` - this is useful when you want to completely reset the game.
+
+This invokes the `OnSaveUnloaded` event and clears any saved object data, essentially reverting every scene back to its original state. The previously unloaded save's data will be unaffected.
