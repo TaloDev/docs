@@ -155,4 +155,6 @@ Additionally, if a save is only available offline then it will be synced as soon
 
 ## Unloading saves
 
-You can unload a save using `Talo.saves.unload_current_save()`. This emits the `save_chosen` signal with a `null` save (preventing Loadables from calling their `on_loaded` event).
+You can unload a save using `Talo.saves.unload_current_save()` - this is useful when you want to completely reset the game.
+
+This emits the `Talo.saves.save_unloaded` signal and clears any saved object data, essentially reverting every scene back to its original state. The previously unloaded save's data will be unaffected.

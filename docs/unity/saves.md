@@ -164,4 +164,4 @@ Additionally, if a save is only available offline then it will be synced as soon
 
 You can unload a save using `Talo.Saves.UnloadCurrentSave()` - this is useful when you want to completely reset the game.
 
-This invokes the `OnSaveUnloaded` event and clears any saved object data, essentially reverting every scene back to its original state. The previously unloaded save's data will be unaffected.
+This invokes the `Talo.Saves.OnSaveUnloaded` event and clears any saved object data, essentially reverting every scene back to its original state. The previously unloaded save's data will be unaffected.
