@@ -69,12 +69,14 @@ To create a channel, call `Talo.channels.create()` with a channel name and (opti
 var options := Talo.channels.CreateChannelOptions.new()
 options.name = "channel name"
 options.auto_cleanup = true
-options.props = {}
+options.props: Dictionary[String, String] = {
+	prop_key = "prop_value"
+}
 var channel := await Talo.channels.create(options)
 
 print(channel.name) # channel name
 print(channel.auto_cleanup) # true
-print(channel.props) # {}
+print(channel.props) # [{ "prop_key": "prop_value" }]
 ```
 
 ## Joining and leaving channels

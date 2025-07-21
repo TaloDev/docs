@@ -55,10 +55,15 @@ var res = await Talo.Channels.GetSubscribedChannels(options)
 
 ## Creating a channel
 
-To create a channel, call `Talo.Channels.Create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (a dictionary of string key/value pairs) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
+To create a channel, call `Talo.Channels.Create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (an array of `(string, string)` tuples) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
 
 ```csharp
-var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = channelName, autoCleanup = true }
+var props = new (string, string)[]
+{
+	("propKey", "propValue")
+};
+
+var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = channelName, autoCleanup = true, props = props });
 ```
 
 ## Finding a channel
