@@ -63,6 +63,16 @@ public class SendFeedback : MonoBehaviour
 }
 ```
 
-:::tip
-You can attach additional metadata (player props, game state, etc.) to feedback by appending it to the `feedbackComment` string before calling `Send()`.
-:::
+### Additional context with props
+
+You can also provide extra information with `props` by providing `(string, string)` tuples as the final parameter(s) of `Send()`. Props will be displayed in the Talo dashboard and you can also filter by props, e.g. looking at all feedback from a specific game version.
+
+```csharp
+public async void OnButtonClick()
+{
+	var categoryInternalName = "worldgen_feedback";
+	var feedbackComment = "Too many spikes!";
+
+	await Talo.Feedback.Send(categoryInternalName, feedbackComment, ("seed", "432423432"), ("difficultyLevel", "EASY"));
+}
+```

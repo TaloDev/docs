@@ -41,6 +41,18 @@ func _on_pressed() -> void:
 	print("Feedback sent for %s: %s" % [internal_name, feedback_comment])
 ```
 
-:::tip
-You can attach additional metadata (player props, game state, etc.) to feedback by appending it to the `feedback_comment` string before calling `send()`.
-:::
+### Additional context with props
+
+You can also provide extra information with `props`. This is an optional `Dictionary[String, String]` that will be displayed in the Talo dashboard. You can also filter by props, e.g. looking at all feedback from a specific game version.
+
+```gdscript
+extends Button
+
+func _on_pressed() -> void:
+	var category_internal_name := "worldgen_feedback"
+	var comment := "Too many spikes!"
+	var props: Dictionary[String, String] = {
+		seed = "32523523"
+	}
+	await Talo.feedback.send(category_internal_name, comment, props)
+```
