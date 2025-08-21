@@ -103,3 +103,7 @@ func _process(_delta: float) -> void:
 ```
 
 The `identity` parameter is optional but strongly recommended as it ensures proper identification of the service verifying the ticket. It can be anything you like but must be the same as the `identity` passed to Steam when fetching the ticket.
+
+## Offline player cache
+
+If the `cache_player_on_identify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try and use local data if it exists.

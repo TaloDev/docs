@@ -41,6 +41,10 @@ Talo uses the `OnApplicationQuit()` message to flush events before the game is c
 
 Learn more about [event flushing here](/docs/unity/events.md#flushing).
 
+### cachePlayerOnIdentify
+
+If enabled, Talo will automatically cache the player after a successful online identification. If the player is offline and tries to identify in later sessions, Talo will attempt to use the cached the player data.
+
 ### continuityEnabled
 
 If enabled, Talo will try to automatically replay failed network requests - [learn more about Continuity here](/docs/unity/continuity.md).

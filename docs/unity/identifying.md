@@ -126,3 +126,7 @@ void OnAuthCallback(GetTicketForWebApiResponse_t callback)
 ```
 
 The `identity` parameter is optional but strongly recommended as it ensures proper identification of the service verifying the ticket. It can be anything you like but must be the same as the `identity` passed to Steam when fetching the ticket.
+
+## Offline player cache
+
+If the `cachePlayerOnIdentify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try and use local data if it exists.

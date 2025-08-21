@@ -13,6 +13,7 @@ api_url="https://api.trytalo.com"
 socket_url="wss://api.trytalo.com"
 auto_connect_socket=true
 handle_tree_quit=true
+cache_player_on_identify=true
 
 [continuity]
 enabled=true
@@ -75,6 +76,10 @@ func _notification(what: int):
 ```
 
 If this setting is disabled, `get_tree().quit()` will not be called after Talo flushes events. You will need to handle this notification and quitting the game yourself.
+
+### cache_player_on_identify
+
+If enabled, Talo will automatically cache the player after a successful online identification. If the player is offline and tries to identify in later sessions, Talo will attempt to use the cached the player data.
 
 ### continuity.enabled
 
