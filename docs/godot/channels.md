@@ -149,14 +149,38 @@ Any player that joins the channel and then goes offline will automatically be re
 
 ## Getting channel members
 
-You can fetch a list of channel members using `Talo.channels.get_members()`. This will return an `Array[TaloPlayerAlias]`:
+You can fetch a list of channel members using `Talo.channels.get_members()`. This will return an `Talo.channels.MembersPage`:
 
 ```gdscript
-var members := await Talo.channels.get_members(id)
-print(members.map((func (member): return member.identifier)))
+var members_page := await Talo.channels.get_members(channel.id)
+print(members_page.members.map((func (member): return member.identifier)))
 ```
 
 Note: the current player can only fetch channel members for channels they are part of.
+
+### Filtering channel members
+
+You can provide a `Talo.channels.GetMembersOptions` as the second parameter of `get_members()` to provide extra filters:
+
+```gdscript
+var options := Talo.channels.GetMembersOptions.new()
+options.page = 2
+options.prop_key = "guildId"
+options.prop_value = "5"
+var members_page := await Talo.channels.get_members(channel.id, options)
+
+var filtered_members := members_page.members
+var is_last_page := members_page.is_last_page
+```
+
+You can provide the follow filtering options:
+- `page`: the current pagination index
+- `player_id`: find channel members with this player ID
+- `alias_id`: find a channel members with this ID
+- `identifier`: find a channel member with this identifier
+- `prop_key`: find channel members with this prop key
+- `prop_value`: find channel members with a matching `prop_key` and `prop_value`
+- `player_group_id`: find channel members that are part of this group
 
 ## Listening for messages
 
