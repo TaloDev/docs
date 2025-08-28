@@ -119,14 +119,14 @@ If the `cache_player_on_identify` setting is enabled (default `true`), Talo will
 You can use `Talo.players.search()` to query players. This function accepts a single `query` parameter that will search your playerbase for matching player IDs, alias identifiers or prop values. You can use this function to find players by their username, their ID or if they have a prop with a specific value.
 
 ```gdscript
-	var search_page := await Talo.players.search("bob")
-	if search_page.count == 0:
-		print("No players found")
-		return
+var search_page := await Talo.players.search("bob")
+if search_page.count == 0:
+	print("No players found")
+	return
 
-	var identifiers = []
-	for player in search_page.players:
-		identifiers.append(player.get_alias().identifier)
+var identifiers = []
+for player in search_page.players:
+	identifiers.append(player.get_alias().identifier)
 
-	print("Found %s results: %s" % [search_page.count, ", ".join(identifiers)])
+print("Found %s results: %s" % [search_page.count, ", ".join(identifiers)])
 ```
