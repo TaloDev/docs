@@ -23,6 +23,12 @@ var halloween_event_enabled = bool(Talo.live_config.get_prop("halloween_event_en
 
 `live_config.get_prop()` will return the value of the property as a string, so you will need to cast it to the correct type. This function also has a second argument which is the default value to return if the property is not found.
 
+### Offline cache
+
+If the player is offline (determined using `await Talo.is_offline()`), an offline copy of the live config will be returned instead. The cached version is updated after a successful online `get_live_config()` call. Note: the offline cache can be `null` if the live config hasn't been successfully queried before.
+
+You can check when the offline config was last updated using `Talo.live_config.get_offline_config_last_modified()` which returns a Unix timestamp.
+
 ## Listening for live config updates
 
 You can listen for live config updates by connecting to the `Talo.game_config.live_config_updated` signal:

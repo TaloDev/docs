@@ -88,7 +88,7 @@ The owner of a channel can delete the channel using `Talo.Channels.Delete()`. Al
 
 ## Private channels
 
-You can also create an invite-only private channels using the `isPrivate` option.
+You can also create invite-only private channels using the `isPrivate` option.
 
 Private channels will not be listed when using `Talo.Channels.GetChannels()`. They also cannot be joined in the same way: the channel owner must invite players to a private channel.
 
@@ -107,7 +107,7 @@ Note: you can use invites for public channels too.
 
 ## Temporary membership channels
 
-If players should only be members of a channel while they're online, you can choose to the enable the `temporary_membership` option when creating your channel:
+If players should only be members of a channel while they're online, you can choose to enable the `temporary_membership` option when creating your channel:
 
 ```csharp
 var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", temporaryMembership = true }

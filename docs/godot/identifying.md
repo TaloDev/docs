@@ -74,6 +74,12 @@ func do_stuff_if_authenticated() -> void:
 	# do stuff
 ```
 
+## Clearing the identified player
+
+You can clear the current player using `Talo.players.clear_identity()`. This will set `Talo.current_alias` and `Talo.current_player` to null. It will also clear any cached or pending data that identifies the player like the offline alias cache, pending events and continuity requests. For players using Talo authentication, it will also clear session data.
+
+Once all the relevant data has been cleared, the `Talo.players.identity_cleared` signal will be emitted.
+
 ## Merging players
 
 As described above, sometimes a player may have one or more aliases and there are times where you know for certain some aliases belong to the same player.
@@ -107,3 +113,20 @@ The `identity` parameter is optional but strongly recommended as it ensures prop
 ## Offline player cache
 
 If the `cache_player_on_identify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try and use local data if it exists.
+
+## Searching for players
+
+You can use `Talo.players.search()` to query players. This function accepts a single `query` parameter that will search your playerbase for matching player IDs, alias identifiers or prop values. You can use this function to find players by their username, their ID or if they have a prop with a specific value.
+
+```gdscript
+var search_page := await Talo.players.search("bob")
+if search_page.count == 0:
+	print("No players found")
+	return
+
+var identifiers = []
+for player in search_page.players:
+	identifiers.append(player.get_alias().identifier)
+
+print("Found %s results: %s" % [search_page.count, ", ".join(identifiers)])
+```

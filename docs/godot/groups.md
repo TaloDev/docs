@@ -18,7 +18,7 @@ func is_power_user():
 	return Talo.current_player.is_in_talo_group_id('9e56e835-eff6-4a6d-ac35-db8e7561af0e')
 
 func is_beta_tester():
-	return Talo.current_player.is_in_talo_group('beta-testers')
+	return Talo.current_player.is_in_talo_group_name('beta-testers')
 ```
 
 ## Fetching individual groups
@@ -26,11 +26,23 @@ func is_beta_tester():
 Groups in the `TaloPlayer` class are stubs that only include an `id` and a `name`. To retrieve more data about a group, including its members, use the `Talo.player_groups.get_group()` function:
 
 ```gdscript
-var group := await Talo.player_groups.get_group(group_id)
-if group != null:
-	print("%s has %s player(s)" % [group.name, group.count])
+var group_page := await Talo.player_groups.get_group(group_id)
+if group_page != null:
+	print("%s has %s player(s)" % [group_page.group.name, group_page.count])
 else:
 	push_error("Group %s not found" % [group_id])
+
+if group_page.count == 0:
+	print("No players in group")
+	return
+
+var identifiers = []
+for player in group_page.group.members:
+	identifiers.append(player.get_alias().identifier)
+
+print("Found %s members: %s" % [group_page.count, ", ".join(identifiers)])
 ```
 
 Group members will only be visible if you've enabled the setting on your group in the Talo dashboard. If `members_visible` is `false`, `members` will always be an empty array.
+
+Group members must be paginated. You can do this by providing a page number to `get_group()` which returns a `Talo.player_groups.GroupPage` with information such as `count`, `items_per_page` and `is_last_page`.
