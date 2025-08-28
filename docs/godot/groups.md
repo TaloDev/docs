@@ -18,7 +18,7 @@ func is_power_user():
 	return Talo.current_player.is_in_talo_group_id('9e56e835-eff6-4a6d-ac35-db8e7561af0e')
 
 func is_beta_tester():
-	return Talo.current_player.is_in_talo_group('beta-testers')
+	return Talo.current_player.is_in_talo_group_name('beta-testers')
 ```
 
 ## Fetching individual groups
@@ -27,7 +27,7 @@ Groups in the `TaloPlayer` class are stubs that only include an `id` and a `name
 
 ```gdscript
 var group_page := await Talo.player_groups.get_group(group_id)
-if group != null:
+if group_page != null:
 	print("%s has %s player(s)" % [group_page.group.name, group_page.count])
 else:
 	push_error("Group %s not found" % [group_id])

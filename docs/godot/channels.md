@@ -101,7 +101,7 @@ The owner of a channel can delete the channel using `Talo.channels.delete()`. Al
 
 ## Private channels
 
-You can also create an invite-only private channels using the `private` option:
+You can also create invite-only private channels using the `private` option:
 
 ```gdscript
 var options := Talo.channels.CreateChannelOptions.new()
@@ -135,7 +135,7 @@ Note: you can use invites for public channels too.
 
 ## Temporary membership channels
 
-If players should only be members of a channel while they're online, you can choose to the enable the `temporary_membership` option when creating your channel:
+If players should only be members of a channel while they're online, you can choose to enable the `temporary_membership` option when creating your channel:
 
 ```gdscript
 var options := Talo.channels.CreateChannelOptions.new()
@@ -173,10 +173,10 @@ var filtered_members := members_page.members
 var is_last_page := members_page.is_last_page
 ```
 
-You can provide the follow filtering options:
+You can provide the following filtering options:
 - `page`: the current pagination index
 - `player_id`: find channel members with this player ID
-- `alias_id`: find a channel members with this ID
+- `alias_id`: find a channel memberis_in_talo_group_name with this ID
 - `identifier`: find a channel member with this identifier
 - `prop_key`: find channel members with this prop key
 - `prop_value`: find channel members with a matching `prop_key` and `prop_value`
