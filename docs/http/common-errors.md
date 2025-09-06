@@ -37,7 +37,11 @@ errors: {
 
 `429 Too Many Requests`
 
-Receiving this status means you've hit Talo's rate limit. You should aim to make less than 50 requests per second e.g. by batching events and player stat updates.
+Receiving this status means you've hit Talo's rate limit. Rate limits use a fixed window (resets every minute), so you should aim to make less than 100 requests per minute, per player. You can achieve this by, for example, batching events and stat updates.
+
+Authentication endpoints (e.g. `/v1/players/auth/*`, `/v1/players/identify` and `/v1/socket-tickets`) are limited to 20 requests per minute, per player.
+
+The `Retry-After` header will return how many seconds to wait before retrying - typically this will be set to '60' (the remaining seconds until the window resets).
 
 ## Missing or invalid session
 
