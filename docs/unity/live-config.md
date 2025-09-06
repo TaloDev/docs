@@ -33,6 +33,12 @@ var maxLevel = Talo.LiveConfig.GetProp<int>("maxLevel");
 
 This function also has a second argument which is the default value to return if the property is not found.
 
+### Offline cache
+
+If the player is offline (determined using `await Talo.IsOffline()`), an offline copy of the live config will be returned instead. The cached version is updated after a successful online `Get()` call. Note: the offline cache can be `null` if the live config hasn't been successfully queried before.
+
+You can check when the offline config was last updated using `Talo.LiveConfig.GetOfflineConfigLastModified()` which returns a Unix timestamp.
+
 ## Listening for live config updates
 
 You can listen for live config updates by connecting to the `Talo.GameConfig.OnLiveConfigUpdated` event:

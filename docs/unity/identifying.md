@@ -34,9 +34,9 @@ public class IdentifyPlayer: MonoBehaviour
 		{
 			await Talo.Players.Identify(service, identifier);
 		}
-		catch (Exeception err)
+		catch (Exeception ex)
 		{
-			Debug.LogError(err.Message);
+			Debug.LogError(ex.Message);
 		}
 	}
 }
@@ -76,12 +76,42 @@ public void DoStuffIfIdentified()
 	{
 	  Talo.IdentityCheck();
 	}
-	catch (Exception err)
+	catch (Exception ex)
 	{
 		return;
 	}
 
 	// do stuff
+}
+```
+
+## Clearing the identified player
+
+You can clear the current player using `Talo.Players.ClearIdentity()`. This will set `Talo.CurrentAlias` and `Talo.CurrentPlayer` to `null`. It will also clear any cached or pending data that identifies the player like the offline alias cache, pending events and continuity requests. For players using Talo authentication, it will also clear session data.
+
+Once all the relevant data has been cleared, the `Talo.Players.OnIdentityCleared` event will be fired.
+
+```csharp
+private async void ClearIdentity()
+{
+    try
+    {
+        await Talo.Players.ClearIdentity();
+    }
+    catch (Exception ex)
+    {
+        Debug.LogError($"Failed to clear identity: {ex.Message}");
+    }
+}
+
+// Listen for the identity cleared event
+void Start()
+{
+    Talo.Players.OnIdentityCleared += () =>
+    {
+        Debug.Log("Player identity has been cleared");
+        // Handle post-clear logic here
+    };
 }
 ```
 
@@ -130,3 +160,34 @@ The `identity` parameter is optional but strongly recommended as it ensures prop
 ## Offline player cache
 
 If the `cachePlayerOnIdentify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try and use local data if it exists.
+
+## Searching for players
+
+You can use `Talo.Players.Search()` to query players. This function accepts a single `query` parameter that will search your playerbase for matching player IDs, alias identifiers or prop values. You can use this function to find players by their username, their ID or if they have a prop with a specific value.
+
+```csharp
+private async void SearchPlayers()
+{
+    try
+    {
+        var searchPage = await Talo.Players.Search("bob");
+        if (searchPage.count == 0)
+        {
+            Debug.Log("No players found");
+            return;
+        }
+
+        var identifiers = new List<string>();
+        foreach (var player in searchPage.players)
+        {
+            identifiers.Add(player.GetAlias().identifier);
+        }
+
+        Debug.Log($"Found {searchPage.count} results: {string.Join(", ", identifiers)}");
+    }
+    catch (Exception ex)
+    {
+        Debug.LogError($"Search failed: {ex.Message}");
+    }
+}
+```

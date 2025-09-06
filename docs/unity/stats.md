@@ -73,10 +73,10 @@ private async void FetchHistory()
 		// e.g. "gold-collected changed by 100, 46, 82, 19, 104"
 		Debug.Log($"{statInternalName} changed by: {string.Join(", ", res.history.Select((item) => item.change))}");
 	}
-	catch (Exception err)
+	catch (Exception ex)
 	{
-		Debug.LogError(err.Message);
-		throw err;
+		Debug.LogError(ex.Message);
+		throw ex;
 	}
 }
 ```
@@ -103,10 +103,9 @@ private async void FetchGlobalHistory()
 			$"average player value: {playerMetrics.averageValue}"
 		);
 	}
-	catch (Exception err)
+	catch (Exception ex)
 	{
-		Debug.LogError(err.Message); // e.g. stat isn't global
-		throw err;
+		Debug.LogError(ex.Message); // e.g. stat isn't global
 	}
 }
 ```

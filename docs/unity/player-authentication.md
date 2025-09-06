@@ -41,17 +41,17 @@ private async void OnRegisterClick()
 	{
 		await Talo.PlayerAuth.Register(username, password, email, enableVerification);
 	}
-	catch (PlayerAuthException e)
+	catch (PlayerAuthException ex)
 	{
-		validationLabel.text = e.ErrorCode switch
+		validationLabel.text = ex.ErrorCode switch
 		{
 			PlayerAuthErrorCode.IDENTIFIER_TAKEN => "Username is already taken",
-			_ => e.Message
+			_ => ex.Message
 		};
 	}
-	catch (Exception e)
+	catch (Exception ex)
 	{
-		validationLabel.text = e.Message;
+		validationLabel.text = ex.Message;
 	}
 }
 ```
@@ -92,17 +92,17 @@ private async void OnLoginClick()
 			SendMessageUpwards("GoToVerify", SendMessageOptions.RequireReceiver);
 		}
 	}
-	catch (PlayerAuthException e)
+	catch (PlayerAuthException ex)
 	{
-		validationLabel.text = e.ErrorCode switch
+		validationLabel.text = ex.ErrorCode switch
 		{
 			PlayerAuthErrorCode.INVALID_CREDENTIALS => "Username or password is incorrect",
-			_ => e.Message
+			_ => ex.Message
 		};
 	}
-	catch (Exception e)
+	catch (Exception ex)
 	{
-		validationLabel.text = e.Message;
+		validationLabel.text = ex.Message;
 	}
 }
 ```
@@ -153,17 +153,17 @@ private async void OnVerifyClick()
 	{
 		await Talo.PlayerAuth.Verify(code);
 	}
-	catch (PlayerAuthException e)
+	catch (PlayerAuthException ex)
 	{
-		validationLabel.text = e.ErrorCode switch
+		validationLabel.text = ex.ErrorCode switch
 		{
 			PlayerAuthErrorCode.VERIFICATION_CODE_INVALID => "Verification code is incorrect",
-			_ => e.Message
+			_ => ex.Message
 		};
 	}
-	catch (Exception e)
+	catch (Exception ex)
 	{
-		validationLabel.text = e.Message;
+		validationLabel.text = ex.Message;
 	}
 }
 ```
@@ -177,18 +177,18 @@ try
 {
 	await Talo.PlayerAuth.ChangePassword(currentPassword, newPassword);
 }
-catch (PlayerAuthException e)
+catch (PlayerAuthException ex)
 {
-	validationLabel.text = e.ErrorCode switch
+	validationLabel.text = ex.ErrorCode switch
 	{
 		PlayerAuthErrorCode.INVALID_CREDENTIALS => "Current password is incorrect",
 		PlayerAuthErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD => "New password must be different from the current password",
 		_ => e.Message
 	};
 }
-catch (Exception e)
+catch (Exception ex)
 {
-	validationLabel.text = e.Message;
+	validationLabel.text = ex.Message;
 }
 ```
 
@@ -209,17 +209,17 @@ try
 {
 	await Talo.PlayerAuth.ResetPassword(code, newPassword);
 }
-catch (PlayerAuthException e)
+catch (PlayerAuthException ex)
 {
-	validationLabel.text = e.ErrorCode switch
+	validationLabel.text = ex.ErrorCode switch
 	{
 		PlayerAuthErrorCode.PASSWORD_RESET_CODE_INVALID => "Reset code is invalid",
-		_ => e.Message
+		_ => ex.Message
 	};
 }
-catch (Exception e)
+catch (Exception ex)
 {
-	validationLabel.text = e.Message;
+	validationLabel.text = ex.Message;
 }
 ```
 
