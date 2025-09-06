@@ -76,7 +76,7 @@ func do_stuff_if_authenticated() -> void:
 
 ## Clearing the identified player
 
-You can clear the current player using `Talo.players.clear_identity()`. This will set `Talo.current_alias` and `Talo.current_player` to null. It will also clear any cached or pending data that identifies the player like the offline alias cache, pending events and continuity requests. For players using Talo authentication, it will also clear session data.
+You can clear the current player using `Talo.players.clear_identity()`. This will set `Talo.current_alias` and `Talo.current_player` to `null`. It will also clear any cached or pending data that identifies the player like the offline alias cache, pending events and continuity requests. For players using Talo authentication, it will also clear session data.
 
 Once all the relevant data has been cleared, the `Talo.players.identity_cleared` signal will be emitted.
 

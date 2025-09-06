@@ -30,15 +30,23 @@ public bool IsBetaTester()
 Groups in the `Player` class are stubs that only include an `id` and a `name`. To retrieve more data about a group, including its members, use the `Talo.PlayerGroups.Get()` function:
 
 ```csharp
-try
+var groupPage = await Talo.PlayerGroups.Get(groupId);
+
+if (groupPage.count == 0)
 {
-	var group = await Talo.PlayerGroups.Get(groupId);
-	ResponseMessage.SetText($"{group.name} has {group.count} player(s)");
+	Debug.Log("No players in group");
+	return;
 }
-catch (Exception e)
+
+var identifiers = new List<string>();
+foreach (var player in groupPage.group.members)
 {
-	ResponseMessage.SetText(e.Message);
+	identifiers.Add(player.GetAlias().identifier);
 }
+
+Debug.Log($"Found {groupPage.group.count} members: {string.Join(", ", identifiers)}");
 ```
 
 Group members will only be visible if you've enabled the setting on your group in the Talo dashboard. If `membersVisible` is `false`, `members` will always be an empty array.
+
+Group members must be paginated. You can do this by providing a page number to `Get()` which returns a `PlayerGroupsGetResponse` with information such as `count`, `itemsPerPage` and `isLastPage`.

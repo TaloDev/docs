@@ -117,14 +117,40 @@ Any player that joins the channel and then goes offline will automatically be re
 
 ## Getting channel members
 
-You can fetch a list of channel members using `Talo.Channels.GetMembers()`. This will return a `PlayerAlias[]`:
+You can fetch a list of channel members using `Talo.Channels.GetMembers()`. This will return a `ChannelMembersResponse`:
 
 ```csharp
-var members = await Talo.Channels.GetMembers(channel.id);
-Debug.Log(string.Join(", ", members.Select((m) => m.identifier)));
+var membersPage = await Talo.Channels.GetMembers(channel.id);
+Debug.Log(string.Join(", ", membersPage.members.Select((m) => m.identifier)));
 ```
 
 Note: the current player can only fetch channel members for channels they are part of.
+
+### Filtering channel members
+
+You can provide a `GetMembersOptions` as the second parameter of `GetMembers()` to provide extra filters:
+
+```csharp
+var options = new GetMembersOptions()
+{
+    page = 2,
+    propKey = "guildId",
+    propValue = "5"
+};
+var membersPage = await Talo.Channels.GetMembers(channel.id, options);
+
+var filteredMembers = membersPage.members;
+var isLastPage = membersPage.isLastPage;
+```
+
+You can provide the following filtering options:
+- `page`: the current pagination index
+- `playerId`: find channel members with this player ID
+- `aliasId`: find a channel member with this ID
+- `identifier`: find a channel member with this identifier
+- `propKey`: find channel members with this prop key
+- `propValue`: find channel members with a matching `propKey` and `propValue`
+- `playerGroupId`: find channel members that are part of this group
 
 ## Listening for messages
 

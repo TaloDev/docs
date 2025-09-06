@@ -82,10 +82,10 @@ The Talo Socket exposes an `OnErrorReceived` event that invokes when a `v1.error
 Talo.Socket.OnErrorReceived += (SocketError err) => {
 	try {
 		err.Throw();
-	} catch (SocketException e) {
-		Debug.Log($"Socket error: {e.Req} - {e.ErrorCode}{(string.IsNullOrEmpty(e.Cause) ? "" : " - " + e.Cause)}");
+	} catch (SocketException ex) {
+		Debug.Log($"Socket error: {ex.Req} - {ex.ErrorCode}{(string.IsNullOrEmpty(ex.Cause) ? "" : " - " + ex.Cause)}");
 
-		switch (e.ErrorCode) {
+		switch (ex.ErrorCode) {
 			case SocketErrorCode.NO_PLAYER_FOUND:
 				Debug.LogError("Player not identified yet!");
 				break;
