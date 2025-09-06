@@ -183,7 +183,7 @@ catch (PlayerAuthException ex)
 	{
 		PlayerAuthErrorCode.INVALID_CREDENTIALS => "Current password is incorrect",
 		PlayerAuthErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD => "New password must be different from the current password",
-		_ => e.Message
+		_ => ex.Message
 	};
 }
 catch (Exception ex)

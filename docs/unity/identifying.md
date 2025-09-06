@@ -34,7 +34,7 @@ public class IdentifyPlayer: MonoBehaviour
 		{
 			await Talo.Players.Identify(service, identifier);
 		}
-		catch (Exeception ex)
+		catch (Exception ex)
 		{
 			Debug.LogError(ex.Message);
 		}
