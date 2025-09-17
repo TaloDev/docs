@@ -154,3 +154,62 @@ var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOpt
 	propValue = "Blue"
 });
 ```
+
+### Filtering by dates
+
+You can provide a `startDate` and `endDate` to `GetEntriesOptions` to filter entries by their creation date. Dates can be provided in three formats: UTC Date (YYYY-MM-DD), DateTime (ISO 8601), or millisecond timestamp:
+
+```csharp
+// Get entries created between specific dates using UTC Date format
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions()
+{
+	page = page,
+	startDate = "2025-09-01",
+	endDate = "2025-09-30"
+});
+// Returns entries created between September 1-30, 2025
+```
+
+Using DateTime (ISO 8601) format:
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions()
+{
+	page = page,
+	startDate = "2025-09-01T00:00:00Z",
+	endDate = "2025-09-30T23:59:59Z"
+});
+```
+
+Using millisecond timestamps:
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions()
+{
+	page = page,
+	startDate = "1756684800000",  // September 1, 2025 00:00:00 UTC
+	endDate = "1759276799000"     // September 30, 2025 23:59:59 UTC
+});
+```
+
+You can also use just one of the date filters:
+
+```csharp
+// Get entries created on or after a specific date
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions()
+{
+	page = page,
+	startDate = "2025-09-15"
+	// endDate is omitted - returns all entries created from September 15, 2025 00:00:00 UTC onwards
+});
+```
+
+```csharp
+// Get entries created on or before a specific date
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions()
+{
+	page = page,
+	endDate = "2025-09-30"
+	// startDate is omitted - returns all entries created before October 1, 2025 00:00:00 UTC
+});
+```

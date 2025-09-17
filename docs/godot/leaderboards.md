@@ -140,3 +140,49 @@ options.prop_value = "Blue"
 
 var res := await Talo.leaderboards.get_entries(internal_name, options)
 ```
+
+### Filtering by dates
+
+You can provide a `start_date` and `end_date` to `GetEntriesOptions` to filter entries by their creation date. Dates can be provided in three formats: UTC Date (YYYY-MM-DD), DateTime (ISO 8601), or millisecond timestamp:
+
+```gdscript
+# Get entries created between specific dates using UTC Date format
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.start_date = "2025-09-01"
+options.end_date = "2025-09-30"
+
+var res := await Talo.leaderboards.get_entries(internal_name, options)
+# Returns entries created between September 1-30, 2025
+```
+
+Using DateTime (ISO 8601) format:
+
+```gdscript
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.start_date = "2025-09-01T00:00:00Z"
+options.end_date = "2025-09-30T23:59:59Z"
+```
+
+Using millisecond timestamps:
+
+```gdscript
+var options2 := Talo.leaderboards.GetEntriesOptions.new()
+options2.start_date = "1756684800000"  # September 1, 2025 00:00:00 UTC
+options2.end_date = "1759276799000"    # September 30, 2025 23:59:59 UTC
+```
+
+You can also use just one of the date filters:
+
+```gdscript
+# Get entries created on or after a specific date
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.start_date = "2025-09-15"
+# options.end_date is omitted - returns all entries created from September 15, 2025 00:00:00 UTC onwards
+```
+
+```gdscript
+# Get entries created on or before a specific date
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.end_date = "2025-09-30"
+# options.start_date is omitted - returns all entries created before October 1, 2025 00:00:00 UTC
+```
