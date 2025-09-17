@@ -48,6 +48,10 @@ When a player submits a score, we'll also push that score through to your Steamw
 
 If you hide an entry, we will delete it from the Steamworks leaderboard. If you then unhide the entry, we'll re-create it.
 
+### Resetting leaderboards
+
+If you reset a leaderboard, Talo will delete all entries in Steamworks. This is an asychronous background process which can may up to an hour to complete.
+
 ### Manually syncing leaderboards
 
 Here's how it works:
@@ -67,6 +71,10 @@ Talo syncs stats by mapping between the `Internal name` in Talo and the `API nam
 ### Setting stats
 
 When a stat changes for a player, we'll update it in Steamworks.
+
+### Resetting stats
+
+Steamworks does not currently have a public API to delete user stats. If you reset a stat, Talo will update all the Steamworks user stats to be the default stat value. This is an asychronous background process which can may up to an hour to complete.
 
 ### Manually syncing stats
 
