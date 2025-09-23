@@ -124,6 +124,10 @@ The merge process takes all the props, aliases, and associated data (events, lea
 
 ## Steamworks integration
 
+:::tip
+You can enable this integration on the [integrations page](https://dashboard.trytalo.com/integrations).
+:::
+
 If you have the Steamworks integration enabled, Talo can sync a Steam player using the Steam User Auth API ([as described here](/docs/integrations/steamworks#authentication)). You can do this via the `Talo.Players.IdentifySteam` function. Here's a modified version of an example [provided by Unity](https://docs.unity.com/ugs/en-us/manual/authentication/manual/platform-signin-steam) using Steamworks.NET:
 
 ```csharp

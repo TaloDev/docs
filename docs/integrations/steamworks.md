@@ -7,6 +7,10 @@ description: Talo's Steamworks integration can sync your players, stats and lead
 
 By using your [Web API Publisher key](https://partner.steamgames.com/doc/webapi_overview/auth), you can sync data between Talo and Steamworks.
 
+You can enable this integration on the [integrations page](https://dashboard.trytalo.com/integrations).
+
+![The Talo integrations page showing the Steamworks settings](/img/steamworks-integration.png)
+
 <hr/>
 
 ## Authentication
