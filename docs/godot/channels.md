@@ -244,6 +244,30 @@ var prop := await Talo.channels.get_storage_prop(channel.id, "shared-gold", fals
 var freshProp := await Talo.channels.get_storage_prop(channel.id, "shared-gold", true)
 ```
 
+### Getting multiple storage props
+
+If you need to fetch multiple storage props, `Talo.channels.list_storage_props()` is much faster and more efficient than fetching them one by one:
+
+```gdscript
+await Talo.channels.set_storage_props(channel.id, {
+	"storage_prop_1": "true",
+	"storage_prop_2": "hello world"
+})
+
+# without cache busting
+var results := await Talo.channels.list_storage_props(channel.id, ["storage_prop_1", "storage_prop_2"])
+for prop in results:
+	print("Prop: %s = %s" % [prop.key, prop.value])
+
+
+# with cache busting
+var busted_results := await Talo.channels.list_storage_props(channel.id, ["storage_prop_1", "storage_prop_2"], true)
+for prop in busted_results:
+	print("Prop: %s = %s" % [prop.key, prop.value])
+```
+
+This function will return an array of `TaloChannelStorageProps`, allowing you to iterate through the results. Note: if a prop cannot be found, it will not appear in the list.
+
 ### Updating storage props
 
 Any player can update the global store using `Talo.channels.set_storage_props()`:
