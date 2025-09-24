@@ -215,6 +215,33 @@ You can also listen for the following signals:
 
 Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel. In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
 
+### Setting storage props
+
+Any player can update the global store using `Talo.channels.set_storage_props()`:
+
+```gdscript
+await Talo.channels.set_storage_props(channel.id, {
+	prop1: "value1",
+	prop2: "value2"
+})
+```
+
+This method accepts a dictionary of prop keys and values. You can set a prop value to `null` to delete it. Storage props that aren't being deleted will be upserted (updated if they exist, otherwise created).
+
+#### Handling failures
+
+Sometimes, setting props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.channels.channel_storage_props_failed_to_set` signal lets you listen for these errors:
+
+```gdscript
+func _ready() -> void
+	Talo.channels.channel_storage_props_failed_to_set.connect(
+		func (channel: TaloChannel, failed_props: Array[TaloChannelStoragePropError]):
+			for prop in failed_props:
+				# shared-gold: Prop value length (596) exceeds 512 characters
+				print("%s: %s" % [prop.key, prop.error])
+	)
+```
+
 ### Getting storage props
 
 To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
@@ -244,32 +271,29 @@ var prop := await Talo.channels.get_storage_prop(channel.id, "shared-gold", fals
 var freshProp := await Talo.channels.get_storage_prop(channel.id, "shared-gold", true)
 ```
 
-### Updating storage props
+### Getting multiple storage props
 
-Any player can update the global store using `Talo.channels.set_storage_props()`:
+If you need to fetch multiple storage props, `Talo.channels.list_storage_props()` is much faster and more efficient than fetching them one by one:
 
 ```gdscript
 await Talo.channels.set_storage_props(channel.id, {
-	prop1: "value1",
-	prop2: "value2"
+	"storage_prop_1": "true",
+	"storage_prop_2": "hello world"
 })
+
+# without cache busting
+var results := await Talo.channels.list_storage_props(channel.id, ["storage_prop_1", "storage_prop_2"])
+for prop in results:
+	print("Prop: %s = %s" % [prop.key, prop.value])
+
+
+# with cache busting
+var busted_results := await Talo.channels.list_storage_props(channel.id, ["storage_prop_1", "storage_prop_2"], true)
+for prop in busted_results:
+	print("Prop: %s = %s" % [prop.key, prop.value])
 ```
 
-This method accepts a dictionary of prop keys and values. You can set a prop value to `null` to delete it.
-
-#### Handling failures
-
-Sometimes, setting props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.channels.channel_storage_props_failed_to_set` signal lets you listen for these errors:
-
-```gdscript
-func _ready() -> void
-	Talo.channels.channel_storage_props_failed_to_set.connect(
-		func (channel: TaloChannel, failed_props: Array[TaloChannelStoragePropError]):
-			for prop in failed_props:
-				# shared-gold: Prop value length (596) exceeds 512 characters
-				print("%s: %s" % [prop.key, prop.error])
-	)
-```
+This function will return a `TaloChannelStorageProp` array, allowing you to iterate through the results. Note: if a prop cannot be found, it will not appear in the list.
 
 ### Listening for storage updates
 

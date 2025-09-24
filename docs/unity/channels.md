@@ -190,6 +190,37 @@ You can also listen for the following events:
 
 Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel. In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
 
+### Setting storage props
+
+Any player can update the global store using `Talo.Channels.SetStorageProps()`:
+
+```csharp
+await Talo.Channels.SetStorageProps(
+	channel.id,
+	("prop1", "value1"),
+	("prop2", "value2")
+);
+```
+
+This method accepts any number of prop `(string, string)` tuples. You can set a prop value to `null` to delete it. Storage props that aren't being deleted will be upserted (updated if they exist, otherwise created).
+
+#### Handling failures
+
+Sometimes, setting props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.Channels.OnChannelStoragePropsFailedToSet` event lets you listen for these errors:
+
+```csharp
+void Start()
+{
+	Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, ChannelStoragePropError[] errors) => {
+		foreach (var prop in errors)
+		{
+			// shared-gold: Prop value length (596) exceeds 512 characters
+			Debug.Log($"{prop.key}: {prop.error}");
+		}
+	};
+}
+```
+
 ### Getting storage props
 
 To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
@@ -217,36 +248,35 @@ var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", false /
 var freshProp = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", true);
 ```
 
-### Updating storage props
 
-Any player can update the global store using `Talo.Channels.SetStorageProps()`:
+### Getting multiple storage props
+
+If you need to fetch multiple storage props, `Talo.channels.list_storage_props()` is much faster and more efficient than fetching them one by one:
 
 ```csharp
-await Talo.Channels.SetStorageProps(
-	channel.id,
-	("prop1", "value1"),
-	("prop2", "value2")
+await Talo.Channels.SetStorageProps(channel.id, 
+	("storage_prop_1", "true"),
+	("storage_prop_2", "hello world")
 );
-```
 
-This method accepts any number of prop `(string, string)` tuples. You can set a prop value to `null` to delete it.
+var propKeys = new string[] { "storage_prop_1", "storage_prop_2" };
 
-#### Handling failures
-
-Sometimes, setting props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.Channels.OnChannelStoragePropsFailedToSet` event lets you listen for these errors:
-
-```csharp
-void Start()
+// without cache busting
+var results = await Talo.Channels.ListStorageProps(channel.id, propKeys);
+foreach (var prop in results)
 {
-	Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, ChannelStoragePropError[] errors) => {
-		foreach (var prop in errors)
-		{
-			// shared-gold: Prop value length (596) exceeds 512 characters
-			Debug.Log($"{prop.key}: {prop.error}");
-		}
-	};
+	Debug.Log($"Prop: {prop.key} = {prop.value}");
+}
+
+// with cache busting
+var bustedResults = await Talo.Channels.ListStorageProps(channel.id, propKeys, true);
+foreach (var prop in bustedResults)
+{
+	Debug.Log($"Prop: {prop.key} = {prop.value}");
 }
 ```
+
+This function will return a `ChannelStorageProp` array, allowing you to iterate through the results. Note: if a prop cannot be found, it will not appear in the list.
 
 ### Listening for storage updates
 
