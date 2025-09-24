@@ -3,6 +3,8 @@ sidebar_position: 9
 description: Talo is an open source game backend that allows you to easily add leaderboards, stats, data persistence and more to your Godot game.
 ---
 
+# Exporting your project
+
 ## Android exports
 
 :::warning
