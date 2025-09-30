@@ -55,7 +55,15 @@ func send_message(channel_id: int, message: String) -> void:
 
 The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors.md#rate-limit-exceeded). The socket will emit a `connection_closed` signal with a status code and reason.
 
-The recommended way of re-establishing a connection is calling `Talo.socket.open_connection()` and then re-identifying your player. This is the same logic that gets used internally when your game opens.
+The Talo socket automatically reconnects when the [connection is restored](continuity#connection_restored). If you need to manually re-open the socket, you can establish a connection and re-identify the player like this:
+
+```gdscript
+func reconnect_socket():
+	await Talo.socket.open_connection()
+	if Talo.identity_check() == OK:
+		var socket_token := await Talo.players.create_socket_token()
+		Talo.socket.set_socket_token(socket_token)
+```
 
 ## Closing the connection
 
