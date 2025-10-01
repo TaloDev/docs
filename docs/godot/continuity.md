@@ -34,6 +34,36 @@ Note: toggling these options will not update your `settings.cfg`.
 
 If you have [request logging enabled](settings-reference#loggingrequests), the replayed requests will be highlighted for you in the console.
 
+## Network connection signals
+
+Talo emits signals when network connectivity changes, allowing you to respond to connection issues in your game.
+
+### `connection_lost`
+
+Emitted when Talo loses connection to the server. This happens when health checks fail or network errors occur.
+
+```gdscript
+func _ready():
+	Talo.connection_lost.connect(_on_connection_lost)
+
+func _on_connection_lost():
+	print("Connection to Talo lost")
+	# handle offline state (e.g., show an offline indicator)
+```
+
+### `connection_restored`
+
+Emitted when connection to Talo is re-established after being lost.
+
+```gdscript
+func _ready():
+	Talo.connection_restored.connect(_on_connection_restored)
+
+func _on_connection_restored():
+	print("Connection to Talo restored")
+	# handle online state (e.g., hide an offline indicator)
+```
+
 ## Offline interactions
 
 ### Checking if the player is offline
@@ -57,3 +87,7 @@ Saves sync automatically when connectivity is restored. If the offline save is n
 ### Live config
 
 Live config data is cached locally after successful online queries. Updates are synced with the local cache, which is used when the player is offline.
+
+### Talo socket
+
+When connection is restored, the Talo socket automatically reconnects by repeating the socket token identification flow. This happens seamlessly in the background without requiring manual intervention.
