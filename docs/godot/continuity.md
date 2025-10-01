@@ -44,7 +44,7 @@ Emitted when Talo loses connection to the server. This happens when health check
 
 ```gdscript
 func _ready():
-	Talo.health_check.connection_lost.connect(_on_connection_lost)
+	Talo.connection_lost.connect(_on_connection_lost)
 
 func _on_connection_lost():
 	print("Connection to Talo lost")
@@ -57,7 +57,7 @@ Emitted when connection to Talo is re-established after being lost.
 
 ```gdscript
 func _ready():
-	Talo.health_check.connection_restored.connect(_on_connection_restored)
+	Talo.connection_restored.connect(_on_connection_restored)
 
 func _on_connection_restored():
 	print("Connection to Talo restored")
