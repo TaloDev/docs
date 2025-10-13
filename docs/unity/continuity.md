@@ -31,6 +31,54 @@ As with anything on the client-side, despite being built with security in mind, 
 
 Continuity happens in the background and there are no direct APIs exposed for it. You can simulate being offline and toggle Continuity in the Talo Playground. Note: toggling these options will automatically update your `Talo Settings` asset.
 
+## Network connection events
+
+Talo fires events when network connectivity changes, allowing you to respond to connection issues in your game.
+
+### `OnConnectionLost`
+
+Fired when Talo loses connection to the server. This happens when health checks fail or network errors occur.
+
+```csharp
+private void Start()
+{
+	Talo.OnConnectionLost += OnConnectionLost;
+}
+
+private void OnDestroy()
+{
+	Talo.OnConnectionLost -= OnConnectionLost;
+}
+
+private void OnConnectionLost()
+{
+	Debug.Log("Connection to Talo lost");
+	// handle offline state (e.g., show an offline indicator)
+}
+```
+
+### `OnConnectionRestored`
+
+Fired when connection to Talo is re-established after being lost.
+
+```csharp
+private void Start()
+{
+	Talo.OnConnectionRestored += OnConnectionRestored;
+}
+
+private void OnDestroy()
+{
+	Talo.OnConnectionRestored -= OnConnectionRestored;
+}
+
+private void OnConnectionRestored()
+{
+	Debug.Log("Connection to Talo restored");
+	// handle online state (e.g., hide an offline indicator)
+}
+```
+
 ## Offline interactions
 
 ### Checking if the player is offline
@@ -54,3 +102,7 @@ Saves sync automatically when connectivity is restored. If the offline save is n
 ### Live config
 
 Live config data is cached locally after successful online queries. Updates are synced with the local cache, which is used when the player is offline.
+
+### Talo socket
+
+When connection is restored, the Talo socket automatically reconnects by repeating the socket token identification flow. This happens seamlessly in the background without requiring manual intervention.

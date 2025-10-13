@@ -30,8 +30,6 @@ private void OnDestroy()
 	Talo.Socket.OnMessageReceived -= OnMessageReceived;
 }
 
-...
-
 private void OnMessageReceived(SocketResponse response)
 {
 	if (response.GetResponseType() == "v1.channels.message")
@@ -68,7 +66,19 @@ public void SendMessage(int channelId, string message)
 
 The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors.md#rate-limit-exceeded). The socket will invoke a `OnConnectionClosed` event with a status code and reason.
 
-The recommended way of re-establishing a connection is calling `Talo.Socket.OpenConnection()` and then re-identifying your player. This is the same logic that gets used internally when your game opens.
+The Talo socket automatically reconnects when the [connection is restored](continuity#onconnectionrestored). If you need to manually re-open the socket, you can establish a connection and re-identify the player like this:
+
+```csharp
+private async void ReconnectSocket()
+{
+	await Talo.Socket.ResetConnection();
+	if (Talo.CurrentPlayer != null)
+	{
+		var socketToken = await Talo.Players.CreateSocketToken();
+		Talo.Socket.SetSocketToken(socketToken);
+	}
+}
+```
 
 ## Closing the connection
 
