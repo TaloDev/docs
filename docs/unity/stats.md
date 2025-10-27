@@ -59,6 +59,21 @@ Debug.Log($"{res.playerStat.value}, {stat.playerStat.stat.globalValue}")
 
 You can also get the current value of a stat for a player using `Talo.Stats.FindPlayerStat()`.
 
+## Listing player stat values
+
+If you need to find all player stat values for the current player, you can use `Talo.Stats.ListPlayerStats()`. This function returns a list of player stats which include the value and related stat:
+
+```csharp
+var res = await Talo.Stats.ListPlayerStats();
+var statsList = res.Length > 0
+	? string.Join(", ", res.Select((item) => $"{item.stat.internalName} = {item.value}"))
+	: "none";
+
+Debug.Log($"Player stats: {statsList}"); // Player stats: deaths = 5, health-healed = 200
+```
+
+The function above iterates through the player stats returned by the API and pick out the `stat.internalName` and `value`.
+
 ## Stat history
 
 You can fetch a history of updates to a stat for the current player using `Talo.Stats.GetHistory()`. These results are paginated and can be filtered by specific start and end dates too:

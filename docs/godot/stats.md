@@ -57,6 +57,23 @@ print("%s, %s" % [res.value, res.stat.global_value])
 
 You can also get the current value of a stat for a player using `Talo.stats.find_player_stat()`.
 
+## Listing player stat values
+
+If you need to find all player stat values for the current player, you can use `Talo.stats.list_player_stats()`. This function returns a list of player stats which include the value and related stat:
+
+```gdscript
+var res := await Talo.stats.list_player_stats()
+var values := PackedStringArray(
+	res.map(
+		func (item: TaloPlayerStat): return "%s = %s" % [item.stat.internal_name, item.value]
+	)
+)
+var player_stat_values := ", ".join(values) if values.size() > 0 else "none"
+print("Player stats: %s" % [player_stat_values]) # Player stats: deaths = 5, health-healed = 200
+```
+
+The function above iterates through the player stats returned by the API and pick out the `stat.internal_name` and `value`.
+
 ## Stat history
 
 You can fetch a history of updates to a stat for the current player using `Talo.stats.get_history()`. These results are paginated and can be filtered by specific start and end dates too:
