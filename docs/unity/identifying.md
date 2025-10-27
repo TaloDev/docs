@@ -43,7 +43,9 @@ public class IdentifyPlayer: MonoBehaviour
 ```
 
 :::caution
-If you are using **Talo Player Authentication**, `Talo.Players.Identify()` will be invoked automatically and the `Talo.Players.OnIdentified` event will also invoke as normal.
+You cannot use "Talo" for the `service` parameter as this is reserved for **Talo Player Authentication**.
+
+If you are using Talo Player Authentication, `Talo.Players.Identify()` will be invoked automatically and the `Talo.Players.OnIdentified` event will also invoke as normal.
 
 Visit the [Player authentication docs](/docs/unity/player-authentication) to learn more about identifying players with authentication enabled.
 :::

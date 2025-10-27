@@ -27,7 +27,9 @@ func _on_pressed():
 ```
 
 :::caution
-If you are using **Talo Player Authentication**, `Talo.players.identify()` will be invoked automatically and the `Talo.players.identified` signal will also emit as normal.
+You cannot use "Talo" for the `service` parameter as this is reserved for **Talo Player Authentication**.
+
+If you are using Talo Player Authentication, `Talo.players.identify()` will be invoked automatically and the `Talo.players.identified` signal will also emit as normal.
 
 Visit the [Player authentication docs](/docs/godot/player-authentication) to learn more about identifying players with authentication enabled.
 :::
