@@ -59,7 +59,7 @@ The Talo socket automatically reconnects when the [connection is restored](conti
 
 ```gdscript
 func reconnect_socket():
-	await Talo.socket.open_connection()
+	await Talo.socket.reset_connection()
 	if Talo.identity_check() == OK:
 		var socket_token := await Talo.players.create_socket_token()
 		Talo.socket.set_socket_token(socket_token)
