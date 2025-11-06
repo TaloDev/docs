@@ -152,7 +152,7 @@ To update a save, use `Talo.Saves.UpdateSave()`. You can optionally pass in a ne
 
 ## Deleting saves
 
-You can delete a save by passing in the save's ID to `Talo.Saves.DeleteSave()`.
+You can delete a save by passing in the save's ID to `Talo.Saves.DeleteSave()`. Optionally you can pass in the `unloadIfCurrentSave` flag which will [unload](#unloading-saves) the current save if it is the one being deleted.
 
 ## Offline saves & syncing
 

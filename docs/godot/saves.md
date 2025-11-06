@@ -145,7 +145,7 @@ This will get the latest data for all loadables in the scene and check if any lo
 
 ## Deleting saves
 
-You can delete a save by passing in the save's ID to `Talo.saves.delete_save()`.
+You can delete a save by passing in the save's ID to `Talo.saves.delete_save()`. Optionally you can pass in the `unload_if_current_save` flag which will [unload](#unloading-saves) the current save if it is the one being deleted.
 
 ## Offline saves & syncing
 
