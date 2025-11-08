@@ -163,6 +163,22 @@ void OnAuthCallback(GetTicketForWebApiResponse_t callback)
 
 The `identity` parameter is optional but strongly recommended as it ensures proper identification of the service verifying the ticket. It can be anything you like but must be the same as the `identity` passed to Steam when fetching the ticket.
 
+### Steamworks player props
+
+After successfully authenticating the player, several [props](/docs/unity/player-props.md) will automatically be created for them:
+
+- `META_STEAMWORKS_VAC_BANNED` - "true" or "false"
+- `META_STEAMWORKS_PUBLISHER_BANNED` - "true" or "false"
+- `META_STEAMWORKS_OWNS_APP` - "true" or "false"
+- `META_STEAMWORKS_OWNS_APP_PERMANENTLY` - "true" or "false"
+- `META_STEAMWORKS_OWNS_APP_FROM_DATE` - ISO date e.g. "2025-11-08T17:30:00Z"
+- `META_STEAMWORKS_PERSONA_NAME` - the player's current display name
+- `META_STEAMWORKS_AVATAR_HASH` - e.g. "5bfdbd8cd4407d6cd37dfba06851b62a4856bb2d"
+
+You can build an avatar URL by replacing **[AVATAR_HASH]** with the `META_STEAMWORKS_AVATAR_HASH` prop value in the following URL: `https://avatars.steamstatic.com/[AVATAR_HASH]_full.jpg`.
+
+These props will be updated each time the player is identified using `Talo.Players.IdentifySteam()`.
+
 ## Offline player cache
 
 If the `cachePlayerOnIdentify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try and use local data if it exists.
