@@ -5,6 +5,24 @@ import styles from './ServiceDocumentation.module.css'
 import clsx from 'clsx'
 import Sample from './Sample'
 import Head from '@docusaurus/Head'
+import Heading from '@theme/Heading'
+
+function slugify(text) {
+  if (typeof text !== 'string' || text.length === 0) {
+      return '';
+  }
+
+  // 1. Remove characters that are not a-z, 0-9, space, or dash
+  let slug = text.toLowerCase().replace(/[^a-z0-9\s-]/g, '');
+
+  // 2. Replace all remaining spaces and multiple dashes with a single dash
+  slug = slug.replace(/[\s-]+/g, '-');
+
+  // 3. Trim leading/trailing dashes
+  slug = slug.replace(/^-+|-+$/g, '');
+
+  return slug;
+}
 
 export default function ServiceDocumentation({ service, metaDescription }) {
   const { siteConfig } = useDocusaurusContext()
@@ -37,15 +55,15 @@ export default function ServiceDocumentation({ service, metaDescription }) {
     return ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].indexOf(method)
   }
 
-  const getRouteTitle = (route) => {
-    return <h3>{route.description?.split('\n')[0] ?? 'No title'}</h3>
-  }
-
   const getRouteDescription = (route) => {
     return route.description?.split('\n').map((part, idx) => {
       if (idx === 0) return null
       return <p key={idx} className={styles.descriptionText}>{part}</p>
     }) ?? null
+  }
+
+  const getRouteTitle = (route) => {
+    return route.description?.split('\n')[0] ?? 'No title'
   }
 
   return (
@@ -70,9 +88,11 @@ export default function ServiceDocumentation({ service, metaDescription }) {
           { title: 'Body keys', params: bodyParams }
         ]
 
+        const routeTitle = getRouteTitle(route)
+
         return (
           <React.Fragment key={idx}>
-            {getRouteTitle(route)}
+            <Heading id={slugify(routeTitle)} as='h3'>{routeTitle}</Heading>
 
             <code className={styles.url}>
               <span className={clsx(styles.methodTag, styles[route.method.toLowerCase()])}>{route.method}</span> <code>{siteConfig.customFields.docs.baseUrl}{route.path}</code>
@@ -87,7 +107,13 @@ export default function ServiceDocumentation({ service, metaDescription }) {
             }).map((section) => {
               return (
                 <div key={section.title} className={styles.section}>
-                  <h4 className={styles.sectionTitle}>{section.title}</h4>
+                  <Heading
+                    as='h4'
+                    id={slugify(`${routeTitle}-${section.title}`)}
+                    className={styles.sectionTitle}
+                  >
+                    {section.title}
+                  </Heading>
 
                   <div className={styles.sectionContent}>
                     {section.params.length === 0 && <p className={styles.sectionEmptyText}>None available</p>}
