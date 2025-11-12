@@ -1,6 +1,13 @@
 import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+import siteConfig from '@generated/docusaurus.config'
+import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Game stat API
+
+export const toc = [
+  { value: 'Endpoints', id: 'endpoints', level: 2 },
+  ...generateServiceTOC('GameStatAPIService', siteConfig)
+]
 
 With Talo, you can track game stats on a per-player basis. For example, you could track the number of secrets discovered by a player or the amount of puzzles they've solved. Talo allows you to easily create and increment these kind of stats.
 

@@ -1,6 +1,15 @@
 import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+import siteConfig from '@generated/docusaurus.config'
+import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Game save API
+
+export const toc = [
+  { value: 'Endpoints', id: 'endpoints', level: 2 },
+  ...generateServiceTOC('GameSaveAPIService', siteConfig),
+  { value: 'Types', id: 'types', level: 2 },
+  { value: 'SaveContent', id: 'savecontent', level: 3 }
+]
 
 Talo's save system allows you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored automatically from one of your player's saves.
 

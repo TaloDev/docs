@@ -1,6 +1,13 @@
 import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+import siteConfig from '@generated/docusaurus.config'
+import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Player group API
+
+export const toc = [
+  { value: 'Endpoints', id: 'endpoints', level: 2 },
+  ...generateServiceTOC('PlayerGroupAPIService', siteConfig)
+]
 
 Using groups, you can divide your player-base into clear segments. For example, you could have a group of beta testers or a group for all the players who have completed the game.
 

@@ -1,6 +1,13 @@
 import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+import siteConfig from '@generated/docusaurus.config'
+import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Socket ticket API
+
+export const toc = [
+  { value: 'Endpoints', id: 'endpoints', level: 2 },
+  ...generateServiceTOC('SocketTicketAPIService', siteConfig)
+]
 
 Talo provides a secure socket system for real-time communication between your game and players. The Talo Socket is the underlying server that powers services like [channels](https://trytalo.com/channels) and handles connections, messages and events.
 

@@ -1,6 +1,15 @@
 import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+import siteConfig from '@generated/docusaurus.config'
+import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Player auth API
+
+export const toc = [
+  { value: 'Endpoints', id: 'endpoints', level: 2 },
+  ...generateServiceTOC('PlayerAuthAPIService', siteConfig),
+  { value: 'Identifying players using Talo Authentication', id: 'identifying-players-using-talo-authentication', level: 2 },
+  { value: 'Error codes', id: 'error-codes', level: 2 }
+]
 
 Talo provides a powerful and secure authentication system out of the box. You can use Talo to authenticate players using their email, username, or any other identifier you choose.
 

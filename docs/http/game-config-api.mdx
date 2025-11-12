@@ -1,6 +1,13 @@
 import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+import siteConfig from '@generated/docusaurus.config'
+import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Game config API
+
+export const toc = [
+  { value: 'Endpoints', id: 'endpoints', level: 2 },
+  ...generateServiceTOC('GameConfigAPIService', siteConfig)
+]
 
 Talo's live config allows you to configure your game directly in the dashboard. Your game can then fetch this config on-demand, allowing your game and players to have the latest information without downloading a new update.
 
