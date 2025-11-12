@@ -166,7 +166,15 @@ module.exports = async function configCreatorAsync() {
         theme: prisma.themes.github,
         darkTheme: prisma.themes.nightOwl,
         additionalLanguages: ['csharp', 'gdscript']
-      }
+      },
+      algolia: {
+        appId: 'PRKSHSO6YK',
+        apiKey: 'e2b359c956d71101043b3408dd704966',
+        indexName: 'docs',
+        searchParameters: {},
+        searchPagePath: 'search',
+        insights: true,
+      },
     },
     presets: [
       [
