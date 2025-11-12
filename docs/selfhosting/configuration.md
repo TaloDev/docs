@@ -51,6 +51,8 @@ Talo uses a handful of third party services to handle common tasks.
 
 Talo can relay emails via an external SMTP server (like Gmail or Zoho) using the "relay" `EMAIL_DRIVER`. Under the hood, Talo uses [Nodemailer](https://nodemailer.com) to handle the relay and you can refer to their docs for example configurations.
 
+When the `EMAIL_DRIVER` is set to `log`, the email file and attachments are saved to the `storage/mail` directory.
+
 ### Sentry
 
 [Sentry](https://sentry.io) is an error monitoring tool with a generous free tier. You can enable Sentry by setting the `SENTRY_DSN` environment variable to your unique DSN.
