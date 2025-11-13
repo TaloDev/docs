@@ -84,10 +84,32 @@ Once all the relevant data has been cleared, the `Talo.players.identity_cleared`
 
 ## Merging players
 
-As described above, sometimes a player may have one or more aliases and there are times where you know for certain some aliases belong to the same player.
-You can merge players using `Talo.players.merge()` by providing the IDs of both players.
+Sometimes you might start tracking a player's actions before you know their true identity. For example, you could be tracking events with an "anonymous" identifier and then later on the same player chooses their username before submitting a leaderboard entry. Since both of these players need to be identified, two players will be created.
 
-The merge process takes all the props, aliases, and associated data (events, leaderboard entries, saves, etc.) from Player 2 and merge them into Player 1. This means that duplicate props in Player 1 will be replaced by the ones from Player 2.
+You can merge players using `Talo.players.merge()` by providing the IDs of both players. The merge process takes all the props, aliases, and associated data (events, leaderboard entries, saves, etc.) from **Player 2** and merges them into **Player 1**. This means that duplicate props in **Player 1** will be replaced by the ones from **Player 2**.
+
+:::caution
+Merging players has one major limitation: you cannot merge two players that have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
+:::
+
+You can provide the `post_merge_identity_service` option to automatically re-identify the player once merging is complete:
+
+```gdscript
+await Talo.players.identify("anonymous", Talo.players.generate_identifier())
+var player1_id = Talo.current_player.id
+await Talo.players.identify("username", "guyman")
+var player2_id = Talo.current_player.id
+
+print(Talo.current_alias.service) # "username"
+
+var mergeOpts := Talo.players.MergeOptions.new()
+mergeOpts.post_merge_identity_service = "anonymous" # go back to the anonymous alias
+var merged_player := await Talo.players.merge(player1_id, player2_id, mergeOpts)
+
+print(Talo.current_alias.service) # "anonymous"
+```
+
+In the example above, the two players created with `Talo.players.identify()` are merged. Before merging, the current alias service was **"username"** (because that was the most recently identified player). Setting the `post_merge_identity_service` option will invoke `Talo.players.identify()` with the **"anonymous"** alias.
 
 ## Steamworks integration
 

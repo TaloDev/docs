@@ -119,10 +119,33 @@ void Start()
 
 ## Merging players
 
-As described above, sometimes a player may have one or more aliases and there are times where you know for certain some aliases belong to the same player.
-You can merge players using `Talo.Players.Merge()` by providing the IDs of both players.
+Sometimes you might start tracking a player's actions before you know their true identity. For example, you could be tracking events with an "anonymous" identifier and then later on the same player chooses their username before submitting a leaderboard entry. Since both of these players need to be identified, two players will be created.
 
-The merge process takes all the props, aliases, and associated data (events, leaderboard entries, saves, etc.) from Player 2 and merge them into Player 1. This means that duplicate props in Player 1 will be replaced by the ones from Player 2.
+You can merge players using `Talo.Players.Merge()` by providing the IDs of both players. The merge process takes all the props, aliases, and associated data (events, leaderboard entries, saves, etc.) from **Player 2** and merges them into **Player 1**. This means that duplicate props in **Player 1** will be replaced by the ones from **Player 2**.
+
+:::caution
+Merging players has one major limitation: you cannot merge two players that have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
+:::
+
+You can provide the `post_merge_identity_service` option to automatically re-identify the player once merging is complete:
+
+```csharp
+await Talo.Players.Identify("anonymous", Guid.NewGuid().ToString());
+var player1Id = Talo.CurrentPlayer.id;
+await Talo.Players.Identify("username", "guyman");
+var player2Id = Talo.CurrentPlayer.id;
+
+Debug.Log(Talo.CurrentAlias.Service) // "username"
+
+var mergedPlayer = await Talo.Players.Merge(player1Id, player2Id, new MergeOptions
+{
+	postMergeIdentityService = "anonymous" // go back to the anonymous alias
+});
+
+Debug.Log(Talo.CurrentAlias.Service) // "anonymous"
+```
+
+In the example above, the two players created with `Talo.Players.Identify()` are merged. Before merging, the current alias service was **"username"** (because that was the most recently identified player). Setting the `postMergeIdentityService` option will invoke `Talo.Players.Identify()` with the **"anonymous"** alias.
 
 ## Steamworks integration
 
