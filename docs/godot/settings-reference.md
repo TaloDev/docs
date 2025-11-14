@@ -97,6 +97,6 @@ If enabled, Talo will simulate the player not having an internet connection. Thi
 
 ### debounce_timer_seconds
 
-Controls the time (in seconds) between frequent requests like updating player properties, updating saves and health checks.
+Controls the time (in seconds) between frequent requests such as updating player props, updating saves and health checks. The default value is 1 second.
 
-It is strongly recommend that you do not set this value below the default value (1 second). A lower value can lead to slow responses or data being overriden. Increasing this value will improve performance and ensure that data is consistently up-to-date.
+It is strongly recommended that you do not set this value below the default. A lower value can lead to slow responses or data being overwritten due to request conflicts. Increasing this value will reduce the frequency of requests and may help prevent data conflicts.
