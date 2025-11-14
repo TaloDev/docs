@@ -94,3 +94,9 @@ If enabled, responses from the Talo API will be logged to the console.
 ### debug.offline_mode
 
 If enabled, Talo will simulate the player not having an internet connection. This is primarily useful for testing.
+
+### debounce_timer_seconds
+
+Controls the time (in seconds) between frequent requests like updating player properties, updating saves and health checks.
+
+It is strongly recommend that you do not set this value below the default value (1 second). A lower value can lead to slow responses or data being overriden. Increasing this value will improve performance and ensure that data is consistently up-to-date.
