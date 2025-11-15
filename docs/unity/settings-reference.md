@@ -64,3 +64,9 @@ If enabled, responses from the Talo API will be logged to the console.
 ### offlineMode
 
 If enabled, Talo will simulate the player not having an internet connection. This is primarily useful for testing.
+
+### debounceTimerSeconds
+
+Controls the time (in seconds) between frequent requests such as updating player props, updating saves and health checks. The default value is 1 second.
+
+It is strongly recommended that you do not set this value below the default. A lower value can lead to slow responses or data being overwritten due to request conflicts. Increasing this value will reduce the frequency of requests and may help prevent data conflicts.
