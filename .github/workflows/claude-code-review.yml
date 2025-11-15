@@ -37,15 +37,83 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
-            Please review this pull request and provide feedback on:
-            - Spelling and grammar
-            - Clarity, conciseness and consistency
-            - Relevant helpful examples or lack thereof
-            
-            Use the repository's CLAUDE.md for guidance on style and conventions. Be constructive and helpful in your feedback.
-            Use `gh pr comment` with your Bash tool to leave your review as a comment on the PR.
-          
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
-          # or https://docs.anthropic.com/en/docs/claude-code/sdk#command-line for available options
-          claude_args: '--model sonnet --allowed-tools "Bash(gh issue view:*),Bash(gh search:*),Bash(gh issue list:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr list:*)"'
-          use_sticky_comment: true
+            You are reviewing PR #${{ github.event.pull_request.number }} for the Talo documentation website.
+
+            Your goal: Ensure documentation is developer-friendly, clear, concise, and accurate.
+
+            **Categories to check:**
+
+            1. **📖 Clarity & Readability**
+               - Is the documentation easy to understand for developers at all skill levels?
+               - Are technical concepts explained clearly without jargon overload?
+               - Are sentences concise and direct (avoid unnecessary words)?
+               - Are examples provided where they would help understanding?
+
+            2. **✅ Accuracy & Completeness**
+               - Are code samples syntactically correct and functional?
+               - Do examples match the current API (check against service definitions if relevant)?
+               - Are all necessary steps included (no missing prerequisites or assumptions)?
+               - Are parameter names, types, and descriptions accurate?
+
+            3. **🎯 Structure & Organization**
+               - Is information presented in a logical order?
+               - Are headings and sections properly organized?
+               - Is frontmatter (sidebar_position, description) set correctly?
+               - Are related topics cross-referenced appropriately?
+
+            4. **💻 Code Examples**
+               - Are code samples formatted correctly with proper language tags?
+               - Do examples follow best practices (not just working code, but good code)?
+               - Are code samples complete enough to be useful (not too minimal)?
+
+            5. **⚡ Developer Experience**
+               - Would a developer be able to accomplish their goal using just this documentation?
+               - Are common pitfalls or gotchas highlighted (warnings, tips, cautions)?
+               - Is the tone welcoming and helpful (not condescending or assuming knowledge)?
+
+            6. **🔗 Links & References**
+               - Are internal links using the correct format (`/docs/path/to/page`)?
+               - Do all links point to valid destinations?
+               - Are images referenced correctly from `/img/` or other static paths?
+
+            **Process:**
+            - The PR number is: ${{ github.event.pull_request.number }}
+            - View the PR using: `gh pr view ${{ github.event.pull_request.number }} --repo ${{ github.repository }}`
+            - Read CLAUDE.md to understand the documentation architecture
+            - View the PR diff using: `gh pr diff ${{ github.event.pull_request.number }} --repo ${{ github.repository }}`
+            - If an issue spans multiple categories, list it only once in the most relevant section
+            - Prioritize by severity: 🔴 Critical (breaks docs/blocks users) → 🟡 Major (confusing/unclear) → 🔵 Minor (polish/improvements)
+            - Focus only on changes introduced in this PR, not pre-existing documentation issues
+
+            **Review Workflow (Follow these steps):**
+            1. **Analysis Phase**: Review the PR diff and identify potential issues
+            2. **Validation Phase**: For each issue you find, verify it by:
+               - Re-reading the relevant code carefully
+               - Checking if your suggested fix is actually different from the current code
+               - Confirming the issue violates documented standards (check CLAUDE.md)
+               - Ensuring your criticism is actionable and specific
+            3. **Draft Phase**: Write your review only after validating all issues
+            4. **Quality Check**: Before posting, remove any issues where:
+               - Your "before" and "after" code snippets are identical
+               - You're uncertain or use phrases like "appears", "might", "should verify"
+               - The issue is theoretical without clear impact
+            5. **Post Phase**: Only post the review if you have concrete, validated feedback
+
+            **Feedback style:**
+            - Quote the specific documentation text that needs improvement
+            - Suggest concrete rewrites or improvements (show before/after)
+            - Keep total feedback under 500 words
+            - Use section headers with emojis and horizontal dividers (---)
+            - If no improvements needed in a category, simply state "No issues found"
+            - Frame feedback from the reader's perspective ("A developer reading this might be confused by...")
+            - If the PR improves documentation quality, acknowledge it rather than forcing criticism
+
+            **Comment Management (IMPORTANT):**
+            Post your review using this command, which will edit your last comment if one exists, or create a new one:
+            ```bash
+              gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --edit-last --create-if-none --body "<review>"
+            ```
+
+            Ensure proper escaping of quotes and special characters in the comment body. Use single quotes around the body and escape any single quotes inside with '\''
+          claude_args: |
+            --allowedTools "Read,Bash(gh pr:*),Grep,Glob"
