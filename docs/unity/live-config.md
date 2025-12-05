@@ -12,8 +12,23 @@ Check out this blog post on [how to release Unity game updates without new build
 
 ## Getting the live config
 
-The live config needs to be fetched before it can be queried. To do this call `Talo.GameConfig.Get()`.
-This will invoke the `Talo.GameConfig.OnLiveConfigLoaded()` event that returns the newly initialised config.
+You can fetch the live config using `Talo.GameConfig.Get()`. This must be called before querying the config.
+
+Fetching the config will invoke the `Talo.GameConfig.OnLiveConfigLoaded` event that returns the newly initialised config.
+
+```csharp
+void Start()
+{
+	Talo.GameConfig.OnLiveConfigLoaded += OnLiveConfigLoaded;
+	// first fetch the config
+	_ = Talo.GameConfig.Get();
+}
+
+void OnLiveConfigLoaded(TaloLiveConfig config)
+{
+	// now you can query the config
+}
+```
 
 You can fetch the game config any time to refresh the state.
 
@@ -56,33 +71,3 @@ void Start()
 ```
 
 The `OnLiveConfigUpdated` event is invoked via the [Talo Socket](./socket) whenever the live config is updated from the Talo dashboard.
-
-### Alternative example - polling the live config with a timer
-
-If you prefer not to use the Talo Socket, you can attach this example script to a TextMeshPro GameObject to update the text value every 2 seconds:
-
-```csharp
-using UnityEngine;
-using TaloGameServices;
-using TMPro;
-
-public class TextLoader : MonoBehaviour
-{
-	void Start()
-	{
-		var textUI = GetComponent<TextMeshProUGUI>();
-
-		Talo.GameConfig.OnLiveConfigLoaded += (liveConfig) =>
-		{
-			textUI.text = liveConfig.GetProp("liveString", "Not set!");
-		};
-
-		InvokeRepeating("GetConfig", 0f, 2f);
-	}
-
-	async void GetConfig()
-	{
-		await Talo.GameConfig.Get();
-	}
-}
-```

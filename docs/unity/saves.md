@@ -12,9 +12,23 @@ Check out the [SavesDemo sample](https://github.com/TaloDev/unity/tree/develop/A
 
 Loadables are GameObjects that automatically have their data saved and loaded. To make a GameObject loadable, create a new MonoBehavior, extend the `Loadable` class and finally add your new component onto your GameObject.
 
+### Registering loadables
+
 Once a loadable has entered the scene, its `OnEnable()` function registers it with the saves manager. We need to register all the Loadables in the scene so that when we load our save, we can match the content in the save file with the structure of the scene.
 
-Importantly, each Loadable _must_ have a unique `Id` so that Talo knows which node to load with which data.
+:::caution
+If your loadable overrides the `OnEnable()` method, ensure that it contains `base.OnEnable()` so that Talo can still register the loadable.
+:::
+
+Importantly, each Loadable _must_ have a unique `Id` so that Talo knows which node to load with which data. This can be set in the inspector or in the code.
+
+```csharp
+protected override void OnEnable()
+{
+	Id = "very-unique-collectible-name"; // id must be unique
+	base.OnEnable(); // ensure Talo registers the loadable
+}
+```
 
 ## Saved objects
 

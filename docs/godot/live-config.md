@@ -8,8 +8,20 @@ Live config lets you push state directly to your game from [the Talo dashboard](
 
 ## Getting the live config
 
-The live config needs to be fetched before it can be queried. To do this call `Talo.game_config.get_live_config()`.
-This will emit the `Talo.game_config.live_config_loaded` signal that returns the newly initialised config.
+You can fetch the live config using `Talo.game_config.get_live_config()`. This must be called before querying the config.
+
+Fetching the config will emit the `Talo.game_config.live_config_loaded` signal that returns the newly initialised config.
+
+```gdscript
+func _ready() -> void:
+	Talo.game_config.live_config_loaded.connect(_on_live_config_loaded)
+	# first fetch the config
+	Talo.game_config.get_live_config()
+
+func _on_live_config_loaded(config: TaloLiveConfig):
+	# now you can query the config
+	pass
+```
 
 You can fetch the game config any time to refresh the state.
 
@@ -42,18 +54,3 @@ func _on_live_config_updated(live_config: TaloLiveConfig) -> void:
 ```
 
 The `live_config_updated` signal is emitted via the [Talo Socket](./socket) whenever the live config is updated from the Talo dashboard.
-
-### Alternative example - polling the live config with a timer
-
-If you prefer not to use the Talo Socket, you can attach this example script to a node with a Timer timeout signal connected:
-
-```gdscript
-extends Node
-
-@export var label: Label
-
-# signal from a Timer node
-func _on_timer_timeout() -> void:
-	var config := await Talo.game_config.get_live_config()
-	label.text = config.get_prop("live_string", "Not set!")
-```

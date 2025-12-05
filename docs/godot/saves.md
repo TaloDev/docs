@@ -21,9 +21,21 @@ As part of the Godot plugin, we've included a few demos to help you get started:
 
 Talo's game saves let you easily save and load specific nodes in your game. To do this, your nodes need to extend the `TaloLoadable` node. Generally this is the parent node for scenes but you can also have it as a child node (e.g. you may want your loadable to be a child of a parent `CharacterBody2D`).
 
+### Registering loadables
+
 Once a loadable has entered the tree, its `_ready()` function registers it with the saves manager. We need to register all the Loadables in the scene so that when we load our save, we can match the content in the save file with the structure of the scene.
 
-Importantly, each Loadable _must_ have a unique `id` so that Talo knows which node to load with which data.
+:::caution
+If your loadable overrides the `_ready()` method, ensure that it contains `super()` so that Talo can still register the loadable. 
+:::
+
+Importantly, each Loadable _must_ have a unique `id` so that Talo knows which node to load with which data. This can be set in the inspector or in the code.
+
+```gdscript
+func _ready():
+	id = 'very-unique-collectible-name' # id must be unique
+	super() # ensure Talo registers the loadable
+```
 
 ## Saved objects
 
