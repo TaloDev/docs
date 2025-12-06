@@ -2,6 +2,8 @@
 sidebar_position: 10
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Live config
 
 Live config lets you push state directly to your game from [the Talo dashboard](https://dashboard.trytalo.com) without needing to release an update.
@@ -11,6 +13,8 @@ Check out this blog post on [how to release Unity game updates without new build
 :::
 
 ## Getting the live config
+
+<ScopeBadges scope='gameConfig' read />
 
 You can fetch the live config using `Talo.GameConfig.Get()`. This must be called before querying the config.
 
@@ -55,6 +59,8 @@ If the player is offline (determined using `Talo.IsOffline()`), an offline copy 
 You can check when the offline config was last updated using `Talo.LiveConfig.GetOfflineConfigLastModified()` which returns a Unix timestamp.
 
 ## Listening for live config updates
+
+<ScopeBadges scope='gameConfig' read />
 
 You can listen for live config updates by connecting to the `Talo.GameConfig.OnLiveConfigUpdated` event:
 

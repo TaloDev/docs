@@ -3,6 +3,8 @@ sidebar_position: 2
 description: The Talo Godot plugin allows you to identify multiple aliases, authenticate and sync your players with Steamworks.
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Identifying a player
 
 ## Aliases
@@ -13,6 +15,8 @@ For example, a player could have Steam and Epic Games login credentials but both
 You should identify a player after they have authenticated and before you attempt to track any events, add leaderboard entries or do anything related directly to the player.
 
 ## Identifying
+
+<ScopeBadges scope='players' read write />
 
 You can identify a player using `Talo.players.identify()`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground scene):
 
@@ -84,6 +88,8 @@ Once all the relevant data has been cleared, the `Talo.players.identity_cleared`
 
 ## Merging players
 
+<ScopeBadges scope='players' read write />
+
 Sometimes you might start tracking a player's actions before you know their true identity. For example, you could be tracking events with an "anonymous" identifier and then later on the same player chooses their username before submitting a leaderboard entry. Since both of these players need to be identified, two players will be created.
 
 You can merge players using `Talo.players.merge()` by providing the IDs of both players. The merge process takes all the props, aliases, and associated data (events, leaderboard entries, saves, etc.) from **Player 2** and merges them into **Player 1**. This means that duplicate props in **Player 1** will be replaced by the ones from **Player 2**.
@@ -140,7 +146,7 @@ The `identity` parameter is optional but strongly recommended as it ensures prop
 
 ### Steamworks player props
 
-After successfully authenticating the player, several [props](/docs/godot/player-props.md) will automatically be created for them:
+After successfully authenticating the player, several [props](/docs/godot/player-props) will automatically be created for them:
 
 - `META_STEAMWORKS_VAC_BANNED` - "true" or "false"
 - `META_STEAMWORKS_PUBLISHER_BANNED` - "true" or "false"
@@ -159,6 +165,8 @@ These props will be updated each time the player is identified using `Talo.playe
 If the `cache_player_on_identify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try and use local data if it exists.
 
 ## Searching for players
+
+<ScopeBadges scope='players' read />
 
 You can use `Talo.players.search()` to query players. This function accepts a single `query` parameter that will search your playerbase for matching player IDs, alias identifiers or prop values. You can use this function to find players by their username, their ID or if they have a prop with a specific value.
 

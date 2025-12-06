@@ -3,6 +3,8 @@ sidebar_position: 10
 description: Talo Groups are filters on your player-base that create distinct segments between players. Groups are built in the dashboard and visible in your Godot game.
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Groups
 
 Talo groups allow you to apply filters on your player-base to create distinct segments between players. For example, you could have a group for players who are beta testers or players who have completed the game.
@@ -22,6 +24,8 @@ func is_beta_tester():
 ```
 
 ## Fetching individual groups
+
+<ScopeBadges scope='playerGroups' read />
 
 Groups in the `TaloPlayer` class are stubs that only include an `id` and a `name`. To retrieve more data about a group, including its members, use the `Talo.player_groups.get_group()` function:
 

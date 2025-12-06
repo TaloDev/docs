@@ -5,7 +5,7 @@ description: Talo Channels add instant interactivity to your game. Channels can 
 
 # Talo Socket
 
-The Talo Socket is the underlying server that powers services like [channels](./channels.md) and handles connections, messages and events.
+The Talo Socket is the underlying server that powers services like [channels](./channels) and handles connections, messages and events.
 
 You can learn more about how the socket works [here](../sockets/intro.md).
 

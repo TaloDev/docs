@@ -2,6 +2,8 @@
 sidebar_position: 7
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Stats
 
 Talo stats let you track individual player data as well as aggregated global data - like how many items have been crafted or how many deaths a player has.
@@ -13,6 +15,8 @@ Check out this blog post on [how to track player stats in Godot](https://trytalo
 :::
 
 ## Getting stats
+
+<ScopeBadges scope='gameStats' read />
 
 You can list all available stats using `Talo.stats.get_stats()`. This will return all the constraint data defined in the dashboard like the `default_value`, `max_change` and `max_value`. This will also return the global values for global stats:
 
@@ -30,6 +34,8 @@ print("Stats: %s" % [internal_names])
 If you already have the internal name of a stat, you can use `Talo.stats.find()` and pass in the internal name to return data for a single stat.
 
 ## Tracking stats
+
+<ScopeBadges scope='gameStats' write />
 
 You can track a stat using the Stats API `track()` function which takes your stat's `internal_name` and the amount to change the stat by (default 1.0):
 
@@ -55,9 +61,15 @@ var res := await Talo.stats.track(stat_name)
 print("%s, %s" % [res.value, res.stat.global_value])
 ```
 
+#### Find a stat value
+
+<ScopeBadges scope='gameStats' read />
+
 You can also get the current value of a stat for a player using `Talo.stats.find_player_stat()`.
 
 ## Listing player stat values
+
+<ScopeBadges scope='gameStats' read />
 
 If you need to find all player stat values for the current player, you can use `Talo.stats.list_player_stats()`. This function returns a list of player stats which include the value and related stat:
 
@@ -76,7 +88,9 @@ The function above iterates through the player stats returned by the API and pic
 
 ## Stat history
 
-You can fetch a history of updates to a stat for the current player using `Talo.stats.get_history()`. These results are paginated and can be filtered by specific start and end dates too:
+<ScopeBadges scope='gameStats' read />
+
+You can fetch a history of updates to a stat for the current player using `Talo.stats.get_history()`. These results are paginated and can be filtered by specific start and end dates:
 
 ```gdscript
 func fetch_history() -> void:
@@ -87,21 +101,68 @@ func fetch_history() -> void:
 	print("%s changed by: %s" % [stat_name, ", ".join(changes)])
 ```
 
+### Filtering stat history
+
+The `get_history()` function accepts the following optional parameters:
+
+- `page`: Page number for pagination (default: 0)
+- `start_date`: Filter to show only changes tracked on or after this date. This can be a UTC Date (YYYY-MM-DD), DateTime (ISO 8601), or millisecond timestamp
+- `end_date`: Filter to show only changes tracked on or before this date. This can be a UTC Date (YYYY-MM-DD), DateTime (ISO 8601), or millisecond timestamp
+
+```gdscript
+# Get the second page of history
+var res := await Talo.stats.get_history(stat_name, 1)
+
+# Get history for September 2025
+var res := await Talo.stats.get_history(stat_name, 0, "2025-09-01", "2025-09-30")
+
+# Get all history since a specific date
+var res := await Talo.stats.get_history(stat_name, 0, "2025-09-15")
+```
+
 ## Global stat history
 
-For global stats, you can also fetch a history of updates from all players using `Talo.stats.get_global_history()`. This API is similar to the player stat history except that it is filterable by individual players and it returns metrics about the stat during the filtered time period:
+<ScopeBadges scope='gameStats' read />
+
+For global stats, you can also fetch a history of updates from all players using `Talo.stats.get_global_history()`. This API returns metrics about the stat during the filtered time period and can be filtered by player, date range, and pagination:
 
 ```gdscript
 func fetch_global_history() -> void:
+	var res := await Talo.stats.get_global_history(stat_name)
+	var total_updates := res.count
 	var global_metrics := res.global_value
 	var player_metrics := res.player_value
 
-	print("Min: %s, max: %s, median: %s, average: %s, average change: %s, average player value: %s" % [
+	print("Total: %s, Min: %s, max: %s, median: %s, average: %s, average change: %s, average player value: %s" % [
+		total_updates,
 		global_metrics.min_value,
 		global_metrics.max_value,
 		global_metrics.median_value,
-		global_metrics.average_value,
+		global_metrics.average_value, # average global value
 		global_metrics.average_change,
-		player_metrics.average_value
+		player_metrics.average_value # average player value
 	])
+```
+
+### Filtering global stat history
+
+The `get_global_history()` function accepts the following optional parameters:
+
+- `page`: Page number for pagination (default: 0)
+- `player_id`: Filter to show only changes from a specific player ID
+- `start_date`: Filter to show only changes tracked on or after this date. This can be a UTC Date (YYYY-MM-DD), DateTime (ISO 8601), or millisecond timestamp
+- `end_date`: Filter to show only changes tracked on or before this date. This can be a UTC Date (YYYY-MM-DD), DateTime (ISO 8601), or millisecond timestamp
+
+```gdscript
+# Get global history for a specific player
+var res := await Talo.stats.get_global_history(stat_name, 0, "player-123")
+
+# Get global history for September 2025
+var res := await Talo.stats.get_global_history(stat_name, 0, "", "2025-09-01", "2025-09-30")
+
+# Get global history for a specific player in a date range
+var res := await Talo.stats.get_global_history(stat_name, 0, "player-123", "2025-09-01", "2025-09-30")
+
+# Get the second page of global history
+var res := await Talo.stats.get_global_history(stat_name, 1)
 ```

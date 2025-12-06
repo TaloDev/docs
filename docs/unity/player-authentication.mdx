@@ -3,11 +3,15 @@ sidebar_position: 2
 description: Talo player authentication for Unity games manages logging players in, registration and verification without needing to build any of your own infrastructure.
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Player authentication
 
 Talo player authentication manages logging players in, registering them and verifying them without needing to provision any of your own infrastructure. More examples can be found in the "AuthenticationDemo" sample included with the Unity package.
 
 ## Registering
+
+<ScopeBadges scope='players' read write />
 
 To register a player, you can use `Talo.PlayerAuth.Register()`. At a minimum, you need to provide a username and a password for the player.
 
@@ -59,6 +63,8 @@ private async void OnRegisterClick()
 Once a player is registered, a session will automatically be created for them and they will be logged in.
 
 ## Logging in
+
+<ScopeBadges scope='players' read write />
 
 To start a session, call the `Talo.PlayerAuth.Login()` function with the username and password the player provided.
 
@@ -133,6 +139,8 @@ private void Start()
 
 ## Verifying logins
 
+<ScopeBadges scope='players' read write />
+
 If you need to verify a player's login, you need to call `Talo.PlayerAuth.Verify()` with the `code` sent to the player's email:
 
 ```csharp
@@ -170,6 +178,8 @@ private async void OnVerifyClick()
 
 ## Changing a player's password
 
+<ScopeBadges scope='players' read write />
+
 To change the logged in player's password, you need to provide their current password and a new password to the `Talo.PlayerAuth.ChangePassword()` function:
 
 ```csharp
@@ -194,9 +204,13 @@ catch (Exception ex)
 
 ## Changing a player's email
 
+<ScopeBadges scope='players' read write />
+
 You can also change a player's email with the `Talo.PlayerAuth.ChangeEmail()` function - just pass in their current password and a new email.
 
 ## Forgotten password flow
+
+<ScopeBadges scope='players' read write />
 
 If a player forgets their password, you can begin the recovery flow by providing their email to the `Talo.PlayerAuth.ForgotPassword()` function. Players who have not provided an email will not be able to initiate this flow.
 
@@ -225,11 +239,15 @@ catch (Exception ex)
 
 ## Toggling verification
 
+<ScopeBadges scope='players' read write />
+
 To toggle verification on and off, you can call the `Talo.PlayerAuth.ToggleVerification`. You'll need to provide the player's current password.
 
 If you're enabling verification and the player doesn't already have an email address set, you will need to provide one as the third parameter of the function call. By providing an email address for a player that already has one set, you will overwrite the existing email address with the newly provided email address.
 
 ## Deleting accounts
+
+<ScopeBadges scope='players' read write />
 
 Player accounts can be deleted using `Talo.PlayerAuth.DeleteAccount`. You'll need to provide the player's current password. When an account is successfully deleted several things will happen internally:
 

@@ -3,13 +3,17 @@ sidebar_position: 15
 description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending event-based messages and more.
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Channels
 
 Talo Channels are a way of passing messages between players that are subscribed to a specific topic. Channels can be used for player chats, sending arbitrary JSON to various groups and pushing game updates directly to clients.
 
-You can learn more about channel [here](https://trytalo.com/channels).
+You can learn more about channels [here](https://trytalo.com/channels).
 
 ## Listing channels
+
+<ScopeBadges scope='gameChannels' read />
 
 To get all available channels for your game, use the `Talo.Channels.GetChannels()` function. This is a paginated function which takes a single `page` parameter.
 
@@ -23,6 +27,12 @@ var channels: Channel[] = res.channels
 var count: int = res.count
 var isLastPage: bool = res.isLastPage
 ```
+
+## Finding a channel
+
+<ScopeBadges scope='gameChannels' read />
+
+You can find a channel by its ID using `Talo.Channels.Find()`. This function takes a channel ID integer and returns a `Channel` object.
 
 ### Filtering by prop keys and values
 
@@ -42,6 +52,8 @@ var res = await Talo.Channels.GetChannels(options)
 
 ## Listing subscribed channels
 
+<ScopeBadges scope='gameChannels' read />
+
 You can use `Talo.Channels.GetSubscribedChannels()` which returns a `Channel[]` to find out which channels the current player is subscribed to.
 
 ### Filtering by prop keys and values
@@ -55,6 +67,8 @@ var res = await Talo.Channels.GetSubscribedChannels(options)
 
 ## Creating a channel
 
+<ScopeBadges scope='gameChannels' write />
+
 To create a channel, call `Talo.Channels.Create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (an array of `(string, string)` tuples) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
 
 ```csharp
@@ -66,15 +80,15 @@ var props = new (string, string)[]
 var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = channelName, autoCleanup = true, props = props });
 ```
 
-## Finding a channel
-
-You can find a channel by its ID using `Talo.Channels.Find()`. This function takes a channel ID integer and returns a `Channel` object.
-
 ## Joining and leaving channels
+
+<ScopeBadges scope='gameChannels' write />
 
 To join or leave a channel, use `Talo.Channels.Join()` and `Talo.Channels.Leave()` respectively. Both functions take the ID of the channel as the only parameter. If you attempt to join a channel and the current player is already in that channel, nothing will happen. Leaving a channel also follows the same pattern.
 
 ## Updating channels
+
+<ScopeBadges scope='gameChannels' write />
 
 The owner of a channel can update the channel using `Talo.Channels.Update()`. The name and owner of the channel can be updated using this function.
 
@@ -83,6 +97,8 @@ To transfer ownership of the channel, you should specify the ID of the player al
 You can also update the props of the channel: keys will be overrided with new values and keys with a value of `null` will be deleted.
 
 ## Deleting channels
+
+<ScopeBadges scope='gameChannels' write />
 
 The owner of a channel can delete the channel using `Talo.Channels.Delete()`. All other members of the channel will be unsubscribed automatically.
 
@@ -93,6 +109,8 @@ You can also create invite-only private channels using the `isPrivate` option.
 Private channels will not be listed when using `Talo.Channels.GetChannels()`. They also cannot be joined in the same way: the channel owner must invite players to a private channel.
 
 ### Channel invites
+
+<ScopeBadges scope='gameChannels' write />
 
 To create a channel invite, use `Talo.Channels.Invite()` with a channel ID and player alias ID.
 
@@ -116,6 +134,8 @@ var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "ch
 Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.Channels.OnChannelLeft` event will invoke with the reason `ChannelLeavingReason.TemporaryMembership`.
 
 ## Getting channel members
+
+<ScopeBadges scope='gameChannels' read />
 
 You can fetch a list of channel members using `Talo.Channels.GetMembers()`. This will return a `ChannelMembersResponse`:
 
@@ -153,6 +173,8 @@ You can provide the following filtering options:
 - `playerGroupId`: find channel members that are part of this group
 
 ## Listening for messages
+
+<ScopeBadges scope='gameChannels' read />
 
 To listen for messages, you can subscribe to the `Talo.Channels.OnMessageReceived` event. This event provides the `Channel`, the sender's `PlayerAlias` and the message.
 
@@ -192,6 +214,8 @@ Channel storage is a shared pool of props (key/value pairs) that can be read, cr
 
 ### Setting storage props
 
+<ScopeBadges scope='gameChannels' write />
+
 Any player can update the global store using `Talo.Channels.SetStorageProps()`:
 
 ```csharp
@@ -223,6 +247,8 @@ void Start()
 
 ### Getting storage props
 
+<ScopeBadges scope='gameChannels' read />
+
 To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
 
 ```csharp
@@ -250,6 +276,8 @@ var freshProp = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", tr
 
 
 ### Getting multiple storage props
+
+<ScopeBadges scope='gameChannels' read />
 
 If you need to fetch multiple storage props, `Talo.channels.list_storage_props()` is much faster and more efficient than fetching them one by one:
 
@@ -279,6 +307,8 @@ foreach (var prop in bustedResults)
 This function will return a `ChannelStorageProp` array, allowing you to iterate through the results. Note: if a prop cannot be found, it will not appear in the list.
 
 ### Listening for storage updates
+
+<ScopeBadges scope='gameChannels' read />
 
 The `Talo.Channels.OnChannelStoragePropsUpdated` event will invoke when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
 

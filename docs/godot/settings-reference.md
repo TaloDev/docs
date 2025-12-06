@@ -77,7 +77,7 @@ If enabled, Talo will automatically cache the player after a successful online i
 
 ### continuity.enabled
 
-If enabled, Talo will try to automatically replay failed network requests - [learn more about Continuity here](/docs/godot/continuity.md).
+If enabled, Talo will try to automatically replay failed network requests - [learn more about Continuity here](/docs/godot/continuity).
 
 ### player_auth.auto_start_session
 

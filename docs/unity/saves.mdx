@@ -2,6 +2,8 @@
 sidebar_position: 6
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Saves
 
 Talo Saves allow you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
@@ -144,6 +146,8 @@ public override void OnLoaded(Dictionary<string, object> data)
 
 ## Loading saves
 
+<ScopeBadges scope='gameSaves' read />
+
 You can load saves using `Talo.Saves.GetSaves()`. Once your saves have been fetched, the `Talo.Saves.OnSavesLoaded` event is invoked.
 
 Saves can be accessed using `Talo.Saves.All`, `Talo.Saves.Latest` or `Talo.Saves.Current`. To load a save, use `Talo.Saves.ChooseSave()` and pass in the save you want to load.
@@ -156,15 +160,21 @@ Finally, when all your registered loadables have called their `OnLoaded()`, an `
 
 ## Creating saves
 
+<ScopeBadges scope='gameSaves' write />
+
 To create a save, use `Talo.Saves.CreateSave()`. Your new save will automatically become your chosen save (although the `OnSaveChosen` event will not invoke). Internally, this causes the `RegisterFields()` function in your Loadables to be called.
 
 Offline copies of saves are created in the [`Application.persistentDataPath`](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) within a `saves.json`.
 
 ## Updating saves
 
+<ScopeBadges scope='gameSaves' write />
+
 To update a save, use `Talo.Saves.UpdateSave()`. You can optionally pass in a new name for your save.
 
 ## Deleting saves
+
+<ScopeBadges scope='gameSaves' write />
 
 You can delete a save by passing in the save's ID to `Talo.Saves.DeleteSave()`. Optionally you can pass in the `unloadIfCurrentSave` flag which will [unload](#unloading-saves) the current save if it is the one being deleted.
 

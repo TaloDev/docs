@@ -2,11 +2,15 @@
 sidebar_position: 4
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Events
 
 Events let you better understand what players are doing and can be useful for putting together a timeline of events for debugging.
 
 ## Tracking
+
+<ScopeBadges scope='events' write />
 
 To track an event, simply call `Talo.events.track()` with an event name like "Level up". You can optionally attach properties to events by passing a dictionary to the function call:
 

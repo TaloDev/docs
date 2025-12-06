@@ -1,0 +1,16 @@
+.badgesContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  margin: 16px 0;
+  font-weight: 600;
+}
+
+.badge {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: transparent !important;
+  color: var(--ifm-color-primary);
+  border: 2px solid var(--ifm-toc-border-color)
+}

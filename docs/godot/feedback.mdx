@@ -3,6 +3,8 @@ sidebar_position: 12
 description: Talo Feedback allows you to receive feedback directly from players in your Godot game. Feedback can be categorised, analysed and filtered to improve your game.
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Feedback
 
 Talo feedback lets you easily gather and categorise player feedback.
@@ -10,6 +12,8 @@ Talo feedback lets you easily gather and categorise player feedback.
 To create a feedback category, head over to [the dashboard](https://dashboard.trytalo.com), visit the feedback page and click "Edit categories". Take note of the `Internal name` of the category you create as this is how you'll be referring to it inside your game.
 
 ## Getting available categories
+
+<ScopeBadges scope='gameFeedback' read />
 
 To list all the available categories for your game, use the Feedback API `get_categories()` function:
 
@@ -27,6 +31,8 @@ func _on_pressed() -> void:
 ```
 
 ## Sending feedback
+
+<ScopeBadges scope='gameFeedback' write />
 
 Once you have your available categories and their `internal_names`, you can simply call the `send()` function with the player's comment and your chosen category's internal name:
 

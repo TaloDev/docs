@@ -2,11 +2,15 @@
 sidebar_position: 11
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Live config
 
 Live config lets you push state directly to your game from [the Talo dashboard](https://dashboard.trytalo.com) without needing to release an update.
 
 ## Getting the live config
+
+<ScopeBadges scope='gameConfig' read />
 
 You can fetch the live config using `Talo.game_config.get_live_config()`. This must be called before querying the config.
 
@@ -42,6 +46,8 @@ If the player is offline (determined using `await Talo.is_offline()`), an offlin
 You can check when the offline config was last updated using `Talo.live_config.get_offline_config_last_modified()` which returns a Unix timestamp.
 
 ## Listening for live config updates
+
+<ScopeBadges scope='gameConfig' read />
 
 You can listen for live config updates by connecting to the `Talo.game_config.live_config_updated` signal:
 

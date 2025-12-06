@@ -3,11 +3,15 @@ sidebar_position: 16
 description: With Talo's presence API, you can automatically track the presence of players in your game. Presence allows you to easily build social features like friends lists.
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Player presence
 
 The player presence API allows you to automatically track the presence of players in your game. You can use this to show if a player is online or offline, set custom statuses and build social features like friends lists.
 
 ## Getting a player's presence
+
+<ScopeBadges scope='playerPresence' read />
 
 To get a player's presence, use the `Talo.PlayerPresence.GetPresence()` function. This function takes a player ID string as its argument:
 
@@ -30,6 +34,8 @@ The `playerAlias` represents the last alias used to update the player's presence
 
 ## Updating a player's presence
 
+<ScopeBadges scope='playerPresence' write />
+
 To update a player's presence, use the `Talo.PlayerPresence.UpdatePresence()` function. You can provide the new `online` status and an optional `customStatus`:
 
 ```csharp
@@ -39,6 +45,8 @@ var presence = await Talo.PlayerPresence.UpdatePresence(online, customStatus);
 This function returns a `PlayerPresence` object.
 
 ## Subscribing to presence updates
+
+<ScopeBadges scope='playerPresence' read />
 
 You can use the `Talo.PlayerPresence.OnPresenceChanged` event to subscribe to player presence updates. This event provides a `PlayerPresence` object and information about what changed. Here's an example of how to use this event to update a friends list:
 

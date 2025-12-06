@@ -3,13 +3,17 @@ sidebar_position: 15
 description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending event-based messages and more.
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Channels
 
 Talo Channels are a way of passing messages between players that are subscribed to a specific topic. Channels can be used for player chats, sending arbitrary JSON to various groups and pushing game updates directly to clients.
 
-You can learn more about channel [here](https://trytalo.com/channels).
+You can learn more about channels [here](https://trytalo.com/channels).
 
 ## Listing channels
+
+<ScopeBadges scope='gameChannels' read />
 
 To get all available channels for your game, use the `Talo.channels.get_channels()` function. This is a paginated function which takes a single `options` parameter.
 
@@ -48,6 +52,8 @@ var res := await Talo.channels.get_channels(options)
 
 ## Listing subscribed channels
 
+<ScopeBadges scope='gameChannels' read />
+
 You can use `Talo.channels.get_subscribed_channels()` to find out which channels the current player is subscribed to. This returns an array of `TaloChannel`.
 
 ### Filtering by prop keys and values
@@ -61,7 +67,15 @@ options.prop_value = "157"
 var res := await Talo.channels.get_subscribed_channels(options)
 ```
 
+## Finding a channel
+
+<ScopeBadges scope='gameChannels' read />
+
+You can find a channel by its ID using `Talo.channels.find()`. This function takes a channel ID integer and returns a `TaloChannel` object.
+
 ## Creating a channel
+
+<ScopeBadges scope='gameChannels' write />
 
 To create a channel, call `Talo.channels.create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (a dictionary of string key/value pairs) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
 
@@ -81,13 +95,13 @@ print(channel.props) # [{ "prop_key": "prop_value" }]
 
 ## Joining and leaving channels
 
+<ScopeBadges scope='gameChannels' write />
+
 To join or leave a channel, use `Talo.channels.join()` and `Talo.channels.leave()` respectively. Both functions take the ID of the channel as the only parameter. If you attempt to join a channel and the current player is already in that channel, nothing will happen. Leaving a channel also follows the same pattern.
 
-## Finding a channel
-
-You can find a channel by its ID using `Talo.channels.find()`. This function takes a channel ID integer and returns a `TaloChannel` object.
-
 ## Updating channels
+
+<ScopeBadges scope='gameChannels' write />
 
 The owner of a channel can update the channel using `Talo.channels.update()`. The name and owner of the channel can be updated using this function.
 
@@ -96,6 +110,8 @@ To transfer ownership of the channel, you should specify the ID of the player al
 You can also update the props of the channel: keys will be overrided with new values and keys with a value of `null` will be deleted.
 
 ## Deleting channels
+
+<ScopeBadges scope='gameChannels' write />
 
 The owner of a channel can delete the channel using `Talo.channels.delete()`. All other members of the channel will be unsubscribed automatically.
 
@@ -116,6 +132,8 @@ print(channel.private) # true
 Private channels will not be listed when using `Talo.channels.get_channels()`. They also cannot be joined in the same way: the channel owner must invite players to a private channel.
 
 ### Channel invites
+
+<ScopeBadges scope='gameChannels' write />
 
 To create a channel invite, use `Talo.channels.invite()` with a channel ID and player alias ID.
 
@@ -148,6 +166,8 @@ var channel := await Talo.channels.create(options)
 Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.channels.player_left` signal will emit with the reason `Talo.channels.ChannelLeavingReason.TEMPORARY_MEMBERSHIP`.
 
 ## Getting channel members
+
+<ScopeBadges scope='gameChannels' read />
 
 You can fetch a list of channel members using `Talo.channels.get_members()`. This will return an `Talo.channels.MembersPage`:
 
@@ -184,6 +204,8 @@ You can provide the following filtering options:
 
 ## Listening for messages
 
+<ScopeBadges scope='gameChannels' read />
+
 To listen for messages, you can use the `Talo.channels.message_received` signal. This signal will return the `TaloPlayerChannel`, the sender's `TaloPlayerAlias` and the message.
 
 Here's an example of how to use this signal to update a chat UI:
@@ -217,6 +239,8 @@ Channel storage is a shared pool of props (key/value pairs) that can be read, cr
 
 ### Setting storage props
 
+<ScopeBadges scope='gameChannels' write />
+
 Any player can update the global store using `Talo.channels.set_storage_props()`:
 
 ```gdscript
@@ -243,6 +267,8 @@ func _ready() -> void
 ```
 
 ### Getting storage props
+
+<ScopeBadges scope='gameChannels' read />
 
 To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
 
@@ -273,6 +299,8 @@ var freshProp := await Talo.channels.get_storage_prop(channel.id, "shared-gold",
 
 ### Getting multiple storage props
 
+<ScopeBadges scope='gameChannels' read />
+
 If you need to fetch multiple storage props, `Talo.channels.list_storage_props()` is much faster and more efficient than fetching them one by one:
 
 ```gdscript
@@ -296,6 +324,8 @@ for prop in busted_results:
 This function will return a `TaloChannelStorageProp` array, allowing you to iterate through the results. Note: if a prop cannot be found, it will not appear in the list.
 
 ### Listening for storage updates
+
+<ScopeBadges scope='gameChannels' read />
 
 The `Talo.channels.channel_storage_props_updated` signal will emit when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
 

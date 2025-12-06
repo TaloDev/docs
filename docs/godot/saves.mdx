@@ -2,6 +2,8 @@
 sidebar_position: 6
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Saves
 
 Talo Saves allow you to solve the provlem of saving and loading your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
@@ -127,6 +129,8 @@ func on_loaded(data: Dictionary) -> void:
 
 ## Loading saves
 
+<ScopeBadges scope='gameSaves' read />
+
 You can load saves using `Talo.saves.get_saves()`. Once your saves have been fetched, the `Talo.saves.saves_loaded` signal is emitted.
 
 Saves can be accessed using `Talo.saves.all` or `Talo.saves.latest`. To load a save, use `Talo.saves.choose_save()` and pass in the save you want to load.
@@ -143,6 +147,8 @@ You can find more details including code samples in our [Godot saves deep dive](
 
 ## Creating saves
 
+<ScopeBadges scope='gameSaves' write />
+
 To create a save, use `Talo.saves.create_save()`. Your new save will automatically become your chosen save (although the `save_chosen` signal will not emit).
 
 Offline copies of saves are created in the [user data](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) within a `saves.json`.
@@ -151,11 +157,15 @@ This will register all the fields for loadables in the scene to create the save 
 
 ## Updating saves
 
+<ScopeBadges scope='gameSaves' write />
+
 To update a save, use `Talo.saves.update_save()`. You can optionally pass in a new name for your save. You can also update the current save using `Talo.saves.update_current_save()`.
 
 This will get the latest data for all loadables in the scene and check if any loadables should be marked as destroyed.
 
 ## Deleting saves
+
+<ScopeBadges scope='gameSaves' write />
 
 You can delete a save by passing in the save's ID to `Talo.saves.delete_save()`. Optionally you can pass in the `unload_if_current_save` flag which will [unload](#unloading-saves) the current save if it is the one being deleted.
 

@@ -2,6 +2,8 @@
 sidebar_position: 4
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Events
 
 Events let you better understand what players are doing and can be useful for putting together a timeline of events for debugging.
@@ -11,6 +13,8 @@ Check out this blog post on [how to track events in Unity](https://trytalo.com/b
 :::
 
 ## Tracking
+
+<ScopeBadges scope='events' write />
 
 To track an event, simply call `Talo.Events.Track()` with an event name like "Level up". You can optionally attach properties to events by passing any number of extra `(string, string)` tuples to the function call:
 

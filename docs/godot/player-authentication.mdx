@@ -3,11 +3,15 @@ sidebar_position: 2
 description: Talo player authentication for Godot games manages logging players in, registration and verification without needing to build any of your own infrastructure.
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Player authentication
 
 Talo player authentication manages logging players in, registering them and verifying them without needing to provision any of your own infrastructure. All of the examples below can be found in the `authentication` sample from the Godot plugin.
 
 ## Registering
+
+<ScopeBadges scope='players' read write />
 
 To register a player, you can use `Talo.player_auth.register()`. At a minimum, you need to provide a username and a password for the player.
 
@@ -34,6 +38,8 @@ if res != OK:
 Once a player is registered, a session will automatically be created for them and they will be logged in.
 
 ## Logging in
+
+<ScopeBadges scope='players' read write />
 
 To start a session, call the `Talo.player_auth.login()` function with the username and password the player provided.
 
@@ -94,6 +100,8 @@ func _ready() -> void:
 
 ## Verifying logins
 
+<ScopeBadges scope='players' read write />
+
 If you need to verify a player's login, you need to call `Talo.player_auth.verify()` with the `code` sent to the player's email:
 
 ```gdscript
@@ -112,6 +120,8 @@ if res != OK:
 ```
 
 ## Changing a player's password
+
+<ScopeBadges scope='players' read write />
 
 To change the logged in player's password, you need to provide their current password and a new password to the `Talo.player_auth.change_password()` function:
 
@@ -139,9 +149,13 @@ else:
 
 ## Changing a player's email
 
+<ScopeBadges scope='players' read write />
+
 You can also change a player's email with the `Talo.player_auth.change_email()` function - just pass in their current password and a new email.
 
 ## Forgotten password flow
+
+<ScopeBadges scope='players' read write />
 
 If a player forgets their password, you can begin the recovery flow by providing their email to the `Talo.player_auth.forgot_password()` function. Players who have not provided an email will not be able to initiate this flow:
 
@@ -182,11 +196,15 @@ else:
 
 ## Toggling verification
 
+<ScopeBadges scope='players' read write />
+
 To toggle verification on and off, you can call the `Talo.player_auth.toggle_verification`. You'll need to provide the player's current password.
 
 If you're enabling verification and the player doesn't already have an email address set, you will need to provide one as the third parameter of the function call. By providing an email address for a player that already has one set, you will overwrite the existing email address with the newly provided email address.
 
 ## Deleting accounts
+
+<ScopeBadges scope='players' read write />
 
 Player accounts can be deleted using `Talo.player_auth.delete_account`. You'll need to provide the player's current password. When an account is successfully deleted several things will happen internally:
 
