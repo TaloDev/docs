@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import CodeBlock from '@theme/CodeBlock'
 import styles from './Sample.module.css'
 

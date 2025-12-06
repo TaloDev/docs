@@ -18,7 +18,6 @@ module.exports = async function configCreatorAsync() {
     url: 'https://docs.trytalo.com',
     baseUrl: '/',
     onBrokenLinks: 'throw',
-    onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
     organizationName: 'TaloDev', // Usually your GitHub org/user name.
     projectName: 'docs', // Usually your repo name.
@@ -210,6 +209,11 @@ module.exports = async function configCreatorAsync() {
         defer: true,
         'data-domain': 'docs.trytalo.com'
       }
-    ]
+    ],
+    markdown: {
+      hooks: {
+        onBrokenMarkdownLinks: 'throw'
+      }
+    }
   }
 }

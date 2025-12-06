@@ -1,4 +1,3 @@
-import React from 'react'
 import ServiceDocumentation, { generateTOCForService } from './ServiceDocumentation'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import TOCInline from '@theme/TOCInline'
