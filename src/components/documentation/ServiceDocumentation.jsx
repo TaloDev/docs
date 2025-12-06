@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import Sample from './Sample'
 import Head from '@docusaurus/Head'
 import Heading from '@theme/Heading'
+import { ScopeBadges } from '../ScopeBadges'
 
 function slugify(text) {
   if (typeof text !== 'string' || text.length === 0) {
@@ -26,7 +27,13 @@ function slugify(text) {
 
 export default function ServiceDocumentation({ service, metaDescription }) {
   const { siteConfig } = useDocusaurusContext()
-  const { routes } = useServiceDocs(service)
+  const serviceData = useServiceDocs(service)
+
+  if (!serviceData) {
+    return <div>Service "{service}" not found</div>
+  }
+
+  const { routes } = serviceData
 
   const getParamRequiredText = (requiredType) => {
     if (requiredType === 'YES') return <span><span>✅</span> Yes</span>
@@ -90,9 +97,24 @@ export default function ServiceDocumentation({ service, metaDescription }) {
 
         const routeTitle = getRouteTitle(route)
 
+        const scopes = route.scopes || []
+        const scopeMap = scopes.reduce((acc, scopeString) => {
+          const [action, scope] = scopeString.split(':')
+          if (!acc[scope]) {
+            acc[scope] = { read: false, write: false }
+          }
+          if (action === 'read') acc[scope].read = true
+          if (action === 'write') acc[scope].write = true
+          return acc
+        }, {})
+
         return (
           <React.Fragment key={idx}>
             <Heading id={slugify(routeTitle)} as='h3'>{routeTitle}</Heading>
+
+            {Object.entries(scopeMap).map(([scope, { read, write }]) => (
+              <ScopeBadges key={scope} scope={scope} read={read} write={write} />
+            ))}
 
             <code className={styles.url}>
               <span className={clsx(styles.methodTag, styles[route.method.toLowerCase()])}>{route.method}</span> <code>{siteConfig.customFields.docs.baseUrl}{route.path}</code>
