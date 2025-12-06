@@ -3,6 +3,8 @@ sidebar_position: 14
 description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending event-based messages and more.
 ---
 
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
 # Talo Socket
 
 The Talo Socket is the underlying server that powers services like [channels](./channels) and handles connections, messages and events.
@@ -14,6 +16,12 @@ You can learn more about how the socket works [here](../sockets/intro).
 Ideally you should never need to use the socket directly because individual services like players and channels should send the correct data on your behalf. However, the Talo Socket exposes a few public methods and signals for custom logic like handling errors and re-connecting to the server if the connection is closed.
 
 The socket connection is automatically established (this can disabled by setting `autoConnectSocket` to `false` in your config). When a player gets identified, they also get automatically identified with the socket server.
+
+## Obtaining a socket ticket
+
+<ScopeBadges scope='players' read />
+
+To connect to the socket server, you need to obtain a socket ticket. This is done by calling `Talo.SocketTickets.CreateTicket()`. Opening a socket connection using `Talo.Socket.OpenConnection()` will automatically obtain a ticket and pass it as a query parameter to the socket URL.
 
 ## Receiving messages
 
@@ -63,6 +71,8 @@ public void SendMessage(int channelId, string message)
 ```
 
 ## Handling connection closures
+
+<ScopeBadges scope='players' read write />
 
 The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors#rate-limit-exceeded). The socket will invoke a `OnConnectionClosed` event with a status code and reason.
 
