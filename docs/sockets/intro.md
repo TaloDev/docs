@@ -11,7 +11,7 @@ The Talo Socket provides an easy way for you to add interactivity to your game. 
 
 The socket used by Talo follows the web socket standard and is compatible with libraries that also do the same.
 
-One major difference is that the Talo Socket will validate messages against a request type and payload structure. For example, if you send a message with the `v1.players.identified` request, your payload's data must also match the expected schema. The list of available [requests](./requests.md) and [responses](./responses.md) are available on their respective pages.
+One major difference is that the Talo Socket will validate messages against a request type and payload structure. For example, if you send a message with the `v1.players.identified` request, your payload's data must also match the expected schema. The list of available [requests](./requests) and [responses](./responses) are available on their respective pages.
 
 Using the identification example, here is the JSON expected by the Talo Socket when identifying a player:
 ```javascript
@@ -99,4 +99,4 @@ Some errors may also return a "cause" key which drills down into why a request f
 }
 ```
 
-For a more detailed look into the available error codes, visit the [common errors](./common-errors.md) page.
+For a more detailed look into the available error codes, visit the [common errors](./common-errors) page.

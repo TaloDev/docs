@@ -61,4 +61,4 @@ If you're self-hosting Talo, you can configure your custom endpoint here in the 
 
 ### Settings reference
 
-You can visit the [settings reference](/docs/godot/settings-reference.md) for a detailed overview of Talo's configuration options.
+You can visit the [settings reference](/docs/godot/settings-reference) for a detailed overview of Talo's configuration options.

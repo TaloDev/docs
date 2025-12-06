@@ -25,7 +25,7 @@ At a minimum, the Talo Unity package requires the `read:players` and `write:play
 
 ### apiUrl
 
-This is the location of the Talo API. The default cloud version is `https://api.trytalo.com`. If you're [self-hosting Talo](/docs/selfhosting/overview.md), this should be the address of your `backend` container.
+This is the location of the Talo API. The default cloud version is `https://api.trytalo.com`. If you're [self-hosting Talo](/docs/selfhosting/overview), this should be the address of your `backend` container.
 
 ### socketUrl
 
@@ -39,7 +39,7 @@ If enabled, the package will automatically connect to the Talo Socket when the g
 
 Talo uses the `OnApplicationQuit()` message to flush events before the game is closed. This is not available on the WebGL platform so a timer is used to flush events periodically instead. This setting controls how often events are flushed (in seconds).
 
-Learn more about [event flushing here](/docs/unity/events.md#flushing).
+Learn more about [event flushing here](/docs/unity/events#flushing).
 
 ### cachePlayerOnIdentify
 
@@ -47,11 +47,11 @@ If enabled, Talo will automatically cache the player after a successful online i
 
 ### continuityEnabled
 
-If enabled, Talo will try to automatically replay failed network requests - [learn more about Continuity here](/docs/unity/continuity.md).
+If enabled, Talo will try to automatically replay failed network requests - [learn more about Continuity here](/docs/unity/continuity).
 
 ### autoStartSession
 
-If enabled and a valid session token is found, the player will be automatically authenticated. This is documented on the [Player Authentication page](/docs/unity/player-authentication.md#automatic-logins).
+If enabled and a valid session token is found, the player will be automatically authenticated. This is documented on the [Player Authentication page](/docs/unity/player-authentication#automatic-logins).
 
 ### logRequests
 

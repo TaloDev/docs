@@ -7,7 +7,7 @@ description: Talo Channels add instant interactivity to your game. Channels can 
 
 The Talo Socket is the underlying server that powers services like [channels](./channels) and handles connections, messages and events.
 
-You can learn more about how the socket works [here](../sockets/intro.md).
+You can learn more about how the socket works [here](../sockets/intro).
 
 ## Usage
 
@@ -21,7 +21,7 @@ To connect to the socket server, you need to obtain a socket ticket. This is don
 
 ## Receiving messages
 
-The `message_received` signal provides you with a [response](../sockets/responses.md) and payload. For example, if you were building a chat system, you would connect a function similar to the one below to listen for new chat messages:
+The `message_received` signal provides you with a [response](../sockets/responses) and payload. For example, if you were building a chat system, you would connect a function similar to the one below to listen for new chat messages:
 
 ```gdscript
 func _ready() -> void:
@@ -36,7 +36,7 @@ func _on_message_received(res: String, data: Dictionary) -> void:
 
 ## Sending messages
 
-Generally, sending messages is handled by functions in services like `Talo.channels.send_message()` where the correct data is prepared and sent for you. You can also use the `Talo.socket.send(req, data)` function to send your own [requests](../sockets/requests.md):
+Generally, sending messages is handled by functions in services like `Talo.channels.send_message()` where the correct data is prepared and sent for you. You can also use the `Talo.socket.send(req, data)` function to send your own [requests](../sockets/requests):
 
 ```gdscript
 func send_message(channel_id: int, message: String) -> void:
@@ -53,7 +53,7 @@ func send_message(channel_id: int, message: String) -> void:
 
 ## Handling connection closures
 
-The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors.md#rate-limit-exceeded). The socket will emit a `connection_closed` signal with a status code and reason.
+The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors#rate-limit-exceeded). The socket will emit a `connection_closed` signal with a status code and reason.
 
 The Talo socket automatically reconnects when the [connection is restored](continuity#connection_restored). If you need to manually re-open the socket, you can establish a connection and re-identify the player like this:
 

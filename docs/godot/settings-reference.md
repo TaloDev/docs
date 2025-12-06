@@ -38,7 +38,7 @@ At a minimum, the Talo Godot plugin requires the `read:players` and `write:playe
 
 ### api_url
 
-This is the location of the Talo API. The default cloud version is `https://api.trytalo.com`. If you're [self-hosting Talo](/docs/selfhosting/overview.md), this should be the address of your `backend` container.
+This is the location of the Talo API. The default cloud version is `https://api.trytalo.com`. If you're [self-hosting Talo](/docs/selfhosting/overview), this should be the address of your `backend` container.
 
 ### socket_url
 
@@ -81,7 +81,7 @@ If enabled, Talo will try to automatically replay failed network requests - [lea
 
 ### player_auth.auto_start_session
 
-If enabled and a valid session token is found, the player will be automatically authenticated. This is documented on the [Player Authentication page](/docs/godot/player-authentication.md#automatic-logins).
+If enabled and a valid session token is found, the player will be automatically authenticated. This is documented on the [Player Authentication page](/docs/godot/player-authentication#automatic-logins).
 
 ### logging.requests
 

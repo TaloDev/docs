@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Missing authentication
 
-A valid socket ticket is required when opening a socket connection. Learn more about how to obtain a socket ticket and connect to the socket server [here](./intro.md#connecting-to-the-socket-server).
+A valid socket ticket is required when opening a socket connection. Learn more about how to obtain a socket ticket and connect to the socket server [here](./intro#connecting-to-the-socket-server).
 
 Connections without a valid ticket will be closed immediately.
 

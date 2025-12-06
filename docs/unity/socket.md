@@ -7,7 +7,7 @@ description: Talo Channels add instant interactivity to your game. Channels can 
 
 The Talo Socket is the underlying server that powers services like [channels](./channels) and handles connections, messages and events.
 
-You can learn more about how the socket works [here](../sockets/intro.md).
+You can learn more about how the socket works [here](../sockets/intro).
 
 ## Usage
 
@@ -17,7 +17,7 @@ The socket connection is automatically established (this can disabled by setting
 
 ## Receiving messages
 
-The `OnMessageReceived` event provides you with a [response](../sockets/responses.md) and payload. For example, if you were building a chat system, you would connect a function similar to the one below to listen for new chat messages:
+The `OnMessageReceived` event provides you with a [response](../sockets/responses) and payload. For example, if you were building a chat system, you would connect a function similar to the one below to listen for new chat messages:
 
 ```csharp
 private void Start()
@@ -45,7 +45,7 @@ private void OnMessageReceived(SocketResponse response)
 
 ## Sending messages
 
-Generally, sending messages is handled by functions in services like `Talo.Channels.SendMessage()` where the correct data is prepared and sent for you. You can also use the `Talo.Socket.Send()` function to send your own [requests](../sockets/requests.md):
+Generally, sending messages is handled by functions in services like `Talo.Channels.SendMessage()` where the correct data is prepared and sent for you. You can also use the `Talo.Socket.Send()` function to send your own [requests](../sockets/requests):
 
 ```csharp
 public void SendMessage(int channelId, string message)
@@ -64,7 +64,7 @@ public void SendMessage(int channelId, string message)
 
 ## Handling connection closures
 
-The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors.md#rate-limit-exceeded). The socket will invoke a `OnConnectionClosed` event with a status code and reason.
+The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](../sockets/common-errors#rate-limit-exceeded). The socket will invoke a `OnConnectionClosed` event with a status code and reason.
 
 The Talo socket automatically reconnects when the [connection is restored](continuity#onconnectionrestored). If you need to manually re-open the socket, you can establish a connection and re-identify the player like this:
 
