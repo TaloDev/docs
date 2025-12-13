@@ -42,6 +42,8 @@ You'll need to restart the backend container after modifying your .env file
 | HDX_NODE_BETA_MODE          | No       | Set to '1' to enable HyperDX trace attributes                                                                          |
 | OTEL_EXPORTER_OTLP_ENDPOINT | No       | The open telemetry collector endpoint where traces will be sent e.g. https://in-otel.hyperdx.io                        |
 | NO_PROXY                    | No       | Set to '1' to _not_ use the `X-Forwarded-For` header for player auth activity IP addresses                             |
+| API_RATE_LIMIT              | No       | Set the default requests per second (default 100)                                                                      |
+| API_RATE_LIMIT_AUTH         | No       | Set the requests per second for player auth, identification and socket auth endpoints (default 20)                     |
 
 ## Third party configurations
 
