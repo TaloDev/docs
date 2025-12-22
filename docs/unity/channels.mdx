@@ -50,6 +50,15 @@ var options = new GetChannelsOptions() { page = page, propKey = "guildId", propV
 var res = await Talo.Channels.GetChannels(options)
 ```
 
+### Searching for channels
+
+You can search for channels by name or owner identifier using the `search` option:
+
+```csharp
+var options = new GetChannelsOptions() { page = page, search = "search term" }
+var res = await Talo.Channels.GetChannels(options)
+```
+
 ## Listing subscribed channels
 
 <ScopeBadges scope='gameChannels' read />
