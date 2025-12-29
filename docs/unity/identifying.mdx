@@ -211,36 +211,3 @@ These props will be updated each time the player is identified using `Talo.Playe
 ## Offline player cache
 
 If the `cachePlayerOnIdentify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try and use local data if it exists.
-
-## Searching for players
-
-<ScopeBadges scope='players' read />
-
-You can use `Talo.Players.Search()` to query players. This function accepts a single `query` parameter that will search your playerbase for matching player IDs, alias identifiers or prop values. You can use this function to find players by their username, their ID or if they have a prop with a specific value.
-
-```csharp
-private async void SearchPlayers()
-{
-    try
-    {
-        var searchPage = await Talo.Players.Search("bob");
-        if (searchPage.count == 0)
-        {
-            Debug.Log("No players found");
-            return;
-        }
-
-        var identifiers = new List<string>();
-        foreach (var player in searchPage.players)
-        {
-            identifiers.Add(player.GetAlias().identifier);
-        }
-
-        Debug.Log($"Found {searchPage.count} results: {string.Join(", ", identifiers)}");
-    }
-    catch (Exception ex)
-    {
-        Debug.LogError($"Search failed: {ex.Message}");
-    }
-}
-```
