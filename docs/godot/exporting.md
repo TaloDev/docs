@@ -19,6 +19,12 @@ When the [`OS.has_feature("debug")`](https://docs.godotengine.org/en/stable/tuto
 
 Talo will only fetch development data for development builds. Live builds will only include live data.
 
+### "Dev" players
+
+Dev players are players created in development builds (see below). Their data will be permanently marked as development data - regardless if they create any new data in release builds. In the dashboard, this is denoted by orange backgrounds:
+
+![Dev data highlighted in the dashboard](/img/dev-data.png)
+
 ### Export with debug
 
 To create a "release" build that uses live data, untick the "Export With Debug" option when exporting your game. This prevents the `OS.has_feature("debug")` feature tag from being attached, so Talo will treat this as a live build.

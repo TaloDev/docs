@@ -11,3 +11,8 @@ If the [`Debug.isDebugBuild`](https://docs.unity3d.com/ScriptReference/Debug-isD
 
 Similarly, if the flag is set, development data will be included when fetching entities like leaderboard entries.
 
+### "Dev" players
+
+Dev players are players created in development builds (see below). Their data will be permanently marked as development data - regardless if they create any new data in release builds. In the dashboard, this is denoted by orange backgrounds:
+
+![Dev data highlighted in the dashboard](/img/dev-data.png)
