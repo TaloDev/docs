@@ -1,0 +1,299 @@
+---
+sidebar_position: 17
+description: Player relationships allow you to link multiple players together for social features like friends lists, parties and guilds.
+---
+
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
+# Player relationships
+
+## Overview
+
+The Player Relationships API creates subscriptions between players. When a player broadcasts a message, all their subscribers receive it instantly.
+
+This flexible system supports both social features (friends lists with bidirectional relationships, follower systems with unidirectional relationships) and event-driven mechanics. Since broadcasts accept any data that can be converted to a string (text, JSON-encoded objects, etc.), you can build pub/sub systems where players react to each other's actions - like levelling up, unlocking achievements, or completing challenges.
+
+### Friends list demo
+
+A complete sample is available in the Unity package at `Assets/Talo Game Services/Talo/Samples/FriendsDemo`. This demo showcases:
+
+- Sending and accepting friend requests
+- Real-time presence updates showing online friends
+- Broadcasting messages between friends
+
+## Subscribing to players
+
+<ScopeBadges scope='playerRelationships' write />
+
+To subscribe to a player, you need to first decide what type of relationship you want to create: unidirectional or bidirectional. Unidirectional relationships create a subscription to the target player and bidirectional relationships will create a reciprocal subscription between both players.
+
+You also need to know the target player alias' ID. You can get this through methods such as [player presence updates](/docs/unity/player-presence), or by searching for players using [player search](/docs/unity/player-props#searching-for-players).
+
+Once you have both of these pieces of information, you can create the relationship:
+
+```csharp
+var searchPage = await Talo.Players.Search("target_player_identifier");
+var targetAliasId = searchPage.players[0].alias.id; // this assumes we found at least one player
+
+// unidirectional relationship
+await Talo.PlayerRelationships.SubscribeTo(targetAliasId, RelationshipType.Unidirectional);
+
+// or, bidirectional relationship
+await Talo.PlayerRelationships.SubscribeTo(targetAliasId, RelationshipType.Bidirectional);
+```
+
+This creates an **unconfirmed** subscription (or two for bidirectional relationships). Players will need to confirm subscription requests before broadcasts can be received by the subscribers.
+
+## Confirming subscriptions
+
+<ScopeBadges scope='playerRelationships' write />
+
+If you know the player alias ID of the player that sent you a subscription request, you can confirm it using `Talo.PlayerRelationships.ConfirmSubscriptionFrom()`:
+
+```csharp
+void Start()
+{
+    // players receive this event when they get a subscription request
+    Talo.PlayerRelationships.OnRelationshipRequestReceived += OnRelationshipRequestReceived;
+}
+
+async void OnRelationshipRequestReceived(PlayerAlias playerAlias)
+{
+    await Talo.PlayerRelationships.ConfirmSubscriptionFrom(playerAlias.id);
+}
+```
+
+Alternatively, you can list all pending subscription requests using `Talo.PlayerRelationships.GetSubscribers()`.
+
+This method allows you to filter by unconfirmed subscription requests. You can iterate over the results and confirm each subscription individually using their ID:
+
+```csharp
+var options = new GetSubscribersOptions
+{
+    confirmed = ConfirmedFilter.Unconfirmed
+};
+var subscribersPage = await Talo.PlayerRelationships.GetSubscribers(options);
+
+// loop through all unconfirmed subscriptions and confirm them
+foreach (var subscriber in subscribersPage.subscriptions)
+{
+    await Talo.PlayerRelationships.ConfirmSubscriptionById(subscriber.id);
+}
+```
+
+## Broadcasting messages
+
+<ScopeBadges scope='playerRelationships' write />
+
+Once relationships have been established, players can communicate with each other using broadcasts. When a player broadcasts a message, it is delivered to all of their confirmed subscribers (in a future release, Talo will support private/targeted broadcasts).
+
+To send a broadcast, use `Talo.PlayerRelationships.Broadcast()`:
+
+```csharp
+// send a simple text message
+Talo.PlayerRelationships.Broadcast("Hello everyone!");
+
+// send structured data as JSON
+var eventData = new
+{
+    eventType = "level_up",
+    level = 15,
+    timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+};
+Talo.PlayerRelationships.Broadcast(JsonUtility.ToJson(eventData));
+```
+
+Subscribers will receive these broadcasts via the `OnMessageReceived` event (see [Events](#events) below).
+
+## Unsubscribing
+
+<ScopeBadges scope='playerRelationships' write />
+
+Only subscribers can revoke subscriptions - the player being subscribed to cannot remove their subscribers. When a bidirectional subscription is revoked, the reciprocal relationship is automatically deleted.
+
+You can unsubscribe in two ways:
+
+**By player alias ID** (recommended for most cases):
+
+```csharp
+// unsubscribe from a player
+await Talo.PlayerRelationships.UnsubscribeFrom(targetAliasId);
+```
+
+**By subscription ID** (if you already have the subscription object):
+
+```csharp
+// revoke a specific subscription
+await Talo.PlayerRelationships.RevokeSubscription(subscription.id);
+```
+
+## Querying relationships
+
+<ScopeBadges scope='playerRelationships' read />
+
+### Checking subscription status
+
+Use `IsSubscribedTo()` to check if the current player has a subscription to another player:
+
+```csharp
+// check if subscribed (any status)
+var isSubscribed = await Talo.PlayerRelationships.IsSubscribedTo(targetAliasId, false);
+
+// check if subscribed AND confirmed
+var isConfirmed = await Talo.PlayerRelationships.IsSubscribedTo(targetAliasId, true);
+```
+
+### Listing subscriptions
+
+Get all players that the current player is subscribed to using `GetSubscriptions()`:
+
+```csharp
+// get all subscriptions
+var page = await Talo.PlayerRelationships.GetSubscriptions();
+foreach (var subscription in page.subscriptions)
+{
+    Debug.Log($"Subscribed to: {subscription.subscribedTo.identifier}");
+}
+```
+
+You can filter the results using options:
+
+```csharp
+var options = new GetSubscriptionsOptions
+{
+    confirmed = ConfirmedFilter.Confirmed, // only confirmed, unconfirmed, or any (default)
+    aliasId = targetAliasId, // filter by specific player alias ID
+    relationshipType = RelationshipTypeFilter.Bidirectional, // unidirectional, bidirectional, or any (default)
+    page = 0 // page number (default: 0)
+};
+
+var page = await Talo.PlayerRelationships.GetSubscriptions(options);
+```
+
+All filter properties are optional and default to showing all results.
+
+### Listing subscribers
+
+Get all players subscribed to the current player using `GetSubscribers()`:
+
+```csharp
+// get all subscribers
+var page = await Talo.PlayerRelationships.GetSubscribers();
+foreach (var subscription in page.subscriptions)
+{
+    Debug.Log($"Subscriber: {subscription.subscriber.identifier}");
+}
+```
+
+This method accepts the same filter options as `GetSubscriptions()`:
+
+```csharp
+var options = new GetSubscribersOptions
+{
+    confirmed = ConfirmedFilter.Unconfirmed, // pending requests only
+    aliasId = subscriberAliasId, // filter by specific subscriber
+    relationshipType = RelationshipTypeFilter.Bidirectional, // filter by type
+    page = 1 // pagination
+};
+
+var page = await Talo.PlayerRelationships.GetSubscribers(options);
+```
+
+## Events
+
+<ScopeBadges scope='playerRelationships' read />
+
+The Player Relationships API emits events for real-time relationship updates. Subscribe to these events to respond to relationship changes and incoming messages:
+
+### OnRelationshipRequestReceived
+
+Emitted when another player sends the current player a relationship request.
+
+```csharp
+void Start()
+{
+    Talo.PlayerRelationships.OnRelationshipRequestReceived += OnRelationshipRequestReceived;
+}
+
+async void OnRelationshipRequestReceived(PlayerAlias playerAlias)
+{
+    Debug.Log($"{playerAlias.identifier} wants to connect with you");
+    // optionally auto-confirm
+    await Talo.PlayerRelationships.ConfirmSubscriptionFrom(playerAlias.id);
+}
+```
+
+### OnRelationshipRequestCancelled
+
+Emitted when an unconfirmed relationship request is deleted by either the requester or recipient.
+
+```csharp
+void Start()
+{
+    Talo.PlayerRelationships.OnRelationshipRequestCancelled += OnRequestCancelled;
+}
+
+void OnRequestCancelled(PlayerAlias playerAlias)
+{
+    Debug.Log($"Request with {playerAlias.identifier} was cancelled");
+}
+```
+
+### OnRelationshipConfirmed
+
+Emitted when another player confirms your relationship request to them.
+
+```csharp
+void Start()
+{
+    Talo.PlayerRelationships.OnRelationshipConfirmed += OnRelationshipConfirmed;
+}
+
+void OnRelationshipConfirmed(PlayerAlias playerAlias)
+{
+    Debug.Log($"Now connected with {playerAlias.identifier}");
+}
+```
+
+### OnRelationshipEnded
+
+Emitted when a confirmed relationship is deleted by either player.
+
+```csharp
+void Start()
+{
+    Talo.PlayerRelationships.OnRelationshipEnded += OnRelationshipEnded;
+}
+
+void OnRelationshipEnded(PlayerAlias playerAlias)
+{
+    Debug.Log($"No longer connected with {playerAlias.identifier}");
+}
+```
+
+### OnMessageReceived
+
+Emitted when a broadcast message is received from a connected player.
+
+```csharp
+void Start()
+{
+    Talo.PlayerRelationships.OnMessageReceived += OnMessageReceived;
+}
+
+void OnMessageReceived(PlayerAlias playerAlias, string message)
+{
+    Debug.Log($"{playerAlias.identifier} sent: {message}");
+
+    // if the message is JSON, you can parse it
+    try
+    {
+        var data = JsonUtility.FromJson<EventData>(message);
+        Debug.Log($"Parsed data: {data}");
+    }
+    catch
+    {
+        // message was not JSON
+    }
+}
+```
