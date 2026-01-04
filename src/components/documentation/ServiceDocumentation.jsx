@@ -126,6 +126,7 @@ export default function ServiceDocumentation({ service, metaDescription }) {
               if (route.method === 'GET') {
                 return section.title !== 'Body keys'
               }
+              return true
             }).map((section) => {
               return (
                 <div key={section.title} className={styles.section}>
