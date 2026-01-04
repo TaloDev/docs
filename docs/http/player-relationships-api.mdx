@@ -1,0 +1,19 @@
+import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
+import siteConfig from '@generated/docusaurus.config'
+import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
+
+# Player relationships API
+
+export const toc = [
+  { value: 'Endpoints', id: 'endpoints', level: 2 },
+  ...generateServiceTOC('PlayerRelationshipsAPIService', siteConfig)
+]
+
+Talo's player relationships API is the easiest way to build friends lists, follower systems, party invites and other social features that need player-to-player connections.
+
+## Endpoints
+
+<ServiceDocumentation
+  service='PlayerRelationshipsAPIService'
+  metaDescription="Easily build friends lists, follower systems and player messaging with Talo's player relationships API."
+/>
