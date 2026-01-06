@@ -276,6 +276,16 @@ void OnRelationshipEnded(PlayerAlias playerAlias)
 Emitted when a broadcast message is received from a connected player.
 
 ```csharp
+[System.Serializable]
+public class LevelUpEvent
+{
+    public string eventType;
+    public int level;
+    public long timestamp;
+}
+
+...
+
 void Start()
 {
     Talo.PlayerRelationships.OnMessageReceived += OnMessageReceived;
@@ -288,7 +298,7 @@ void OnMessageReceived(PlayerAlias playerAlias, string message)
     // if the message is JSON, you can parse it
     try
     {
-        var data = JsonUtility.FromJson<EventData>(message);
+        var data = JsonUtility.FromJson<LevelUpEvent>(message);
         Debug.Log($"Parsed data: {data}");
     }
     catch
