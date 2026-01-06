@@ -36,10 +36,10 @@ var search_page := await Talo.players.search("target_player_identifier")
 var target_alias_id := search_page.players[0].get_alias().id # this assumes we found at least one player
 
 # unidirectional relationship
-await Talo.player_relationships.subscribe_to(target_alias_id, Talo.player_relationships.RelationshipType.UNIDIRECTIONAL)
+await Talo.player_relationships.subscribe_to(target_alias_id, TaloPlayerAliasSubscription.RelationshipType.UNIDIRECTIONAL)
 
 # or, bidirectional relationship
-await Talo.player_relationships.subscribe_to(target_alias_id, Talo.player_relationships.RelationshipType.BIDIRECTIONAL)
+await Talo.player_relationships.subscribe_to(target_alias_id, TaloPlayerAliasSubscription.RelationshipType.BIDIRECTIONAL)
 ```
 
 This creates an **unconfirmed** subscription (or two for bidirectional relationships). Players will need to confirm subscription requests before broadcasts can be received by the subscribers.
