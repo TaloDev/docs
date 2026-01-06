@@ -27,7 +27,7 @@ A complete sample is available in the Unity package at `Assets/Talo Game Service
 
 To subscribe to a player, you need to first decide what type of relationship you want to create: unidirectional or bidirectional. Unidirectional relationships create a subscription to the target player and bidirectional relationships will create a reciprocal subscription between both players.
 
-You also need to know the target player alias' ID. You can get this through methods such as [player presence updates](/docs/unity/player-presence), or by searching for players using [player search](/docs/unity/player-props#searching-for-players).
+You also need to know the target player alias' ID. You can get this through [player presence updates](/docs/unity/player-presence), or by searching for players using [player search](/docs/unity/player-props#searching-for-players).
 
 Once you have both of these pieces of information, you can create the relationship:
 
@@ -65,7 +65,7 @@ async void OnRelationshipRequestReceived(PlayerAlias playerAlias)
 
 Alternatively, you can list all pending subscription requests using `Talo.PlayerRelationships.GetSubscribers()`.
 
-This method allows you to filter by unconfirmed subscription requests. You can iterate over the results and confirm each subscription individually using their ID:
+This function allows you to filter by unconfirmed subscription requests. You can iterate over the results and confirm each subscription individually using their ID:
 
 ```csharp
 var options = new GetSubscribersOptions
@@ -185,7 +185,7 @@ foreach (var subscription in page.subscriptions)
 }
 ```
 
-This method accepts the same filter options as `GetSubscriptions()`:
+This function accepts the same filter options as `GetSubscriptions()`:
 
 ```csharp
 var options = new GetSubscribersOptions

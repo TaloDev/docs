@@ -19,7 +19,7 @@ Loadables are GameObjects that automatically have their data saved and loaded. T
 Once a loadable has entered the scene, its `OnEnable()` function registers it with the saves manager. We need to register all the Loadables in the scene so that when we load our save, we can match the content in the save file with the structure of the scene.
 
 :::caution
-If your loadable overrides the `OnEnable()` method, ensure that it contains `base.OnEnable()` so that Talo can still register the loadable.
+If your loadable overrides the `OnEnable()` function, ensure that it contains `base.OnEnable()` so that Talo can still register the loadable.
 :::
 
 Importantly, each Loadable _must_ have a unique `Id` so that Talo knows which node to load with which data. This can be set in the inspector or in the code.
