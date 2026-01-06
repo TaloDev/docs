@@ -83,7 +83,7 @@ To send a broadcast, use `Talo.player_relationships.broadcast()`:
 
 ```gdscript
 # send a simple text message
-Talo.player_relationships.broadcast("Hello everyone!")
+await Talo.player_relationships.broadcast("Hello everyone!")
 
 # send structured data as JSON
 var event_data = {
@@ -91,7 +91,7 @@ var event_data = {
     "level": 15,
     "timestamp": Time.get_unix_time_from_system()
 }
-Talo.player_relationships.broadcast(JSON.stringify(event_data))
+await Talo.player_relationships.broadcast(JSON.stringify(event_data))
 ```
 
 Subscribers will receive these broadcasts via the `message_received` signal (see [Signals](#signals) below).
