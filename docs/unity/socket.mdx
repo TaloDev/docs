@@ -13,7 +13,7 @@ You can learn more about how the socket works [here](../sockets/intro).
 
 ## Usage
 
-Ideally you should never need to use the socket directly because individual services like players and channels should send the correct data on your behalf. However, the Talo Socket exposes a few public methods and signals for custom logic like handling errors and re-connecting to the server if the connection is closed.
+Ideally you should never need to use the socket directly because individual services like players and channels should send the correct data on your behalf. However, the Talo Socket exposes a few public functions and signals for custom logic like handling errors and re-connecting to the server if the connection is closed.
 
 The socket connection is automatically established (this can disabled by setting `autoConnectSocket` to `false` in your config). When a player gets identified, they also get automatically identified with the socket server.
 

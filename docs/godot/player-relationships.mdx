@@ -1,0 +1,274 @@
+---
+sidebar_position: 17
+description: Player relationships allow you to link multiple players together for social features like friends lists, parties and guilds.
+---
+
+import { ScopeBadges } from '@site/src/components/ScopeBadges'
+
+# Player relationships
+
+## Overview
+
+The Player Relationships API creates subscriptions between players. When a player broadcasts a message, all their subscribers receive it instantly.
+
+This flexible system supports both social features (friends lists with bidirectional relationships, follower systems with unidirectional relationships) and event-driven mechanics. Since broadcasts accept any data that can be converted to a string (text, JSON-encoded objects, etc.), you can build pub/sub systems where players react to each other's actions - like levelling up, unlocking achievements, or completing challenges.
+
+### Friends list demo
+
+A complete sample is available in the Godot plugin at `addons/talo/samples/friends_list`. This demo showcases:
+
+- Sending and accepting friend requests
+- Real-time presence updates showing online friends
+- Broadcasting messages between friends
+
+## Subscribing to players
+
+<ScopeBadges scope='playerRelationships' write />
+
+To subscribe to a player, you need to first decide what type of relationship you want to create: unidirectional or bidirectional. Unidirectional relationships create a subscription to the target player and bidirectional relationships will create a reciprocal subscription between both players.
+
+You also need to know the target player alias' ID. You can get this through [player presence updates](/docs/godot/player-presence), or by searching for players using [player search](/docs/godot/player-props#searching-for-players).
+
+Once you have both of these pieces of information, you can create the relationship:
+
+```gdscript
+var search_page := await Talo.players.search("target_player_identifier")
+var target_alias_id := search_page.players[0].get_alias().id # this assumes we found at least one player
+
+# unidirectional relationship
+await Talo.player_relationships.subscribe_to(target_alias_id, TaloPlayerAliasSubscription.RelationshipType.UNIDIRECTIONAL)
+
+# or, bidirectional relationship
+await Talo.player_relationships.subscribe_to(target_alias_id, TaloPlayerAliasSubscription.RelationshipType.BIDIRECTIONAL)
+```
+
+This creates an **unconfirmed** subscription (or two for bidirectional relationships). Players will need to confirm subscription requests before broadcasts can be received by the subscribers.
+
+## Confirming subscriptions
+
+<ScopeBadges scope='playerRelationships' write />
+
+If you know the player alias ID of the player that sent you a subscription request, you can confirm it using `Talo.player_relationships.confirm_subscription_from()`:
+
+```gdscript
+func _ready():
+    # players receive this signal when they get a subscription request
+    Talo.player_relationships.relationship_request_received.connect(_on_relationship_request_received)
+
+func _on_relationship_request_received(player_alias: TaloPlayerAlias):
+    await Talo.player_relationships.confirm_subscription_from(player_alias.id)
+```
+
+Alternatively, you can list all pending subscription requests using `Talo.player_relationships.get_subscribers()`.
+
+This function allows you to filter by unconfirmed subscription requests. You can iterate over the results and confirm each subscription individually using their ID:
+
+```gdscript
+var options := Talo.player_relationships.GetSubscribersOptions.new()
+options.confirmed = Talo.player_relationships.ConfirmedFilter.UNCONFIRMED
+var subscribers_page := await Talo.player_relationships.get_subscribers(options)
+
+# loop through all unconfirmed subscriptions and confirm them
+for subscriber in subscribers_page.subscriptions:
+    await Talo.player_relationships.confirm_subscription_by_id(subscriber.id)
+```
+
+## Broadcasting messages
+
+<ScopeBadges scope='playerRelationships' write />
+
+Once relationships have been established, players can communicate with each other using broadcasts. When a player broadcasts a message, it is delivered to all of their confirmed subscribers (in a future release, Talo will support private/targeted broadcasts).
+
+To send a broadcast, use `Talo.player_relationships.broadcast()`:
+
+```gdscript
+# send a simple text message
+Talo.player_relationships.broadcast("Hello everyone!")
+
+# send structured data as JSON
+var event_data = {
+    "event": "level_up",
+    "level": 15,
+    "timestamp": Time.get_unix_time_from_system()
+}
+Talo.player_relationships.broadcast(JSON.stringify(event_data))
+```
+
+Subscribers will receive these broadcasts via the `message_received` signal (see [Signals](#signals) below).
+
+## Unsubscribing
+
+<ScopeBadges scope='playerRelationships' write />
+
+Only subscribers can revoke subscriptions - the player being subscribed to cannot remove their subscribers. When a bidirectional subscription is revoked, the reciprocal relationship is automatically deleted.
+
+You can unsubscribe in two ways:
+
+**By player alias ID** (recommended for most cases):
+
+```gdscript
+# unsubscribe from a player
+await Talo.player_relationships.unsubscribe_from(target_alias_id)
+```
+
+**By subscription ID** (if you already have the subscription object):
+
+```gdscript
+# revoke a specific subscription
+await Talo.player_relationships.revoke_subscription(subscription.id)
+```
+
+## Querying relationships
+
+<ScopeBadges scope='playerRelationships' read />
+
+### Checking subscription status
+
+Use `is_subscribed_to()` to check if the current player has a subscription to another player:
+
+```gdscript
+# check if subscribed (any status)
+var is_subscribed := await Talo.player_relationships.is_subscribed_to(target_alias_id, false)
+
+# check if subscribed AND confirmed
+var is_confirmed := await Talo.player_relationships.is_subscribed_to(target_alias_id, true)
+```
+
+### Listing subscriptions
+
+Get all players that the current player is subscribed to using `get_subscriptions()`:
+
+```gdscript
+# get all subscriptions
+var page := await Talo.player_relationships.get_subscriptions()
+for subscription in page.subscriptions:
+    print("Subscribed to: %s" % subscription.subscribed_to.identifier)
+```
+
+You can filter the results using options:
+
+```gdscript
+var options := Talo.player_relationships.GetSubscriptionsOptions.new()
+
+# filter by confirmation status
+options.confirmed = Talo.player_relationships.ConfirmedFilter.CONFIRMED # only confirmed
+options.confirmed = Talo.player_relationships.ConfirmedFilter.UNCONFIRMED # only unconfirmed
+options.confirmed = Talo.player_relationships.ConfirmedFilter.ANY # all (default)
+
+# filter by specific player alias ID
+options.alias_id = target_alias_id
+
+# filter by relationship type
+options.relationship_type = Talo.player_relationships.RelationshipTypeFilter.UNIDIRECTIONAL
+options.relationship_type = Talo.player_relationships.RelationshipTypeFilter.BIDIRECTIONAL
+options.relationship_type = Talo.player_relationships.RelationshipTypeFilter.ANY # all (default)
+
+# pagination
+options.page = 0 # page number (default: 0)
+
+var page := await Talo.player_relationships.get_subscriptions(options)
+```
+
+### Listing subscribers
+
+Get all players subscribed to the current player using `get_subscribers()`:
+
+```gdscript
+# get all subscribers
+var page := await Talo.player_relationships.get_subscribers()
+for subscription in page.subscriptions:
+    print("Subscriber: %s" % subscription.subscriber.identifier)
+```
+
+This function accepts the same filter options as `get_subscriptions()`:
+
+```gdscript
+var options := Talo.player_relationships.GetSubscribersOptions.new()
+
+# filter by confirmation status
+options.confirmed = Talo.player_relationships.ConfirmedFilter.UNCONFIRMED # pending requests
+
+# filter by specific player alias ID
+options.alias_id = subscriber_alias_id
+
+# filter by relationship type
+options.relationship_type = Talo.player_relationships.RelationshipTypeFilter.BIDIRECTIONAL
+
+# pagination
+options.page = 1
+
+var page := await Talo.player_relationships.get_subscribers(options)
+```
+
+## Signals
+
+<ScopeBadges scope='playerRelationships' read />
+
+The Player Relationships API emits signals for real-time relationship events. Connect to these signals to respond to relationship changes and incoming messages:
+
+### relationship_request_received
+
+Emitted when another player sends the current player a relationship request.
+
+```gdscript
+func _ready():
+    Talo.player_relationships.relationship_request_received.connect(_on_relationship_request_received)
+
+func _on_relationship_request_received(player_alias: TaloPlayerAlias):
+    print("%s wants to connect with you" % player_alias.identifier)
+    # optionally auto-confirm
+    await Talo.player_relationships.confirm_subscription_from(player_alias.id)
+```
+
+### relationship_request_cancelled
+
+Emitted when an unconfirmed relationship request is deleted by either the requester or recipient.
+
+```gdscript
+func _ready():
+    Talo.player_relationships.relationship_request_cancelled.connect(_on_request_cancelled)
+
+func _on_request_cancelled(player_alias: TaloPlayerAlias):
+    print("Request with %s was cancelled" % player_alias.identifier)
+```
+
+### relationship_confirmed
+
+Emitted when another player confirms your relationship request to them.
+
+```gdscript
+func _ready():
+    Talo.player_relationships.relationship_confirmed.connect(_on_relationship_confirmed)
+
+func _on_relationship_confirmed(player_alias: TaloPlayerAlias):
+    print("Now connected with %s" % player_alias.identifier)
+```
+
+### relationship_ended
+
+Emitted when a confirmed relationship is deleted by either player.
+
+```gdscript
+func _ready():
+    Talo.player_relationships.relationship_ended.connect(_on_relationship_ended)
+
+func _on_relationship_ended(player_alias: TaloPlayerAlias):
+    print("No longer connected with %s" % player_alias.identifier)
+```
+
+### message_received
+
+Emitted when a broadcast message is received from a connected player.
+
+```gdscript
+func _ready():
+    Talo.player_relationships.message_received.connect(_on_message_received)
+
+func _on_message_received(player_alias: TaloPlayerAlias, message: String):
+    print("%s sent: %s" % [player_alias.identifier, message])
+
+    # if the message is JSON, you can parse it
+    var json := JSON.new()
+    if json.parse(message) == OK:
+        print("Parsed data: %s" % json.data)
+```

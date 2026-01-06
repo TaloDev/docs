@@ -46,7 +46,7 @@ When you delete a leaderboard in Talo, we'll also delete it in Steamworks.
 
 ### Setting scores
 
-When a player submits a score, we'll also push that score through to your Steamworks leaderboard. It'll use the `KeepBest` method since as mentioned above, Steamworks leaderboards are always in unique mode.
+When a player submits a score, we'll also push that score through to your Steamworks leaderboard. It will use the `KeepBest` method since as mentioned above, Steamworks leaderboards are always in unique mode.
 
 ### Toggling score visibility
 
