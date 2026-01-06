@@ -142,7 +142,7 @@ Get all players that the current player is subscribed to using `get_subscription
 # get all subscriptions
 var page := await Talo.player_relationships.get_subscriptions()
 for subscription in page.subscriptions:
-    print("Subscribed to: %s" % subscription.player_alias.identifier)
+    print("Subscribed to: %s" % subscription.subscribed_to.identifier)
 ```
 
 You can filter the results using options:
@@ -177,7 +177,7 @@ Get all players subscribed to the current player using `get_subscribers()`:
 # get all subscribers
 var page := await Talo.player_relationships.get_subscribers()
 for subscription in page.subscriptions:
-    print("Subscriber: %s" % subscription.player_alias.identifier)
+    print("Subscriber: %s" % subscription.subscriber.identifier)
 ```
 
 This function accepts the same filter options as `get_subscriptions()`:
