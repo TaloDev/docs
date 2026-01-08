@@ -163,3 +163,17 @@ These props will be updated each time the player is identified using `Talo.playe
 ## Offline player cache
 
 If the `cache_player_on_identify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try and use local data if it exists.
+
+### Saving identifiers for future sessions
+
+The offline player cache enables you to store and retrieve player identifiers. You can leverage this in situations where players choose their own identifiers and you need them in subsequent sessions:
+
+```gdscript
+func retrieve_identifier() -> String:
+	var alias := TaloPlayerAlias.get_offline_alias()
+	if alias != null:
+		return alias.identifier
+	return ""
+```
+
+This function will return the identifier (if one exists) or an empty string. If the return value of this function is not an empty string, you know its safe to call `Talo.players.identify()`.
