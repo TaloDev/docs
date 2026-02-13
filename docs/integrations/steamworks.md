@@ -32,6 +32,7 @@ Talo syncs leaderboards by mapping between the ID of the leaderboard in Talo and
 ### Creating leaderboards
 
 When you create a leaderboard in Talo, we'll automatically create one in Steamworks too. Unfortunately, there are a few caveats:
+
 - Unfortunately the Steamworks API doesn't allow us to push through display names, you will need to set a Community Name inside Steamworks to make the leaderboard "public"
 - The `Unique` property will be ignored since Steamworks leaderboards only allow unique entries
 - The Steamworks leaderboard will only allow trusted writes (i.e. from a server, not a client)
@@ -59,6 +60,7 @@ If you reset a leaderboard, Talo will delete all entries in Steamworks. This is 
 ### Manually syncing leaderboards
 
 Here's how it works:
+
 1. We'll pull in your leaderboards from Steamworks
 2. If a leaderboard exists in Talo and Steamworks ([by checking the mapping](#leaderboards)), we will update the `Sort mode`, `Name` and `Internal name` in Talo as well as set `Unique` to `true` (as all Steamworks leaderboards only allow unique entries)
 3. If the leaderboard does not exist in Steamworks, we will [create it](#creating-leaderboards)
@@ -83,6 +85,7 @@ Steamworks does not currently have a public API to delete user stats. If you res
 ### Manually syncing stats
 
 Here's how it works:
+
 1. We'll pull in your stats from Steamworks - each `Set by` needs to be `GS` in order for us to find the stat
 2. If a stat exists in Talo and Steamworks ([by checking the mapping](#stats)), we will update the `Default value` and `Name` in Talo
 3. If the stat does not exist in Talo, we will create a non-global stat with a matching `Internal name` and `Name` to the Steamworks one

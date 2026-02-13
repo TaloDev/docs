@@ -1,14 +1,15 @@
-import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
-import siteConfig from '@generated/docusaurus.config'
+import { ServiceDocumentation } from '@site/src/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Event API
 
+export const service = 'EventAPI'
+
 export const toc = [
   { value: 'Endpoints', id: 'endpoints', level: 2 },
-  ...generateServiceTOC('EventAPIService', siteConfig),
+  ...generateServiceTOC(service),
   { value: 'Types', id: 'types', level: 2 },
-  { value: 'EventData', id: 'eventdata', level: 3 }
+  { value: 'EventData', id: 'eventdata', level: 3 },
 ]
 
 Event tracking lets you get rid of the guess-work. By tracking important actions when they happen, you're able to gauge how well a mechanic is being used and even track the overall progress of your players. See how often potions get used, items get bought and how many level-ups there are per day, month or year.
@@ -18,7 +19,7 @@ Learn more about events <a href='https://trytalo.com/events?utm_source=docs&utm_
 ## Endpoints
 
 <ServiceDocumentation
-  service='EventAPIService'
+  service={service}
   metaDescription="Talo Events let you easily track and analyse player engagement in your game. See what players like the most and what they're missing."
 />
 
@@ -28,8 +29,8 @@ Learn more about events <a href='https://trytalo.com/events?utm_source=docs&utm_
 
 ```ts
 type EventData = {
-  name: string        // name of the event
-  timestamp: number   // UNIX milisecond timestamp, e.g. 1656971058297
+  name: string // name of the event
+  timestamp: number // UNIX milisecond timestamp, e.g. 1656971058297
   props?: Prop[]
 }
 

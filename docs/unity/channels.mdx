@@ -173,6 +173,7 @@ var isLastPage = membersPage.isLastPage;
 ```
 
 You can provide the following filtering options:
+
 - `page`: the current pagination index
 - `playerId`: find channel members with this player ID
 - `aliasId`: find a channel member with this ID
@@ -207,6 +208,7 @@ private void OnMessageReceived(Channel channel, PlayerAlias sender, string messa
 ### Listening for other events
 
 You can also listen for the following events:
+
 - `Talo.Channels.OnChannelJoined`: Invoked when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
 
 - `Talo.Channels.OnChannelLeft`: Invoked when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and the `ChannelLeavingReason`.
@@ -283,7 +285,6 @@ var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", false /
 var freshProp = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", true);
 ```
 
-
 ### Getting multiple storage props
 
 <ScopeBadges scope='gameChannels' read />
@@ -291,7 +292,7 @@ var freshProp = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", tr
 If you need to fetch multiple storage props, `Talo.channels.list_storage_props()` is much faster and more efficient than fetching them one by one:
 
 ```csharp
-await Talo.Channels.SetStorageProps(channel.id, 
+await Talo.Channels.SetStorageProps(channel.id,
 	("storage_prop_1", "true"),
 	("storage_prop_2", "hello world")
 );

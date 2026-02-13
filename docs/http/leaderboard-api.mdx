@@ -1,12 +1,13 @@
-import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
-import siteConfig from '@generated/docusaurus.config'
+import { ServiceDocumentation } from '@site/src/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Leaderboard API
 
+export const service = 'LeaderboardAPI'
+
 export const toc = [
   { value: 'Endpoints', id: 'endpoints', level: 2 },
-  ...generateServiceTOC('LeaderboardAPIService', siteConfig)
+  ...generateServiceTOC(service),
 ]
 
 Talo aims to work across many different game genres and as such our leaderboards are highly-customisable. Leaderboards can be sorted by descending or ascending order. You can also customise whether players can only have one or multiple entries in a single leaderboard.
@@ -16,6 +17,6 @@ Learn more about leaderboards [here](https://trytalo.com/leaderboards?utm_source
 ## Endpoints
 
 <ServiceDocumentation
-  service='LeaderboardAPIService'
+  service={service}
   metaDescription="Talo's Leaderboards are easy to setup and highly customisable. Entries can be viewed directly in the dashboard and suspicious entries can also be hidden."
 />

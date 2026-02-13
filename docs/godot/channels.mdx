@@ -205,6 +205,7 @@ var is_last_page := members_page.is_last_page
 ```
 
 You can provide the following filtering options:
+
 - `page`: the current pagination index
 - `player_id`: find channel members with this player ID
 - `alias_id`: find a channel member with this ID
@@ -234,6 +235,7 @@ func _on_message_received(channel: TaloChannel, player_alias: TaloPlayerAlias, m
 ### Listening for other signals
 
 You can also listen for the following signals:
+
 - `Talo.channels.player_joined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
 
 - `Talo.channels.player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and a `Talo.channels.ChannelLeavingReason`.

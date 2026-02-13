@@ -1,14 +1,15 @@
-import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
-import siteConfig from '@generated/docusaurus.config'
+import { ServiceDocumentation } from '@site/src/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Game channel API
 
+export const service = 'GameChannelAPI'
+
 export const toc = [
   { value: 'Endpoints', id: 'endpoints', level: 2 },
-  ...generateServiceTOC('GameChannelAPIService', siteConfig),
+  ...generateServiceTOC(service),
   { value: 'Types', id: 'types', level: 2 },
-  { value: 'Prop', id: 'prop', level: 3 }
+  { value: 'Prop', id: 'prop', level: 3 },
 ]
 
 Channels are a way to send messages between players in your game. You can use channels to create chat rooms, send notifications or create any other kind of messaging system you can think of.
@@ -18,7 +19,7 @@ Learn more about channels [here](https://trytalo.com/channels?utm_source=docs&ut
 ## Endpoints
 
 <ServiceDocumentation
-  service='GameChannelAPIService'
+  service={service}
   metaDescription="Talo's Game Channel service lets you create channels for your game. Channels can be used for chat rooms, notifications and more."
 />
 

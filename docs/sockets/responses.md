@@ -17,9 +17,9 @@ If the player is successfully identified, this response will be sent.
 }
 ```
 
-| Authentication required  | Scopes                  |
-| ------------------------ | ----------------------- |
-| Yes                      | None                    |
+| Authentication required | Scopes |
+| ----------------------- | ------ |
+| Yes                     | None   |
 
 ### Presence updated
 
@@ -36,9 +36,9 @@ This response is sent when a player's presence is updated.
 }
 ```
 
-| Authentication required  | Scopes                  |
-| ------------------------ | ----------------------- |
-| Yes                      | `read:players`          |
+| Authentication required | Scopes         |
+| ----------------------- | -------------- |
+| Yes                     | `read:players` |
 
 ## Channels
 
@@ -57,9 +57,9 @@ If a player is subscribed to a channel where a message has been sent, they will 
 }
 ```
 
-| Authentication required | Scopes                  		    |
-| ----------------------- | ------------------------------- |
-| Yes                     | `read:gameChannels`            	|
+| Authentication required | Scopes              |
+| ----------------------- | ------------------- |
+| Yes                     | `read:gameChannels` |
 
 ### Joining a channel
 
@@ -75,9 +75,9 @@ When a player joins a channel, all channel members will be notified.
 }
 ```
 
-| Authentication required | Scopes                  		    |
-| ----------------------- | ------------------------------- |
-| Yes                     | `read:gameChannels`            	|
+| Authentication required | Scopes              |
+| ----------------------- | ------------------- |
+| Yes                     | `read:gameChannels` |
 
 ### Leaving a channel
 
@@ -101,10 +101,9 @@ enum GameChannelLeavingReason {
 }
 ```
 
-| Authentication required | Scopes                  		    |
-| ----------------------- | ------------------------------- |
-| Yes                     | `read:gameChannels`            	|
-
+| Authentication required | Scopes              |
+| ----------------------- | ------------------- |
+| Yes                     | `read:gameChannels` |
 
 ### Ownership transferred
 
@@ -120,9 +119,9 @@ This response is sent to channel members when the owner is updated.
 }
 ```
 
-| Authentication required | Scopes                  		    |
-| ----------------------- | ------------------------------- |
-| Yes                     | `read:gameChannels`            	|
+| Authentication required | Scopes              |
+| ----------------------- | ------------------- |
+| Yes                     | `read:gameChannels` |
 
 ### Channel deleted
 
@@ -137,9 +136,9 @@ When channels are deleted, all members will be notified.
 }
 ```
 
-| Authentication required | Scopes                  		    |
-| ----------------------- | ------------------------------- |
-| Yes                     | `read:gameChannels`            	|
+| Authentication required | Scopes              |
+| ----------------------- | ------------------- |
+| Yes                     | `read:gameChannels` |
 
 ### Channel updated
 
@@ -155,9 +154,9 @@ This response is sent to channel members when any of the channel's properties (i
 }
 ```
 
-| Authentication required | Scopes                  		    |
-| ----------------------- | ------------------------------- |
-| Yes                     | `read:gameChannels`            	|
+| Authentication required | Scopes              |
+| ----------------------- | ------------------- |
+| Yes                     | `read:gameChannels` |
 
 ### Channel storage updated
 
@@ -174,9 +173,9 @@ Channel members will receive this when storage props are created, updated or del
 }
 ```
 
-| Authentication required | Scopes                  		    |
-| ----------------------- | ------------------------------- |
-| Yes                     | `read:gameChannels`            	|
+| Authentication required | Scopes              |
+| ----------------------- | ------------------- |
+| Yes                     | `read:gameChannels` |
 
 ## Live config
 
@@ -193,9 +192,9 @@ This response is sent to all players when the live config is updated from the Ta
 }
 ```
 
-| Authentication required | Scopes                  	    |
-| ----------------------- | ----------------------------- |
-| Yes                     | `read:gameConfig`            	|
+| Authentication required | Scopes            |
+| ----------------------- | ----------------- |
+| Yes                     | `read:gameConfig` |
 
 ## Types
 
@@ -249,7 +248,7 @@ type PlayerAlias = {
 type PlayerPresence = {
   online: boolean
   customStatus: string
-  playerAlias: PlayerAlias,
+  playerAlias: PlayerAlias
   updatedAt: Date
 }
 ```

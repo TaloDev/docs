@@ -22,7 +22,7 @@ Talo will ping socket connections every 30 seconds. After sending a ping, Talo e
 
 The process above uses control frames. If you send the `v1.heartbeat` message, Talo will instantly respond with the same message and mark the connection as "still alive".
 
-The client doesn't need to do anything with the message - this process is simply designed to keep the server informed of healthy open connections. 
+The client doesn't need to do anything with the message - this process is simply designed to keep the server informed of healthy open connections.
 
 ## Example usage
 

@@ -47,6 +47,7 @@ socket_url="wss://api.trytalo.com"
 ```
 
 You can also add the following section for logging:
+
 ```gdscript title="addons/talo/settings.cfg"
 ...
 
