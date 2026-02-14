@@ -1,12 +1,13 @@
-import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
-import siteConfig from '@generated/docusaurus.config'
+import { ServiceDocumentation } from '@site/src/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Game feedback API
 
+export const service = 'GameFeedbackAPI'
+
 export const toc = [
   { value: 'Endpoints', id: 'endpoints', level: 2 },
-  ...generateServiceTOC('GameFeedbackAPIService', siteConfig)
+  ...generateServiceTOC(service),
 ]
 
 Using Talo's Feedback service, you can effortlessly collect valuable player feedback to improve your game's experience. Players can send feedback directly from within the game, providing insights that can help you understand their needs and preferences better.
@@ -16,6 +17,6 @@ Learn more about feedback [here](https://trytalo.com/feedback?utm_source=docs&ut
 ## Endpoints
 
 <ServiceDocumentation
-  service='GameFeedbackAPIService'
+  service={service}
   metaDescription="Talo's Feedback service lets you easily collect feedback directly from your players. Categories can be configured to help segment feedback."
 />

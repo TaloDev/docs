@@ -1,7 +1,7 @@
 .url {
   display: inline-block;
   padding: 8px;
-  margin-bottom: calc(var(--ifm-heading-vertical-rhythm-top) * var(--ifm-leading))
+  margin-bottom: calc(var(--ifm-heading-vertical-rhythm-top) * var(--ifm-leading));
 }
 
 .descriptionText {
@@ -41,7 +41,8 @@
   background-color: #b91c1c;
 }
 
-.nameCell, .requiredCell {
+.nameCell,
+.requiredCell {
   min-width: 140px;
 }
 

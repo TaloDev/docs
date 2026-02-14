@@ -1,8 +1,11 @@
 {
-  "[markdown]": {
+  "[markdown,mdx]": {
     "editor.detectIndentation": true,
     "editor.insertSpaces": false,
     "editor.indentSize": "tabSize",
     "editor.tabSize": 4
-  }
+  },
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file"
 }

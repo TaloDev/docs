@@ -1,14 +1,15 @@
-import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
-import siteConfig from '@generated/docusaurus.config'
+import { ServiceDocumentation } from '@site/src/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Player API
 
+export const service = 'PlayerAPI'
+
 export const toc = [
   { value: 'Endpoints', id: 'endpoints', level: 2 },
-  ...generateServiceTOC('PlayerAPIService', siteConfig),
+  ...generateServiceTOC(service),
   { value: 'Types', id: 'types', level: 2 },
-  { value: 'Prop', id: 'prop', level: 3 }
+  { value: 'Prop', id: 'prop', level: 3 },
 ]
 
 Talo provides a powerful and secure authentication system out of the box. You can use Talo to authenticate players using their email, username, or any other identifier you choose.
@@ -20,7 +21,7 @@ Learn more about player management [here](https://trytalo.com/players?utm_source
 ## Endpoints
 
 <ServiceDocumentation
-  service='PlayerAPIService'
+  service={service}
   metaDescription="Talo's Player service lets you manage players and persist data. Players can be authenticated using email, username, Steamworks and more."
 />
 

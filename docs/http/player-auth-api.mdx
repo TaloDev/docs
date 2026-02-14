@@ -1,14 +1,19 @@
-import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
-import siteConfig from '@generated/docusaurus.config'
+import { ServiceDocumentation } from '@site/src/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Player auth API
 
+export const service = 'PlayerAuthAPI'
+
 export const toc = [
   { value: 'Endpoints', id: 'endpoints', level: 2 },
-  ...generateServiceTOC('PlayerAuthAPIService', siteConfig),
-  { value: 'Identifying players using Talo Authentication', id: 'identifying-players-using-talo-authentication', level: 2 },
-  { value: 'Error codes', id: 'error-codes', level: 2 }
+  ...generateServiceTOC(service),
+  {
+    value: 'Identifying players using Talo Authentication',
+    id: 'identifying-players-using-talo-authentication',
+    level: 2,
+  },
+  { value: 'Error codes', id: 'error-codes', level: 2 },
 ]
 
 Talo provides a powerful and secure authentication system out of the box. You can use Talo to authenticate players using their email, username, or any other identifier you choose.
@@ -28,7 +33,7 @@ To create a new session token, you will need to go through the login flow again 
 ## Endpoints
 
 <ServiceDocumentation
-  service='PlayerAuthAPIService'
+  service={service}
   metaDescription="Talo's Player Authentication service supports emails, usernames, or Steamworks auth. Players can also reset their password, add two factor auth and more."
 />
 
@@ -44,6 +49,7 @@ When authentication fails (i.e. wrong identifier or password), this error is ret
   errorCode: 'INVALID_CREDENTIALS'
 }
 ```
+
 ```javascript
 {
   message: 'Current password is incorrect',
@@ -83,6 +89,7 @@ When trying to create a new player, this error is thrown if the `identifier` is 
   errorCode: 'IDENTIFIER_TAKEN'
 }
 ```
+
 ### `MISSING_SESSION`
 
 Players that use Talo Authentication must provide a session token in the request headers. This error is thrown when the session token is missing.

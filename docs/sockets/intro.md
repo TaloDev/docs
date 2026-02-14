@@ -14,6 +14,7 @@ The socket used by Talo follows the web socket standard and is compatible with l
 One major difference is that the Talo Socket will validate messages against a request type and payload structure. For example, if you send a message with the `v1.players.identified` request, your payload's data must also match the expected schema. The list of available [requests](./requests) and [responses](./responses) are available on their respective pages.
 
 Using the identification example, here is the JSON expected by the Talo Socket when identifying a player:
+
 ```javascript
 {
   "req": "v1.players.identified",
@@ -27,9 +28,10 @@ Using the identification example, here is the JSON expected by the Talo Socket w
 The request type is defined by the `req` key and the payload of the request is defined using the `data` key.
 
 Responses use a similar message structure, except that `req` is replaced by `res` to denote a response:
+
 ```javascript
 {
-  "res": "v1.players.identified.succes",
+  "res": "v1.players.identified.success",
   "data": {
     "id": 105,
     "service": "username",
@@ -52,6 +54,7 @@ Responses use a similar message structure, except that `req` is replaced by `res
 ## Authentication
 
 The Talo Socket provides two layers of authentication:
+
 1. You must provide a [socket ticket](/docs/http/socket-ticket-api) when opening a socket connection. This identifies your game and the key's scopes are used to determine whether a client is eligible to receive specific responses.
 2. When players are identified, a `socketToken` is stored against the player alias for 1 hour. While the socket token is valid, you can use it to authenticate your player with the socket.
 
@@ -66,6 +69,7 @@ Unlike the HTTP API, players cannot be created during identification. To success
 ## Connecting to the socket server
 
 The default socket URL is `wss://api.trytalo.com`. When opening a socket connection, you must provide a socket ticket as a query parameter. The full URL should look like this:
+
 ```
 wss://api.trytalo.com/socket?ticket=your-ticket-here
 ```
@@ -75,6 +79,7 @@ Your ticket should be a valid socket ticket, i.e. it was created within the last
 ## Error responses
 
 Due to the nature of sockets, error responses are completely asynchronous. Error responses follow a standard format so you can match them up against your requests. For example:
+
 ```javascript
 {
   "res": "v1.error",
@@ -87,6 +92,7 @@ Due to the nature of sockets, error responses are completely asynchronous. Error
 ```
 
 Some errors may also return a "cause" key which drills down into why a request failed:
+
 ```javascript
 {
   "res": "v1.error",

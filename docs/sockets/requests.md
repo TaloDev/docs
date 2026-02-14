@@ -21,9 +21,9 @@ Most (but not all) requests require the player to be identified before being pro
 }
 ```
 
-| Authentication required | Scopes                  |
-| ----------------------- | ----------------------- |
-| No                      | `read:players`          |
+| Authentication required | Scopes         |
+| ----------------------- | -------------- |
+| No                      | `read:players` |
 
 ## Channels
 
@@ -43,7 +43,6 @@ Players must be subscribed to the channel they are trying to send a message to a
 }
 ```
 
-| Authentication required | Scopes                  		    |
-| ----------------------- | ------------------------------- |
-| Yes                     | `write:gameChannels`           	|
-
+| Authentication required | Scopes               |
+| ----------------------- | -------------------- |
+| Yes                     | `write:gameChannels` |

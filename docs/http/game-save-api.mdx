@@ -1,14 +1,15 @@
-import ServiceDocumentation from '@site/src/components/documentation/ServiceDocumentation'
-import siteConfig from '@generated/docusaurus.config'
+import { ServiceDocumentation } from '@site/src/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@site/src/components/documentation/generateServiceTOC'
 
 # Game save API
 
+export const service = 'GameSaveAPI'
+
 export const toc = [
   { value: 'Endpoints', id: 'endpoints', level: 2 },
-  ...generateServiceTOC('GameSaveAPIService', siteConfig),
+  ...generateServiceTOC(service),
   { value: 'Types', id: 'types', level: 2 },
-  { value: 'SaveContent', id: 'savecontent', level: 3 }
+  { value: 'SaveContent', id: 'savecontent', level: 3 },
 ]
 
 Talo's save system allows you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored automatically from one of your player's saves.
@@ -18,7 +19,7 @@ Learn more about game saves [here](https://trytalo.com/saves?utm_source=docs&utm
 ## Endpoints
 
 <ServiceDocumentation
-  service='GameSaveAPIService'
+  service={service}
   metaDescription="Talo's Game Save service lets you save and load game data. Saves work both online and offline and will automatically sync when the player is back online."
 />
 
@@ -33,13 +34,13 @@ type SaveContent = {
 
 type SavedObject = {
   id: UUID
-  name: string              // e.g. Unity GameObject hierarchy name
+  name: string // e.g. Unity GameObject hierarchy name
   data: SavedObjectData[]
 }
 
 type SavedObjectData = {
   key: string
   value: string
-  type: string              // class to cast value to on-load, e.g. System.Boolean in C#
+  type: string // class to cast value to on-load, e.g. System.Boolean in C#
 }
 ```

@@ -10,9 +10,5 @@ export function ScopeBadges({ scope, read, write }) {
 }
 
 function Badge({ scope }) {
-  return (
-    <code className={styles.badge}>
-      {scope}
-    </code>
-  )
+  return <code className={styles.badge}>{scope}</code>
 }

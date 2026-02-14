@@ -18,6 +18,7 @@ curl \
 ## Player authentication
 
 When calling API endpoints on behalf of a player that is using [player authentication](https://trytalo.com/players#authentication) you must send the following headers:
+
 1. `x-talo-player`: the ID of the player
 2. `x-talo-alias`: the ID of the player's identified alias
 3. `x-talo-session`: the session token received after registering or logging-in a player
