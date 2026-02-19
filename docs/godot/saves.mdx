@@ -22,14 +22,14 @@ As part of the Godot plugin, we've included a few demos to help you get started:
 
 ## Loadables
 
-Talo's game saves let you easily save and load specific nodes in your game. To do this, your nodes need to extend the `TaloLoadable` node. Generally this is the parent node for scenes but you can also have it as a child node (e.g. you may want your loadable to be a child of a parent `CharacterBody2D`).
+Talo's game saves let you easily save and load specific nodes in your game. To do this, your nodes need to extend the `TaloLoadable` node. Generally this is the parent node for scenes but you can also have it as a child node (e.g. you may want your Loadable to be a child of a parent `CharacterBody2D`).
 
 ### Registering loadables
 
-Once a loadable has entered the tree, its `_ready()` function registers it with the saves manager. We need to register all the Loadables in the scene so that when we load our save, we can match the content in the save file with the structure of the scene.
+Once a Loadable has entered the tree, its `_ready()` function registers it with the saves manager. We need to register all the Loadables in the scene so that when we load our save, we can match the content in the save file with the structure of the scene.
 
 :::caution
-If your loadable overrides the `_ready()` function, ensure that it contains `super()` so that Talo can still register the loadable.
+If your Loadable overrides the `_ready()` function, ensure that it contains `super()` so that Talo can still register the Loadable.
 :::
 
 Importantly, each Loadable _must_ have a unique `id` so that Talo knows which node to load with which data. This can be set in the inspector or in the code.
@@ -37,10 +37,10 @@ Importantly, each Loadable _must_ have a unique `id` so that Talo knows which no
 ```gdscript
 func _ready():
 	id = 'very-unique-collectible-name' # id must be unique
-	super() # ensure Talo registers the loadable
+	super() # ensure Talo registers the Loadable
 ```
 
-## Saved objects
+### Saved objects
 
 Save files are collections of "saved objects". Here's what a typical saved object looks like:
 
@@ -72,13 +72,13 @@ Save files are collections of "saved objects". Here's what a typical saved objec
 You can visualise players' save files as node graphs in the Talo dashboard. Just go to the player's profile, click `Saves` and choose the save you want to view.
 :::
 
-Saved objects must have a unique `id`: this comes from the loadable and is used to match the saved object with the correct loadable. The `name` in a saved object refers to the `NodePath` of the loadable in the scene.
+Saved objects must have a unique `id`: this comes from the Loadable and is used to match the saved object with the correct Loadable. The `name` in a saved object refers to the `NodePath` of the Loadable in the scene.
 
-The most interesting part is the `data` which contains the fields we register in the loadable (explained below) as well as the original `type` of the data. Notice that all values are serialised into strings. This is so that when the data is loaded, it can be easily converted back into its original type.
+The most interesting part is the `data` which contains the fields we register in the Loadable (explained below) as well as the original `type` of the data. Notice that all values are serialised into strings. This is so that when the data is loaded, it can be easily converted back into its original type.
 
 ### Data hydration
 
-When saves are created, all the loadable nodes in your scene will be serialised into saved objects. Similarly, when a save is loaded, each saved object is paired up with a matching loadable. Once paired up, the loadable is hydrated with the latest data from the saved object. Hydrating the loadable calls the loadable's `on_loaded()` function with the data containing each value converted back to its original type.
+When saves are created, all the Loadable nodes in your scene will be serialised into saved objects. Similarly, when a save is loaded, each saved object is paired up with a matching Loadable. Once paired up, the Loadable is hydrated with the latest data from the saved object. Hydrating the Loadable calls the Loadable's `on_loaded()` function with the data containing each value converted back to its original type.
 
 ## Registering fields
 
@@ -101,7 +101,7 @@ As you can see, each field needs to be registered with the `register_field()` fu
 
 ## Loading data
 
-As described above, when a saved object is paired up with a loadable, the loadable is hydrated with the data from the saved object. This calls the `on_loaded()` function of the loadable, where you can set the properties of the node:
+As described above, when a saved object is paired up with a Loadable, the Loadable is hydrated with the data from the saved object. This calls the `on_loaded()` function of the Loadable, where you can set the properties of the node:
 
 ```gdscript
 func on_loaded(data: Dictionary):

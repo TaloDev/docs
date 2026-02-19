@@ -12,14 +12,14 @@ Check out the [SavesDemo sample](https://github.com/TaloDev/unity/tree/develop/A
 
 ## Loadables
 
-Loadables are GameObjects that automatically have their data saved and loaded. To make a GameObject loadable, create a new MonoBehavior, extend the `Loadable` class and finally add your new component onto your GameObject.
+Loadables are GameObjects that automatically have their data saved and loaded. To make a GameObject Loadable, create a new MonoBehavior, extend the `Loadable` class and finally add your new component onto your GameObject.
 
 ### Registering loadables
 
-Once a loadable has entered the scene, its `OnEnable()` function registers it with the saves manager. We need to register all the Loadables in the scene so that when we load our save, we can match the content in the save file with the structure of the scene.
+Once a Loadable has entered the scene, its `OnEnable()` function registers it with the saves manager. We need to register all the Loadables in the scene so that when we load our save, we can match the content in the save file with the structure of the scene.
 
 :::caution
-If your loadable overrides the `OnEnable()` function, ensure that it contains `base.OnEnable()` so that Talo can still register the loadable.
+If your Loadable overrides the `OnEnable()` function, ensure that it contains `base.OnEnable()` so that Talo can still register the Loadable.
 :::
 
 Importantly, each Loadable _must_ have a unique `Id` so that Talo knows which node to load with which data. This can be set in the inspector or in the code.
@@ -28,11 +28,11 @@ Importantly, each Loadable _must_ have a unique `Id` so that Talo knows which no
 protected override void OnEnable()
 {
 	Id = "very-unique-collectible-name"; // id must be unique
-	base.OnEnable(); // ensure Talo registers the loadable
+	base.OnEnable(); // ensure Talo registers the Loadable
 }
 ```
 
-## Saved objects
+### Saved objects
 
 Save files are collections of "saved objects". Here's what a typical saved object looks like:
 
@@ -64,13 +64,13 @@ Save files are collections of "saved objects". Here's what a typical saved objec
 You can visualise players' save files as node graphs in the Talo dashboard. Just go to the player's profile, click `Saves` and choose the save you want to view.
 :::
 
-Saved objects must have a unique `id`: this comes from the loadable and is used to match the saved object with the correct loadable. The `name` in a saved object refers to the name of the GameObject and names of all of its parents.
+Saved objects must have a unique `id`: this comes from the Loadable and is used to match the saved object with the correct Loadable. The `name` in a saved object refers to the name of the GameObject and names of all of its parents.
 
-The most interesting part is the `data` which contains the fields we register in the loadable (explained below) as well as the original `type` of the data. Notice that all values are serialised into strings. This is so that when the data is loaded, it can be easily converted back into its original type.
+The most interesting part is the `data` which contains the fields we register in the Loadable (explained below) as well as the original `type` of the data. Notice that all values are serialised into strings. This is so that when the data is loaded, it can be easily converted back into its original type.
 
 ### Data hydration
 
-When saves are created, all the loadable GameObjects in your scene will be serialised into saved objects. Similarly, when a save is loaded, each saved object is paired up with a matching loadable. Once paired up, the loadable is hydrated with the latest data from the saved object. Hydrating the loadable calls the loadable's `OnLoaded()` function with the data containing each value converted back to its original type.
+When saves are created, all the Loadable GameObjects in your scene will be serialised into saved objects. Similarly, when a save is loaded, each saved object is paired up with a matching Loadable. Once paired up, the Loadable is hydrated with the latest data from the saved object. Hydrating the Loadable calls the Loadable's `OnLoaded()` function with the data containing each value converted back to its original type.
 
 ## Registering fields
 
@@ -100,7 +100,7 @@ As you can see, each field needs to be registered with the `RegisterField()` fun
 
 ## Loading data
 
-As described above, when a saved object is paired up with a loadable, the loadable is hydrated with the data from the saved object. This calls the `OnLoaded()` function of the loadable, where you can set the properties of the GameObject:
+As described above, when a saved object is paired up with a Loadable, the Loadable is hydrated with the data from the saved object. This calls the `OnLoaded()` function of the Loadable, where you can set the properties of the GameObject:
 
 ```csharp
 public override void OnLoaded(Dictionary<string, object> data)
