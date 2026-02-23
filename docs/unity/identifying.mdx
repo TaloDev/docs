@@ -130,7 +130,11 @@ Sometimes you might start tracking a player's actions before you know their true
 You can merge players using `Talo.Players.Merge()` by providing the IDs of both players. The merge process takes all the props, aliases, and associated data (events, leaderboard entries, saves, etc.) from **Player 2** and merges them into **Player 1**. This means that duplicate props in **Player 1** will be replaced by the ones from **Player 2**.
 
 :::caution
-Merging players has one major limitation: you cannot merge two players that have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
+There are a few limitations to merging players:
+
+- **Player 2** cannot have a Talo Player Authentication alias or a Steam alias.
+- If **Player 1** has a Talo Player Authentication or Steam alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.CurrentAlias` must belong to Player 1). In this case, make sure your last `Talo.Players.Identify()` call before merging uses Player 1's alias.
+- Both players cannot have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
 :::
 
 You can provide the `post_merge_identity_service` option to automatically re-identify the player once merging is complete:
