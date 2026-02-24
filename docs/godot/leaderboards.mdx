@@ -96,13 +96,24 @@ func _on_pressed() -> void:
 
 ### Getting entries for the current player
 
-You can also get entries exclusively created by the current player using `Talo.leaderboards.get_entries_for_current_player()`. This automatically sets the `alias_id` option:
+Since a player can have many aliases, you can use the `player_id` option to fetch entries across all of a player's aliases:
 
 ```gdscript
 var options := Talo.leaderboards.GetEntriesOptions.new()
 options.page = page
+options.player_id = Talo.current_player.id
 
-var res := await Talo.leaderboards.get_entries_for_current_player(internal_name, options)
+var res := await Talo.leaderboards.get_entries(internal_name, options)
+```
+
+If you want to scope entries to a specific alias instead, use the `alias_id` option:
+
+```gdscript
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.page = page
+options.alias_id = Talo.current_alias.id
+
+var res := await Talo.leaderboards.get_entries(internal_name, options)
 ```
 
 ### Getting archived entries
@@ -120,7 +131,7 @@ var res := await Talo.leaderboards.get_entries(internal_name, options)
 
 After fetching your leaderboard entries you can take advantage of the internal cache to construct your UI, removing the need for any subsequent network requests.
 
-You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache. The same logic applies for `get_entries_for_current_player()` with `get_cached_entries_for_current_player()`.
+You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache. The same logic applies for entries fetched with `alias_id` set, using `get_cached_entries_for_current_player()`. Note that `player_id` is not supported by `get_cached_entries_for_current_player()`.
 
 Similarly, updated results from `add_entry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
 
