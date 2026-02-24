@@ -41,7 +41,7 @@ To create a new session token, you will need to go through the login flow again 
 
 ### `INVALID_CREDENTIALS`
 
-When authentication fails (i.e. wrong identifier or password), this error is returned. This error also occurs when trying to change a player password, trying to change an email address or toggling verification and the current password entered is incorrect.
+When authentication fails (i.e. wrong identifier or password), this error is returned. This error also occurs when changing a player password, email address, or identifier, or when toggling verification and the current password entered is incorrect.
 
 ```javascript
 {
@@ -81,7 +81,7 @@ When trying to verify a player login, this error is thrown if the `code` is not 
 
 ### `IDENTIFIER_TAKEN`
 
-When trying to create a new player, this error is thrown if the `identifier` is already taken.
+When trying to create a new player or update an existing player's identifier, this error is thrown if the `identifier` is already taken.
 
 ```javascript
 {
@@ -131,6 +131,17 @@ When trying to change a player's email address, this error is thrown if the new 
 {
   message: 'Please choose a different email address',
   errorCode: 'NEW_EMAIL_MATCHES_CURRENT_EMAIL'
+}
+```
+
+### `NEW_IDENTIFIER_MATCHES_CURRENT_IDENTIFIER`
+
+When trying to change a player's identifier, this error is thrown if the new identifier matches the current identifier.
+
+```javascript
+{
+  message: 'Please choose a different identifier',
+  errorCode: 'NEW_IDENTIFIER_MATCHES_CURRENT_IDENTIFIER'
 }
 ```
 
