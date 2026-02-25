@@ -107,10 +107,22 @@ public async void FetchEntries()
 
 ### Getting entries for the current player
 
-You can also get entries exclusively created by the current player using `Talo.Leaderboards.GetEntriesForCurrentPlayer()`. This automatically sets the `aliasId` option:
+Since a player can have many aliases, you can use the `playerId` option to fetch entries across all of a player's aliases:
 
 ```csharp
-var entries = await Talo.Leaderboards.GetEntriesForCurrentPlayer(internalName, new GetEntriesOptions() { page = page });
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
+	page = page,
+	playerId = Talo.CurrentPlayer.id
+});
+```
+
+If you want to scope entries to a specific alias instead, use the `aliasId` option:
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
+	page = page,
+	aliasId = Talo.CurrentAlias.id
+});
 ```
 
 ### Getting archived entries
@@ -128,7 +140,7 @@ var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOpt
 
 After fetching your leaderboard entries you can take advantage of the internal cache to construct your UI, removing the need for any subsequent network requests.
 
-You can use `Talo.Leaderboard.GetCachedEntries()` in the same way as `GetEntries()` above. Every entry fetched previously using `GetEntries()` will exist in the cache. The same logic applies for `GetEntriesForCurrentPlayer()` with `GetCachedEntriesForCurrentPlayer()`.
+You can use `Talo.Leaderboard.GetCachedEntries()` in the same way as `GetEntries()` above. Every entry fetched previously using `GetEntries()` will exist in the cache. The same logic applies for entries fetched with `aliasId` set, using `GetCachedEntriesForCurrentPlayer()`. Note that `playerId` is not supported by `GetCachedEntriesForCurrentPlayer()`.
 
 Similarly, updated results from `AddEntry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
 
