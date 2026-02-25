@@ -131,7 +131,11 @@ var res := await Talo.leaderboards.get_entries(internal_name, options)
 
 After fetching your leaderboard entries you can take advantage of the internal cache to construct your UI, removing the need for any subsequent network requests.
 
-You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache. The same logic applies for entries fetched with `alias_id` set, using `get_cached_entries_for_current_player()`. Note that `player_id` is not supported by `get_cached_entries_for_current_player()`.
+You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache. The same logic applies for entries fetched with `alias_id` set, using `get_cached_entries_for_current_player()`.
+
+:::caution
+`player_id` is not supported by `get_cached_entries_for_current_player()`.
+:::
 
 Similarly, updated results from `add_entry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
 
