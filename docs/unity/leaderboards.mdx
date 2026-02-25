@@ -111,7 +111,6 @@ Since a player can have many aliases, you can use the `playerId` option to fetch
 
 ```csharp
 var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
-	page = page,
 	playerId = Talo.CurrentPlayer.id
 });
 ```
@@ -120,8 +119,15 @@ If you want to scope entries to a specific alias instead, use the `aliasId` opti
 
 ```csharp
 var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
-	page = page,
 	aliasId = Talo.CurrentAlias.id
+});
+```
+
+You can also filter entries by the service an alias belongs to using the `aliasService` option:
+
+```csharp
+var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() {
+	aliasService = "steam"
 });
 ```
 
@@ -140,11 +146,30 @@ var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOpt
 
 After fetching your leaderboard entries you can take advantage of the internal cache to construct your UI, removing the need for any subsequent network requests.
 
-You can use `Talo.Leaderboard.GetCachedEntries()` in the same way as `GetEntries()` above. Every entry fetched previously using `GetEntries()` will exist in the cache. The same logic applies for entries fetched with `aliasId` set, using `GetCachedEntriesForCurrentPlayer()`.
+You can use `Talo.Leaderboard.GetCachedEntries()` in the same way as `GetEntries()` above. Every entry fetched previously using `GetEntries()` will exist in the cache.
 
-:::caution
-`playerId` is not supported by `GetCachedEntriesForCurrentPlayer()`.
-:::
+`GetCachedEntries()` also accepts an optional `GetCachedEntriesOptions` object to filter the cached results client-side:
+
+```csharp
+// Filter cached entries by player
+var entries = Talo.Leaderboards.GetCachedEntries(internalName, new GetCachedEntriesOptions() {
+	playerId = Talo.CurrentPlayer.id
+});
+```
+
+```csharp
+// Filter cached entries by alias
+var entries = Talo.Leaderboards.GetCachedEntries(internalName, new GetCachedEntriesOptions() {
+	aliasId = Talo.CurrentAlias.id
+});
+```
+
+```csharp
+// Filter cached entries by alias service
+var entries = Talo.Leaderboards.GetCachedEntries(internalName, new GetCachedEntriesOptions() {
+	aliasService = "steam"
+});
+```
 
 Similarly, updated results from `AddEntry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
 
