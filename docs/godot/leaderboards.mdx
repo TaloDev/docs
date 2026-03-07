@@ -100,7 +100,6 @@ Since a player can have many aliases, you can use the `player_id` option to fetc
 
 ```gdscript
 var options := Talo.leaderboards.GetEntriesOptions.new()
-options.page = page
 options.player_id = Talo.current_player.id
 
 var res := await Talo.leaderboards.get_entries(internal_name, options)
@@ -110,8 +109,16 @@ If you want to scope entries to a specific alias instead, use the `alias_id` opt
 
 ```gdscript
 var options := Talo.leaderboards.GetEntriesOptions.new()
-options.page = page
 options.alias_id = Talo.current_alias.id
+
+var res := await Talo.leaderboards.get_entries(internal_name, options)
+```
+
+You can also filter entries by the service an alias belongs to using the `alias_service` option:
+
+```gdscript
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.alias_service = "steam"
 
 var res := await Talo.leaderboards.get_entries(internal_name, options)
 ```
@@ -131,11 +138,33 @@ var res := await Talo.leaderboards.get_entries(internal_name, options)
 
 After fetching your leaderboard entries you can take advantage of the internal cache to construct your UI, removing the need for any subsequent network requests.
 
-You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache. The same logic applies for entries fetched with `alias_id` set, using `get_cached_entries_for_current_player()`.
+You can use `Talo.leaderboards.get_cached_entries()` in the same way as `get_entries()` above. Every entry fetched previously using `get_entries()` will exist in the cache.
 
-:::caution
-`player_id` is not supported by `get_cached_entries_for_current_player()`.
-:::
+`get_cached_entries()` also accepts an optional `GetCachedEntriesOptions` object to filter the cached results client-side:
+
+```gdscript
+# Filter cached entries by player
+var options := Talo.leaderboards.GetCachedEntriesOptions.new()
+options.player_id = Talo.current_player.id
+
+var entries := Talo.leaderboards.get_cached_entries(internal_name, options)
+```
+
+```gdscript
+# Filter cached entries by alias
+var options := Talo.leaderboards.GetCachedEntriesOptions.new()
+options.alias_id = Talo.current_alias.id
+
+var entries := Talo.leaderboards.get_cached_entries(internal_name, options)
+```
+
+```gdscript
+# Filter cached entries by alias service
+var options := Talo.leaderboards.GetCachedEntriesOptions.new()
+options.alias_service = "steam"
+
+var entries := Talo.leaderboards.get_cached_entries(internal_name, options)
+```
 
 Similarly, updated results from `add_entry()` will also be reflected in the cache - the entry returned from the response will be upserted and the positions of the other entries in the cache will be updated.
 
