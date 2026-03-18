@@ -97,8 +97,8 @@ You can merge players using `Talo.players.merge()` by providing the IDs of both 
 :::caution
 There are a few limitations to merging players:
 
-- **Player 2** cannot have a Talo Player Authentication alias or a Steam alias.
-- If **Player 1** has a Talo Player Authentication or Steam alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.current_alias` must belong to Player 1). In this case, make sure your last `Talo.players.identify()` call before merging uses Player 1's alias.
+- **Player 2** cannot have a Talo Player Authentication, Steam or Google Play Games alias.
+- If **Player 1** has a Talo Player Authentication, Steam or Google Play Games alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.current_alias` must belong to Player 1). In this case, make sure your last `Talo.players.identify()` call before merging uses Player 1's alias.
 - Both players cannot have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
 :::
 
@@ -163,6 +163,50 @@ After successfully authenticating the player, several [props](/docs/godot/player
 You can build an avatar URL by replacing **[AVATAR_HASH]** with the `META_STEAMWORKS_AVATAR_HASH` prop value in the following URL: `https://avatars.steamstatic.com/[AVATAR_HASH]_full.jpg`.
 
 These props will be updated each time the player is identified using `Talo.players.identify_steam()`.
+
+## Google Play Games integration
+
+:::tip
+You can enable this integration on the [integrations page](https://dashboard.trytalo.com/integrations).
+:::
+
+If you have the Google Play Games integration enabled, Talo can identify a player using an OAuth client. Follow Google's official documentation for setting up [Game Server credentials](https://developer.android.com/games/pgs/console/setup#generate_an_oauth_20_client_id).
+
+All you need to do is pass a server auth code to the `Talo.players.identify_google_play_games` function. Here's an example using the [Godot Play Games Services plugin](https://github.com/godot-sdk-integrations/godot-play-game-services):
+
+```gdscript
+extends Node2D
+
+@onready var play_games_sign_in_client: PlayGamesSignInClient = %PlayGamesSignInClient
+
+func _enter_tree() -> void:
+  GodotPlayGameServices.initialize()
+
+func _ready() -> void:
+  play_games_sign_in_client.user_authenticated.connect(
+    func (is_authenticated):
+      if is_authenticated:
+        play_games_sign_in_client.request_server_side_access("yourid.apps.googleusercontent.com", false)
+  )
+
+  play_games_sign_in_client.server_side_access_requested.connect(
+    func (auth_code):
+      Talo.players.identify_google_play_games(auth_code)
+  )
+
+  play_games_sign_in_client.is_authenticated()
+```
+
+Replace "yourid.apps.googleusercontent.com" with the client ID you generated earlier.
+
+### Google Play Games player props
+
+After successfully authenticating the player, these [props](/docs/godot/player-props) will automatically be created for them:
+
+- `META_GOOGLE_PLAY_GAMES_DISPLAY_NAME` - The player's chosen display name
+- `META_GOOGLE_PLAY_GAMES_AVATAR_URL` - A direct link to the player's avatar
+
+These props will be updated each time the player is identified using `Talo.players.identify_google_play_games()`.
 
 ## Offline player cache
 

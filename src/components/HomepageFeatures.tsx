@@ -39,9 +39,7 @@ const FeatureList = [
   {
     title: 'Integrations',
     Svg: require('../../static/img/tabler-icon-exchange.svg').default,
-    description: (
-      <>Learn how integrations like Steamworks sync with Talo and how to configure them.</>
-    ),
+    description: <>Learn more about Talo's Steamworks and Google Play Games integrations.</>,
     link: '/docs/integrations/steamworks',
   },
 ]
