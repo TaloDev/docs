@@ -80,7 +80,7 @@ public void DoStuffIfIdentified()
 {
 	try
 	{
-	  Talo.IdentityCheck();
+		Talo.IdentityCheck();
 	}
 	catch (Exception ex)
 	{
@@ -100,24 +100,24 @@ Once all the relevant data has been cleared, the `Talo.Players.OnIdentityCleared
 ```csharp
 private async void ClearIdentity()
 {
-    try
-    {
-        await Talo.Players.ClearIdentity();
-    }
-    catch (Exception ex)
-    {
-        Debug.LogError($"Failed to clear identity: {ex.Message}");
-    }
+		try
+		{
+				await Talo.Players.ClearIdentity();
+		}
+		catch (Exception ex)
+		{
+				Debug.LogError($"Failed to clear identity: {ex.Message}");
+		}
 }
 
 // Listen for the identity cleared event
 void Start()
 {
-    Talo.Players.OnIdentityCleared += () =>
-    {
-        Debug.Log("Player identity has been cleared");
-        // Handle post-clear logic here
-    };
+		Talo.Players.OnIdentityCleared += () =>
+		{
+				Debug.Log("Player identity has been cleared");
+				// Handle post-clear logic here
+		};
 }
 ```
 
@@ -132,8 +132,8 @@ You can merge players using `Talo.Players.Merge()` by providing the IDs of both 
 :::caution
 There are a few limitations to merging players:
 
-- **Player 2** cannot have a Talo Player Authentication alias or a Steam alias.
-- If **Player 1** has a Talo Player Authentication or Steam alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.CurrentAlias` must belong to Player 1). In this case, make sure your last `Talo.Players.Identify()` call before merging uses Player 1's alias.
+- **Player 2** cannot have a Talo Player Authentication, Steam or Google Play Games alias.
+- If **Player 1** has a Talo Player Authentication, Steam or Google Play Games alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.CurrentAlias` must belong to Player 1). In this case, make sure your last `Talo.Players.Identify()` call before merging uses Player 1's alias.
 - Both players cannot have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
 :::
 
@@ -211,6 +211,53 @@ After successfully authenticating the player, several [props](/docs/unity/player
 You can build an avatar URL by replacing **[AVATAR_HASH]** with the `META_STEAMWORKS_AVATAR_HASH` prop value in the following URL: `https://avatars.steamstatic.com/[AVATAR_HASH]_full.jpg`.
 
 These props will be updated each time the player is identified using `Talo.Players.IdentifySteam()`.
+
+## Google Play Games integration
+
+:::tip
+You can enable this integration on the [integrations page](https://dashboard.trytalo.com/integrations).
+:::
+
+If you have the Google Play Games integration enabled, Talo can identify a player using an OAuth client. All you need to do is pass a server auth code to the `Talo.Players.IdentifyGooglePlayGames` function.
+
+The official Google Play Games Plugin has documentation for how to [request server auth codes](https://developer.android.com/games/pgs/unity/unity-start#retrieve-auth-codes).
+
+```csharp
+using GooglePlayGames.BasicApi;
+
+// Define selectedScope having additional identity scopes.
+private List selectedScopes = new List();
+
+// Add scopes you want to request.
+selectedScopes.Add(AuthScope.OPEN_ID);
+selectedScopes.Add(AuthScope.PROFILE);
+selectedScopes.Add(AuthScope.EMAIL);
+
+// Call RequestServerSideAccess with additional scopes and retrieve
+// authcode and grantedscopes list.
+PlayGamesPlatform.Instance.RequestServerSideAccess(
+	/* forceRefreshToken= */ false,
+	selectedScopes,
+	(AuthResponse authResponse) =>
+	{
+		string authCode = authResponse.GetAuthCode();
+		List grantedScopes = authResponse.GetGrantedScopes();
+
+		// Pass the auth code to Talo
+		// Alternatively, you can `await` the result
+		_ = Talo.Players.IdentifyGooglePlayGames(authCode);
+	}
+);
+```
+
+### Google Play Games player props
+
+After successfully authenticating the player, these [props](/docs/unity/player-props) will automatically be created for them:
+
+- `META_GOOGLE_PLAY_GAMES_DISPLAY_NAME` - The player's chosen display name
+- `META_GOOGLE_PLAY_GAMES_AVATAR_URL` - A direct link to the player's avatar
+
+These props will be updated each time the player is identified using `Talo.Players.IdentifyGooglePlayGames()`.
 
 ## Offline player cache
 
