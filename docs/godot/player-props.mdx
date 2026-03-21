@@ -36,17 +36,26 @@ print("Found %s results: %s" % [search_page.count, ", ".join(identifiers)])
 
 ## Getting and setting props
 
-Players can have a list of arbitrary properties that are persisted across all of their aliases. These props are identified by their unique key and can have any string value.
+Players can have a list of arbitrary properties that are persisted across all of their aliases. These props are identified by their unique key and can have any string value. Keys can be up to 128 characters long and values can be up to 512 characters long.
 
 ### Getting props
 
 You can retrieve the current player's props using `Talo.current_player.props`. To retrieve a single prop use `Talo.current_player.get_prop()` (where you can also specify a fallback).
+
+```gdscript
+var level := Talo.current_player.get_prop("level", "1")
+print("Level: ", level)
+```
 
 ### Setting props
 
 <ScopeBadges scope='players' write />
 
 You can set props using `Talo.current_player.set_prop()`. If a prop with specified key doesn't exist it'll be created, otherwise the existing prop with the same key will be updated.
+
+```gdscript
+Talo.current_player.set_prop("level", "5")
+```
 
 :::warning
 Player props are not linearisable - simultaneous requests may be applied out of order. You should avoid setting or deleting props in `_process()` functions.
@@ -57,3 +66,66 @@ Player props are not linearisable - simultaneous requests may be applied out of 
 <ScopeBadges scope='players' write />
 
 Props can be deleted with `Talo.current_player.delete_prop()` or by using `Talo.current_player.set_prop()` and setting the value to `null`.
+
+```gdscript
+Talo.current_player.delete_prop("level")
+```
+
+## Prop arrays
+
+Prop arrays allow you to store multiple values under a single key. Each item is stored as its own value (up to 512 characters each), with a maximum of 1000 items per array.
+
+:::info
+Array keys are internally suffixed with `[]` (e.g. a key of `"inventory_items"` is stored as `"inventory_items[]"`).
+
+When using the functions below, you should reference the key without the `[]` suffix.
+:::
+
+### Getting prop arrays
+
+You can retrieve all values for a prop array using `Talo.current_player.get_prop_array()`. It returns an `Array[String]` of the current values.
+
+```gdscript
+var items := Talo.current_player.get_prop_array("inventory_items")
+print("Inventory: ", ", ".join(items))
+```
+
+### Setting prop arrays
+
+<ScopeBadges scope='players' write />
+
+Use `Talo.current_player.set_prop_array()` to replace all values for a prop array key. Duplicate and empty values are ignored. The array must not be empty.
+
+```gdscript
+Talo.current_player.set_prop_array("inventory_items", ["sword", "shield", "helmet"])
+```
+
+### Inserting into prop arrays
+
+<ScopeBadges scope='players' write />
+
+Use `Talo.current_player.insert_into_prop_array()` to add a single value to an existing prop array. If the value already exists it will not be added again.
+
+```gdscript
+Talo.current_player.insert_into_prop_array("inventory_items", "helmet")
+```
+
+### Removing from prop arrays
+
+<ScopeBadges scope='players' write />
+
+Use `Talo.current_player.remove_from_prop_array()` to remove a single value from a prop array.
+
+```gdscript
+Talo.current_player.remove_from_prop_array("inventory_items", "helmet")
+```
+
+### Deleting prop arrays
+
+<ScopeBadges scope='players' write />
+
+Use `Talo.current_player.delete_prop_array()` to delete an entire prop array.
+
+```gdscript
+Talo.current_player.delete_prop_array("inventory_items")
+```
