@@ -52,6 +52,8 @@ private async void SearchPlayers()
 
 Players can have a list of arbitrary properties that are persisted across all of their aliases. These props are identified by their unique key and can have any string value. Keys can be up to 128 characters long and values can be up to 512 characters long.
 
+All functions that modify props accept an optional `update` parameter (default `true`) that controls whether the player is synced with Talo after the change. Set it to `false` to batch multiple changes and avoid redundant [debounces](/docs/unity/settings-reference#debouncetimerseconds).
+
 ### Getting props
 
 You can retrieve the current player's props using `Talo.CurrentPlayer.props`. To retrieve a single prop use `Talo.CurrentPlayer.GetProp()` (where you can also specify a fallback).
@@ -69,6 +71,11 @@ You can set props using `Talo.CurrentPlayer.SetProp()`. If a prop with specified
 
 ```csharp
 Talo.CurrentPlayer.SetProp("level", "5");
+
+// Set multiple props without triggering a sync each time
+Talo.CurrentPlayer.SetProp("level", "5", false);
+Talo.CurrentPlayer.SetProp("class", "warrior", false);
+Talo.CurrentPlayer.SetProp("xp", "1200");  // syncs here
 ```
 
 :::warning

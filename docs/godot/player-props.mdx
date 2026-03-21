@@ -38,6 +38,8 @@ print("Found %s results: %s" % [search_page.count, ", ".join(identifiers)])
 
 Players can have a list of arbitrary properties that are persisted across all of their aliases. These props are identified by their unique key and can have any string value. Keys can be up to 128 characters long and values can be up to 512 characters long.
 
+All functions that modify props accept an optional `update` parameter (default `true`) that controls whether the player is synced with Talo after the change. Set it to `false` to batch multiple changes and avoid redundant [debounces](/docs/godot/settings-reference#debounce_timer_seconds).
+
 ### Getting props
 
 You can retrieve the current player's props using `Talo.current_player.props`. To retrieve a single prop use `Talo.current_player.get_prop()` (where you can also specify a fallback).
@@ -55,6 +57,11 @@ You can set props using `Talo.current_player.set_prop()`. If a prop with specifi
 
 ```gdscript
 Talo.current_player.set_prop("level", "5")
+
+# Set multiple props without triggering a sync each time
+Talo.current_player.set_prop("level", "5", false)
+Talo.current_player.set_prop("class", "warrior", false)
+Talo.current_player.set_prop("xp", "1200")  # syncs here
 ```
 
 :::warning
