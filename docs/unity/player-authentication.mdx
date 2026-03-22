@@ -271,6 +271,49 @@ You can provide your players with a self-service deletion link. This can be foun
 
 When an alias is deleted, all leaderboard entries and game feedback associated with that alias will be deleted. Any channels owned by the alias will now have a `null` owner.
 
+## Migrating accounts
+
+<ScopeBadges scope='players' read write />
+
+You can migrate a player's account to a different service and identifier using `Talo.PlayerAuth.MigrateAccount()`. You'll need to provide the player's current password, the new service (e.g. `username`, `steam`, `google_play_games`) and the new identifier. The original player auth account will be deleted and they will only be able to use their new identifier.
+
+Here is an example of migrating to a [Steam alias](/docs/unity/identifying#steamworks-integration):
+
+```csharp
+Callback<GetTicketForWebApiResponse_t> m_AuthTicketForWebApiResponseCallback;
+string ticketIdentity = "talo";
+
+void MigrateToSteam()
+{
+    m_AuthTicketForWebApiResponseCallback = Callback<GetTicketForWebApiResponse_t>.Create(OnAuthCallback);
+    SteamUser.GetAuthTicketForWebApi(ticketIdentity);
+}
+
+async void OnAuthCallback(GetTicketForWebApiResponse_t callback)
+{
+    var ticket = BitConverter.ToString(callback.m_rgubTicket).Replace("-", string.Empty);
+    m_AuthTicketForWebApiResponseCallback.Dispose();
+    m_AuthTicketForWebApiResponseCallback = null;
+
+    try
+    {
+        await Talo.PlayerAuth.MigrateAccount(currentPassword, "steam", $"{ticketIdentity}:{ticket}");
+    }
+    catch (PlayerAuthException ex)
+    {
+        validationLabel.text = ex.Message;
+    }
+    catch (Exception ex)
+    {
+        validationLabel.text = ex.Message;
+    }
+}
+```
+
+You can also migrate to the `google_play_games` service by providing an [auth code](/docs/unity/identifying#google-play-games-integration).
+
+When a migration is successful, the current session is cleared, the player's alias is updated to the new service and identifier, and the `OnPlayerIdentified` event is invoked.
+
 ## Exceptions and error codes
 
 As shown in the examples above, whenever a request fails with an authentication-related error, a `PlayerAuthException` will be thrown.

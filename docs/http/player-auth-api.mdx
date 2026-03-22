@@ -166,3 +166,14 @@ When attempting to toggle verification on, this error is thrown if the player do
   errorCode: 'VERIFICATION_EMAIL_REQUIRED'
 }
 ```
+
+### `INVALID_MIGRATION_TARGET`
+
+When starting a player auth account migration, this error is thrown if an invalid service is provided. Currently the only invalid service is "talo".
+
+```javascript
+{
+  message: 'Cannot migrate to the Talo service',
+  errorCode: 'INVALID_MIGRATION_TARGET'
+}
+```

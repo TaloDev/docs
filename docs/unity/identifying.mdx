@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-description: The Talo Unity package allows you to identify multiple aliases, authenticate and sync your players with Steamworks.
+description: The Talo Unity package allows you to identify multiple aliases, authenticate and sync your players with Steamworks and Google Play.
 ---
 
 import { ScopeBadges } from '@site/src/components/ScopeBadges'
@@ -25,7 +25,7 @@ using TaloGameServices;
 
 public class IdentifyPlayer: MonoBehaviour
 {
-	public string service = 'steam', identifier = '123456';
+	public string service = 'username', identifier = '123456';
 
 	public void OnButtonClick()
 	{
@@ -135,7 +135,7 @@ There are a few limitations to merging players:
 - **Player 2** cannot have a Talo Player Authentication, Steam or Google Play Games alias.
 - If **Player 1** has a Talo Player Authentication, Steam or Google Play Games alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.CurrentAlias` must belong to Player 1). In this case, make sure your last `Talo.Players.Identify()` call before merging uses Player 1's alias.
 - Both players cannot have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
-:::
+  :::
 
 You can provide the `post_merge_identity_service` option to automatically re-identify the player once merging is complete:
 
