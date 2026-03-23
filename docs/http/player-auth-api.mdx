@@ -167,6 +167,17 @@ When attempting to toggle verification on, this error is thrown if the player do
 }
 ```
 
+### `EMAIL_TAKEN`
+
+When registering an auth account with email verification, enabling email verification or changing an account's email, this error will be thrown if another player is already using the chosen email address.
+
+```javascript
+{
+  message: 'This email address is already in use',
+  errorCode: 'EMAIL_TAKEN'
+}
+```
+
 ### `INVALID_MIGRATION_TARGET`
 
 When starting a player auth account migration, this error is thrown if an invalid service is provided. Currently the only invalid service is "talo".
