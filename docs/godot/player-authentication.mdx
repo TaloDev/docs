@@ -229,6 +229,41 @@ You can provide your players with a self-service deletion link. This can be foun
 
 When an alias is deleted, all leaderboard entries and game feedback associated with that alias will be deleted. Any channels owned by the alias will now have a `null` owner.
 
+## Migrating accounts
+
+<ScopeBadges scope='players' read write />
+
+You can migrate a player's account to a different service and identifier using `Talo.player_auth.migrate_account()`. You'll need to provide the player's current password, the new service (e.g. `username`, `steam`, `google_play_games`) and the new identifier. The original player auth account will be deleted and they will only be able to use their new identifier.
+
+Here is an example of migrating to a [Steam alias](/docs/godot/identifying#steamworks-integration):
+
+```gdscript
+@onready var current_password: TextEdit = %CurrentPassword
+@onready var new_service: OptionButton = %NewService
+@onready var new_identifier: TextEdit = %NewIdentifier
+@onready var validation_label: Label = %ValidationLabel
+
+var ticket_identity := "talo"
+
+func _ready() -> void:
+	Steam.steamInitEx()
+	Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
+	Steam.getAuthTicketForWebApi(ticket_identity)
+
+func _on_get_ticket_for_web_api(_auth_ticket: int, _result: int, _ticket_size: int, ticket_buffer: Array) -> void:
+	_migrate_account(PackedByteArray(ticket_buffer).hex_encode())
+
+func _migrate_account(ticket: String) -> void:
+	var res = await Talo.player_auth.migrate_account(current_password.text, "steam", "%s:%s" % [ticket_identity, ticket])
+
+	if res != OK:
+		validation_label.text = Talo.player_auth.last_error.get_string()
+```
+
+You can also migrate to the `google_play_games` service by providing an [auth code](/docs/godot/identifying#google-play-games-integration).
+
+When a migration is successful, the current session is cleared, the player's alias is updated to the new service and identifier, and the `Talo.players.identified` signal is emitted.
+
 ## Getting the last error
 
 As shown in the examples above, whenever a request fails you can query the last error returned using the `Talo.player_auth.last_error` variable.
