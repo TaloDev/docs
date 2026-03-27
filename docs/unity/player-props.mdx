@@ -50,17 +50,33 @@ private async void SearchPlayers()
 
 ## Getting and setting props
 
-Players can have a list of arbitrary properties that are persisted across all of their aliases. These props are identified by their unique key and can have any string value.
+Players can have a list of arbitrary properties that are persisted across all of their aliases. These props are identified by their unique key and can have any string value. Keys can be up to 128 characters long and values can be up to 512 characters long.
+
+All functions that modify props accept an optional `update` parameter (default `true`) that controls whether the player is synced with Talo after the change. Set it to `false` to batch multiple changes and avoid redundant [debounces](/docs/unity/settings-reference#debouncetimerseconds).
 
 ### Getting props
 
 You can retrieve the current player's props using `Talo.CurrentPlayer.props`. To retrieve a single prop use `Talo.CurrentPlayer.GetProp()` (where you can also specify a fallback).
+
+```csharp
+var level = Talo.CurrentPlayer.GetProp("level", "1");
+Debug.Log($"Level: {level}");
+```
 
 ### Setting props
 
 <ScopeBadges scope='players' write />
 
 You can set props using `Talo.CurrentPlayer.SetProp()`. If a prop with specified key doesn't exist it'll be created, otherwise the existing prop with the same key will be updated.
+
+```csharp
+Talo.CurrentPlayer.SetProp("level", "5");
+
+// Set multiple props without triggering a sync each time
+Talo.CurrentPlayer.SetProp("level", "5", false);
+Talo.CurrentPlayer.SetProp("class", "warrior", false);
+Talo.CurrentPlayer.SetProp("xp", "1200");  // syncs here
+```
 
 :::warning
 Player props are not linearisable - simultaneous requests may be applied out of order. You should avoid setting or deleting props in `Update()` functions.
@@ -71,3 +87,66 @@ Player props are not linearisable - simultaneous requests may be applied out of 
 <ScopeBadges scope='players' write />
 
 Props can be deleted with `Talo.CurrentPlayer.DeleteProp()` or by using `Talo.CurrentPlayer.SetProp()` and setting the value to `null`.
+
+```csharp
+Talo.CurrentPlayer.DeleteProp("level");
+```
+
+## Prop arrays
+
+Prop arrays allow you to store multiple values under a single key. Each item is stored as its own value (up to 512 characters each), with a maximum of 1000 items per array.
+
+:::info
+Array keys are internally suffixed with `[]` (e.g. a key of `"inventoryItems"` is stored as `"inventoryItems[]"`).
+
+When using the functions below, you should reference the key without the `[]` suffix.
+:::
+
+### Getting prop arrays
+
+You can retrieve all values for a prop array using `Talo.CurrentPlayer.GetPropArray()`. It returns an `IReadOnlyList<string>` of the current values.
+
+```csharp
+var items = Talo.CurrentPlayer.GetPropArray("inventoryItems");
+Debug.Log($"Inventory: {string.Join(", ", items)}");
+```
+
+### Setting prop arrays
+
+<ScopeBadges scope='players' write />
+
+Use `Talo.CurrentPlayer.SetPropArray()` to replace all values for a prop array key. Duplicate and empty values are ignored. The array must not be empty.
+
+```csharp
+Talo.CurrentPlayer.SetPropArray("inventoryItems", new[] { "sword", "shield", "helmet" });
+```
+
+### Inserting into prop arrays
+
+<ScopeBadges scope='players' write />
+
+Use `Talo.CurrentPlayer.InsertIntoPropArray()` to add a single value to an existing prop array. If the value already exists it will not be added again.
+
+```csharp
+Talo.CurrentPlayer.InsertIntoPropArray("inventoryItems", "helmet");
+```
+
+### Removing from prop arrays
+
+<ScopeBadges scope='players' write />
+
+Use `Talo.CurrentPlayer.RemoveFromPropArray()` to remove a single value from a prop array.
+
+```csharp
+Talo.CurrentPlayer.RemoveFromPropArray("inventoryItems", "helmet");
+```
+
+### Deleting prop arrays
+
+<ScopeBadges scope='players' write />
+
+Use `Talo.CurrentPlayer.DeletePropArray()` to delete an entire prop array.
+
+```csharp
+Talo.CurrentPlayer.DeletePropArray("inventoryItems");
+```
