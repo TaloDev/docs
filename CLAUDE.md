@@ -39,14 +39,6 @@ Generates static content in the `build/` directory.
 npm clear
 ```
 
-Clears the Docusaurus cache (useful when experiencing build issues).
-
-**Serve production build locally:**
-
-```bash
-npm run serve
-```
-
 ## Architecture
 
 ### Dynamic API Documentation
@@ -72,10 +64,6 @@ The benefit of this architecture is that API documentation automatically stays i
 - **Sidebars** (`sidebars.ts`): Uses Docusaurus auto-generated sidebars from the directory structure
 - **Static assets** (`static/`): Images and other static files referenced in docs
 
-### Node Version
-
-This project requires **Node.js 20.x** (specified in `package.json` engines field).
-
 ## Documentation Conventions
 
 - Use frontmatter for page metadata:
@@ -88,14 +76,5 @@ This project requires **Node.js 20.x** (specified in `package.json` engines fiel
   ```
 
 - Cross-reference other docs using relative paths: `/docs/unity/install`
-
 - Include code samples in fenced code blocks with language identifiers (e.g., ` ```csharp `, ` ```gdscript `, ` ```bash `)
-
 - The site supports C# and GDScript syntax highlighting via Prism (configured in `docusaurus.config.ts`)
-
-## Important Notes
-
-- The site uses **dark mode only** (disabled color mode switching in theme config)
-- Algolia search is configured for the documentation
-- Analytics tracking via Plausible is configured in the scripts section
-- Edit links point to the GitHub repository: `https://github.com/TaloDev/docs/edit/main/`
