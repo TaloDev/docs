@@ -1,13 +1,13 @@
 ---
 sidebar_position: 15
-description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending event-based messages and more.
+description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending data to various groups, pushing game updates directly to clients, and storing shared game state with channel props.
 ---
 
 import { ScopeBadges } from '@site/src/components/ScopeBadges'
 
-# Channels
+# Channels and storage
 
-Talo Channels are a way of passing messages between players that are subscribed to a specific topic. Channels can be used for player chats, sending arbitrary JSON to various groups and pushing game updates directly to clients.
+Talo Channels are a way of passing messages between players that are subscribed to a specific topic. Channels can be used for player chats, sending data to various groups and pushing game updates directly to clients.
 
 Channels make it easy to add peer-to-peer (P2P) multiplayer mechanics, social features and dynamic game updates.
 
@@ -258,11 +258,34 @@ void Start()
 }
 ```
 
+### Setting storage prop arrays
+
+<ScopeBadges scope='gameChannels' write />
+
+Prop arrays are a special type of prop that can store multiple values under the same key. This is useful for storing lists of items, player IDs or other data that can have multiple values.
+
+:::info
+Array keys are internally suffixed with [] (e.g. a key of "world_items" is stored as "world_items[]").
+
+When using the prop-array-specific functions, you should reference the key without the [] suffix.
+:::
+
+```csharp
+var key = "world_items";
+var items = new string[] { "sword", "shield", "potion" };
+
+await Talo.Channels.SetStoragePropArray(channel.id, key, items);
+```
+
+Passing an empty array will delete all existing values for the prop.
+
+You can handle failures in the same way [described above](#handling-failures). Individual props have the same limitations as regular props and prop arrays have an additional limit of 1000 items.
+
 ### Getting storage props
 
 <ScopeBadges scope='gameChannels' read />
 
-To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
+To get a prop, use `Talo.Channels.GetStorageProp()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
 
 ```csharp
 var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" };
@@ -273,6 +296,13 @@ var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold")
 ```
 
 After fetching a prop, you can access the `value`, `createdBy`, `lastUpdatedBy` (and more) from the `ChannelStorageProp` class.
+
+:::warning
+Getting storage props immediately after an update can return stale data. This is because the internal cache is only updated when the `OnChannelStoragePropsUpdated` event is invoked.
+
+We recommend using the event for prop updates, as described in the [Listening for storage updates](#listening-for-storage-updates) section.
+If you need to fetch the latest data immediately, you can skip the internal cache: see the [Cache-busting](#cache-busting) section below.
+:::
 
 #### Cache-busting
 
@@ -287,11 +317,32 @@ var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", false /
 var freshProp = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", true);
 ```
 
+### Getting storage prop arrays
+
+<ScopeBadges scope='gameChannels' read />
+
+Prop arrays are made up of multiple props with the same key. To fetch all items in a prop array, use `Talo.Channels.GetStoragePropArray()`:
+
+```csharp
+var propKey = "world_items";
+
+// checks the internal cache first
+var arrayItems = await Talo.Channels.GetStoragePropArray(channel.id, propKey, false /* default */);
+
+// fetches the latest data directly from the database
+var freshArrayItems = await Talo.Channels.GetStoragePropArray(channel.id, propKey, true);
+
+foreach (var prop in arrayItems)
+{
+    Debug.Log(prop.value);
+}
+```
+
 ### Getting multiple storage props
 
 <ScopeBadges scope='gameChannels' read />
 
-If you need to fetch multiple storage props, `Talo.channels.list_storage_props()` is much faster and more efficient than fetching them one by one:
+If you need to fetch multiple storage props, `Talo.Channels.ListStorageProps()` is much faster and more efficient than fetching them one by one:
 
 ```csharp
 await Talo.Channels.SetStorageProps(channel.id,
