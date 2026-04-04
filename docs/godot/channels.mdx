@@ -1,13 +1,13 @@
 ---
 sidebar_position: 15
-description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending event-based messages and more.
+description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending data to various groups, pushing game updates directly to clients, and storing shared game state with channel props.
 ---
 
 import { ScopeBadges } from '@site/src/components/ScopeBadges'
 
 # Channels and storage
 
-Talo Channels are a way of passing messages between players that are subscribed to a specific topic. Channels can be used for player chats, sending arbitrary JSON to various groups and pushing game updates directly to clients.
+Talo Channels are a way of passing messages between players that are subscribed to a specific topic. Channels can be used for player chats, sending data to various groups and pushing game updates directly to clients.
 
 Channels make it easy to add peer-to-peer (P2P) multiplayer mechanics, social features and dynamic game updates.
 
@@ -294,20 +294,15 @@ When using the prop-array-specific functions, you should reference the key witho
 :::
 
 ```gdscript
-# create an entity that will help us manage props
-var entity := TaloEntityWithProps.new()
-
 var key := "world_items"
-var items := ["sword", "shield", "potion"]
+var items: Array[String] = ["sword", "shield", "potion"]
 
-for item in items:
-	entity.insert_into_prop_array(key, item)
-
-var prop_array := entity.find_props_by_key(key)
-await Talo.channels.set_storage_props(channel.id, TaloPropUtils.props_to_dictionary(prop_array))
+await Talo.channels.set_storage_prop_array(channel.id, key, items)
 ```
 
-You can handle failures in the same way as described above. Individual props have the same limitations as regular props and prop arrays have an additional limit of 1000 items.
+Passing an empty array will delete all existing values for the prop.
+
+You can handle failures in the same way [described above](#handling-failures). Individual props have the same limitations as regular props and prop arrays have an additional limit of 1000 items.
 
 ### Getting storage props
 
@@ -327,6 +322,13 @@ var prop := await Talo.channels.get_storage_prop(channel.id, "shared-gold")
 
 After fetching a prop, you can access the `value`, `created_by_alias`, `last_updated_by_alias` (and more) from the `TaloChannelStorageProp` class.
 
+:::warning
+Getting storage props immediately after an update can return stale data. This is because the internal cache is only updated when the `channel_storage_props_updated` signal is emitted.
+
+We recommend using the signal for prop updates, as described in the [Listening for storage updates](#listening-for-storage-updates) section.
+If you need to fetch the latest data immediately, you can skip the internal cache: see the [Cache-busting](#cache-busting) section below.
+:::
+
 #### Cache-busting
 
 Talo keeps an internal cache of storage props which is automatically updated whenever props are created, updated or deleted. By default, Talo will pull from the internal cache which is generally up-to-date. To guarantee fetching the freshest data, you can skip the internal cache with the final parameter of `get_storage_prop()`:
@@ -342,19 +344,22 @@ var freshProp := await Talo.channels.get_storage_prop(channel.id, "shared-gold",
 
 ### Getting storage prop arrays
 
-Prop arrays are made up of multiple props with the same key. To fetch all items in a prop array, use `Talo.channels.get_storage_prop_array()`:
-
 <ScopeBadges scope='gameChannels' read />
+
+Prop arrays are made up of multiple props with the same key. To fetch all items in a prop array, use `Talo.channels.get_storage_prop_array()`:
 
 ```gdscript
 var prop_key := "world_items"
-var array_items := await Talo.channels.get_storage_prop_array(channel.id, prop_key)
+
+# checks the internal cache first
+var array_items := await Talo.channels.get_storage_prop_array(channel.id, prop_key, false) # default
+
+# fetches the latest data directly from the database
+var fresh_array_items := await Talo.channels.get_storage_prop_array(channel.id, prop_key, true)
 
 for prop in array_items:
 	print(prop.value)
 ```
-
-The same cache busting mechanism from above applies to `get_storage_prop_array()` as well. Simply provide `true` as the third parameter to skip the internal cache and fetch the latest data.
 
 ### Getting multiple storage props
 
