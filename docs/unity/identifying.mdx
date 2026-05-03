@@ -1,6 +1,6 @@
 ---
 sidebar_position: 2
-description: The Talo Unity package allows you to identify multiple aliases, authenticate and sync your players with Steamworks and Google Play.
+description: The Talo Unity package allows you to identify multiple aliases, authenticate and sync your players with Steamworks, Google Play and Apple Game Center.
 ---
 
 import { ScopeBadges } from '@site/src/components/ScopeBadges'
@@ -25,24 +25,24 @@ using TaloGameServices;
 
 public class IdentifyPlayer: MonoBehaviour
 {
-	public string service = 'username', identifier = '123456';
+  public string service = 'username', identifier = '123456';
 
-	public void OnButtonClick()
-	{
-		Identify();
-	}
+  public void OnButtonClick()
+  {
+    Identify();
+  }
 
-	private async void Identify()
-	{
-		try
-		{
-			await Talo.Players.Identify(service, identifier);
-		}
-		catch (Exception ex)
-		{
-			Debug.LogError(ex.Message);
-		}
-	}
+  private async void Identify()
+  {
+    try
+    {
+      await Talo.Players.Identify(service, identifier);
+    }
+    catch (Exception ex)
+    {
+      Debug.LogError(ex.Message);
+    }
+  }
 }
 ```
 
@@ -61,7 +61,7 @@ After a successful identification, the `Talo.Players.OnIdentified()` event will 
 ```csharp
 Talo.Players.OnIdentified += async (player) =>
 {
-	await Talo.Saves.GetSaves();
+  await Talo.Saves.GetSaves();
 };
 ```
 
@@ -78,16 +78,16 @@ Sometimes you might need to check if a player has been identified before. You ca
 ```csharp
 public void DoStuffIfIdentified()
 {
-	try
-	{
-		Talo.IdentityCheck();
-	}
-	catch (Exception ex)
-	{
-		return;
-	}
+  try
+  {
+    Talo.IdentityCheck();
+  }
+  catch (Exception ex)
+  {
+    return;
+  }
 
-	// do stuff
+  // do stuff
 }
 ```
 
@@ -100,24 +100,24 @@ Once all the relevant data has been cleared, the `Talo.Players.OnIdentityCleared
 ```csharp
 private async void ClearIdentity()
 {
-		try
-		{
-				await Talo.Players.ClearIdentity();
-		}
-		catch (Exception ex)
-		{
-				Debug.LogError($"Failed to clear identity: {ex.Message}");
-		}
+  try
+  {
+    await Talo.Players.ClearIdentity();
+  }
+  catch (Exception ex)
+  {
+    Debug.LogError($"Failed to clear identity: {ex.Message}");
+  }
 }
 
 // Listen for the identity cleared event
 void Start()
 {
-		Talo.Players.OnIdentityCleared += () =>
-		{
-				Debug.Log("Player identity has been cleared");
-				// Handle post-clear logic here
-		};
+  Talo.Players.OnIdentityCleared += () =>
+  {
+    Debug.Log("Player identity has been cleared");
+    // Handle post-clear logic here
+  };
 }
 ```
 
@@ -132,8 +132,8 @@ You can merge players using `Talo.Players.Merge()` by providing the IDs of both 
 :::caution
 There are a few limitations to merging players:
 
-- **Player 2** cannot have a Talo Player Authentication, Steam or Google Play Games alias.
-- If **Player 1** has a Talo Player Authentication, Steam or Google Play Games alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.CurrentAlias` must belong to Player 1). In this case, make sure your last `Talo.Players.Identify()` call before merging uses Player 1's alias.
+- **Player 2** cannot have a Talo Player Authentication, Steam, Google Play Games or Apple Game Center alias.
+- If **Player 1** has a Talo Player Authentication, Steam, Google Play Games or Apple Game Center alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.CurrentAlias` must belong to Player 1). In this case, make sure your last `Talo.Players.Identify()` call before merging uses Player 1's alias.
 - Both players cannot have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
   :::
 
@@ -149,7 +149,7 @@ Debug.Log(Talo.CurrentAlias.Service) // "username"
 
 var mergedPlayer = await Talo.Players.Merge(player1Id, player2Id, new MergeOptions
 {
-	postMergeIdentityService = "anonymous" // go back to the anonymous alias
+  postMergeIdentityService = "anonymous" // go back to the anonymous alias
 });
 
 Debug.Log(Talo.CurrentAlias.Service) // "anonymous"
@@ -172,25 +172,25 @@ string identity = "talo";
 
 void SignInWithSteam()
 {
-	// It's not necessary to add event handlers if they are
-	// already hooked up.
-	// Callback.Create return value must be assigned to a
-	// member variable to prevent the GC from cleaning it up.
-	// Create the callback to receive events when the session ticket
-	// is ready to use in the web API.
-	// See GetAuthSessionTicket document for details.
-	m_AuthTicketForWebApiResponseCallback = Callback<GetTicketForWebApiResponse_t>.Create(OnAuthCallback);
+  // It's not necessary to add event handlers if they are
+  // already hooked up.
+  // Callback.Create return value must be assigned to a
+  // member variable to prevent the GC from cleaning it up.
+  // Create the callback to receive events when the session ticket
+  // is ready to use in the web API.
+  // See GetAuthSessionTicket document for details.
+  m_AuthTicketForWebApiResponseCallback = Callback<GetTicketForWebApiResponse_t>.Create(OnAuthCallback);
 
-	SteamUser.GetAuthTicketForWebApi(identity);
+  SteamUser.GetAuthTicketForWebApi(identity);
 }
 
 void OnAuthCallback(GetTicketForWebApiResponse_t callback)
 {
-	m_SessionTicket = BitConverter.ToString(callback.m_rgubTicket).Replace("-", string.Empty);
-	m_AuthTicketForWebApiResponseCallback.Dispose();
-	m_AuthTicketForWebApiResponseCallback = null;
+  m_SessionTicket = BitConverter.ToString(callback.m_rgubTicket).Replace("-", string.Empty);
+  m_AuthTicketForWebApiResponseCallback.Dispose();
+  m_AuthTicketForWebApiResponseCallback = null;
 
-	Talo.Players.IdentifySteam(m_SessionTicket, identity);
+  Talo.Players.IdentifySteam(m_SessionTicket, identity);
 }
 ```
 
@@ -236,17 +236,17 @@ selectedScopes.Add(AuthScope.EMAIL);
 // Call RequestServerSideAccess with additional scopes and retrieve
 // authcode and grantedscopes list.
 PlayGamesPlatform.Instance.RequestServerSideAccess(
-	/* forceRefreshToken= */ false,
-	selectedScopes,
-	(AuthResponse authResponse) =>
-	{
-		string authCode = authResponse.GetAuthCode();
-		List grantedScopes = authResponse.GetGrantedScopes();
+  /* forceRefreshToken= */ false,
+  selectedScopes,
+  (AuthResponse authResponse) =>
+  {
+    string authCode = authResponse.GetAuthCode();
+    List grantedScopes = authResponse.GetGrantedScopes();
 
-		// Pass the auth code to Talo
-		// Alternatively, you can `await` the result
-		_ = Talo.Players.IdentifyGooglePlayGames(authCode);
-	}
+    // Pass the auth code to Talo
+    // Alternatively, you can `await` the result
+    _ = Talo.Players.IdentifyGooglePlayGames(authCode);
+  }
 );
 ```
 
@@ -258,6 +258,69 @@ After successfully authenticating the player, these [props](/docs/unity/player-p
 - `META_GOOGLE_PLAY_GAMES_AVATAR_URL` - A direct link to the player's avatar
 
 These props will be updated each time the player is identified using `Talo.Players.IdentifyGooglePlayGames()`.
+
+## Apple Game Center integration
+
+:::tip
+You can enable this integration on the [integrations page](https://dashboard.trytalo.com/integrations).
+:::
+
+If you have the Apple Game Center integration enabled, Talo can identify a player using Apple's identity verification signature. You can do this via the `Talo.Players.IdentifyGameCenter` function.
+
+You'll need to fetch the local player's identity verification signature using [`FetchItems`](https://github.com/apple/unityplugins/blob/main/plug-ins/Apple.GameKit/Apple.GameKit_Unity/Assets/Apple.GameKit/Source/GKLocalPlayer.cs) from the [Apple Game Kit Unity plugin](https://github.com/apple/unityplugins) and pass the resulting values to Talo. Here's a modified version of an example [provided by Unity](https://docs.unity.com/en-us/authentication/platform-signin/apple-game-center):
+
+```csharp
+using UnityEngine;
+using System.Threading.Tasks;
+using Apple.GameKit;
+
+public class IdentifyPlayer : MonoBehaviour
+{
+  private void Start()
+  {
+    Talo.Players.OnIdentified += OnIdentified;
+
+    GKLocalPlayer.AuthenticateError += (err) => {
+      Debug.LogError(err.LocalizedDescription);
+    };
+
+    GKLocalPlayer.AuthenticateUpdate += async (player) => {
+      if (player.IsAuthenticated)
+      {
+        await Identify();
+      }
+    };
+  }
+
+  public async void OnLoginClick()
+  {
+    await GKLocalPlayer.Authenticate();
+  }
+
+  private async Task Identify()
+  {
+    var fetchItemsResponse = await GKLocalPlayer.Local.FetchItemsForIdentityVerificationSignature();
+
+    var publicKeyUrl = fetchItemsResponse.PublicKeyUrl;
+    var signature = fetchItemsResponse.GetSignature();
+    var salt = fetchItemsResponse.GetSalt();
+    var timestamp = fetchItemsResponse.Timestamp;
+
+    await Talo.Players.IdentifyGameCenter(
+      publicKeyUrl,
+      signature,
+      salt,
+      timestamp,
+      GKLocalPlayer.Local.TeamPlayerId
+    );
+  }
+
+  private void OnIdentified(Player player)
+  {
+    Debug.Log($"Player identifier: {player.id}");
+  }
+}
+```
 
 ## Offline player cache
 
