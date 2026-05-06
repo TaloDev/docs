@@ -14,7 +14,7 @@ const config: () => Promise<Config> = async () => {
     const res = await axios.get(`${baseUrl}/public/docs`)
     services = res.data.docs.services
   } catch (err) {
-    console.error(err.message)
+    console.error((err as Error).message)
   }
 
   return {

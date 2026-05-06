@@ -19,25 +19,25 @@
     "format:fix": "oxfmt ."
   },
   "dependencies": {
-    "@docusaurus/core": "^3.9.2",
-    "@docusaurus/preset-classic": "^3.9.2",
+    "@docusaurus/core": "^3.10.1",
+    "@docusaurus/preset-classic": "^3.10.1",
     "@mdx-js/react": "^3.0.1",
     "@svgr/webpack": "^8.1.0",
     "axios": "^1.15.0",
     "clsx": "^2.1.1",
     "file-loader": "^6.2.0",
     "prism-react-renderer": "^2.3.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19",
+    "react-dom": "^19",
     "url-loader": "^4.1.1"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.9.2",
-    "@docusaurus/tsconfig": "^3.9.2",
-    "@docusaurus/types": "^3.9.2",
-    "oxfmt": "^0.27.0",
-    "oxlint": "^1.42.0",
-    "typescript": "^5.9.3"
+    "@docusaurus/module-type-aliases": "^3.10.1",
+    "@docusaurus/tsconfig": "^3.10.1",
+    "@docusaurus/types": "^3.10.1",
+    "oxfmt": "^0.48.0",
+    "oxlint": "^1.63.0",
+    "typescript": "^5"
   },
   "browserslist": {
     "production": [
