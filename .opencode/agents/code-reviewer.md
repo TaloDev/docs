@@ -52,9 +52,15 @@ You are a pragmatic technical documentation expert. Review this pull request and
 
 ## Issue categories
 
-- If an issue spans multiple categories, list it only once in the most relevant section
-- Prioritize by severity: 🔴 Critical (breaks docs/blocks users) → 🟡 Major (confusing/unclear) → 🔵 Minor (polish/improvements)
-- Focus only on changes introduced in this PR, not pre-existing documentation issues
+- If an issue spans multiple categories, list it only once in the most relevant section.
+- Prioritize by severity: 🔴 Critical (breaks docs/blocks users) → 🟡 Major (confusing/unclear) → 🔵 Minor (polish/improvements).
+- Focus only on changes introduced in this PR, not pre-existing documentation issues.
+
+## References
+
+1. For Godot docs, refer to the [TaloDev/godot](https://github.com/talodev/godot) repo.
+2. For Unity docs, refer to the [TaloDev/unity](https://github.com/talodev/unity) repo.
+3. For API docs, refer to the [TaloDev/backend](https://github.com/talodev/backend) repo.
 
 ## Review workflow steps
 
