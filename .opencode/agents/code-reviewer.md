@@ -1,6 +1,7 @@
 ---
 description: Review code to ensure documentation is developer-friendly, clear, concise, and accurate
 mode: subagent
+model: opencode-go/deepseek-v4-flash
 temperature: 0.1
 permission:
   edit: deny
