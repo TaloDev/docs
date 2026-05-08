@@ -1,7 +1,7 @@
 import CodeBlock from '@theme/CodeBlock'
 import { useState } from 'react'
-import styles from './Sample.module.css'
 import type { Sample as SampleType } from './useServiceDocs'
+import styles from './Sample.module.css'
 
 export function Sample({ sample }: { sample: SampleType }) {
   const [shown, setShown] = useState(false)
