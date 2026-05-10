@@ -64,8 +64,8 @@ If identification fails, the `Talo.players.identification_failed` signal is emit
 
 ```gdscript
 func _ready() -> void:
-    Talo.players.identification_started.connect(func (): go_to_loading())
-    Talo.players.identification_failed.connect(func (): go_to_login())
+		Talo.players.identification_started.connect(func (): go_to_loading())
+		Talo.players.identification_failed.connect(func (): go_to_login())
 ```
 
 ## Checking identification
@@ -180,21 +180,21 @@ extends Node2D
 @onready var play_games_sign_in_client: PlayGamesSignInClient = %PlayGamesSignInClient
 
 func _enter_tree() -> void:
-  GodotPlayGameServices.initialize()
+	GodotPlayGameServices.initialize()
 
 func _ready() -> void:
-  play_games_sign_in_client.user_authenticated.connect(
-    func (is_authenticated):
-      if is_authenticated:
-        play_games_sign_in_client.request_server_side_access("yourid.apps.googleusercontent.com", false)
-  )
+	play_games_sign_in_client.user_authenticated.connect(
+		func (is_authenticated):
+			if is_authenticated:
+				play_games_sign_in_client.request_server_side_access("yourid.apps.googleusercontent.com", false)
+	)
 
-  play_games_sign_in_client.server_side_access_requested.connect(
-    func (auth_code):
-      Talo.players.identify_google_play_games(auth_code)
-  )
+	play_games_sign_in_client.server_side_access_requested.connect(
+		func (auth_code):
+			Talo.players.identify_google_play_games(auth_code)
+	)
 
-  play_games_sign_in_client.is_authenticated()
+	play_games_sign_in_client.is_authenticated()
 ```
 
 Replace "yourid.apps.googleusercontent.com" with the client ID you generated earlier.
