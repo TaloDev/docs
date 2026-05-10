@@ -50,3 +50,7 @@ html[data-theme='dark'] {
 .navbar__brand:hover {
   color: var(--ifm-color-primary);
 }
+
+code {
+  tab-size: 2;
+}

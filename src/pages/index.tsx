@@ -9,7 +9,7 @@ function HomepageHeader() {
         <h1 className='hero__title'>Talo Game Services</h1>
         <p>An open-source backend for your games.</p>
         <p>
-          Using Talo, you can integrate leaderboards, stats, event tracking, Steamworks and more
+          Using Talo, you can integrate leaderboards, stats, event tracking, authentication and more
           with our Godot plugin, Unity package or API.
         </p>
       </div>
