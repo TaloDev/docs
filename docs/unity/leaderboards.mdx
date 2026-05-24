@@ -81,6 +81,34 @@ private void BuildEntries()
 
 The code above is available in the leaderboards sample included with the Talo Unity package.
 
+### Handling rejected entry props
+
+Talo validates entry props. If one or more props are invalid, the entry will not be saved.
+
+You can listen for rejected props using the `Talo.Leaderboards.OnPropsRejected` event:
+
+```csharp
+private void OnEnable()
+{
+    Talo.Leaderboards.OnPropsRejected += OnPropsRejected;
+}
+
+private void OnDisable()
+{
+    Talo.Leaderboards.OnPropsRejected -= OnPropsRejected;
+}
+
+private void OnPropsRejected(RejectedProp[] rejectedProps)
+{
+    foreach (var prop in rejectedProps)
+    {
+        Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+    }
+}
+```
+
+See [Players and props - Prop rejection reasons](/docs/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+
 ## Getting entries
 
 <ScopeBadges scope='leaderboards' read />
@@ -93,10 +121,12 @@ int page = 0;
 
 public async void FetchEntries()
 {
-	LeaderboardEntry[] entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() { page = page });
-	if (entries.length == 0)
+	var res = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions() { page = page });
+	LeaderboardEntry[] leaderboardEntries = res.entries;
+
+	if (res.isLastPage)
 	{
-	  // No entries on page
+		// Don't need to continue looping
 	}
 	else
 	{
@@ -104,6 +134,8 @@ public async void FetchEntries()
 	}
 }
 ```
+
+`GetEntries()` returns an object with `entries`, `itemsPerPage` and `isLastPage`.
 
 ### Getting entries for the current player
 

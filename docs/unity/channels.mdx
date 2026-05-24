@@ -221,6 +221,40 @@ You can also listen for the following events:
 
 - `Talo.Channels.OnChannelUpdated`: Invoked when a channel is updated. Returns the `TaloChannel` that was updated and a `string[]` of properties that were changed.
 
+- `Talo.Channels.OnChannelPropsRejected`: Invoked when channel props are rejected during creation or update. Returns an array of `RejectedProp` objects. See [Handling rejected props](#handling-rejected-channel-props) for more details.
+
+## Handling rejected channel props
+
+Talo validates props when creating or updating channels. If one or more props are invalid, the channel will not be created or updated.
+
+You can listen for rejected props using the `Talo.Channels.OnChannelPropsRejected` event:
+
+```csharp
+private void OnEnable()
+{
+    Talo.Channels.OnChannelPropsRejected += OnChannelPropsRejected;
+}
+
+private void OnDisable()
+{
+    Talo.Channels.OnChannelPropsRejected -= OnChannelPropsRejected;
+}
+
+private void OnChannelPropsRejected(RejectedProp[] rejectedProps)
+{
+    foreach (var prop in rejectedProps)
+    {
+        Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+    }
+}
+```
+
+:::info
+This event only fires for channel props (set during `Create()` and `Update()`). For channel **storage** prop errors, use `OnChannelStoragePropsFailedToSet` instead.
+:::
+
+See [Players and props - Prop rejection reasons](/docs/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+
 ## Channel storage
 
 Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel. In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
@@ -243,7 +277,7 @@ This function accepts any number of prop `(string, string)` tuples. You can set 
 
 #### Handling failures
 
-Sometimes, setting props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.Channels.OnChannelStoragePropsFailedToSet` event lets you listen for these errors:
+Sometimes, setting storage props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.Channels.OnChannelStoragePropsFailedToSet` event lets you listen for these errors:
 
 ```csharp
 void Start()
@@ -251,12 +285,14 @@ void Start()
 	Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, ChannelStoragePropError[] errors) => {
 		foreach (var prop in errors)
 		{
-			// shared-gold: Prop value length (596) exceeds 512 characters
-			Debug.Log($"{prop.key}: {prop.error}");
+			// shared-gold: Prop value length (596) exceeds 512 characters (PROP_VALUE_TOO_LONG)
+			Debug.Log($"{prop.key}: {prop.message} ({prop.error})");
 		}
 	};
 }
 ```
+
+`ChannelStoragePropError` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/docs/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
 ### Setting storage prop arrays
 

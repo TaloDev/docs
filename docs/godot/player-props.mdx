@@ -136,3 +136,48 @@ Use `Talo.current_player.delete_prop_array()` to delete an entire prop array.
 ```gdscript
 Talo.current_player.delete_prop_array("inventory_items")
 ```
+
+## Handling rejected props
+
+Player prop updates support partial success. If an update contains a mix of valid and invalid props, the valid props will be set and only the invalid ones will fail ([see rejection reasons](#prop-rejection-reasons)).
+
+You can listen for rejected props by connecting to the `Talo.players.props_rejected` signal:
+
+```gdscript
+func _ready() -> void:
+	Talo.players.props_rejected.connect(_on_props_rejected)
+
+func _on_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void:
+	for prop in rejected_props:
+		# prop.key: the key of the rejected prop
+		# prop.error: the rejection reason code (e.g. TaloRejectedProp.RejectionReason.PROP_VALUE_TOO_LONG)
+		# prop.message: a human-readable description of the rejection
+		# e.g. "Rejected prop 'username': Prop value exceeds 512 characters (PROP_VALUE_TOO_LONG)"
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.error])
+```
+
+### Prop rejection reasons
+
+The `TaloRejectedProp` class exposes an `error` property of type `TaloRejectedProp.RejectionReason`:
+
+| Reason                    | Description                              |
+| ------------------------- | ---------------------------------------- |
+| `PROP_KEY_TOO_LONG`       | The prop key exceeds 128 characters      |
+| `PROP_VALUE_TOO_LONG`     | The prop value exceeds 512 characters    |
+| `PROP_ARRAY_TOO_LONG`     | The prop array exceeds 1000 items        |
+| `PROP_CONTAINS_PROFANITY` | The prop key or value contains profanity |
+| `PROP_KEY_RESERVED`       | The prop key is reserved by Talo         |
+
+```gdscript
+func _on_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void:
+	for rejected_prop in rejected_props:
+		match rejected_prop.error:
+			TaloRejectedProp.RejectionReason.PROP_KEY_TOO_LONG:
+				push_warning("Key too long: %s" % rejected_prop.key)
+			TaloRejectedProp.RejectionReason.PROP_VALUE_TOO_LONG:
+				push_warning("Value too long for key: %s" % rejected_prop.key)
+			TaloRejectedProp.RejectionReason.PROP_CONTAINS_PROFANITY:
+				push_warning("Profanity detected in key: %s" % rejected_prop.key)
+			_:
+				push_warning("Prop '%s' was rejected: %s" % [rejected_prop.key, rejected_prop.message])
+```

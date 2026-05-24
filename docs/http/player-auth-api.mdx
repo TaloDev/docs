@@ -188,3 +188,14 @@ When starting a player auth account migration, this error is thrown if an invali
   errorCode: 'INVALID_MIGRATION_TARGET'
 }
 ```
+
+### `IDENTIFIER_PROFANITY`
+
+When registering an auth account, this error is thrown if the identifier contains profanity and the block alias identifier profanity setting is enabled.
+
+```javascript
+{
+  message: 'Alias identifier contains inappropriate language',
+  errorCode: 'IDENTIFIER_PROFANITY'
+}
+```

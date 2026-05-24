@@ -31,6 +31,8 @@ if res != OK:
 	match Talo.player_auth.last_error.get_code():
 		TaloAuthError.ErrorCode.IDENTIFIER_TAKEN:
 			validation_label.text = "Username is already taken"
+		TaloAuthError.ErrorCode.IDENTIFIER_PROFANITY:
+			validation_label.text = "Username contains profanity"
 		_:
 			validation_label.text = Talo.player_auth.last_error.get_string()
 ```
@@ -153,6 +155,8 @@ else:
 <ScopeBadges scope='players' read write />
 
 You can change a player's email with the `Talo.player_auth.change_email()` function - just pass in their current password and a new email.
+
+If the email is already in use, the error code will be `TaloAuthError.ErrorCode.EMAIL_TAKEN`.
 
 ## Changing a player's identifier
 

@@ -248,6 +248,30 @@ You can also listen for the following signals:
 
 - `Talo.channels.channel_updated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and an `Array[String]` of properties that were changed.
 
+- `Talo.channels.channel_props_rejected`: Emitted when channel props are rejected during creation or update. Returns an array of `TaloRejectedProp` objects. See [Handling rejected props](#handling-rejected-channel-props) for more details.
+
+## Handling rejected channel props
+
+Talo validates props when creating or updating channels. If one or more props are invalid, the channel will not be created or updated.
+
+You can listen for rejected props by connecting to the `Talo.channels.channel_props_rejected` signal:
+
+```gdscript
+func _ready() -> void:
+	Talo.channels.channel_props_rejected.connect(_on_channel_props_rejected)
+
+func _on_channel_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void:
+	for prop in rejected_props:
+		# e.g. "Rejected prop 'guild_name': Prop key exceeds 128 characters (PROP_KEY_TOO_LONG)"
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.error])
+```
+
+:::info
+This signal only fires for channel props (set during `create()` and `update()`). For channel **storage** prop errors, use `channel_storage_props_failed_to_set` instead.
+:::
+
+See [Players and props - Prop rejection reasons](/docs/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+
 ## Channel storage
 
 Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel. In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
@@ -269,17 +293,19 @@ This function accepts a dictionary of prop keys and values. You can set a prop v
 
 #### Handling failures
 
-Sometimes, setting props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.channels.channel_storage_props_failed_to_set` signal lets you listen for these errors:
+Sometimes, setting storage props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.channels.channel_storage_props_failed_to_set` signal lets you listen for these errors:
 
 ```gdscript
-func _ready() -> void
+func _ready() -> void:
 	Talo.channels.channel_storage_props_failed_to_set.connect(
 		func (channel: TaloChannel, failed_props: Array[TaloChannelStoragePropError]):
 			for prop in failed_props:
-				# shared-gold: Prop value length (596) exceeds 512 characters
-				print("%s: %s" % [prop.key, prop.error])
+				# shared-gold: Prop value length (596) exceeds 512 characters (PROP_VALUE_TOO_LONG)
+				print("%s: %s (%s)" % [prop.key, prop.message, prop.error])
 	)
 ```
+
+`TaloChannelStoragePropError` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/docs/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
 ### Setting storage prop arrays
 
