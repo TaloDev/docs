@@ -50,6 +50,7 @@ private async void OnRegisterClick()
 		validationLabel.text = ex.ErrorCode switch
 		{
 			PlayerAuthErrorCode.IDENTIFIER_TAKEN => "Username is already taken",
+			PlayerAuthErrorCode.IDENTIFIER_PROFANITY => "Username contains profanity",
 			_ => ex.Message
 		};
 	}
@@ -207,6 +208,8 @@ catch (Exception ex)
 <ScopeBadges scope='players' read write />
 
 You can change a player's email with the `Talo.PlayerAuth.ChangeEmail()` function - just pass in their current password and a new email.
+
+If the email is already in use, a `PlayerAuthException` with the error code `PlayerAuthErrorCode.EMAIL_TAKEN` will be thrown.
 
 ## Changing a player's identifier
 

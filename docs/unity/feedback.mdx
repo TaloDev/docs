@@ -82,3 +82,31 @@ public async void OnButtonClick()
 	await Talo.Feedback.Send(categoryInternalName, feedbackComment, ("seed", "432423432"), ("difficultyLevel", "EASY"));
 }
 ```
+
+### Handling rejected props
+
+Talo validates feedback props. If one or more props are invalid, the feedback will not be saved.
+
+You can listen for rejected props using the `Talo.Feedback.OnPropsRejected` event:
+
+```csharp
+private void OnEnable()
+{
+    Talo.Feedback.OnPropsRejected += OnPropsRejected;
+}
+
+private void OnDisable()
+{
+    Talo.Feedback.OnPropsRejected -= OnPropsRejected;
+}
+
+private void OnPropsRejected(RejectedProp[] rejectedProps)
+{
+    foreach (var prop in rejectedProps)
+    {
+        Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+    }
+}
+```
+
+See [Players and props - Prop rejection reasons](/docs/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.

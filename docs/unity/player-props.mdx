@@ -150,3 +150,68 @@ Use `Talo.CurrentPlayer.DeletePropArray()` to delete an entire prop array.
 ```csharp
 Talo.CurrentPlayer.DeletePropArray("inventoryItems");
 ```
+
+## Handling rejected props
+
+Player prop updates support partial success. If an update contains a mix of valid and invalid props, the valid props will be set and only the invalid ones will fail ([see rejection reasons](#prop-rejection-reasons)).
+
+You can listen for rejected props using the `Talo.Players.OnPropsRejected` event:
+
+```csharp
+private void OnEnable()
+{
+    Talo.Players.OnPropsRejected += OnPropsRejected;
+}
+
+private void OnDisable()
+{
+    Talo.Players.OnPropsRejected -= OnPropsRejected;
+}
+
+private void OnPropsRejected(RejectedProp[] rejectedProps)
+{
+    foreach (var prop in rejectedProps)
+    {
+        // prop.key: the key of the rejected prop
+        // prop.error: the rejection reason code (e.g. "PROP_VALUE_TOO_LONG")
+        // prop.message: a human-readable description of the rejection
+        Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+    }
+}
+```
+
+### Prop rejection reasons
+
+The `RejectedProp.GetReason()` method returns a `PropRejectionReason` enum value:
+
+| Reason                    | Description                              |
+| ------------------------- | ---------------------------------------- |
+| `PROP_KEY_TOO_LONG`       | The prop key exceeds 128 characters      |
+| `PROP_VALUE_TOO_LONG`     | The prop value exceeds 512 characters    |
+| `PROP_ARRAY_TOO_LONG`     | The prop array exceeds 1000 items        |
+| `PROP_CONTAINS_PROFANITY` | The prop key or value contains profanity |
+| `PROP_KEY_RESERVED`       | The prop key is reserved by Talo         |
+
+```csharp
+private void OnPropsRejected(RejectedProp[] rejectedProps)
+{
+    foreach (var rejectedProp in rejectedProps)
+    {
+        switch (rejectedProp.GetReason())
+        {
+            case PropRejectionReason.PROP_KEY_TOO_LONG:
+                Debug.LogWarning($"Key too long: {rejectedProp.key}");
+                break;
+            case PropRejectionReason.PROP_VALUE_TOO_LONG:
+                Debug.LogWarning($"Value too long for key: {rejectedProp.key}");
+                break;
+            case PropRejectionReason.PROP_CONTAINS_PROFANITY:
+                Debug.LogWarning($"Profanity detected in key: {rejectedProp.key}");
+                break;
+            default:
+                Debug.LogWarning($"Prop '{rejectedProp.key}' was rejected: {rejectedProp.message}");
+                break;
+        }
+    }
+}
+```

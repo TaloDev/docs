@@ -62,3 +62,21 @@ func _on_pressed() -> void:
 	}
 	await Talo.feedback.send(category_internal_name, comment, props)
 ```
+
+### Handling rejected props
+
+Talo validates feedback props. If one or more props are invalid, the feedback will not be saved.
+
+You can listen for rejected props by connecting to the `Talo.feedback.props_rejected` signal:
+
+```gdscript
+func _ready() -> void:
+	Talo.feedback.props_rejected.connect(_on_props_rejected)
+
+func _on_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void:
+	for prop in rejected_props:
+		# e.g. "Rejected prop 'seed': Prop value exceeds 512 characters (PROP_VALUE_TOO_LONG)"
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.error])
+```
+
+See [Players and props - Prop rejection reasons](/docs/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
