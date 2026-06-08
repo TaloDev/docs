@@ -94,6 +94,10 @@ private async void ReconnectSocket()
 
 You can choose to manually end the socket connection using `Talo.Socket.CloseConnection()`.
 
+## Request verification
+
+If your game has request verification enabled, socket messages are automatically signed for players. The server validates these signatures to prevent replay attacks and tampering.
+
 ## Error handling
 
 The Talo Socket exposes an `OnErrorReceived` event that invokes when a `v1.error` response is received. You can check the error code (using the `SocketErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:

@@ -70,3 +70,15 @@ If enabled, Talo will simulate the player not having an internet connection. Thi
 Controls the time (in seconds) between frequent requests such as updating player props, updating saves and health checks. The default value is 1 second.
 
 It is strongly recommended that you do not set this value below the default. A lower value can lead to slow responses or data being overwritten due to request conflicts. Increasing this value will reduce the frequency of requests and may help prevent data conflicts.
+
+### verificationEnabled
+
+Enable request verification to cryptographically sign requests and socket messages. This must also be enabled in the Talo dashboard. Learn more on the [Request verification page](/docs/unity/request-verification).
+
+### verificationKeyVersion
+
+The version of the verification key being used (e.g. `"1"`).
+
+### verificationKeyValue
+
+The value for the verification key.

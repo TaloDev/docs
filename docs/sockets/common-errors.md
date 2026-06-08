@@ -118,6 +118,21 @@ Most requests will require your access key to have specific scopes. You will rec
 
 A request listener can throw an error specific to its own internal logic. These are captured under the generic `LISTENER_ERROR` and the actual error will be highlighted in the "cause".
 
+## Invalid signature
+
+```javascript
+{
+  "res": "v1.error",
+  "data": {
+    "req": "v1.channels.message",
+    "message": "Invalid signature",
+    "errorCode": "INVALID_SIGNATURE"
+  }
+}
+```
+
+If your game has [request verification](/docs/sockets/request-verification) enabled, all socket messages sent after identifying a player must include a valid signature. If the signature is missing, malformed or fails Talo's validation, you will receive this error.
+
 ## Rate limit exceeded
 
 ```javascript

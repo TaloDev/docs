@@ -75,6 +75,10 @@ func reconnect_socket():
 
 You can choose to manually end the socket connection using `Talo.socket.close_connection(status_code, reason)`.
 
+## Request verification
+
+If your game has request verification enabled, socket messages are automatically signed for players. The server validates these signatures to prevent replay attacks and tampering.
+
 ## Error handling
 
 The Talo Socket exposes an `error_received` signal that is emitted when a `v1.error` response is received. You can check the error code (using the `TaloSocketError.ErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:
