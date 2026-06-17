@@ -325,3 +325,32 @@ public class IdentifyPlayer : MonoBehaviour
 ## Offline player cache
 
 If the `cachePlayerOnIdentify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try and use local data if it exists.
+
+## Display names
+
+Every player alias has a `displayName` that provides a human-readable name for the player. You can read it from `Talo.CurrentAlias.displayName` after a player has been identified. Display names are resolved from a [player's props](/docs/unity/player-props) - arbitrary properties persisted across all of a player's aliases.
+
+```csharp title="WelcomeLabel.cs"
+using TaloGameServices;
+
+public class WelcomeLabel : MonoBehaviour
+{
+  private void Start()
+  {
+    Talo.Players.OnIdentified += (player) =>
+    {
+      Debug.Log($"Welcome, {Talo.CurrentAlias.displayName}!");
+    };
+  }
+}
+```
+
+By default, a player's display name is their alias `identifier`. You can configure the **display name prop key** on the [game settings page](https://dashboard.trytalo.com/game-settings) in the Talo dashboard. When set, Talo resolves each alias's `displayName` to the value of the player's prop with that key.
+
+![The display name prop key setting in the dashboard](/img/display-name-prop-key-setting.png)
+
+For example, if your game's display name prop key is `playerChosenName` and a player has a prop `playerChosenName = "TheGuy"`, their alias `displayName` will be "TheGuy".
+
+If a player doesn't have a prop matching the configured key, their display name falls back to their alias `identifier`.
+
+The display name is resolved by Talo on each identification, so it stays up to date as the player's props change.
