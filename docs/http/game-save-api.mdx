@@ -29,18 +29,18 @@ Learn more about game saves [here](https://trytalo.com/saves?utm_source=docs&utm
 
 ```ts
 type SaveContent = {
-  objects: SavedObject[]
+	objects: SavedObject[]
 }
 
 type SavedObject = {
-  id: UUID
-  name: string // e.g. Unity GameObject hierarchy name
-  data: SavedObjectData[]
+	id: UUID
+	name: string // e.g. Unity GameObject hierarchy name
+	data: SavedObjectData[]
 }
 
 type SavedObjectData = {
-  key: string
-  value: string
-  type: string // class to cast value to on-load, e.g. System.Boolean in C#
+	key: string
+	value: string
+	type: string // class to cast value to on-load, e.g. System.Boolean in C#
 }
 ```

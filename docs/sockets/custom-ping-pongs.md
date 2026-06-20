@@ -36,28 +36,28 @@ const HEARTBEAT_INTERVAL = 25_000
 let heartbeatTimer: number
 
 socket.addEventListener('open', () => {
-  console.log('Connected to Talo')
+	console.log('Connected to Talo')
 
-  // start sending heartbeats
-  heartbeatTimer = setInterval(() => {
-    if (socket.readyState === WebSocket.OPEN) {
-      socket.send('v1.heartbeat')
-    }
-  }, HEARTBEAT_INTERVAL)
+	// start sending heartbeats
+	heartbeatTimer = setInterval(() => {
+		if (socket.readyState === WebSocket.OPEN) {
+			socket.send('v1.heartbeat')
+		}
+	}, HEARTBEAT_INTERVAL)
 })
 
 socket.addEventListener('close', () => {
-  clearInterval(heartbeatTimer)
+	clearInterval(heartbeatTimer)
 })
 
 socket.addEventListener('message', (event) => {
-  // ignore heartbeat responses
-  if (event.data === 'v1.heartbeat') {
-    return
-  }
+	// ignore heartbeat responses
+	if (event.data === 'v1.heartbeat') {
+		return
+	}
 
-  // handle your normal Talo messages here
-  const message = JSON.parse(event.data)
-  console.log(message.res, message.data)
+	// handle your normal Talo messages here
+	const message = JSON.parse(event.data)
+	console.log(message.res, message.data)
 })
 ```

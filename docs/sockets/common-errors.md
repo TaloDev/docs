@@ -14,13 +14,13 @@ Connections without a valid ticket will be closed immediately.
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "unknown",
-    "message": "Invalid message request",
-    "errorCode": "INVALID_MESSAGE",
-    "cause": "{\"req\":\"v1.does.not.exist\",\"data\":{}}"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "unknown",
+		"message": "Invalid message request",
+		"errorCode": "INVALID_MESSAGE",
+		"cause": "{\"req\":\"v1.does.not.exist\",\"data\":{}}"
+	}
 }
 ```
 
@@ -30,13 +30,13 @@ If you send a `req` that does not exist, you will receive this error. The `req` 
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "v1.channels.message",
-    "message": "Invalid message data",
-    "errorCode": "INVALID_MESSAGE_DATA",
-    "cause": "{\"myMessageToTheChannelIsGoingToBeThis\":\"general\"}"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "v1.channels.message",
+		"message": "Invalid message data",
+		"errorCode": "INVALID_MESSAGE_DATA",
+		"cause": "{\"myMessageToTheChannelIsGoingToBeThis\":\"general\"}"
+	}
 }
 ```
 
@@ -46,12 +46,12 @@ If the request is valid but the payload data is not, you will receive this messa
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "v1.channels.message",
-    "message": "You must identify a player before sending this request",
-    "errorCode": "NO_PLAYER_FOUND"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "v1.channels.message",
+		"message": "You must identify a player before sending this request",
+		"errorCode": "NO_PLAYER_FOUND"
+	}
 }
 ```
 
@@ -61,12 +61,12 @@ Most (but not all) requests require the player to be identified before being pro
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "v1.players.identify",
-    "message": "Invalid socket token",
-    "errorCode": "INVALID_SOCKET_TOKEN"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "v1.players.identify",
+		"message": "Invalid socket token",
+		"errorCode": "INVALID_SOCKET_TOKEN"
+	}
 }
 ```
 
@@ -76,12 +76,12 @@ When a player is identified using the HTTP API, they receive a `socketToken` to 
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "v1.players.identify",
-    "message": "Invalid session token",
-    "errorCode": "INVALID_SESSION_TOKEN"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "v1.players.identify",
+		"message": "Invalid session token",
+		"errorCode": "INVALID_SESSION_TOKEN"
+	}
 }
 ```
 
@@ -91,12 +91,12 @@ If you are using [Talo Player Authentication](https://trytalo.com/players#authen
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "v1.channels.message",
-    "message": "Missing access key scope(s): write:gameChannels",
-    "errorCode": "MISSING_ACCESS_KEY_SCOPES"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "v1.channels.message",
+		"message": "Missing access key scope(s): write:gameChannels",
+		"errorCode": "MISSING_ACCESS_KEY_SCOPES"
+	}
 }
 ```
 
@@ -106,13 +106,13 @@ Most requests will require your access key to have specific scopes. You will rec
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "v1.channels.message",
-    "message": "An error occurred while processing the message",
-    "errorCode": "LISTENER_ERROR",
-    "cause": "Player not in channel"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "v1.channels.message",
+		"message": "An error occurred while processing the message",
+		"errorCode": "LISTENER_ERROR",
+		"cause": "Player not in channel"
+	}
 }
 ```
 
@@ -122,12 +122,12 @@ A request listener can throw an error specific to its own internal logic. These 
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "v1.channels.message",
-    "message": "Invalid signature",
-    "errorCode": "INVALID_SIGNATURE"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "v1.channels.message",
+		"message": "Invalid signature",
+		"errorCode": "INVALID_SIGNATURE"
+	}
 }
 ```
 
@@ -137,12 +137,12 @@ If your game has [request verification](/docs/sockets/request-verification) enab
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "unknown",
-    "message": "Rate limit exceeded",
-    "errorCode": "RATE_LIMIT_EXCEEDED"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "unknown",
+		"message": "Rate limit exceeded",
+		"errorCode": "RATE_LIMIT_EXCEEDED"
+	}
 }
 ```
 

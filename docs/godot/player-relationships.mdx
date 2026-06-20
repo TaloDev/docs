@@ -56,11 +56,11 @@ If you know the player alias ID of the player that sent you a subscription reque
 
 ```gdscript
 func _ready():
-    # players receive this signal when they get a subscription request
-    Talo.player_relationships.relationship_request_received.connect(_on_relationship_request_received)
+	# players receive this signal when they get a subscription request
+	Talo.player_relationships.relationship_request_received.connect(_on_relationship_request_received)
 
 func _on_relationship_request_received(player_alias: TaloPlayerAlias):
-    await Talo.player_relationships.confirm_subscription_from(player_alias.id)
+	await Talo.player_relationships.confirm_subscription_from(player_alias.id)
 ```
 
 Alternatively, you can list all pending subscription requests using `Talo.player_relationships.get_subscribers()`.
@@ -74,7 +74,7 @@ var subscribers_page := await Talo.player_relationships.get_subscribers(options)
 
 # loop through all unconfirmed subscriptions and confirm them
 for subscriber in subscribers_page.subscriptions:
-    await Talo.player_relationships.confirm_subscription_by_id(subscriber.id)
+	await Talo.player_relationships.confirm_subscription_by_id(subscriber.id)
 ```
 
 ## Broadcasting messages
@@ -91,9 +91,9 @@ Talo.player_relationships.broadcast("Hello everyone!")
 
 # send structured data as JSON
 var event_data = {
-    "event": "level_up",
-    "level": 15,
-    "timestamp": Time.get_unix_time_from_system()
+	"event": "level_up",
+	"level": 15,
+	"timestamp": Time.get_unix_time_from_system()
 }
 Talo.player_relationships.broadcast(JSON.stringify(event_data))
 ```
@@ -146,7 +146,7 @@ Get all players that the current player is subscribed to using `get_subscription
 # get all subscriptions
 var page := await Talo.player_relationships.get_subscriptions()
 for subscription in page.subscriptions:
-    print("Subscribed to: %s" % subscription.subscribed_to.identifier)
+	print("Subscribed to: %s" % subscription.subscribed_to.identifier)
 ```
 
 You can filter the results using options:
@@ -181,7 +181,7 @@ Get all players subscribed to the current player using `get_subscribers()`:
 # get all subscribers
 var page := await Talo.player_relationships.get_subscribers()
 for subscription in page.subscriptions:
-    print("Subscriber: %s" % subscription.subscriber.identifier)
+	print("Subscriber: %s" % subscription.subscriber.identifier)
 ```
 
 This function accepts the same filter options as `get_subscriptions()`:
@@ -216,12 +216,12 @@ Emitted when another player sends the current player a relationship request.
 
 ```gdscript
 func _ready():
-    Talo.player_relationships.relationship_request_received.connect(_on_relationship_request_received)
+	Talo.player_relationships.relationship_request_received.connect(_on_relationship_request_received)
 
 func _on_relationship_request_received(player_alias: TaloPlayerAlias):
-    print("%s wants to connect with you" % player_alias.identifier)
-    # optionally auto-confirm
-    await Talo.player_relationships.confirm_subscription_from(player_alias.id)
+	print("%s wants to connect with you" % player_alias.identifier)
+	# optionally auto-confirm
+	await Talo.player_relationships.confirm_subscription_from(player_alias.id)
 ```
 
 ### relationship_request_cancelled
@@ -230,10 +230,10 @@ Emitted when an unconfirmed relationship request is deleted by either the reques
 
 ```gdscript
 func _ready():
-    Talo.player_relationships.relationship_request_cancelled.connect(_on_request_cancelled)
+	Talo.player_relationships.relationship_request_cancelled.connect(_on_request_cancelled)
 
 func _on_request_cancelled(player_alias: TaloPlayerAlias):
-    print("Request with %s was cancelled" % player_alias.identifier)
+	print("Request with %s was cancelled" % player_alias.identifier)
 ```
 
 ### relationship_confirmed
@@ -242,10 +242,10 @@ Emitted when another player confirms your relationship request to them.
 
 ```gdscript
 func _ready():
-    Talo.player_relationships.relationship_confirmed.connect(_on_relationship_confirmed)
+	Talo.player_relationships.relationship_confirmed.connect(_on_relationship_confirmed)
 
 func _on_relationship_confirmed(player_alias: TaloPlayerAlias):
-    print("Now connected with %s" % player_alias.identifier)
+	print("Now connected with %s" % player_alias.identifier)
 ```
 
 ### relationship_ended
@@ -254,10 +254,10 @@ Emitted when a confirmed relationship is deleted by either player.
 
 ```gdscript
 func _ready():
-    Talo.player_relationships.relationship_ended.connect(_on_relationship_ended)
+	Talo.player_relationships.relationship_ended.connect(_on_relationship_ended)
 
 func _on_relationship_ended(player_alias: TaloPlayerAlias):
-    print("No longer connected with %s" % player_alias.identifier)
+	print("No longer connected with %s" % player_alias.identifier)
 ```
 
 ### message_received
@@ -266,13 +266,13 @@ Emitted when a broadcast message is received from a connected player.
 
 ```gdscript
 func _ready():
-    Talo.player_relationships.message_received.connect(_on_message_received)
+	Talo.player_relationships.message_received.connect(_on_message_received)
 
 func _on_message_received(player_alias: TaloPlayerAlias, message: String):
-    print("%s sent: %s" % [player_alias.identifier, message])
+	print("%s sent: %s" % [player_alias.identifier, message])
 
-    # if the message is JSON, you can parse it
-    var json := JSON.new()
-    if json.parse(message) == OK:
-        print("Parsed data: %s" % json.data)
+	# if the message is JSON, you can parse it
+	var json := JSON.new()
+	if json.parse(message) == OK:
+		print("Parsed data: %s" % json.data)
 ```

@@ -85,7 +85,7 @@ To create a channel, call `Talo.Channels.Create()` with a channel name and (opti
 ```csharp
 var props = new (string, string)[]
 {
-	("propKey", "propValue")
+		("propKey", "propValue")
 };
 
 var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = channelName, autoCleanup = true, props = props });
@@ -164,9 +164,9 @@ You can provide a `GetMembersOptions` as the second parameter of `GetMembers()` 
 ```csharp
 var options = new GetMembersOptions()
 {
-    page = 2,
-    propKey = "guildId",
-    propValue = "5"
+		page = 2,
+		propKey = "guildId",
+		propValue = "5"
 };
 var membersPage = await Talo.Channels.GetMembers(channel.id, options);
 
@@ -195,15 +195,15 @@ Here's an example of how to use this event to update a chat UI:
 ```csharp
 private void Start()
 {
-    Talo.Channels.OnMessageReceived += OnMessageReceived;
+		Talo.Channels.OnMessageReceived += OnMessageReceived;
 }
 
 private void OnMessageReceived(Channel channel, PlayerAlias sender, string message)
 {
-	if (channel.id == _activeChannelId)
-	{
-		AddChatMessage($"[{channel.name}] {sender.identifier}: {message}");
-	}
+		if (channel.id == _activeChannelId)
+		{
+				AddChatMessage($"[{channel.name}] {sender.identifier}: {message}");
+		}
 }
 ```
 
@@ -232,20 +232,20 @@ You can listen for rejected props using the `Talo.Channels.OnChannelPropsRejecte
 ```csharp
 private void OnEnable()
 {
-    Talo.Channels.OnChannelPropsRejected += OnChannelPropsRejected;
+		Talo.Channels.OnChannelPropsRejected += OnChannelPropsRejected;
 }
 
 private void OnDisable()
 {
-    Talo.Channels.OnChannelPropsRejected -= OnChannelPropsRejected;
+		Talo.Channels.OnChannelPropsRejected -= OnChannelPropsRejected;
 }
 
 private void OnChannelPropsRejected(RejectedProp[] rejectedProps)
 {
-    foreach (var prop in rejectedProps)
-    {
-        Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
-    }
+		foreach (var prop in rejectedProps)
+		{
+				Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+		}
 }
 ```
 
@@ -267,9 +267,9 @@ Any player can update the global store using `Talo.Channels.SetStorageProps()`:
 
 ```csharp
 await Talo.Channels.SetStorageProps(
-	channel.id,
-	("prop1", "value1"),
-	("prop2", "value2")
+		channel.id,
+		("prop1", "value1"),
+		("prop2", "value2")
 );
 ```
 
@@ -282,13 +282,13 @@ Sometimes, setting storage props can fail. This usually happens when you set a p
 ```csharp
 void Start()
 {
-	Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, ChannelStoragePropError[] errors) => {
-		foreach (var prop in errors)
-		{
-			// shared-gold: Prop value length (596) exceeds 512 characters (PROP_VALUE_TOO_LONG)
-			Debug.Log($"{prop.key}: {prop.message} ({prop.error})");
-		}
-	};
+		Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, ChannelStoragePropError[] errors) => {
+				foreach (var prop in errors)
+				{
+						// shared-gold: Prop value length (596) exceeds 512 characters (PROP_VALUE_TOO_LONG)
+						Debug.Log($"{prop.key}: {prop.message} ({prop.error})");
+				}
+		};
 }
 ```
 
@@ -370,7 +370,7 @@ var freshArrayItems = await Talo.Channels.GetStoragePropArray(channel.id, propKe
 
 foreach (var prop in arrayItems)
 {
-    Debug.Log(prop.value);
+		Debug.Log(prop.value);
 }
 ```
 
@@ -382,8 +382,8 @@ If you need to fetch multiple storage props, `Talo.Channels.ListStorageProps()` 
 
 ```csharp
 await Talo.Channels.SetStorageProps(channel.id,
-	("storage_prop_1", "true"),
-	("storage_prop_2", "hello world")
+		("storage_prop_1", "true"),
+		("storage_prop_2", "hello world")
 );
 
 var propKeys = new string[] { "storage_prop_1", "storage_prop_2" };
@@ -392,18 +392,32 @@ var propKeys = new string[] { "storage_prop_1", "storage_prop_2" };
 var results = await Talo.Channels.ListStorageProps(channel.id, propKeys);
 foreach (var prop in results)
 {
-	Debug.Log($"Prop: {prop.key} = {prop.value}");
+		Debug.Log($"Prop: {prop.key} = {prop.value}");
 }
 
 // with cache busting
 var bustedResults = await Talo.Channels.ListStorageProps(channel.id, propKeys, true);
 foreach (var prop in bustedResults)
 {
-	Debug.Log($"Prop: {prop.key} = {prop.value}");
+		Debug.Log($"Prop: {prop.key} = {prop.value}");
 }
 ```
 
 This function will return a `ChannelStorageProp` array, allowing you to iterate through the results. Note: if a prop cannot be found, it will not appear in the list.
+
+#### Prop arrays
+
+If any of the keys you pass are [prop arrays](/docs/unity/channels#getting-storage-prop-arrays), append `[]` to the key to fetch every item stored under it. Scalar and array keys can be mixed in a single call:
+
+```csharp
+// storage_prop_1 is a scalar, world_items[] is a prop array
+var mixedKeys = new string[] { "storage_prop_1", "world_items[]" };
+var results = await Talo.Channels.ListStorageProps(channel.id, mixedKeys);
+foreach (var prop in results)
+{
+		Debug.Log($"{prop.key} = {prop.value}");
+}
+```
 
 ### Listening for storage updates
 
@@ -414,21 +428,21 @@ The `Talo.Channels.OnChannelStoragePropsUpdated` event will invoke when a storag
 ```csharp
 void Start()
 {
-	Talo.Channels.OnChannelStoragePropsUpdated += OnChannelStoragePropsUpdated;
+		Talo.Channels.OnChannelStoragePropsUpdated += OnChannelStoragePropsUpdated;
 }
 
 void OnChannelStoragePropsUpdated(Channel channel, ChannelStorageProp[] upsertedProps, ChannelStorageProp[] deletedProps)
 {
-	foreach (var prop in upsertedProps)
-	{
-		// e.g. "shared-gold: 80 upserted by jim"
-		Debug.Log($"{prop.key}:{prop.value} upserted by {prop.lastUpdatedBy.identifier}");
-	}
+		foreach (var prop in upsertedProps)
+		{
+				// e.g. "shared-gold: 80 upserted by jim"
+				Debug.Log($"{prop.key}:{prop.value} upserted by {prop.lastUpdatedBy.identifier}");
+		}
 
-	foreach (var prop in deletedProps)
-	{
-		// e.g. "shared-gold deleted by jim, previous value was 80"
-		Debug.Log($"{prop.key} deleted by {prop.lastUpdatedBy.identifier}, previous value was {prop.value}");
-	}
+		foreach (var prop in deletedProps)
+		{
+				// e.g. "shared-gold deleted by jim, previous value was 80"
+				Debug.Log($"{prop.key} deleted by {prop.lastUpdatedBy.identifier}, previous value was {prop.value}");
+		}
 }
 ```

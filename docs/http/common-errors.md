@@ -29,7 +29,7 @@ The error object returned may be a single message (e.g. `{ message: Something we
 
 ```
 errors: {
-  events: ['events is missing from the request body']
+	events: ['events is missing from the request body']
 }
 ```
 

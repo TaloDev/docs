@@ -12,8 +12,8 @@ If the player is successfully identified, this response will be sent.
 
 ```typescript
 {
-  "res": "v1.players.identify.success",
-  "data": PlayerAlias
+	"res": "v1.players.identify.success",
+	"data": PlayerAlias
 }
 ```
 
@@ -27,12 +27,12 @@ This response is sent when a player's presence is updated.
 
 ```typescript
 {
-  "res": "v1.players.presence.updated",
-  "data": {
-    "presence": PlayerPresence
-    "onlineChanged": boolean
-    "customStatusChanged": boolean
-  }
+	"res": "v1.players.presence.updated",
+	"data": {
+		"presence": PlayerPresence
+		"onlineChanged": boolean
+		"customStatusChanged": boolean
+	}
 }
 ```
 
@@ -48,12 +48,12 @@ If a player is subscribed to a channel where a message has been sent, they will 
 
 ```typescript
 {
-  "res": "v1.channels.message",
-  "data": {
-    "channel": GameChannel
-    "message": string
-    "playerAlias": PlayerAlias
-  }
+	"res": "v1.channels.message",
+	"data": {
+		"channel": GameChannel
+		"message": string
+		"playerAlias": PlayerAlias
+	}
 }
 ```
 
@@ -67,11 +67,11 @@ When a player joins a channel, all channel members will be notified.
 
 ```typescript
 {
-  "res": "v1.channels.player-joined",
-  "data": {
-    "channel": GameChannel
-    "playerAlias": PlayerAlias
-  }
+	"res": "v1.channels.player-joined",
+	"data": {
+		"channel": GameChannel
+		"playerAlias": PlayerAlias
+	}
 }
 ```
 
@@ -85,19 +85,19 @@ When a player leaves a channel, all channel members will be notified.
 
 ```typescript
 enum GameChannelLeavingReason {
-  DEFAULT,
-  TEMPORARY_MEMBERSHIP
+	DEFAULT,
+	TEMPORARY_MEMBERSHIP
 }
 
 {
-  "res": "v1.channels.player-left",
-  "data": {
-    "channel": GameChannel
-    "playerAlias": PlayerAlias,
-    "meta": {
-      "reason": GameChannelLeavingReason
-    }
-  }
+	"res": "v1.channels.player-left",
+	"data": {
+		"channel": GameChannel
+		"playerAlias": PlayerAlias,
+		"meta": {
+			"reason": GameChannelLeavingReason
+		}
+	}
 }
 ```
 
@@ -111,11 +111,11 @@ This response is sent to channel members when the owner is updated.
 
 ```typescript
 {
-  "res": "v1.channels.ownership-transferred",
-  "data": {
-    "channel": GameChannel
-    "newOwner": PlayerAlias
-  }
+	"res": "v1.channels.ownership-transferred",
+	"data": {
+		"channel": GameChannel
+		"newOwner": PlayerAlias
+	}
 }
 ```
 
@@ -129,10 +129,10 @@ When channels are deleted, all members will be notified.
 
 ```typescript
 {
-  "res": "v1.channels.deleted",
-  "data": {
-    "channel": GameChannel
-  }
+	"res": "v1.channels.deleted",
+	"data": {
+		"channel": GameChannel
+	}
 }
 ```
 
@@ -146,11 +146,11 @@ This response is sent to channel members when any of the channel's properties (i
 
 ```typescript
 {
-  "res": "v1.channels.updated",
-  "data": {
-    "channel": GameChannel
-    "changedProperties": string[]
-  }
+	"res": "v1.channels.updated",
+	"data": {
+		"channel": GameChannel
+		"changedProperties": string[]
+	}
 }
 ```
 
@@ -164,12 +164,12 @@ Channel members will receive this when storage props are created, updated or del
 
 ```typescript
 {
-  "res": "v1.channels.storage.updated",
-  "data": {
-    "channel": GameChannel
-    "upsertedProps": GameChannelStorageProp[]
-    "deletedProps": GameChannelStorageProp[]
-  }
+	"res": "v1.channels.storage.updated",
+	"data": {
+		"channel": GameChannel
+		"upsertedProps": GameChannelStorageProp[]
+		"deletedProps": GameChannelStorageProp[]
+	}
 }
 ```
 
@@ -185,10 +185,10 @@ This response is sent to all players when the live config is updated from the Ta
 
 ```typescript
 {
-  "res": "v1.live-config.updated",
-  "data": {
-    "config": Prop[]
-  }
+	"res": "v1.live-config.updated",
+	"data": {
+		"config": Prop[]
+	}
 }
 ```
 
@@ -202,8 +202,8 @@ This response is sent to all players when the live config is updated from the Ta
 
 ```ts
 type Prop = {
-  key: string
-  value: string
+	key: string
+	value: string
 }
 ```
 
@@ -211,20 +211,20 @@ type Prop = {
 
 ```ts
 type Player = {
-  id: number
-  props: Prop[]
-  devBuild: boolean
-  lastSeenAt: Date
-  createdAt: Date
-  groups: {
-    id: number
-    name: string
-  }[]
-  auth?: {
-    email: string
-    verificationEnabled: boolean
-    sessionCreatedAt: Date
-  }
+	id: number
+	props: Prop[]
+	devBuild: boolean
+	lastSeenAt: Date
+	createdAt: Date
+	groups: {
+		id: number
+		name: string
+	}[]
+	auth?: {
+		email: string
+		verificationEnabled: boolean
+		sessionCreatedAt: Date
+	}
 }
 ```
 
@@ -232,13 +232,13 @@ type Player = {
 
 ```ts
 type PlayerAlias = {
-  id: number
-  service: string
-  identifier: string
-  player: Player
-  lastSeenAt: Date
-  createdAt: Date
-  updatedAt: Date
+	id: number
+	service: string
+	identifier: string
+	player: Player
+	lastSeenAt: Date
+	createdAt: Date
+	updatedAt: Date
 }
 ```
 
@@ -246,10 +246,10 @@ type PlayerAlias = {
 
 ```ts
 type PlayerPresence = {
-  online: boolean
-  customStatus: string
-  playerAlias: PlayerAlias
-  updatedAt: Date
+	online: boolean
+	customStatus: string
+	playerAlias: PlayerAlias
+	updatedAt: Date
 }
 ```
 
@@ -257,24 +257,24 @@ type PlayerPresence = {
 
 ```ts
 type GameChannel = {
-  id: number
-  name: string
-  owner: PlayerAlias
-  totalMessages: number
-  memberCount: number
-  props: Prop[]
-  createdAt: Date
-  updatedAt: Date
+	id: number
+	name: string
+	owner: PlayerAlias
+	totalMessages: number
+	memberCount: number
+	props: Prop[]
+	createdAt: Date
+	updatedAt: Date
 }
 ```
 
 ```ts
 type GameChannelStorageProp = {
-  key: string
-  value: string
-  createdBy: PlayerAlias
-  lastUpdatedBy: PlayerAlias
-  createdAt: Date
-  updatedAt: Date
+	key: string
+	value: string
+	createdBy: PlayerAlias
+	lastUpdatedBy: PlayerAlias
+	createdAt: Date
+	updatedAt: Date
 }
 ```

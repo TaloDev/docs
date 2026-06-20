@@ -413,6 +413,17 @@ for prop in busted_results:
 
 This function will return a `TaloChannelStorageProp` array, allowing you to iterate through the results. Note: if a prop cannot be found, it will not appear in the list.
 
+#### Prop arrays
+
+If any of the keys you pass are [prop arrays](/docs/godot/channels#getting-storage-prop-arrays), append `[]` to the key to fetch every item stored under it. Scalar and array keys can be mixed in a single call:
+
+```gdscript
+# storage_prop_1 is a scalar, world_items[] is a prop array
+var results := await Talo.channels.list_storage_props(channel.id, ["storage_prop_1", "world_items[]"])
+for prop in results:
+	print("Prop: %s = %s" % [prop.key, prop.value])
+```
+
 ### Listening for storage updates
 
 <ScopeBadges scope='gameChannels' read />

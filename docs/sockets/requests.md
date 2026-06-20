@@ -12,12 +12,12 @@ Most (but not all) requests require the player to be identified before being pro
 
 ```typescript
 {
-  "req": "v1.players.identify",
-  "data": {
-    "playerAliasId": number
-    "socketToken": string
-    "sessionToken": string | undefined
-  }
+	"req": "v1.players.identify",
+	"data": {
+		"playerAliasId": number
+		"socketToken": string
+		"sessionToken": string | undefined
+	}
 }
 ```
 
@@ -33,13 +33,13 @@ Players must be subscribed to the channel they are trying to send a message to a
 
 ```typescript
 {
-  "req": "v1.channels.message",
-  "data": {
-    "channel": {
-      "id": number
-    }
-    "message": string
-  }
+	"req": "v1.channels.message",
+	"data": {
+		"channel": {
+			"id": number
+		}
+		"message": string
+	}
 }
 ```
 

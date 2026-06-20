@@ -90,20 +90,20 @@ You can listen for rejected props using the `Talo.Leaderboards.OnPropsRejected` 
 ```csharp
 private void OnEnable()
 {
-    Talo.Leaderboards.OnPropsRejected += OnPropsRejected;
+	Talo.Leaderboards.OnPropsRejected += OnPropsRejected;
 }
 
 private void OnDisable()
 {
-    Talo.Leaderboards.OnPropsRejected -= OnPropsRejected;
+	Talo.Leaderboards.OnPropsRejected -= OnPropsRejected;
 }
 
 private void OnPropsRejected(RejectedProp[] rejectedProps)
 {
-    foreach (var prop in rejectedProps)
-    {
-        Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
-    }
+	foreach (var prop in rejectedProps)
+	{
+		Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+	}
 }
 ```
 

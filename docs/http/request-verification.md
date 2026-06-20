@@ -67,23 +67,23 @@ This TypeScript utility function shows how to generate a valid signature:
 import crypto from 'node:crypto'
 
 function buildSignature(body: string, key: string, version: string) {
-  // Unique request identifier
-  const rid = crypto.randomUUID()
+	// Unique request identifier
+	const rid = crypto.randomUUID()
 
-  // Current timestamp in milliseconds
-  const timestamp = Date.now()
+	// Current timestamp in milliseconds
+	const timestamp = Date.now()
 
-  // SHA-256 hex digest of the raw request body
-  const payload = crypto.createHash('sha256').update(body).digest('hex')
+	// SHA-256 hex digest of the raw request body
+	const payload = crypto.createHash('sha256').update(body).digest('hex')
 
-  const header = { rid, payload, timestamp }
-  const headerB64 = Buffer.from(JSON.stringify(header)).toString('base64')
+	const header = { rid, payload, timestamp }
+	const headerB64 = Buffer.from(JSON.stringify(header)).toString('base64')
 
-  // HMAC-SHA256 of the base64 header using the verification key value
-  const hmac = crypto.createHmac('sha256', key).update(headerB64).digest()
-  const signatureB64 = Buffer.from(hmac).toString('base64')
+	// HMAC-SHA256 of the base64 header using the verification key value
+	const hmac = crypto.createHmac('sha256', key).update(headerB64).digest()
+	const signatureB64 = Buffer.from(hmac).toString('base64')
 
-  return `${version}|${headerB64}.${signatureB64}`
+	return `${version}|${headerB64}.${signatureB64}`
 }
 ```
 

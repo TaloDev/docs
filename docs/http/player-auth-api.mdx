@@ -45,15 +45,15 @@ When authentication fails (i.e. wrong identifier or password), this error is ret
 
 ```javascript
 {
-  message: 'Incorrect identifier or password',
-  errorCode: 'INVALID_CREDENTIALS'
+	message: 'Incorrect identifier or password',
+	errorCode: 'INVALID_CREDENTIALS'
 }
 ```
 
 ```javascript
 {
-  message: 'Current password is incorrect',
-  errorCode: 'INVALID_CREDENTIALS'
+	message: 'Current password is incorrect',
+	errorCode: 'INVALID_CREDENTIALS'
 }
 ```
 
@@ -63,8 +63,8 @@ When trying to verify a player login, this error is thrown if the `aliasId` is n
 
 ```javascript
 {
-  message: 'Player alias not found',
-  errorCode: 'VERIFICATION_ALIAS_NOT_FOUND'
+	message: 'Player alias not found',
+	errorCode: 'VERIFICATION_ALIAS_NOT_FOUND'
 }
 ```
 
@@ -74,8 +74,8 @@ When trying to verify a player login, this error is thrown if the `code` is not 
 
 ```javascript
 {
-  message: 'Invalid code',
-  errorCode: 'VERIFICATION_CODE_INVALID'
+	message: 'Invalid code',
+	errorCode: 'VERIFICATION_CODE_INVALID'
 }
 ```
 
@@ -85,8 +85,8 @@ When trying to create a new player or update an existing player's identifier, th
 
 ```javascript
 {
-  message: 'Player with identifier boz already exists',
-  errorCode: 'IDENTIFIER_TAKEN'
+	message: 'Player with identifier boz already exists',
+	errorCode: 'IDENTIFIER_TAKEN'
 }
 ```
 
@@ -96,8 +96,8 @@ Players that use Talo Authentication must provide a session token in the request
 
 ```javascript
 {
-  message: 'The x-talo-session header is required for this player',
-  errorCode: 'MISSING_SESSION'
+	message: 'The x-talo-session header is required for this player',
+	errorCode: 'MISSING_SESSION'
 }
 ```
 
@@ -107,8 +107,8 @@ Players that use Talo Authentication must provide a session token in the request
 
 ```javascript
 {
-  message: 'The x-talo-session header is invalid',
-  errorCode: 'INVALID_SESSION'
+	message: 'The x-talo-session header is invalid',
+	errorCode: 'INVALID_SESSION'
 }
 ```
 
@@ -118,8 +118,8 @@ When trying to change a player's password, this error is thrown if the new passw
 
 ```javascript
 {
-  message: 'Please choose a different password',
-  errorCode: 'NEW_PASSWORD_MATCHES_CURRENT_PASSWORD'
+	message: 'Please choose a different password',
+	errorCode: 'NEW_PASSWORD_MATCHES_CURRENT_PASSWORD'
 }
 ```
 
@@ -129,8 +129,8 @@ When trying to change a player's email address, this error is thrown if the new 
 
 ```javascript
 {
-  message: 'Please choose a different email address',
-  errorCode: 'NEW_EMAIL_MATCHES_CURRENT_EMAIL'
+	message: 'Please choose a different email address',
+	errorCode: 'NEW_EMAIL_MATCHES_CURRENT_EMAIL'
 }
 ```
 
@@ -140,8 +140,8 @@ When trying to change a player's identifier, this error is thrown if the new ide
 
 ```javascript
 {
-  message: 'Please choose a different identifier',
-  errorCode: 'NEW_IDENTIFIER_MATCHES_CURRENT_IDENTIFIER'
+	message: 'Please choose a different identifier',
+	errorCode: 'NEW_IDENTIFIER_MATCHES_CURRENT_IDENTIFIER'
 }
 ```
 
@@ -151,8 +151,8 @@ When trying to reset a player password, this error is thrown if the reset code i
 
 ```javascript
 {
-  message: 'This code is either invalid or has expired',
-  errorCode: 'PASSWORD_RESET_CODE_INVALID'
+	message: 'This code is either invalid or has expired',
+	errorCode: 'PASSWORD_RESET_CODE_INVALID'
 }
 ```
 
@@ -162,8 +162,8 @@ When attempting to toggle verification on, this error is thrown if the player do
 
 ```javascript
 {
-  message: 'An email address is required to enable verification',
-  errorCode: 'VERIFICATION_EMAIL_REQUIRED'
+	message: 'An email address is required to enable verification',
+	errorCode: 'VERIFICATION_EMAIL_REQUIRED'
 }
 ```
 
@@ -173,8 +173,8 @@ When registering an auth account with email verification, enabling email verific
 
 ```javascript
 {
-  message: 'This email address is already in use',
-  errorCode: 'EMAIL_TAKEN'
+	message: 'This email address is already in use',
+	errorCode: 'EMAIL_TAKEN'
 }
 ```
 
@@ -184,8 +184,8 @@ When starting a player auth account migration, this error is thrown if an invali
 
 ```javascript
 {
-  message: 'Cannot migrate to the Talo service',
-  errorCode: 'INVALID_MIGRATION_TARGET'
+	message: 'Cannot migrate to the Talo service',
+	errorCode: 'INVALID_MIGRATION_TARGET'
 }
 ```
 
@@ -195,7 +195,7 @@ When registering an auth account, this error is thrown if the identifier contain
 
 ```javascript
 {
-  message: 'Alias identifier contains inappropriate language',
-  errorCode: 'IDENTIFIER_PROFANITY'
+	message: 'Alias identifier contains inappropriate language',
+	errorCode: 'IDENTIFIER_PROFANITY'
 }
 ```

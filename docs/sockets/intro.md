@@ -17,11 +17,11 @@ Using the identification example, here is the JSON expected by the Talo Socket w
 
 ```javascript
 {
-  "req": "v1.players.identified",
-  "data": {
-    "playerAliasId": 105,
-    "socketToken": "9aae3c26-98d0-4a13-9dd7-b187aa36f6cd"
-  }
+	"req": "v1.players.identified",
+	"data": {
+		"playerAliasId": 105,
+		"socketToken": "9aae3c26-98d0-4a13-9dd7-b187aa36f6cd"
+	}
 }
 ```
 
@@ -31,23 +31,23 @@ Responses use a similar message structure, except that `req` is replaced by `res
 
 ```javascript
 {
-  "res": "v1.players.identified.success",
-  "data": {
-    "id": 105,
-    "service": "username",
-    "identifier": "billy",
-    "player": {
-      "id": "85d67584-1346-4fad-a17f-fd7bd6c85364",
-      "props": [],
-      "devBuild": false,
-      "createdAt": "2024-10-25T18:18:28.000Z",
-      "lastSeenAt": "2024-12-04T07:15:13.000Z",
-      "groups": []
-    },
-    "lastSeenAt": "2024-12-04T07:15:13.000Z",
-    "createdAt": "2024-10-25T18:18:28.000Z",
-    "updatedAt": "2024-12-04T07:15:13.000Z"
-  }
+	"res": "v1.players.identified.success",
+	"data": {
+		"id": 105,
+		"service": "username",
+		"identifier": "billy",
+		"player": {
+			"id": "85d67584-1346-4fad-a17f-fd7bd6c85364",
+			"props": [],
+			"devBuild": false,
+			"createdAt": "2024-10-25T18:18:28.000Z",
+			"lastSeenAt": "2024-12-04T07:15:13.000Z",
+			"groups": []
+		},
+		"lastSeenAt": "2024-12-04T07:15:13.000Z",
+		"createdAt": "2024-10-25T18:18:28.000Z",
+		"updatedAt": "2024-12-04T07:15:13.000Z"
+	}
 }
 ```
 
@@ -82,12 +82,12 @@ Due to the nature of sockets, error responses are completely asynchronous. Error
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "v1.players.identify",
-    "message": "Invalid socket token",
-    "errorCode": "INVALID_SOCKET_TOKEN"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "v1.players.identify",
+		"message": "Invalid socket token",
+		"errorCode": "INVALID_SOCKET_TOKEN"
+	}
 }
 ```
 
@@ -95,13 +95,13 @@ Some errors may also return a "cause" key which drills down into why a request f
 
 ```javascript
 {
-  "res": "v1.error",
-  "data": {
-    "req": "v1.channels.message",
-    "message": "An error occurred while processing the message",
-    "errorCode": "LISTENER_ERROR",
-    "cause": "Player not in channel"
-  }
+	"res": "v1.error",
+	"data": {
+		"req": "v1.channels.message",
+		"message": "An error occurred while processing the message",
+		"errorCode": "LISTENER_ERROR",
+		"cause": "Player not in channel"
+	}
 }
 ```
 

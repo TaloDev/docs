@@ -24,27 +24,27 @@ You can use `Talo.Players.Search()` to query players. This function accepts a si
 ```csharp
 private async void SearchPlayers()
 {
-    try
-    {
-        var searchPage = await Talo.Players.Search("bob");
-        if (searchPage.count == 0)
-        {
-            Debug.Log("No players found");
-            return;
-        }
+	try
+	{
+		var searchPage = await Talo.Players.Search("bob");
+		if (searchPage.count == 0)
+		{
+			Debug.Log("No players found");
+			return;
+		}
 
-        var identifiers = new List<string>();
-        foreach (var player in searchPage.players)
-        {
-            identifiers.Add(player.GetAlias().identifier);
-        }
+		var identifiers = new List<string>();
+		foreach (var player in searchPage.players)
+		{
+			identifiers.Add(player.GetAlias().identifier);
+		}
 
-        Debug.Log($"Found {searchPage.count} results: {string.Join(", ", identifiers)}");
-    }
-    catch (Exception ex)
-    {
-        Debug.LogError($"Search failed: {ex.Message}");
-    }
+		Debug.Log($"Found {searchPage.count} results: {string.Join(", ", identifiers)}");
+	}
+	catch (Exception ex)
+	{
+		Debug.LogError($"Search failed: {ex.Message}");
+	}
 }
 ```
 
@@ -160,23 +160,23 @@ You can listen for rejected props using the `Talo.Players.OnPropsRejected` event
 ```csharp
 private void OnEnable()
 {
-    Talo.Players.OnPropsRejected += OnPropsRejected;
+	Talo.Players.OnPropsRejected += OnPropsRejected;
 }
 
 private void OnDisable()
 {
-    Talo.Players.OnPropsRejected -= OnPropsRejected;
+	Talo.Players.OnPropsRejected -= OnPropsRejected;
 }
 
 private void OnPropsRejected(RejectedProp[] rejectedProps)
 {
-    foreach (var prop in rejectedProps)
-    {
-        // prop.key: the key of the rejected prop
-        // prop.error: the rejection reason code (e.g. "PROP_VALUE_TOO_LONG")
-        // prop.message: a human-readable description of the rejection
-        Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
-    }
+	foreach (var prop in rejectedProps)
+	{
+		// prop.key: the key of the rejected prop
+		// prop.error: the rejection reason code (e.g. "PROP_VALUE_TOO_LONG")
+		// prop.message: a human-readable description of the rejection
+		Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+	}
 }
 ```
 
@@ -195,23 +195,23 @@ The `RejectedProp.GetReason()` method returns a `PropRejectionReason` enum value
 ```csharp
 private void OnPropsRejected(RejectedProp[] rejectedProps)
 {
-    foreach (var rejectedProp in rejectedProps)
-    {
-        switch (rejectedProp.GetReason())
-        {
-            case PropRejectionReason.PROP_KEY_TOO_LONG:
-                Debug.LogWarning($"Key too long: {rejectedProp.key}");
-                break;
-            case PropRejectionReason.PROP_VALUE_TOO_LONG:
-                Debug.LogWarning($"Value too long for key: {rejectedProp.key}");
-                break;
-            case PropRejectionReason.PROP_CONTAINS_PROFANITY:
-                Debug.LogWarning($"Profanity detected in key: {rejectedProp.key}");
-                break;
-            default:
-                Debug.LogWarning($"Prop '{rejectedProp.key}' was rejected: {rejectedProp.message}");
-                break;
-        }
-    }
+	foreach (var rejectedProp in rejectedProps)
+	{
+		switch (rejectedProp.GetReason())
+		{
+			case PropRejectionReason.PROP_KEY_TOO_LONG:
+				Debug.LogWarning($"Key too long: {rejectedProp.key}");
+				break;
+			case PropRejectionReason.PROP_VALUE_TOO_LONG:
+				Debug.LogWarning($"Value too long for key: {rejectedProp.key}");
+				break;
+			case PropRejectionReason.PROP_CONTAINS_PROFANITY:
+				Debug.LogWarning($"Profanity detected in key: {rejectedProp.key}");
+				break;
+			default:
+				Debug.LogWarning($"Prop '{rejectedProp.key}' was rejected: {rejectedProp.message}");
+				break;
+		}
+	}
 }
 ```
