@@ -164,7 +164,7 @@ Finally, when all your registered loadables have called their `OnLoaded()`, an `
 
 To create a save, use `Talo.Saves.CreateSave()`. Your new save will automatically become your chosen save (although the `OnSaveChosen` event will not invoke). Internally, this causes the `RegisterFields()` function in your Loadables to be called.
 
-Offline copies of saves are created in the [`Application.persistentDataPath`](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) within a `saves.json`.
+Offline copies of saves are created in the [`Application.persistentDataPath`](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html) within an encrypted file (to prevent tampering).
 
 ## Updating saves
 

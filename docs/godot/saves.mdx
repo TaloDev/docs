@@ -152,7 +152,7 @@ You can find more details including code samples in our [Godot saves deep dive](
 
 To create a save, use `Talo.saves.create_save()`. Your new save will automatically become your chosen save (although the `save_chosen` signal will not emit).
 
-Offline copies of saves are created in the [user data](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) within a `saves.json`.
+Offline copies of saves are created in the [user data](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) within an encrypted file (to prevent tampering).
 
 This will register all the fields for loadables in the scene to create the save file.
 
