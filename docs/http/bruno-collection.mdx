@@ -1,0 +1,64 @@
+---
+sidebar_position: 99
+description: Interactive API explorer for the Talo API
+---
+
+# Bruno request collection
+
+[Bruno](https://www.usebruno.com) is an open-source API client (a Postman alternative) for exploring and testing REST APIs. A pre-built Talo collection is available so you can try every endpoint.
+
+## Interactive explorer
+
+<a href='/bruno-collection.html' target='_blank' rel='noopener noreferrer'>
+  Open the Talo API explorer in a new tab
+</a>
+
+## Install Bruno
+
+Bruno is a desktop app available for macOS, Windows and Linux:
+
+- Download from [usebruno.com/downloads](https://www.usebruno.com/downloads)
+- Or install via Homebrew: `brew install bruno`
+
+## Import the Talo collection
+
+The collection is hosted in [this repository](https://github.com/TaloDev/bruno-collection).
+
+To import it:
+
+1. Open Bruno and click **Import Collection**.
+2. Paste the repository URL: `https://github.com/TaloDev/bruno-collection.git`
+3. Choose a location to save the collection locally.
+4. Click **Clone**.
+
+## Configure the environment
+
+The collection ships with a `Prod` environment that has two variables:
+
+| Variable  | Description                                                                                           |
+| --------- | ----------------------------------------------------------------------------------------------------- |
+| `baseUrl` | The API root. Defaults to `https://api.trytalo.com` - change this to point at a self-hosted instance. |
+| `apiKey`  | An access key from the [Talo dashboard](https://dashboard.trytalo.com/api-keys).                      |
+
+:::warning
+Requests will return `401 Unauthorized` until you set `apiKey`.
+:::
+
+To edit the environment in Bruno: click the environment name (`Prod`) in the top-right, then click **Configure**.
+
+## Acting on behalf of a player
+
+Most player-scoped endpoints expect two headers in addition to the API key:
+
+1. `x-talo-player` - the player's ID
+2. `x-talo-alias` - the ID of one of the player's identified alias
+
+To get these, run the [Identify](/docs/http/player-api) endpoint first (found in the **Players** folder of the collection). This will automatically set the variables for both of those headers.
+
+### Talo player authentication
+
+If your game uses [Talo's player authentication](/docs/http/player-auth-api), you'll also need the `x-talo-session` header.
+
+Run the **register** and **login** requests (from the **Player auth** folder). This will set the `x-talo-session` variable and refresh token variable (for refreshing the short-lived session token).
+
+See [Player authentication](/docs/http/authentication#player-authentication) for the full flow.
