@@ -26,3 +26,13 @@ When calling API endpoints on behalf of a player that is using [player authentic
 :::tip
 The Godot plugin and Unity package will automatically populate these headers for you. If you're receiving session-related errors, visit the [Common errors](/docs/http/common-errors#missing-or-invalid-session) page for more information.
 :::
+
+## Session token lifetimes
+
+By default, session tokens returned by [register, login, verify, and refresh](/docs/http/player-auth-api) are long-lived and do not need to be renewed. Your game can store the token on the device and reuse it for as long as the player keeps playing.
+
+If you prefer shorter-lived sessions, you can opt in to the refresh token flow using the `withRefresh` parameter. When enabled:
+
+- The session token expires after **15 minutes**.
+- A **30-day refresh token** is returned alongside it.
+- Call the [refresh session](/docs/http/player-auth-api) endpoint with the refresh token to receive a new session and refresh token.

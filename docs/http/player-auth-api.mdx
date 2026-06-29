@@ -30,6 +30,10 @@ Once you have registered a player, you can identify them using the [identify](/d
 
 To create a new session token, you will need to go through the login flow again for the player.
 
+:::info Session token lifetimes
+By default session tokens are long-lived. You can opt in to short-lived (15-minute) session tokens paired with a 30-day refresh token using the `withRefresh` parameter. See [Session token lifetimes](/docs/http/authentication#session-token-lifetimes) for the full details.
+:::
+
 ## Endpoints
 
 <ServiceDocumentation
