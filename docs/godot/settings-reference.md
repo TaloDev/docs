@@ -101,14 +101,14 @@ Controls the time (in seconds) between frequent requests such as updating player
 
 It is strongly recommended that you do not set this value below the default. A lower value can lead to slow responses or data being overwritten due to request conflicts. Increasing this value will reduce the frequency of requests and may help prevent data conflicts.
 
-### enabled
+### verification.enabled
 
 Enable request verification to cryptographically sign requests and socket messages. This must also be enabled in the Talo dashboard. Learn more on the [Request verification page](/docs/godot/request-verification).
 
-### key_version
+### verification.key_version
 
 The version of the verification key being used (e.g. `"1"`).
 
-### key_value
+### verification.key_value
 
 The value for the verification key.
