@@ -1,0 +1,8 @@
+{
+  "pages": [
+    "overview",
+    "configuration"
+  ],
+  "title": "Self-hosting",
+  "icon": "selfhosting"
+}

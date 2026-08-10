@@ -1,0 +1,450 @@
+---
+description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending data to various groups, pushing game updates directly to clients, and storing shared game state with channel props.
+title: Channels and storage
+---
+
+import { ScopeBadges } from '@/components/documentation/ScopeBadges'
+
+
+Talo Channels are a way of passing messages between players that are subscribed to a specific topic. Channels can be used for player chats, sending data to various groups and pushing game updates directly to clients.
+
+Channels make it easy to add peer-to-peer (P2P) multiplayer mechanics, social features and dynamic game updates.
+
+You can learn more about channels [here](https://trytalo.com/channels).
+
+## Listing channels
+
+<ScopeBadges scope='gameChannels' read />
+
+To get all available channels for your game, use the `Talo.Channels.GetChannels()` function. This is a paginated function which takes a single `page` parameter.
+
+This function returns an array with 3 items: the channels, the total number of channels (if they weren't paginated) and if this is the last page.
+
+```csharp
+var page = 0
+var res = await Talo.Channels.GetChannels(new GetChannelsOptions { page = page })
+
+var channels: Channel[] = res.channels
+var count: int = res.count
+var isLastPage: bool = res.isLastPage
+```
+
+## Finding a channel
+
+<ScopeBadges scope='gameChannels' read />
+
+You can find a channel by its ID using `Talo.Channels.Find()`. This function takes a channel ID integer and returns a `Channel` object.
+
+### Filtering by prop keys and values
+
+The following code will only fetch channels that have the "guildId" key:
+
+```csharp
+var options = new GetChannelsOptions() { page = page, propKey = "guildId" }
+var res = await Talo.Channels.GetChannels(options)
+```
+
+You can also filter by a prop value. This code will now make sure there is a "guildId" key and its value is "157":
+
+```csharp
+var options = new GetChannelsOptions() { page = page, propKey = "guildId", propValue = "157" }
+var res = await Talo.Channels.GetChannels(options)
+```
+
+### Searching for channels
+
+You can search for channels by name or owner identifier using the `search` option:
+
+```csharp
+var options = new GetChannelsOptions() { page = page, search = "search term" }
+var res = await Talo.Channels.GetChannels(options)
+```
+
+## Listing subscribed channels
+
+<ScopeBadges scope='gameChannels' read />
+
+You can use `Talo.Channels.GetSubscribedChannels()` which returns a `Channel[]` to find out which channels the current player is subscribed to.
+
+### Filtering by prop keys and values
+
+Similar to `GetChannels()`, you can filter by prop keys and values by providing options:
+
+```csharp
+var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" }
+var res = await Talo.Channels.GetSubscribedChannels(options)
+```
+
+## Creating a channel
+
+<ScopeBadges scope='gameChannels' write />
+
+To create a channel, call `Talo.Channels.Create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (an array of `(string, string)` tuples) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
+
+```csharp
+var props = new (string, string)[]
+{
+		("propKey", "propValue")
+};
+
+var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = channelName, autoCleanup = true, props = props });
+```
+
+## Joining and leaving channels
+
+<ScopeBadges scope='gameChannels' write />
+
+To join or leave a channel, use `Talo.Channels.Join()` and `Talo.Channels.Leave()` respectively. Both functions take the ID of the channel as the only parameter. If you attempt to join a channel and the current player is already in that channel, nothing will happen. Leaving a channel also follows the same pattern.
+
+## Updating channels
+
+<ScopeBadges scope='gameChannels' write />
+
+The owner of a channel can update the channel using `Talo.Channels.Update()`. The name and owner of the channel can be updated using this function.
+
+To transfer ownership of the channel, you should specify the ID of the player alias that will own the channel. The new owner of the channel must be a member first before ownership can be transferred.
+
+You can also update the props of the channel: keys will be overrided with new values and keys with a value of `null` will be deleted.
+
+## Deleting channels
+
+<ScopeBadges scope='gameChannels' write />
+
+The owner of a channel can delete the channel using `Talo.Channels.Delete()`. All other members of the channel will be unsubscribed automatically.
+
+## Private channels
+
+You can also create invite-only private channels using the `isPrivate` option.
+
+Private channels will not be listed when using `Talo.Channels.GetChannels()`. They also cannot be joined in the same way: the channel owner must invite players to a private channel.
+
+### Channel invites
+
+<ScopeBadges scope='gameChannels' write />
+
+To create a channel invite, use `Talo.Channels.Invite()` with a channel ID and player alias ID.
+
+Invited players will automatically join the channel.
+
+```csharp
+var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", isPrivate = true }
+await Talo.Channels.Invite(channel.id, inviteePlayerAlias.id);
+```
+
+Note: you can use invites for public channels too.
+
+## Temporary membership channels
+
+If players should only be members of a channel while they're online, you can choose to enable the `temporary_membership` option when creating your channel:
+
+```csharp
+var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", temporaryMembership = true }
+```
+
+Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.Channels.OnChannelLeft` event will invoke with the reason `ChannelLeavingReason.TemporaryMembership`.
+
+## Getting channel members
+
+<ScopeBadges scope='gameChannels' read />
+
+You can fetch a list of channel members using `Talo.Channels.GetMembers()`. This will return a `ChannelMembersResponse`:
+
+```csharp
+var membersPage = await Talo.Channels.GetMembers(channel.id);
+Debug.Log(string.Join(", ", membersPage.members.Select((m) => m.identifier)));
+```
+
+Note: the current player can only fetch channel members for channels they are part of.
+
+### Filtering channel members
+
+You can provide a `GetMembersOptions` as the second parameter of `GetMembers()` to provide extra filters:
+
+```csharp
+var options = new GetMembersOptions()
+{
+		page = 2,
+		propKey = "guildId",
+		propValue = "5"
+};
+var membersPage = await Talo.Channels.GetMembers(channel.id, options);
+
+var filteredMembers = membersPage.members;
+var isLastPage = membersPage.isLastPage;
+```
+
+You can provide the following filtering options:
+
+- `page`: the current pagination index
+- `playerId`: find channel members with this player ID
+- `aliasId`: find a channel member with this ID
+- `identifier`: find a channel member with this identifier
+- `propKey`: find channel members with this prop key
+- `propValue`: find channel members with a matching `propKey` and `propValue`
+- `playerGroupId`: find channel members that are part of this group
+
+## Listening for messages
+
+<ScopeBadges scope='gameChannels' read />
+
+To listen for messages, you can subscribe to the `Talo.Channels.OnMessageReceived` event. This event provides the `Channel`, the sender's `PlayerAlias` and the message.
+
+Here's an example of how to use this event to update a chat UI:
+
+```csharp
+private void Start()
+{
+		Talo.Channels.OnMessageReceived += OnMessageReceived;
+}
+
+private void OnMessageReceived(Channel channel, PlayerAlias sender, string message)
+{
+		if (channel.id == _activeChannelId)
+		{
+				AddChatMessage($"[{channel.name}] {sender.identifier}: {message}");
+		}
+}
+```
+
+### Listening for other events
+
+You can also listen for the following events:
+
+- `Talo.Channels.OnChannelJoined`: Invoked when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
+
+- `Talo.Channels.OnChannelLeft`: Invoked when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and the `ChannelLeavingReason`.
+
+- `Talo.Channels.OnOwnershipTransferred`: Invoked when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
+
+- `Talo.Channels.OnChannelDeleted`: Invoked when a channel is deleted. Returns the `TaloChannel` that was deleted.
+
+- `Talo.Channels.OnChannelUpdated`: Invoked when a channel is updated. Returns the `TaloChannel` that was updated and a `string[]` of properties that were changed.
+
+- `Talo.Channels.OnChannelPropsRejected`: Invoked when channel props are rejected during creation or update. Returns an array of `RejectedProp` objects. See [Handling rejected props](#handling-rejected-channel-props) for more details.
+
+## Handling rejected channel props
+
+Talo validates props when creating or updating channels. If one or more props are invalid, the channel will not be created or updated.
+
+You can listen for rejected props using the `Talo.Channels.OnChannelPropsRejected` event:
+
+```csharp
+private void OnEnable()
+{
+		Talo.Channels.OnChannelPropsRejected += OnChannelPropsRejected;
+}
+
+private void OnDisable()
+{
+		Talo.Channels.OnChannelPropsRejected -= OnChannelPropsRejected;
+}
+
+private void OnChannelPropsRejected(RejectedProp[] rejectedProps)
+{
+		foreach (var prop in rejectedProps)
+		{
+				Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+		}
+}
+```
+
+<Callout type='info'>
+  This event only fires for channel props (set during `Create()` and `Update()`). For channel
+  **storage** prop errors, use `OnChannelStoragePropsFailedToSet` instead.
+</Callout>
+
+See [Players and props - Prop rejection reasons](/docs/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+
+## Channel storage
+
+Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel. In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
+
+### Setting storage props
+
+<ScopeBadges scope='gameChannels' write />
+
+Any player can update the global store using `Talo.Channels.SetStorageProps()`:
+
+```csharp
+await Talo.Channels.SetStorageProps(
+		channel.id,
+		("prop1", "value1"),
+		("prop2", "value2")
+);
+```
+
+This function accepts any number of prop `(string, string)` tuples. You can set a prop value to `null` to delete it. Storage props that aren't being deleted will be upserted (updated if they exist, otherwise created).
+
+#### Handling failures
+
+Sometimes, setting storage props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.Channels.OnChannelStoragePropsFailedToSet` event lets you listen for these errors:
+
+```csharp
+void Start()
+{
+		Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, ChannelStoragePropError[] errors) => {
+				foreach (var prop in errors)
+				{
+						// shared-gold: Prop value length (596) exceeds 512 characters (PROP_VALUE_TOO_LONG)
+						Debug.Log($"{prop.key}: {prop.message} ({prop.error})");
+				}
+		};
+}
+```
+
+`ChannelStoragePropError` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/docs/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+
+### Setting storage prop arrays
+
+<ScopeBadges scope='gameChannels' write />
+
+Prop arrays are a special type of prop that can store multiple values under the same key. This is useful for storing lists of items, player IDs or other data that can have multiple values.
+
+<Callout type="info">
+Array keys are internally suffixed with [] (e.g. a key of "world_items" is stored as "world_items[]").
+
+When using the prop-array-specific functions, you should reference the key without the [] suffix.
+
+</Callout>
+
+```csharp
+var key = "world_items";
+var items = new string[] { "sword", "shield", "potion" };
+
+await Talo.Channels.SetStoragePropArray(channel.id, key, items);
+```
+
+Passing an empty array will delete all existing values for the prop.
+
+You can handle failures in the same way [described above](#handling-failures). Individual props have the same limitations as regular props and prop arrays have an additional limit of 1000 items.
+
+### Getting storage props
+
+<ScopeBadges scope='gameChannels' read />
+
+To get a prop, use `Talo.Channels.GetStorageProp()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
+
+```csharp
+var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" };
+var res = await Talo.Channels.GetSubscribedChannels(options);
+
+var channel = res[0];
+var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold")
+```
+
+After fetching a prop, you can access the `value`, `createdBy`, `lastUpdatedBy` (and more) from the `ChannelStorageProp` class.
+
+<Callout type="warn">
+Getting storage props immediately after an update can return stale data. This is because the internal cache is only updated when the `OnChannelStoragePropsUpdated` event is invoked.
+
+We recommend using the event for prop updates, as described in the [Listening for storage updates](#listening-for-storage-updates) section.
+If you need to fetch the latest data immediately, you can skip the internal cache: see the [Cache-busting](#cache-busting) section below.
+
+</Callout>
+
+#### Cache-busting
+
+Talo keeps an internal cache of storage props which is automatically updated whenever props are created, updated or deleted. By default, Talo will pull from the internal cache which is generally up-to-date. To guarantee fetching the freshest data, you can skip the internal cache with the final parameter of `GetStorageProp()`:
+
+```csharp
+// checks the internal cache first,
+// if the key isn't set, fetches the latest data directly from the database
+var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", false /* default */);
+
+// fetches the latest data directly from the database
+var freshProp = await Talo.Channels.GetStorageProp(channel.id, "shared-gold", true);
+```
+
+### Getting storage prop arrays
+
+<ScopeBadges scope='gameChannels' read />
+
+Prop arrays are made up of multiple props with the same key. To fetch all items in a prop array, use `Talo.Channels.GetStoragePropArray()`:
+
+```csharp
+var propKey = "world_items";
+
+// checks the internal cache first
+var arrayItems = await Talo.Channels.GetStoragePropArray(channel.id, propKey, false /* default */);
+
+// fetches the latest data directly from the database
+var freshArrayItems = await Talo.Channels.GetStoragePropArray(channel.id, propKey, true);
+
+foreach (var prop in arrayItems)
+{
+		Debug.Log(prop.value);
+}
+```
+
+### Getting multiple storage props
+
+<ScopeBadges scope='gameChannels' read />
+
+If you need to fetch multiple storage props, `Talo.Channels.ListStorageProps()` is much faster and more efficient than fetching them one by one:
+
+```csharp
+await Talo.Channels.SetStorageProps(channel.id,
+		("storage_prop_1", "true"),
+		("storage_prop_2", "hello world")
+);
+
+var propKeys = new string[] { "storage_prop_1", "storage_prop_2" };
+
+// without cache busting
+var results = await Talo.Channels.ListStorageProps(channel.id, propKeys);
+foreach (var prop in results)
+{
+		Debug.Log($"Prop: {prop.key} = {prop.value}");
+}
+
+// with cache busting
+var bustedResults = await Talo.Channels.ListStorageProps(channel.id, propKeys, true);
+foreach (var prop in bustedResults)
+{
+		Debug.Log($"Prop: {prop.key} = {prop.value}");
+}
+```
+
+This function will return a `ChannelStorageProp` array, allowing you to iterate through the results. Note: if a prop cannot be found, it will not appear in the list.
+
+#### Prop arrays
+
+If any of the keys you pass are [prop arrays](/docs/unity/channels#getting-storage-prop-arrays), append `[]` to the key to fetch every item stored under it. Scalar and array keys can be mixed in a single call:
+
+```csharp
+// storage_prop_1 is a scalar, world_items[] is a prop array
+var mixedKeys = new string[] { "storage_prop_1", "world_items[]" };
+var results = await Talo.Channels.ListStorageProps(channel.id, mixedKeys);
+foreach (var prop in results)
+{
+		Debug.Log($"{prop.key} = {prop.value}");
+}
+```
+
+### Listening for storage updates
+
+<ScopeBadges scope='gameChannels' read />
+
+The `Talo.Channels.OnChannelStoragePropsUpdated` event will invoke when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
+
+```csharp
+void Start()
+{
+		Talo.Channels.OnChannelStoragePropsUpdated += OnChannelStoragePropsUpdated;
+}
+
+void OnChannelStoragePropsUpdated(Channel channel, ChannelStorageProp[] upsertedProps, ChannelStorageProp[] deletedProps)
+{
+		foreach (var prop in upsertedProps)
+		{
+				// e.g. "shared-gold: 80 upserted by jim"
+				Debug.Log($"{prop.key}:{prop.value} upserted by {prop.lastUpdatedBy.identifier}");
+		}
+
+		foreach (var prop in deletedProps)
+		{
+				// e.g. "shared-gold deleted by jim, previous value was 80"
+				Debug.Log($"{prop.key} deleted by {prop.lastUpdatedBy.identifier}, previous value was {prop.value}");
+		}
+}
+```

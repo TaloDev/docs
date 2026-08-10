@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "install",
+    "settings-reference",
+    "identifying",
+    "player-authentication",
+    "player-props",
+    "events",
+    "leaderboards",
+    "saves",
+    "stats",
+    "dev-data",
+    "groups",
+    "live-config",
+    "feedback",
+    "continuity",
+    "socket",
+    "channels",
+    "player-presence",
+    "player-relationships",
+    "request-verification"
+  ],
+  "title": "Unity package",
+  "icon": "unity"
+}

@@ -1,0 +1,23 @@
+---
+title: Player presence API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+
+export const service = 'PlayerPresenceAPI'
+
+export const pageToc = [
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+]
+
+The player presence API allows you to automatically track the presence of players in your game. This can be useful for a variety of use cases, such as showing a player as online or offline, setting custom statuses and friends lists.
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="With Talo's Player Presence API, you can automatically track if players are online or offline. Presence allows you to easily build social features like friends lists."
+/>

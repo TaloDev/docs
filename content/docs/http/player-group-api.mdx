@@ -1,0 +1,25 @@
+---
+title: Player group API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+
+export const service = 'PlayerGroupAPI'
+
+export const pageToc = [
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+]
+
+Using groups, you can divide your player-base into clear segments. For example, you could have a group of beta testers or a group for all the players who have completed the game.
+
+Learn more about player groups [here](https://trytalo.com/players#groups?utm_source=docs&utm_medium=api-docs).
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's Player Group service lets you segment groups of players. Groups can be used for analytics, in-game checks and targeted messaging."
+/>
