@@ -1,21 +1,26 @@
 ---
+description: Event tracking allows you to understand what players are doing inside your game.
 title: Event API
 ---
 
 import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@/lib/api-docs'
 
-
 export const service = 'EventAPI'
 
 export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
   { title: 'Endpoints', url: '#endpoints', depth: 2 },
   ...generateServiceTOC(service),
   { title: 'Types', url: '#types', depth: 2 },
   { title: 'EventData', url: '#eventdata', depth: 3 },
 ]
 
-Event tracking lets you get rid of the guess-work. By tracking important actions when they happen, you're able to gauge how well a mechanic is being used and even track the overall progress of your players. See how often potions get used, items get bought and how many level-ups there are per day, month or year.
+## Overview
+
+Event tracking lets you get rid of the guess-work. By tracking important actions when they happen, you're able to gauge how well a mechanic is being used and even track the overall progress of your players
+
+See how often potions get used, items get bought and how many level-ups there are per day, month or year.
 
 Learn more about events <a href='https://trytalo.com/events?utm_source=docs&utm_medium=api-docs'>here</a>.
 

@@ -1,24 +1,23 @@
 ---
-description: Talo's Unity package gives you access to a highly configurable open source game backend.
+description: Customise Talo using the Talo Settings Asset.
 title: Settings reference
 ---
 
+## Accessing settings
 
 After creating a Talo Settings Asset, you'll be able to customise the configuration options listed on this page.
 
 You can find all the settings in the `TaloSettings.cs` script.
 
-## Accessing settings
-
-You can use the `Talo.Settings` object to get or set individual options.
+You can use the `Talo.Settings` object to get or set individual options at runtime.
 
 ## Settings
 
 ### accessKey
 
-This is generated on [the Talo dashboard](https://dashboard.trytalo.com). You'll need to fill out your `accessKey` before making requests to the Talo API.
+This is generated inside [the Talo dashboard](https://dashboard.trytalo.com). You'll need to fill out your `accessKey` before making requests to the Talo API.
 
-The scopes on your access key determine whether certain actions can be performed. For example, if you want to fetch leaderboard entries, you'll need the `read:leaderboards` scope. If you want to create leaderboard entries, you'll need the `write:leaderboards` scope.
+The scopes on your API key determine whether certain actions can be performed. For example, if you want to fetch leaderboard entries, you'll need the `read:leaderboards` scope. If you want to create leaderboard entries, you'll need the `write:leaderboards` scope.
 
 At a minimum, the Talo Unity package requires the `read:players` and `write:players` scopes.
 

@@ -1,20 +1,19 @@
 ---
-description: Talo Feedback allows you to receive feedback directly from players in your Godot game. Feedback can be categorised, analysed and filtered to improve your game.
+description: Talo Feedback allows you to receive feedback directly from players. Feedback can be categorised, analysed and filtered to improve your game.
 title: Feedback
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
+## Creating feedback categories
 
-Talo feedback lets you easily gather and categorise player feedback.
-
-To create a feedback category, head over to [the dashboard](https://dashboard.trytalo.com), visit the feedback page and click "Edit categories". Take note of the `Internal name` of the category you create as this is how you'll be referring to it inside your game.
+To create a feedback category, visit [the feedback page](https://dashboard.trytalo.com/feedback) inside the Talo dashboard and click "Edit categories". Take note of the `Internal name` of the category you create as this is how you'll be referring to it inside your game.
 
 ## Getting available categories
 
 <ScopeBadges scope='gameFeedback' read />
 
-To list all the available categories for your game, use the Feedback API `get_categories()` function:
+To list all the feedback categories for your game, use the `get_categories()` function:
 
 ```gdscript title="get_categories_button.gd"
 extends Button
@@ -33,7 +32,7 @@ func _on_pressed() -> void:
 
 <ScopeBadges scope='gameFeedback' write />
 
-Once you have your available categories and their `internal_names`, you can simply call the `send()` function with the player's comment and your chosen category's internal name:
+To send feedback, call the `send()` function with the player's comment and your chosen category's internal name:
 
 ```gdscript title="send_feedback_button.gd"
 extends Button
@@ -48,7 +47,7 @@ func _on_pressed() -> void:
 
 ### Additional context with props
 
-You can also provide extra information with `props`. This is an optional `Dictionary[String, String]` that will be displayed in the Talo dashboard. You can also filter by props, e.g. looking at all feedback from a specific game version.
+You can also provide extra information with `props`. This is an optional `Dictionary[String, String]` that are displayed in the Talo dashboard and can be used as filters. For example, you could look at all feedback from a specific game version.
 
 ```gdscript
 extends Button

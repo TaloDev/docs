@@ -1,10 +1,7 @@
 ---
-description: Talo is an open source game backend featuring socket functionality for adding interactivity to your game.
+description: The Talo Socket makes it easy to add interactivity to your game. You can send messages between players and make your game client to be reactive to changes.
 title: Socket basics
 ---
-
-
-The Talo Socket provides an easy way for you to add interactivity to your game. Using sockets you can send messages between players and allow your game client to be reactive to changes (e.g. [new channel messages](https://trytalo.com/channels)).
 
 ## Message structure
 
@@ -58,7 +55,7 @@ The Talo Socket provides two layers of authentication:
 2. When players are identified, a `socketToken` is stored against the player alias for 1 hour. While the socket token is valid, you can use it to authenticate your player with the socket.
 
 <Callout type='info'>
-  Not all requests and responses will need a player to be identified. However, your access key will
+  Not all requests and responses will need a player to be identified. However, your API key will
   need the `read:players` scope to identify players.
 </Callout>
 

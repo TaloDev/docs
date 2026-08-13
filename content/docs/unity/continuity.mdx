@@ -1,16 +1,13 @@
 ---
-description: Talo Continuity is a resilience layer to keep your Unity game in sync if Talo can't be reached and when players are offline.
-title: Continuity + offline mode
+description: Talo is designed to work online and offline. Talo will automatically keep data in sync for offline players.
+title: Continuity and offline mode
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
+## Continuity
 
 <ScopeBadges scope='continuityRequests' write />
-
-Talo is designed to work both online and offline through a combination of Continuity (described below) and offline file caches. The interactions described on this page are enabled by default and some of them can be toggled off via settings.
-
-## Continuity
 
 Talo Continuity is a resilience layer to keep your game in sync when Talo can't be reached.
 
@@ -18,10 +15,8 @@ Continuity runs behind the scenes and catches server errors (like 502 Bad Gatewa
 
 Failed requests are cached and replayed when network connectivity is re-established. Internally, a health check endpoint is polled to assess Talo's availability.
 
-<Callout type='idea'>
-  Check out this [blog post on
-  Continuity](https://trytalo.com/blog/continuity-announcement?utm_source=docs&utm_medium=tip) for
-  more details
+<Callout type='info'>
+  Continuity requires the `write:continuityRequests` API key scope. Without it, continuity won't work.
 </Callout>
 
 ### Continuity timestamp
@@ -34,7 +29,11 @@ As with anything on the client-side, despite being built with security in mind, 
 
 ### Testing Continuity
 
-Continuity happens in the background and there are no direct APIs exposed for it. You can simulate being offline and toggle Continuity in the Talo Playground. Note: toggling these options will automatically update your `Talo Settings` asset.
+Continuity happens in the background and there are no direct APIs exposed for it. You can simulate being offline and toggle Continuity in the Talo Playground.
+
+<Callout type='info'>
+  toggling these options will automatically update your `Talo Settings` asset.
+</Callout>
 
 ## Network connection events
 
@@ -96,7 +95,9 @@ Use this function to handle custom offline interactions, such as building your o
 
 After a successful online identification, player data is cached locally for future offline use. You can disable this interaction with the [`cachePlayerOnIdentify` setting](settings-reference#cacheplayeronidentify).
 
-Note: players cannot be created while offline.
+<Callout type='info'>
+  players cannot be created while offline.
+</Callout>
 
 ### Game saves
 

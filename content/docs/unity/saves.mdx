@@ -1,11 +1,11 @@
 ---
+description: Talo Saves allow you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
 title: Saves
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
-
-Talo Saves allow you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
+## Included samples
 
 Check out the [SavesDemo sample](https://github.com/TaloDev/unity/tree/develop/Assets/Talo%20Game%20Services/Talo/Samples/SavesDemo) (included with the Unity package) for a full example showing choosing saves, managing saves and persisting save data across different scenes.
 
@@ -71,7 +71,9 @@ The most interesting part is the `data` which contains the fields we register in
 
 ### Data hydration
 
-When saves are created, all the Loadable GameObjects in your scene will be serialised into saved objects. Similarly, when a save is loaded, each saved object is paired up with a matching Loadable. Once paired up, the Loadable is hydrated with the latest data from the saved object. Hydrating the Loadable calls the Loadable's `OnLoaded()` function with the data containing each value converted back to its original type.
+When saves are created, all the Loadable GameObjects in your scene will be serialised into saved objects. Similarly, when a save is loaded, each saved object is paired up with a matching Loadable.
+
+Once paired up, the Loadable is hydrated with the latest data from the saved object. Hydrating the Loadable calls the Loadable's `OnLoaded()` function with the data containing each value converted back to its original type.
 
 ## Registering fields
 
@@ -97,11 +99,11 @@ public class LoadableCube : Loadable
 }
 ```
 
-As you can see, each field needs to be registered with the `RegisterField()` function. The `RegisterFields()` function is called just before data is serialised to ensure we have the latest data.
+Each field needs to be registered with the `RegisterField()` function. The `RegisterFields()` function is called just before data is serialised to ensure we have the latest data.
 
 ## Loading data
 
-As described above, when a saved object is paired up with a Loadable, the Loadable is hydrated with the data from the saved object. This calls the `OnLoaded()` function of the Loadable, where you can set the properties of the GameObject:
+When a saved object is paired up with a Loadable, the Loadable is hydrated with the data from the saved object. This calls the `OnLoaded()` function of the Loadable, where you can set the properties of the GameObject:
 
 ```csharp
 public override void OnLoaded(Dictionary<string, object> data)

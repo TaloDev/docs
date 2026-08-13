@@ -3,7 +3,6 @@ description: Interactive API explorer for the Talo API
 title: Bruno request collection
 ---
 
-
 [Bruno](https://www.usebruno.com) is an open-source API client (a Postman alternative) for exploring and testing REST APIs. A pre-built Talo collection is available so you can try every endpoint.
 
 ## Interactive explorer
@@ -14,15 +13,12 @@ title: Bruno request collection
 
 ## Install Bruno
 
-Bruno is a desktop app available for macOS, Windows and Linux:
-
-- Download from [usebruno.com/downloads](https://www.usebruno.com/downloads)
-- Or install via Homebrew: `brew install bruno`
+Bruno is a desktop app available for macOS, Windows and Linux. You can download it from [usebruno.com](https://www.usebruno.com).
 
 ## Import the Talo collection
 
 1. Open Bruno and click **Import Collection**.
-2. Paste the repository URL: `https://github.com/TaloDev/bruno-collection.git`
+2. Paste the repository URL: `https://github.com/TaloDev/bruno-collection.git`.
 3. Choose a location to save the collection locally.
 4. Click **Clone**.
 
@@ -35,7 +31,7 @@ The collection ships with a `Prod` environment that has two variables:
 | Variable  | Description                                                                                           |
 | --------- | ----------------------------------------------------------------------------------------------------- |
 | `baseUrl` | The API root. Defaults to `https://api.trytalo.com` - change this to point at a self-hosted instance. |
-| `apiKey`  | An access key from the [Talo dashboard](https://dashboard.trytalo.com/api-keys).                      |
+| `apiKey`  | An API key from the [Talo dashboard](https://dashboard.trytalo.com/api-keys).                      |
 
 <Callout type='warn'>Requests will return `401 Unauthorized` until you set `apiKey`.</Callout>
 

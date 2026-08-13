@@ -1,12 +1,11 @@
 ---
-description: Enable request verification in the Godot plugin to cryptographically sign requests and socket messages, preventing replay attacks and tampering.
+description: Enable request verification in the Godot plugin to cryptographically sign network requests and socket messages, preventing replay attacks and tampering.
 title: Request verification
 ---
 
+## How it works
 
 Request verification adds an extra layer of security by cryptographically signing every request and socket message sent by identified players. This prevents replay attacks and ensures requests haven't been tampered with in transit.
-
-## How it works
 
 When enabled, the Godot plugin automatically generates a signature for each request using your verification key. Talo validates the signature before processing the request.
 

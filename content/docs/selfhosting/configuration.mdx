@@ -1,8 +1,9 @@
 ---
-description: Talo is a self-hostable game backend. Your players, data and analytics belong to you and Talo can be easily customised to suit your needs.
+description: Learn how to configure your self-hosted Talo.
 title: Configuration
 ---
 
+## Backend environment variables
 
 Below is a list of configuration options that can be found in your .env file:
 
@@ -69,9 +70,7 @@ When the `EMAIL_DRIVER` is set to `log`, the email file and attachments are save
 
 [HyperDX](https://hyperdx.io) is an observability platform with cloud-hosted and self-hosted options. It uses opentelemetry to provide oversight over traces and logs.
 
-All you have to do is provide Talo with the `HYPERDX_API_KEY` and `OTEL_EXPORTER_OTLP_ENDPOINT` environment variables.
-
-We also recommend a few other environment variables:
+All you have to do is provide Talo with the `HYPERDX_API_KEY` and `OTEL_EXPORTER_OTLP_ENDPOINT` environment variables. We also recommend a few other environment variables:
 
 ```
 HYPERDX_API_KEY=[your key]
@@ -82,7 +81,7 @@ OTEL_NODE_DISABLED_INSTRUMENTATIONS=koa # this instrumentation isn't very helpfu
 
 ### Object storage
 
-Talo supports object storage for data exports. You can provide the following environment variables to support AWS S3:
+Talo supports object storage for data exports. For AWS S3, your environment variables would look like this:
 
 ```
 STORAGE_DRIVER=s3
@@ -93,7 +92,7 @@ S3_SECRET_ACCESS_KEY=ABC...
 S3_BUCKET=talo-exports
 ```
 
-Under the hood, Talo uses [`s3mini`](https://github.com/good-lly/s3mini) which also works with other object storage providers like Cloudflare R2 and Digitalocean Spaces. This is how Talo maps environment variables:
+Talo uses [`s3mini`](https://github.com/good-lly/s3mini) which also works with other object storage providers like Cloudflare R2 and Hetzner Object Storage. This is how Talo maps environment variables:
 
 ```typescript
 // if S3_ENDPOINT isn't set, use the default S3 URL

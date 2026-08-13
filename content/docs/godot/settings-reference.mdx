@@ -1,8 +1,9 @@
 ---
-description: Talo's Godot plugin gives you access to a highly configurable open source game backend.
+description: Customise Talo using the settings.cfg file.
 title: Settings reference
 ---
 
+## Default settings
 
 When Talo first loads, a default `settings.cfg` is generated that looks like this:
 
@@ -29,9 +30,9 @@ You can use the `Talo.settings` object to get or set individual options. You wil
 
 ### access_key
 
-This is generated on [the Talo dashboard](https://dashboard.trytalo.com). You'll need to fill out your `access_key` before making requests to the Talo API.
+This is generated inside [the Talo dashboard](https://dashboard.trytalo.com). You'll need to fill out your `access_key` before making requests to the Talo API.
 
-The scopes on your access key determine whether certain actions can be performed. For example, if you want to fetch leaderboard entries, you'll need the `read:leaderboards` scope. If you want to create leaderboard entries, you'll need the `write:leaderboards` scope.
+The scopes on your API key determine whether certain actions can be performed. For example, if you want to fetch leaderboard entries, you'll need the `read:leaderboards` scope. If you want to create leaderboard entries, you'll need the `write:leaderboards` scope.
 
 At a minimum, the Talo Godot plugin requires the `read:players` and `write:players` scopes.
 

@@ -1,25 +1,15 @@
 ---
+description: Live config lets you push data to your game from the Talo dashboard without releasing a new update.
 title: Live config
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
-
-Live config lets you push state directly to your game from [the Talo dashboard](https://dashboard.trytalo.com) without needing to release an update.
-
-<Callout type='idea'>
-  Check out this blog post on [how to release Unity game updates without new
-  builds](https://trytalo.com/blog/live-config-unity?utm_source=docs&utm_medium=tip) for a detailed
-  walkthrough
-</Callout>
-
 ## Getting the live config
 
 <ScopeBadges scope='gameConfig' read />
 
-You can fetch the live config using `Talo.GameConfig.Get()`. This must be called before querying the config.
-
-Fetching the config will invoke the `Talo.GameConfig.OnLiveConfigLoaded` event that returns the newly initialised config.
+You must fetch the live config using `Talo.GameConfig.Get()` before querying its current state. This invokes the `Talo.GameConfig.OnLiveConfigLoaded` event, which returns the newly initialised config.
 
 ```csharp
 void Start()
@@ -36,6 +26,12 @@ void OnLiveConfigLoaded(TaloLiveConfig config)
 ```
 
 You can fetch the game config any time to refresh the state.
+
+<Callout type='idea'>
+  Check out this blog post on [how to release Unity game updates without new
+  builds](https://trytalo.com/blog/live-config-unity?utm_source=docs&utm_medium=tip) for a detailed
+  walkthrough
+</Callout>
 
 ## Querying the live config
 
@@ -55,7 +51,11 @@ This function also has a second argument which is the default value to return if
 
 ### Offline cache
 
-If the player is offline (determined using `Talo.IsOffline()`), an offline copy of the live config will be returned instead. The cached version is updated after a successful online `Get()` call. Note: the offline cache can be `null` if the live config hasn't been successfully queried before.
+If the player is offline (determined using `Talo.IsOffline()`), an offline copy of the live config will be returned instead. The cached version is updated after a successful online `Get()` call.
+
+<Callout type='info'>
+  The offline cache can be `null` if the live config hasn't been successfully queried before.
+</Callout>
 
 You can check when the offline config was last updated using `Talo.LiveConfig.GetOfflineConfigLastModified()` which returns a Unix timestamp.
 
@@ -77,4 +77,4 @@ void Start()
 }
 ```
 
-The `OnLiveConfigUpdated` event is invoked via the [Talo Socket](/docs/socket) whenever the live config is updated from the Talo dashboard.
+The `OnLiveConfigUpdated` event is invoked (via the [Talo Socket](/docs/socket)) whenever the live config is updated.

@@ -1,12 +1,9 @@
 ---
-description: With Talo's presence API, you can automatically track the presence of players in your game. Presence allows you to easily build social features like friends lists.
+description: With Talo's presence API, you can track whether a player is online, allowing you to easily build social features like friends lists.
 title: Player presence
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
-
-
-The player presence API allows you to automatically track the presence of players in your game. You can use this to show if a player is online or offline, set custom statuses and build social features like friends lists.
 
 ## Getting a player's presence
 
@@ -31,11 +28,11 @@ var updated_at: String
 
 The `player_alias` represents the last alias used to update the player's presence. The `updated_at` timestamp represents the last time the player's presence was updated. Custom statuses can be used to show a player's current activity or to represent other states beyond simply online or offline.
 
-## Updating a player's presence
+## Updating presence
 
 <ScopeBadges scope='playerPresence' write />
 
-To update a player's presence, use the `Talo.player_presence.update_presence()` function. You can provide the new `online` status and an optional `custom_status`.
+To update the current player's presence, use the `Talo.player_presence.update_presence()` function. You can provide the new `online` status and an optional `custom_status`.
 
 ```gdscript
 var res := await Talo.player_presence.update_presence(online, custom_status)
@@ -47,7 +44,9 @@ This function returns a `TaloPlayerPresence` object.
 
 <ScopeBadges scope='playerPresence' read />
 
-You can use the `Talo.player_presence.presence_changed` signal to subscribe to player presence updates. This signal will return a `TaloPlayerPresence` object and information about what changed. Here's an example of how to use this signal to update a friends list:
+You can use the `Talo.player_presence.presence_changed` signal to subscribe to player presence updates. This signal will return a `TaloPlayerPresence` object and information about what changed.
+
+Here's an example of how to use this signal to update a friends list:
 
 ```gdscript
 func _ready() -> void:

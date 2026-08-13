@@ -3,12 +3,11 @@ description: Socket message verification uses cryptographic signatures to preven
 title: Request verification
 ---
 
+## How it works
 
-Request verification adds an extra layer of security to your game by cryptographically validating that socket messages come from a legitimate client and haven't been tampered with or replayed.
+Request verification adds an extra layer of security to your game by cryptographically validating that socket messages come from a legitimate player and haven't been tampered with or replayed.
 
 When enabled, Talo requires every socket message sent by identified players to include a signature. The server validates this signature against a verification key that you manage in the dashboard.
-
-## How it works
 
 The signature is prepended to the JSON message payload, separated by a newline character (`\n`):
 

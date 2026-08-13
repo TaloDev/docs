@@ -1,19 +1,22 @@
 ---
+description: Talo groups allow you to apply filters on your player-base to create distinct segments between players. You can have groups for beta testers, players who completed your game or players with specific props.
 title: Player group API
 ---
 
 import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@/lib/api-docs'
 
-
 export const service = 'PlayerGroupAPI'
 
 export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
   { title: 'Endpoints', url: '#endpoints', depth: 2 },
   ...generateServiceTOC(service),
 ]
 
-Using groups, you can divide your player-base into clear segments. For example, you could have a group of beta testers or a group for all the players who have completed the game.
+## Overview
+
+Using groups, you can segment your player-base using criteria like login times, props, stats and leaderboard entries. For example, you could have groups for beta testers, for all the players who have completed the game, or for players with the best highscores.
 
 Learn more about player groups [here](https://trytalo.com/players#groups?utm_source=docs&utm_medium=api-docs).
 

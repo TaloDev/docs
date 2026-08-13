@@ -1,13 +1,13 @@
 ---
+description: Talo leaderboards are highly customisable - sort modes, entry uniqueness and refresh intervals can all be easily configured per-leaderboard.
 title: Leaderboards
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
+## Creating leaderboards
 
-Talo leaderboards are highly customisable - for example you can configure the sort mode and whether entries must be unique (i.e. one or multiple per user).
-
-To create a leaderboard, head over to [the dashboard](https://dashboard.trytalo.com), visit the leaderboards page and create your first leaderboard. Take note of the `Internal name` as this is how you'll be referring to your leaderboard.
+To create a leaderboard, visit [the leaderboards page](https://dashboard.trytalo.com/leaderboards) inside the Talo dashboard. Take note of the `Internal name` as this is how you'll be referring to your leaderboard.
 
 <Callout type='idea'>
   Check out this blog post on [how to add leaderboards to your Unity
@@ -32,13 +32,13 @@ public async void AddEntry()
 }
 ```
 
-This function returns a tuple of the entry and whether it was updated.
+This function returns a tuple of the entry and whether the entry was updated.
 
 Updated entries are only relevant if the leaderboard is set to unique. Leaderboard entries won't be updated if they are not better (depending on the sort mode) than the player's previous entry.
 
 ## Entry props
 
-Along with a score, you can also send a dictionary of `props` with an entry. The key/value pairs will be stringified and can be used to, filter leaderboards on specific properties. For example, you could send a `team` prop:
+Along with a score, you can also send a dictionary of `props` with an entry. The key/value pairs will be stringified and can be used to filter entries. For example, you could send a `team` prop:
 
 ```csharp
 private async void OnPostClick()
@@ -181,7 +181,7 @@ After fetching your leaderboard entries you can take advantage of the internal c
 
 You can use `Talo.Leaderboard.GetCachedEntries()` in the same way as `GetEntries()` above. Every entry fetched previously using `GetEntries()` will exist in the cache.
 
-`GetCachedEntries()` also accepts an optional `GetCachedEntriesOptions` object to filter the cached results client-side:
+`GetCachedEntries()` also accepts an optional `GetCachedEntriesOptions` object to filter the cached results:
 
 ```csharp
 // Filter cached entries by player

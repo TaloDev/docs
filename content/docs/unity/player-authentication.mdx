@@ -1,12 +1,17 @@
 ---
-description: Talo player authentication for Unity games manages logging players in, registration and verification without needing to build any of your own infrastructure.
+description: Talo player authentication fully manages player login credentials, registrations and email verifications.
 title: Player authentication
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
 
-Talo player authentication manages logging players in, registering them and verifying them without needing to provision any of your own infrastructure. More examples can be found in the "AuthenticationDemo" sample included with the Unity package.
+## Included samples
+
+The "AuthenticationDemo" sample included with the Unity package shows how to:
+* Register players with a username, password and optional email.
+* Log players in with their chosen credentials.
+* Verify login requests.
 
 ## Registering
 
@@ -66,7 +71,7 @@ Once a player is registered, a session will automatically be created for them an
 
 <ScopeBadges scope='players' read write />
 
-To start a session, call the `Talo.PlayerAuth.Login()` function with the username and password the player provided.
+To start a session, call the `Talo.PlayerAuth.Login()` function with the player's username and password.
 
 The `Login()` function returns a boolean denoting whether or not verification is required. If this function returns `true`, the player will need to enter the verification code sent to the email they provided.
 
@@ -123,7 +128,7 @@ You can manually trigger this behaviour using `Talo.PlayerAuth.StartSession()`.
 
 ### The "OnSessionFound" and "OnSessionNotFound" events
 
-When `Talo.PlayerAuth.StartSession()` is called (automatically or manually), either the `Talo.PlayerAuth.OnSessionFound` or the `Talo.PlayerAuth.OnSessionNotFound` event will be invoked if a token is found.
+When `Talo.PlayerAuth.StartSession()` is called, either the `Talo.PlayerAuth.OnSessionFound` or the `Talo.PlayerAuth.OnSessionNotFound` event will be invoked if a token is found.
 
 You can use these events when deciding whether or not to show a splash screen or login screen:
 
@@ -141,7 +146,7 @@ private void Start()
 
 <ScopeBadges scope='players' read write />
 
-If you need to verify a player's login, you need to call `Talo.PlayerAuth.Verify()` with the `code` sent to the player's email:
+To verify a player's login, you need to call `Talo.PlayerAuth.Verify()` with the `code` sent to the player's email:
 
 ```csharp
 private async void OnVerifyClick()
@@ -220,7 +225,9 @@ You can change a player's identifier with the `Talo.PlayerAuth.ChangeIdentifier(
 
 <ScopeBadges scope='players' read write />
 
-If a player forgets their password, you can begin the recovery flow by providing their email to the `Talo.PlayerAuth.ForgotPassword()` function. Players who have not provided an email will not be able to initiate this flow.
+If a player forgets their password, you can begin the recovery flow by providing their email to the `Talo.PlayerAuth.ForgotPassword()` function.
+
+Players who have not provided an email will not be able to initiate this flow.
 
 If a player with the provided email exists, they'll receive a code that they'll use to set a new password.
 
@@ -278,7 +285,9 @@ When an alias is deleted, all leaderboard entries and game feedback associated w
 
 <ScopeBadges scope='players' read write />
 
-You can migrate a player's account to a different service and identifier using `Talo.PlayerAuth.MigrateAccount()`. You'll need to provide the player's current password, the new service (e.g. `username`, `steam`, `google_play_games`) and the new identifier. The original player auth account will be deleted and they will only be able to use their new identifier.
+You can migrate a player's account to a different service and identifier using `Talo.PlayerAuth.MigrateAccount()`. You'll need to provide the player's current password, the new service (e.g. `username`, `steam`, `google_play_games`) and the new identifier.
+
+The original player auth account will be deleted and they will only be able to use their new identifier.
 
 Here is an example of migrating to a [Steam alias](/docs/unity/identifying#steamworks-integration):
 

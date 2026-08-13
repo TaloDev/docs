@@ -1,12 +1,18 @@
 ---
-description: Talo player authentication for Godot games manages logging players in, registration and verification without needing to build any of your own infrastructure.
+description: Talo player authentication fully manages player login credentials, registrations and email verifications.
 title: Player authentication
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
+## Included samples
 
-Talo player authentication manages logging players in, registering them and verifying them without needing to provision any of your own infrastructure. All of the examples below can be found in the `authentication` sample from the Godot plugin.
+The "authentication" sample included with the Godot plugin shows how to:
+* Register players with a username, password and optional email.
+* Log players in with their chosen credentials.
+* Verify login requests.
+* Request a forgotten password email and reset passwords.
+* Update player details.
 
 ## Registering
 
@@ -42,7 +48,7 @@ Once a player is registered, a session will automatically be created for them an
 
 <ScopeBadges scope='players' read write />
 
-To start a session, call the `Talo.player_auth.login()` function with the username and password the player provided.
+To start a session, call the `Talo.player_auth.login()` function with the player's username and password.
 
 The `login()` function returns a `Talo.player_auth.LoginResult` which maps to:
 
@@ -88,7 +94,7 @@ You can manually trigger this behaviour using `Talo.player_auth.start_session()`
 
 ### The "session_found" and "session_not_found" signals
 
-When `Talo.player_auth.start_session()` is called (automatically or manually), either the `Talo.player_auth.session_found` or the `Talo.player_auth.session_not_found` signal will be emitted if a token is found.
+When `Talo.player_auth.start_session()` is called, either the `Talo.player_auth.session_found` or the `Talo.player_auth.session_not_found` signal will be emitted if a token is found.
 
 You can use these signals when deciding whether or not to show a splash screen or login screen:
 
@@ -104,7 +110,7 @@ func _ready() -> void:
 
 <ScopeBadges scope='players' read write />
 
-If you need to verify a player's login, you need to call `Talo.player_auth.verify()` with the `code` sent to the player's email:
+To verify a player's login, you need to call `Talo.player_auth.verify()` with the `code` sent to the player's email:
 
 ```gdscript
 @onready var code: TextEdit = %Code
@@ -167,7 +173,9 @@ You can change a player's identifier with the `Talo.player_auth.change_identifie
 
 <ScopeBadges scope='players' read write />
 
-If a player forgets their password, you can begin the recovery flow by providing their email to the `Talo.player_auth.forgot_password()` function. Players who have not provided an email will not be able to initiate this flow:
+If a player forgets their password, you can begin the recovery flow by providing their email to the `Talo.player_auth.forgot_password()` function.
+
+Players who have not provided an email will not be able to initiate this flow.
 
 ```gdscript title="forgot_password.gd"
 signal forgot_password_success
@@ -237,7 +245,9 @@ When an alias is deleted, all leaderboard entries and game feedback associated w
 
 <ScopeBadges scope='players' read write />
 
-You can migrate a player's account to a different service and identifier using `Talo.player_auth.migrate_account()`. You'll need to provide the player's current password, the new service (e.g. `username`, `steam`, `google_play_games`) and the new identifier. The original player auth account will be deleted and they will only be able to use their new identifier.
+You can migrate a player's account to a different service and identifier using `Talo.player_auth.migrate_account()`. You'll need to provide the player's current password, the new service (e.g. `username`, `steam`, `google_play_games`) and the new identifier.
+
+The original player auth account will be deleted and they will only be able to use their new identifier.
 
 Here is an example of migrating to a [Steam alias](/docs/godot/identifying#steamworks-integration):
 

@@ -1,16 +1,13 @@
 ---
-description: Talo Continuity is a resilience layer to keep your Godot game in sync if Talo can't be reached and when players are offline.
-title: Continuity + offline mode
+description: Talo is designed to work online and offline. Talo will automatically keep data in sync for offline players.
+title: Continuity and offline mode
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
+## What is Continuity?
 
 <ScopeBadges scope='continuityRequests' write />
-
-Talo is designed to work both online and offline through a combination of Continuity (described below) and offline file caches. The interactions described on this page are enabled by default and some of them can be toggled off via settings.
-
-## What is Continuity?
 
 Talo Continuity is a resilience layer to keep your game in sync when Talo can't be reached.
 
@@ -18,10 +15,8 @@ Continuity runs behind the scenes and catches server errors (like 502 Bad Gatewa
 
 Failed requests are cached and replayed when network connectivity is re-established. Internally, a health check endpoint is polled to assess Talo's availability.
 
-<Callout type='idea'>
-  Check out this [blog post on
-  Continuity](https://trytalo.com/blog/continuity-announcement?utm_source=docs&utm_medium=tip) for
-  more details
+<Callout type='info'>
+  Continuity requires the `write:continuityRequests` API key scope. Without it, continuity won't work.
 </Callout>
 
 ### Continuity timestamp
@@ -35,7 +30,9 @@ As with anything on the client-side, Continuity could potentially be exploited b
 ### Testing Continuity
 
 Continuity happens in the background and there are no direct APIs exposed for it. You can simulate being offline and toggle Continuity in the Talo Playground scene.
-Note: toggling these options will not update your `settings.cfg`.
+<Callout type='info'>
+  Toggling these options will not update your `settings.cfg`.
+</Callout>
 
 If you have [request logging enabled](settings-reference#loggingrequests), the replayed requests will be highlighted for you in the console.
 
@@ -81,7 +78,9 @@ Use this function to handle custom offline interactions, such as building your o
 
 After a successful online identification, player data is cached locally for future offline use. You can disable this interaction with the [`cache_player_on_identify` setting](settings-reference#cache_player_on_identify).
 
-Note: players cannot be created while offline.
+<Callout type='info'>
+  Players cannot be created while offline.
+</Callout>
 
 ### Game saves
 

@@ -2,7 +2,6 @@
 title: Common errors
 ---
 
-
 ## Missing authentication
 
 A valid socket ticket is required when opening a socket connection. Learn more about how to obtain a socket ticket and connect to the socket server [here](/docs/intro#connecting-to-the-socket-server).
@@ -86,20 +85,20 @@ When a player is identified using the HTTP API, they receive a `socketToken` to 
 
 If you are using [Talo Player Authentication](https://trytalo.com/players#authentication) for the alias being identified, you will also need to send the `sessionToken` that you receive from the HTTP API after identifying the player. If this is missing, invalid or expired, you will not be able to identify the player.
 
-## Missing access key scopes
+## Missing API key scopes
 
 ```javascript
 {
 	"res": "v1.error",
 	"data": {
 		"req": "v1.channels.message",
-		"message": "Missing access key scope(s): write:gameChannels",
+		"message": "Missing API key scope(s): write:gameChannels",
 		"errorCode": "MISSING_ACCESS_KEY_SCOPES"
 	}
 }
 ```
 
-Most requests will require your access key to have specific scopes. You will receive this error if they are missing.
+Most requests will require your API key to have specific scopes. You will receive this error if they are missing.
 
 ## Listener error
 

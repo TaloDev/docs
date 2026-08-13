@@ -1,14 +1,9 @@
 ---
-description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending event-based messages and more.
+description: The Talo Socket automatically handles connections, messages and events.
 title: Talo Socket
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
-
-
-The Talo Socket is the underlying server that powers services like [channels](/docs/channels) and handles connections, messages and events.
-
-You can learn more about how the socket works [here](/docs/godot/sockets/intro).
 
 ## Usage
 
@@ -16,15 +11,19 @@ Ideally you should never need to use the socket directly because individual serv
 
 The socket connection is automatically established (this can disabled by setting `auto_connect_socket` to `false` in your config). When a player gets identified, they also get automatically identified with the socket server.
 
+You can learn more about how the socket works [here](/docs/sockets/intro).
+
 ## Obtaining a socket ticket
 
 <ScopeBadges scope='players' read />
 
-To connect to the socket server, you need to obtain a socket ticket. This is done by calling `Talo.socket_tickets.create_ticket()`. Opening a socket connection using `Talo.socket.open_connection()` will automatically obtain a ticket and pass it as a query parameter to the socket URL.
+To connect to the socket server, you need to obtain a socket ticket. This is done by calling `Talo.socket_tickets.create_ticket()`.
+
+Opening a socket connection using `Talo.socket.open_connection()` will automatically obtain a ticket and pass it as a query parameter to the socket URL.
 
 ## Receiving messages
 
-The `message_received` signal provides you with a [response](/docs/godot/sockets/responses) and payload. For example, if you were building a chat system, you would connect a function similar to the one below to listen for new chat messages:
+The `message_received` signal provides you with a [response](/docs/sockets/responses) and payload. For example, if you were building a chat system, you would connect a function similar to the one below to listen for new chat messages:
 
 ```gdscript
 func _ready() -> void:
@@ -39,7 +38,7 @@ func _on_message_received(res: String, data: Dictionary) -> void:
 
 ## Sending messages
 
-Generally, sending messages is handled by functions in services like `Talo.channels.send_message()` where the correct data is prepared and sent for you. You can also use the `Talo.socket.send(req, data)` function to send your own [requests](/docs/godot/sockets/requests):
+Sending messages is handled by functions in services like `Talo.channels.send_message()` where the correct data is prepared and sent for you. You can also use the `Talo.socket.send(req, data)` function to send your own [requests](/docs/sockets/requests):
 
 ```gdscript
 func send_message(channel_id: int, message: String) -> void:
@@ -58,7 +57,7 @@ func send_message(channel_id: int, message: String) -> void:
 
 <ScopeBadges scope='players' read write />
 
-The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](/docs/godot/sockets/common-errors#rate-limit-exceeded). The socket will emit a `connection_closed` signal with a status code and reason.
+The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](/docs/sockets/common-errors#rate-limit-exceeded). The socket will emit a `connection_closed` signal with a status code and reason.
 
 The Talo socket automatically reconnects when the [connection is restored](continuity#connection_restored). If you need to manually re-open the socket, you can establish a connection and re-identify the player like this:
 
@@ -72,15 +71,15 @@ func reconnect_socket():
 
 ## Closing the connection
 
-You can choose to manually end the socket connection using `Talo.socket.close_connection(status_code, reason)`.
+You can choose to manually end the socket connection using `Talo.socket.close_connection()`. You can provide a custom status code (the default is 1000) and close reason.
 
 ## Request verification
 
-If your game has request verification enabled, socket messages are automatically signed for players. The server validates these signatures to prevent replay attacks and tampering.
+If your game has [request verification](/docs/godot/request-verification) enabled, socket messages are automatically signed for players. The server validates these signatures to prevent replay attacks and tampering.
 
 ## Error handling
 
-The Talo Socket exposes an `error_received` signal that is emitted when a `v1.error` response is received. You can check the error code (using the `TaloSocketError.ErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:
+The `error_received` signal is emitted when a `v1.error` response is received. You can check the error code (using the `TaloSocketError.ErrorCode` enum), message and original request through the `TaloSocketError` object that is sent with the signal:
 
 ```gdscript
 Talo.socket.error_received.connect(

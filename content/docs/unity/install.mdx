@@ -1,15 +1,13 @@
 ---
-description: Talo's Unity package helps you build games faster - set up save files, leaderboards, stat tracking and more in just a few minutes.
+description: Learn how to add Talo's Unity package to your game.
 title: Installation
 ---
 
+## Required Unity version
 
-<Callout type='warn'>
-  Talo takes advantage of features from C# 9.0+. If you receive compilation errors after installing
-  the package, you may need to make some configuration changes in your Unity project. For more info,
-  [check out this
-  article](https://learn.microsoft.com/en-us/visualstudio/gamedev/unity/unity-scripting-upgrade).
-</Callout>
+Talo is built and tested with Unity 6.
+
+Talo takes advantage of features from C# 9.0+. If you receive compilation errors after installing the package, you may need to make some configuration changes in your Unity project. For more information, [check out this article](https://learn.microsoft.com/en-us/visualstudio/gamedev/unity/unity-scripting-upgrade).
 
 ## Import into Unity
 
@@ -29,16 +27,16 @@ You can download the latest version of the Unity package from our [itch.io page]
 
 Once downloaded, you can open the `talo.unitypackage` file to import it into your project.
 
-## Generate an access key
+## Generate an API key
 
-Visit [the Talo dashboard](https://dashboard.trytalo.com), login or create an account (and confirm your email address), and visit the Access Keys page.
+Visit [the Talo dashboard](https://dashboard.trytalo.com), login or create an account (and confirm your email address), and visit the API Keys page.
 
-Choose the scopes available to your access key (you'll need the `read:players` and `write:players` scope to use the package) and create your access key.
-Save your access key somewhere securely.
+Choose the scopes available to your API key (you'll need the `read:players` and `write:players` scope to use the package) and create your API key.
+Save your API key somewhere securely.
 
 ## Create a Talo asset
 
-Once the package has been imported, right-click in your Resources folder, click `Create > Talo > Settings Asset`. Paste your newly-created access key into the access key field and you're ready to go.
+Once the package has been imported, right-click in your Resources folder, click `Create > Talo > Settings Asset`. Paste your newly-created API key into the API key field and you're ready to go.
 
 <Callout type='warn'>
   Your settings asset must always be at the top-level in the Resources folder and named `Talo

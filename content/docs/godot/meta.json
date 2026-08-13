@@ -3,6 +3,8 @@
     "install",
     "settings-reference",
     "exporting",
+    "request-verification",
+    "continuity",
     "identifying",
     "player-authentication",
     "player-props",
@@ -13,12 +15,10 @@
     "groups",
     "live-config",
     "feedback",
-    "continuity",
     "socket",
     "channels",
     "player-presence",
-    "player-relationships",
-    "request-verification"
+    "player-relationships"
   ],
   "title": "Godot plugin",
   "icon": "godot"

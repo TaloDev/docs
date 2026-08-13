@@ -2,6 +2,9 @@
   "pages": [
     "install",
     "settings-reference",
+    "dev-data",
+    "request-verification",
+    "continuity",
     "identifying",
     "player-authentication",
     "player-props",
@@ -9,16 +12,13 @@
     "leaderboards",
     "saves",
     "stats",
-    "dev-data",
     "groups",
     "live-config",
     "feedback",
-    "continuity",
     "socket",
     "channels",
     "player-presence",
-    "player-relationships",
-    "request-verification"
+    "player-relationships"
   ],
   "title": "Unity package",
   "icon": "unity"

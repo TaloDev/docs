@@ -1,19 +1,15 @@
 ---
+description: Live config lets you push data to your game from the Talo dashboard without releasing a new update.
 title: Live config
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
-
-Live config lets you push state directly to your game from [the Talo dashboard](https://dashboard.trytalo.com) without needing to release an update.
-
 ## Getting the live config
 
 <ScopeBadges scope='gameConfig' read />
 
-You can fetch the live config using `Talo.game_config.get_live_config()`. This must be called before querying the config.
-
-Fetching the config will emit the `Talo.game_config.live_config_loaded` signal that returns the newly initialised config.
+You must fetch the live config using `Talo.game_config.get_live_config()` before querying its current state. This emits the `Talo.game_config.live_config_loaded` signal, which returns the newly initialised config:
 
 ```gdscript
 func _ready() -> void:
@@ -40,7 +36,11 @@ var halloween_event_enabled = bool(Talo.live_config.get_prop("halloween_event_en
 
 ### Offline cache
 
-If the player is offline (determined using `await Talo.is_offline()`), an offline copy of the live config will be returned instead. The cached version is updated after a successful online `get_live_config()` call. Note: the offline cache can be `null` if the live config hasn't been successfully queried before.
+If the player is offline (determined using `await Talo.is_offline()`), an offline copy of the live config will be returned instead. The cached version is updated after a successful online `get_live_config()` call.
+
+<Callout type='info'>
+  The offline cache can be `null` if the live config hasn't been successfully queried before.
+</Callout>
 
 You can check when the offline config was last updated using `Talo.live_config.get_offline_config_last_modified()` which returns a Unix timestamp.
 
@@ -58,4 +58,4 @@ func _on_live_config_updated(live_config: TaloLiveConfig) -> void:
 	label.text = live_config.get_prop("live_string", "Not set!")
 ```
 
-The `live_config_updated` signal is emitted via the [Talo Socket](/docs/socket) whenever the live config is updated from the Talo dashboard.
+The `live_config_updated` signal is emitted (via the [Talo Socket](/docs/socket)) whenever the live config is updated.

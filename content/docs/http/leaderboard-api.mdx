@@ -1,4 +1,5 @@
 ---
+description: Talo leaderboards are highly customisable - sort modes, entry uniqueness and refresh intervals can all be easily configured per-leaderboard.
 title: Leaderboard API
 ---
 
@@ -9,11 +10,14 @@ import { generateServiceTOC } from '@/lib/api-docs'
 export const service = 'LeaderboardAPI'
 
 export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
   { title: 'Endpoints', url: '#endpoints', depth: 2 },
   ...generateServiceTOC(service),
 ]
 
-Talo aims to work across many different game genres and as such our leaderboards are highly-customisable. Leaderboards can be sorted by descending or ascending order. You can also customise whether players can only have one or multiple entries in a single leaderboard.
+## Overview
+
+Talo works across all game genres and therefore leaderboards are highly-customisable. Leaderboards can be sorted in descending or ascending order. You can also customise whether players can only have one or multiple entries in a single leaderboard.
 
 Learn more about leaderboards [here](https://trytalo.com/leaderboards?utm_source=docs&utm_medium=api-docs).
 

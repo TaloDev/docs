@@ -1,10 +1,13 @@
 ---
-description: Talo is an open source game backend with an API to easily authenticate players and add interactive elements to your game.
+description: Learn how to authenticate your API requests.
 title: Authentication
 ---
 
+## Creating and using an API key
 
-After [creating an access key](/docs/unity/install#generate-an-access-key), you should use it in the `Authorization` header:
+To create an API key, visit the [API keys page](https://dashboard.trytalo.com/api-keys) inside the Talo dashboard.
+
+After creating the key, you should use it in the `Authorization` header:
 
 ```
 curl \
@@ -16,7 +19,7 @@ curl \
 
 ## Player authentication
 
-When calling API endpoints on behalf of a player that is using [player authentication](https://trytalo.com/players#authentication) you must send the following headers:
+Most endpoints perform actions on behalf of players.If you are using [player authentication](https://trytalo.com/players#authentication) for these endpoints, you must send the following headers:
 
 1. `x-talo-player`: the ID of the player
 2. `x-talo-alias`: the ID of the player's identified alias
@@ -28,7 +31,7 @@ When calling API endpoints on behalf of a player that is using [player authentic
   errors](/docs/http/common-errors#missing-or-invalid-session) page for more information.
 </Callout>
 
-## Session token lifetimes
+### Session token lifetimes
 
 By default, session tokens returned by [register, login, verify, and refresh](/docs/http/player-auth-api) are long-lived and do not need to be renewed. Your game can store the token on the device and reuse it for as long as the player keeps playing.
 

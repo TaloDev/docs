@@ -1,10 +1,9 @@
 ---
-description: Talo is an open source game backend that allows you to easily add leaderboards, stats, data persistence and more to your Godot game.
+description: Talo can separate development data from live data based on debug builds and feature tags.
 title: Exporting your project
 ---
 
-
-## Android exports
+## Android export permissions
 
 <Callout type='warn'>
   When exporting to Android, you must enable the `INTERNET` permission in the export preset before
@@ -21,7 +20,9 @@ Talo will only fetch development data for development builds. Live builds will o
 
 ### "Dev" players
 
-Dev players are players created in development builds (see below). Their data will be permanently marked as development data - regardless if they create any new data in release builds. In the dashboard, this is denoted by orange backgrounds:
+Dev players are players created in development builds (see below). Their data will be permanently marked as development data - regardless if they create any new data in release builds.
+
+In the dashboard, this is denoted by orange backgrounds:
 
 ![Dev data highlighted in the dashboard](/img/dev-data.png)
 

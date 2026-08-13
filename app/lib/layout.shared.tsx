@@ -13,8 +13,8 @@ export function baseOptions(): BaseLayoutProps {
       ),
     },
     links: [
-      { text: 'Talo Dashboard', url: 'https://dashboard.trytalo.com', icon: <IconExternalLink /> },
       { text: 'trytalo.com', url: 'https://trytalo.com', icon: <IconExternalLink /> },
+      { text: 'Talo Dashboard', url: 'https://dashboard.trytalo.com', icon: <IconExternalLink /> },
       { text: 'Discord', url: 'https://trytalo.com/discord', icon: <IconBrandDiscord /> },
     ],
     themeSwitch: { enabled: false },

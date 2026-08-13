@@ -1,14 +1,15 @@
 ---
+description: Talo player authentication fully manages player login credentials, registrations and email verifications.
 title: Player auth API
 ---
 
 import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@/lib/api-docs'
 
-
 export const service = 'PlayerAuthAPI'
 
 export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
   { title: 'Endpoints', url: '#endpoints', depth: 2 },
   ...generateServiceTOC(service),
   {
@@ -19,7 +20,9 @@ export const pageToc = [
   { title: 'Error codes', url: '#error-codes', depth: 2 },
 ]
 
-Talo provides a powerful and secure authentication system out of the box. You can use Talo to authenticate players using their email, username, or any other identifier you choose.
+## Overview
+
+Talo provides a flexible and secure authentication system out of the box. You can use Talo to authenticate players using their email, username, or any other identifier you choose.
 
 Learn more about player authentication [here](https://trytalo.com/players#authentication?utm_source=docs&utm_medium=api-docs).
 

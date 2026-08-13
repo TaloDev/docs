@@ -1,13 +1,13 @@
 ---
+description: Talo stats let you track individual player data as well as aggregated global data - like how many items have been crafted or how many deaths a player has.
 title: Stats
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
+## Creating stats
 
-Talo stats let you track individual player data as well as aggregated global data - like how many items have been crafted or how many deaths a player has.
-
-To create a stat, head over to [the dashboard](https://dashboard.trytalo.com), visit the stats page and create your first stat. Take note of the `Internal name` as this is how you'll be referring to your stat.
+To create a stat, visit [the stats page](https://dashboard.trytalo.com/stats) inside the Talo dashboard. Take note of the `Internal name` as this is how you'll be referring to your stat.
 
 <Callout type='idea'>
   Check out this blog post on [how to track player stats in
@@ -19,12 +19,18 @@ To create a stat, head over to [the dashboard](https://dashboard.trytalo.com), v
 
 <ScopeBadges scope='gameStats' read />
 
-You can list all available stats using `Talo.stats.get_stats()`. This will return all the constraint data defined in the dashboard like the `default_value`, `max_change` and `max_value`. This will also return the global values for global stats:
+You can list stats using `Talo.stats.get_stats()`.
+
+This will return all the constraint data defined in the dashboard like the `default_value`, `max_change` and `max_value`. This will also return the global values for global stats:
 
 ```gdscript
 var res := await Talo.stats.get_stats()
-var all_stats := PackedStringArray(res.map(func(item: TaloStat): return item.internal_name))
-var internal_names := ", ".join(all_stats)
+var stat_names := res.map(
+	func(item: TaloStat):
+		return item.internal_name
+)
+
+var internal_names := ", ".join(PackedStringArray(stat_names))
 
 ## e.g. Stats: gold-collected, health-healed, deaths
 print("Stats: %s" % [internal_names])
@@ -85,7 +91,7 @@ var player_stat_values := ", ".join(values) if values.size() > 0 else "none"
 print("Player stats: %s" % [player_stat_values]) # Player stats: deaths = 5, health-healed = 200
 ```
 
-The function above iterates through the player stats returned by the API and pick out the `stat.internal_name` and `value`.
+The function above iterates through the player stats and picks out the `stat.internal_name` and `value`.
 
 ## Stat history
 
@@ -125,7 +131,9 @@ var res := await Talo.stats.get_history(stat_name, 0, "2025-09-15")
 
 <ScopeBadges scope='gameStats' read />
 
-For global stats, you can also fetch a history of updates from all players using `Talo.stats.get_global_history()`. This API returns metrics about the stat during the filtered time period and can be filtered by player, date range, and pagination:
+For global stats, you can fetch a history of updates from all players using `Talo.stats.get_global_history()`.
+
+This returns the following metrics about the stat:
 
 ```gdscript
 func fetch_global_history() -> void:

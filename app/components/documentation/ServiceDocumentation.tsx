@@ -151,12 +151,16 @@ export function ServiceDocumentation({
                 </code>
               </div>
 
-              <Heading as='h4' id={slugify(`${routeTitle}-scopes`)}>
-                {scopes.length > 1 ? 'Required scopes' : 'Required scope'}
-              </Heading>
-              {Object.entries(scopeMap).map(([scope, { read, write }]) => (
-                <ScopeBadges key={scope} scope={scope} read={read} write={write} />
-              ))}
+              {scopes.length > 0 && (
+                <>
+                  <Heading as='h4' id={slugify(`${routeTitle}-scopes`)}>
+                    {scopes.length > 1 ? 'Required scopes' : 'Required scope'}
+                  </Heading>
+                  {Object.entries(scopeMap).map(([scope, { read, write }]) => (
+                    <ScopeBadges key={scope} scope={scope} read={read} write={write} />
+                  ))}
+                </>
+              )}
 
               {hasRouteDescription && (
                 <>

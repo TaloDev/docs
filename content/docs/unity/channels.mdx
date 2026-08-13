@@ -1,16 +1,21 @@
 ---
-description: Talo Channels add instant interactivity to your game. Channels can be used for player chats, sending data to various groups, pushing game updates directly to clients, and storing shared game state with channel props.
+description: Talo Channels can be used for player chats, sending data to specific groups, pushing game updates and storing shared game state.
 title: Channels and storage
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
+## How channels work
 
-Talo Channels are a way of passing messages between players that are subscribed to a specific topic. Channels can be used for player chats, sending data to various groups and pushing game updates directly to clients.
+Channels allow you to send socket messages between players, making it extremely easy to add peer-to-peer (P2P) multiplayer mechanics.
 
-Channels make it easy to add peer-to-peer (P2P) multiplayer mechanics, social features and dynamic game updates.
+When players join a channel, they get subscribed to that channel's messages. Messages can be anything: plain strings for chat, enums for instructions/events or even JSON data.
 
-You can learn more about channels [here](https://trytalo.com/channels).
+Channels can also store data inside special props that all subscribed players can modify.
+
+<Callout type='idea'>
+  Visit the [Channels feature page](https://trytalo.com/channels) for more details.
+</Callout>
 
 ## Listing channels
 
@@ -79,7 +84,11 @@ var res = await Talo.Channels.GetSubscribedChannels(options)
 
 <ScopeBadges scope='gameChannels' write />
 
-To create a channel, call `Talo.Channels.Create()` with a channel name and (optionally) the auto cleanup value and/or props. When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves. Props (an array of `(string, string)` tuples) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
+To create a channel, call `Talo.Channels.Create()` with a channel name and (optionally) the auto cleanup value and/or props.
+
+When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves.
+
+Props (an array of `(string, string)` tuples) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
 
 ```csharp
 var props = new (string, string)[]
@@ -94,7 +103,9 @@ var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = cha
 
 <ScopeBadges scope='gameChannels' write />
 
-To join or leave a channel, use `Talo.Channels.Join()` and `Talo.Channels.Leave()` respectively. Both functions take the ID of the channel as the only parameter. If you attempt to join a channel and the current player is already in that channel, nothing will happen. Leaving a channel also follows the same pattern.
+To join or leave a channel, use `Talo.Channels.Join()` and `Talo.Channels.Leave()` respectively. Both functions take the ID of the channel as the only parameter.
+
+If you attempt to join a channel and the current player is already in that channel, nothing will happen. Leaving a channel also follows the same pattern.
 
 ## Updating channels
 
@@ -131,7 +142,9 @@ var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "ch
 await Talo.Channels.Invite(channel.id, inviteePlayerAlias.id);
 ```
 
-Note: you can use invites for public channels too.
+<Callout type='info'>
+  you can use invites for public channels too.
+</Callout>
 
 ## Temporary membership channels
 
@@ -154,7 +167,9 @@ var membersPage = await Talo.Channels.GetMembers(channel.id);
 Debug.Log(string.Join(", ", membersPage.members.Select((m) => m.identifier)));
 ```
 
-Note: the current player can only fetch channel members for channels they are part of.
+<Callout type='info'>
+  the current player can only fetch channel members for channels they are part of.
+</Callout>
 
 ### Filtering channel members
 
@@ -257,7 +272,9 @@ See [Players and props - Prop rejection reasons](/docs/unity/player-props#prop-r
 
 ## Channel storage
 
-Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel. In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
+Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel.
+
+In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
 
 ### Setting storage props
 
@@ -277,7 +294,9 @@ This function accepts any number of prop `(string, string)` tuples. You can set 
 
 #### Handling failures
 
-Sometimes, setting storage props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters. The `Talo.Channels.OnChannelStoragePropsFailedToSet` event lets you listen for these errors:
+Sometimes, setting storage props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters.
+
+The `Talo.Channels.OnChannelStoragePropsFailedToSet` event lets you listen for these errors:
 
 ```csharp
 void Start()
@@ -344,7 +363,9 @@ If you need to fetch the latest data immediately, you can skip the internal cach
 
 #### Cache-busting
 
-Talo keeps an internal cache of storage props which is automatically updated whenever props are created, updated or deleted. By default, Talo will pull from the internal cache which is generally up-to-date. To guarantee fetching the freshest data, you can skip the internal cache with the final parameter of `GetStorageProp()`:
+Talo keeps an internal cache of storage props which is automatically updated whenever props are created, updated or deleted. By default, Talo will pull from the internal cache which is generally up-to-date.
+
+To guarantee fetching the freshest data, you can skip the internal cache with the final parameter of `GetStorageProp()`:
 
 ```csharp
 // checks the internal cache first,
@@ -405,7 +426,11 @@ foreach (var prop in bustedResults)
 }
 ```
 
-This function will return a `ChannelStorageProp` array, allowing you to iterate through the results. Note: if a prop cannot be found, it will not appear in the list.
+This function will return a `ChannelStorageProp` array, allowing you to iterate through the results.
+
+<Callout type='info'>
+  if a prop cannot be found, it will not appear in the list.
+</Callout>
 
 #### Prop arrays
 

@@ -1,19 +1,22 @@
 ---
+description: Talo Channels can be used for player chats, sending data to specific groups, pushing game updates and storing shared game state.
 title: Game channel API
 ---
 
 import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@/lib/api-docs'
 
-
 export const service = 'GameChannelAPI'
 
 export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
   { title: 'Endpoints', url: '#endpoints', depth: 2 },
   ...generateServiceTOC(service),
   { title: 'Types', url: '#types', depth: 2 },
   { title: 'Prop', url: '#prop', depth: 3 },
 ]
+
+## Overview
 
 Channels are a way to send messages between players in your game. You can use channels to create chat rooms, send notifications or create any other kind of messaging system you can think of.
 

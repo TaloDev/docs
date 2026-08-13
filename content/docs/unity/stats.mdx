@@ -1,13 +1,13 @@
 ---
+description: Talo stats let you track individual player data as well as aggregated global data - like how many items have been crafted or how many deaths a player has.
 title: Stats
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
+## Creating stats
 
-Talo stats let you track individual player data as well as aggregated global data - like how many items have been crafted or how many deaths a player has.
-
-To create a stat, head over to [the dashboard](https://dashboard.trytalo.com), visit the stats page and create your first stat. Take note of the `Internal name` as this is how you'll be referring to your stat.
+To create a stat, visit [the stats page](https://dashboard.trytalo.com/stats) inside the Talo dashboard. Take note of the `Internal name` as this is how you'll be referring to your stat.
 
 <Callout type='idea'>
   Check out this blog post on [how to track player stats in
@@ -19,7 +19,9 @@ To create a stat, head over to [the dashboard](https://dashboard.trytalo.com), v
 
 <ScopeBadges scope='gameStats' read />
 
-You can list all available stats using `Talo.Stats.GetStats()`. This will return all the constraint data defined in the dashboard like the `defaultValue`, `maxChange` and `maxValue`. This will also return the global values for global stats:
+You can list stats using `Talo.Stats.GetStats()`.
+
+This will return all the constraint data defined in the dashboard like the `defaultValue`, `maxChange` and `maxValue`. This will also return the global values for global stats:
 
 ```csharp
 var res = await Talo.Stats.GetStats();
@@ -85,7 +87,7 @@ var statsList = res.Length > 0
 Debug.Log($"Player stats: {statsList}"); // Player stats: deaths = 5, health-healed = 200
 ```
 
-The function above iterates through the player stats returned by the API and pick out the `stat.internalName` and `value`.
+The function above iterates through the player stats and picks out the `stat.internalName` and `value`.
 
 ## Stat history
 
@@ -137,7 +139,9 @@ var res = await Talo.Stats.GetHistory(statInternalName, startDate: sinceDate);
 
 <ScopeBadges scope='gameStats' read />
 
-For global stats, you can also fetch a history of updates from all players using `Talo.Stats.GetGlobalHistory()`. This API returns metrics about the stat during the filtered time period and can be filtered by player, date range, and pagination:
+For global stats, you can fetch a history of updates from all players using `Talo.Stats.GetGlobalHistory()`.
+
+This returns the following metrics about the stat:
 
 ```csharp
 private async void FetchGlobalHistory()

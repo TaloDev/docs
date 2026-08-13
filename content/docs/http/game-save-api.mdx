@@ -1,21 +1,24 @@
 ---
+description: Talo Saves allow you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
 title: Game save API
 ---
 
 import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
 import { generateServiceTOC } from '@/lib/api-docs'
 
-
 export const service = 'GameSaveAPI'
 
 export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
   { title: 'Endpoints', url: '#endpoints', depth: 2 },
   ...generateServiceTOC(service),
   { title: 'Types', url: '#types', depth: 2 },
   { title: 'SaveContent', url: '#savecontent', depth: 3 },
 ]
 
-Talo's save system allows you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored automatically from one of your player's saves.
+## Overview
+
+Talo stores saves for players using JSON. Save data structures are completely flexible and dictated by your game.
 
 Learn more about game saves [here](https://trytalo.com/saves?utm_source=docs&utm_medium=api-docs).
 

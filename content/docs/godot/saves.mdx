@@ -1,17 +1,9 @@
 ---
+description: Talo Saves allow you to persist your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
 title: Saves
 ---
 
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
-
-
-Talo Saves allow you to solve the provlem of saving and loading your game's state across multiple sessions. Each object in your scene can be saved and restored from one of your player's saves.
-
-<Callout type='idea'>
-  Check out this blog post on [how to save and load data in
-  Godot](https://trytalo.com/blog/game-saves-godot?utm_source=docs&utm_medium=tip) for a detailed
-  walkthrough
-</Callout>
 
 ## Saves demos
 
@@ -19,7 +11,13 @@ As part of the Godot plugin, we've included a few demos to help you get started:
 
 1. [Playground saves](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/playground) - allows you to create/load/update/delete a very basic save
 2. [Persistent buttons](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/persistent_buttons) - a simple demo focused on saving/loading functionality
-3. [Scene-based saves](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/multiscene_saves) - a full demo showing how data gets persisted between scenes with a player and other loadables
+3. [Scene-based saves](https://github.com/TaloDev/godot/tree/develop/addons/talo/samples/multiscene_saves) - a full demo showing how data gets persisted between multiple scenes and entities
+
+<Callout type='idea'>
+  Check out this blog post on [how to save and load data in
+  Godot](https://trytalo.com/blog/game-saves-godot?utm_source=docs&utm_medium=tip) for a detailed
+  walkthrough
+</Callout>
 
 ## Loadables
 
@@ -81,7 +79,9 @@ The most interesting part is the `data` which contains the fields we register in
 
 ### Data hydration
 
-When saves are created, all the Loadable nodes in your scene will be serialised into saved objects. Similarly, when a save is loaded, each saved object is paired up with a matching Loadable. Once paired up, the Loadable is hydrated with the latest data from the saved object. Hydrating the Loadable calls the Loadable's `on_loaded()` function with the data containing each value converted back to its original type.
+When saves are created, all the Loadable nodes in your scene will be serialised into saved objects. Similarly, when a save is loaded, each saved object is paired up with a matching Loadable.
+
+Once paired up, the Loadable is hydrated with the latest data from the saved object. Hydrating the Loadable calls the Loadable's `on_loaded()` function with the data containing each value converted back to its original type.
 
 ## Registering fields
 
@@ -100,11 +100,11 @@ func register_fields():
 	register_field("spawn_level", spawn_level)
 ```
 
-As you can see, each field needs to be registered with the `register_field()` function. The `register_fields()` function is called just before data is serialised to ensure we have the latest data.
+Each field needs to be registered with the `register_field()` function. The `register_fields()` function is called just before data is serialised to ensure we have the latest data.
 
 ## Loading data
 
-As described above, when a saved object is paired up with a Loadable, the Loadable is hydrated with the data from the saved object. This calls the `on_loaded()` function of the Loadable, where you can set the properties of the node:
+When a saved object is paired up with a Loadable, the Loadable is hydrated with the data from the saved object. This calls the `on_loaded()` function of the Loadable, where you can set the properties of the node:
 
 ```gdscript
 func on_loaded(data: Dictionary):
