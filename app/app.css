@@ -18,11 +18,11 @@
   --color-fd-primary-foreground: white;
 }
 
-.dark [data-search-full] {
+[data-search-full] {
   background-color: var(--color-gray-900);
 }
 
-.dark #nd-page .\@container a:hover {
+#nd-page .\@container a:hover {
   background-color: var(--color-gray-800);
 }
 

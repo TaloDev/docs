@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import { cn } from 'cnfast'
 import { Heading } from 'fumadocs-ui/components/heading'
 import type { ServiceRoute } from '@/lib/api-docs'
 import { getService, slugify } from '@/lib/api-docs'
@@ -140,7 +140,7 @@ export function ServiceDocumentation({
                 <div className='inline-block break-all'>
                   <code className='p-2 rounded-lg'>
                     <span
-                      className={clsx(
+                      className={cn(
                         'mr-3 rounded px-1 py-0.5 text-sm font-bold text-white align-middle',
                         methodColours[route.method.toLowerCase()],
                       )}

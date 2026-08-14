@@ -1,5 +1,5 @@
 import type { ImgHTMLAttributes } from 'react'
-import clsx from 'clsx'
+import { cn } from 'cnfast'
 
 type Props = ImgHTMLAttributes<HTMLImageElement> & {
   withBackground?: boolean
@@ -8,12 +8,12 @@ type Props = ImgHTMLAttributes<HTMLImageElement> & {
 export function Image({ withBackground = true, className, alt, ...props }: Props) {
   return (
     <span
-      className={clsx(
+      className={cn(
         withBackground &&
           'mx-auto mt-8 block rounded-sm bg-linear-to-br from-pink-600 to-indigo-600 p-4 md:w-[90%] md:p-12',
       )}
     >
-      <img alt={alt} className={clsx('rounded-md shadow-lg', className)} {...props} />
+      <img alt={alt} className={cn('rounded-md shadow-lg', className)} {...props} />
     </span>
   )
 }

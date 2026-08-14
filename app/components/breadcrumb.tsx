@@ -1,6 +1,6 @@
 import type { BreadcrumbItem } from 'fumadocs-core/breadcrumb'
 import type { BreadcrumbProps } from 'fumadocs-ui/layouts/docs/page/slots/breadcrumb'
-import clsx from 'clsx'
+import { cn } from 'cnfast'
 import Link from 'fumadocs-core/link'
 import { useTreeContext, useTreePath } from 'fumadocs-ui/contexts/tree'
 import { ChevronRight } from 'lucide-react'
@@ -60,13 +60,13 @@ export function Breadcrumb({
   return (
     <div
       {...props}
-      className={clsx(
+      className={cn(
         'flex items-center gap-1.5 text-sm text-fd-muted-foreground',
         props.className,
       )}
     >
       {items.map((item, i) => {
-        const className = clsx('truncate', i === items.length - 1 && 'text-fd-primary font-medium')
+        const className = cn('truncate', i === items.length - 1 && 'text-fd-primary font-medium')
         const content = (
           <span className='inline-flex items-center gap-1.5 [&_svg]:size-4'>
             {item.icon}
@@ -80,7 +80,7 @@ export function Breadcrumb({
             {item.url ? (
               <Link
                 href={item.url}
-                className={clsx(className, 'transition-opacity hover:opacity-80')}
+                className={cn(className, 'transition-opacity hover:opacity-80')}
               >
                 {content}
               </Link>

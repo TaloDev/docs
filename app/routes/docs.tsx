@@ -37,15 +37,23 @@ function Content({ path }: { path: string }) {
   const toc: TOCItemType[] = (data._exports.pageToc as TOCItemType[] | undefined) ?? data.toc
 
   return (
-    <DocsPage toc={toc} slots={{ breadcrumb: Breadcrumb }}>
-      <title>{page.title}</title>
+    <DocsPage
+      toc={toc}
+      footer={path === 'index.mdx' ? { className: 'mt-8' } : {}}
+      slots={{ breadcrumb: Breadcrumb }}
+    >
+      <title>
+        {path === 'index.mdx' ? 'Talo - open source, self-hostable game backend' : page.title}
+      </title>
       <meta name='description' content={page.description} />
       <DocsTitle>{page.title}</DocsTitle>
       <DocsDescription>{page.description}</DocsDescription>
       <DocsBody>
         <Mdx components={useMDXComponents()} />
       </DocsBody>
-      <Feedback key={path} onSendAction={onPageFeedback} />
+      {path !== 'index.mdx' && (
+        <Feedback className='mt-4' key={path} onSendAction={onPageFeedback} />
+      )}
     </DocsPage>
   )
 }

@@ -8,11 +8,11 @@ import { buttonVariants } from '../ui/button'
 import { Collapsible, CollapsibleContent } from '../ui/collapsible'
 
 const rateButtonVariants = cva(
-  'inline-flex items-center gap-2 px-3 py-2 rounded-full font-medium border text-sm [&_svg]:size-4 cursor-pointer transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground disabled:cursor-not-allowed',
+  'inline-flex items-center gap-2 px-3 py-2 rounded-full font-medium border text-sm [&_svg]:size-4 cursor-pointer transition-colors hover:bg-gray-800 disabled:cursor-not-allowed',
   {
     variants: {
       active: {
-        true: 'bg-fd-accent text-fd-accent-foreground [&_svg]:fill-current',
+        true: 'bg-gray-800 [&_svg]:fill-current',
         false: 'text-fd-muted-foreground',
       },
     },
@@ -21,8 +21,10 @@ const rateButtonVariants = cva(
 
 export function Feedback({
   onSendAction,
+  className,
 }: {
   onSendAction: (feedback: PageFeedback) => Promise<ActionResponse>
+  className?: string
 }) {
   const [opinion, setOpinion] = useState<'good' | 'bad' | null>(null)
   const [message, setMessage] = useState('')
@@ -46,7 +48,11 @@ export function Feedback({
   }
 
   return (
-    <Collapsible open={opinion !== null || submitted} className='border-y py-3'>
+    <Collapsible
+      data-feedback
+      open={opinion !== null || submitted}
+      className={cn('rounded-lg border p-4', className)}
+    >
       {submitted ? (
         <p className='flex min-h-9.5 items-center text-sm font-medium'>Thanks for your feedback!</p>
       ) : (
@@ -86,7 +92,7 @@ export function Feedback({
                 autoFocus
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className='border rounded-lg bg-fd-secondary text-fd-secondary-foreground p-3 resize-none focus-visible:outline-none placeholder:text-fd-muted-foreground'
+                className='rounded-lg border bg-fd-card text-sm text-fd-card-foreground p-3 resize-none focus-visible:outline-none placeholder:text-fd-muted-foreground'
                 placeholder='Add any additional feedback (optional)'
                 onKeyDown={(e) => {
                   if (!e.shiftKey && e.key === 'Enter') {
@@ -96,7 +102,7 @@ export function Feedback({
               />
               <button
                 type='submit'
-                className={cn(buttonVariants({ color: 'outline' }), 'w-fit px-3')}
+                className={cn(buttonVariants({ color: 'outline' }), 'w-fit cursor-pointer px-3 hover:bg-gray-800')}
               >
                 Submit
               </button>
