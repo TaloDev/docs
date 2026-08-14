@@ -18,7 +18,7 @@ The documentation is organized into several main sections:
 **Start development server:**
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 This starts a local development server on port 5173 with live reload.
@@ -26,7 +26,7 @@ This starts a local development server on port 5173 with live reload.
 **Build for production:**
 
 ```bash
-npm run build
+pnpm build
 ```
 
 Generates static content in the `build/` directory (React Router SPA mode with all docs pages prerendered to static HTML).
@@ -34,14 +34,14 @@ Generates static content in the `build/` directory (React Router SPA mode with a
 **Typecheck:**
 
 ```bash
-npm run typecheck
+pnpm typecheck
 ```
 
 **Lint / format:**
 
 ```bash
-npm run lint
-npm run fmt
+pnpm lint
+pnpm fmt
 ```
 
 ## Architecture

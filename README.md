@@ -5,13 +5,13 @@ This website is built using [Fumadocs](https://fumadocs.dev) on [React Router](h
 ## Installation
 
 ```console
-npm install
+pnpm install
 ```
 
 ## Local Development
 
 ```console
-npm run dev
+pnpm dev
 ```
 
 This command starts a local development server (port 5173). Most changes are reflected live without having to restart the server.
@@ -21,7 +21,7 @@ The API documentation routes are fetched from the Talo backend at build time (`h
 ## Build
 
 ```console
-npm run build
+pnpm build
 ```
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service (React Router SPA mode with prerendered pages).
@@ -29,5 +29,5 @@ This command generates static content into the `build` directory and can be serv
 ## Typecheck
 
 ```console
-npm run typecheck
+pnpm typecheck
 ```
