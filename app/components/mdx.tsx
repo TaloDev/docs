@@ -1,9 +1,11 @@
 import type { MDXComponents } from 'mdx/types'
 import defaultMdxComponents from 'fumadocs-ui/mdx'
+import { Image } from '@/components/image'
 
 export function getMDXComponents(components?: MDXComponents) {
   return {
     ...defaultMdxComponents,
+    img: Image,
     ...components,
   } satisfies MDXComponents
 }
