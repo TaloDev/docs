@@ -131,107 +131,110 @@ export function ServiceDocumentation({
           const hasRouteDescription = routeDescription.filter((line) => !!line).length > 0
 
           return (
-            <div key={idx} className='space-y-0'>
+            <div key={idx}>
               <Heading as='h3' id={slugify(routeTitle)}>
                 {routeTitle}
               </Heading>
 
-              <div className='inline-block break-all'>
-                <code className='p-3 rounded-lg'>
-                  <span
-                    className={clsx(
-                      'mr-3 rounded px-1 py-0.5 text-sm font-bold text-white align-middle',
-                      methodColours[route.method.toLowerCase()],
-                    )}
-                  >
-                    {normaliseMethod(route.method)}
-                  </span>
-                  {baseApiUrl}
-                  {route.path}
-                </code>
+              <div className='rounded-xl border border-fd-border p-4 [&>:last-child]:mb-0 [&>:last-child_table]:mb-0'>
+                <div className='inline-block break-all'>
+                  <code className='p-2 rounded-lg'>
+                    <span
+                      className={clsx(
+                        'mr-3 rounded px-1 py-0.5 text-sm font-bold text-white align-middle',
+                        methodColours[route.method.toLowerCase()],
+                      )}
+                    >
+                      {normaliseMethod(route.method)}
+                    </span>
+                    {baseApiUrl}
+                    {route.path}
+                  </code>
+                </div>
+
+                {scopes.length > 0 && (
+                  <>
+                    <Heading as='h4' id={slugify(`${routeTitle}-scopes`)}>
+                      {scopes.length > 1 ? 'Required scopes' : 'Required scope'}
+                    </Heading>
+                    {Object.entries(scopeMap).map(([scope, { read, write }]) => (
+                      <ScopeBadges key={scope} scope={scope} read={read} write={write} />
+                    ))}
+                  </>
+                )}
+
+                {hasRouteDescription && (
+                  <>
+                    <Heading as='h4' id={slugify(`${routeTitle}-description`)}>
+                      Notes
+                    </Heading>
+                    {routeDescription}
+                  </>
+                )}
+
+                {sections
+                  .filter((section) => {
+                    if (section.params.length === 0) {
+                      return false
+                    }
+
+                    if (normaliseMethod(route.method) === 'GET') {
+                      return section.title !== 'Body keys'
+                    }
+
+                    return true
+                  })
+                  .map((section) => {
+                    return (
+                      <div key={section.title}>
+                        <Heading as='h4' id={slugify(`${routeTitle}-${section.title}`)}>
+                          {section.title}
+                        </Heading>
+
+                        <table className='mt-0'>
+                          <thead>
+                            <tr>
+                              <th>Key</th>
+                              <th>Required</th>
+                              <th>Description</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            {section.params
+                              .sort((a, b) => a.name.localeCompare(b.name))
+                              .map((param, idx) => (
+                                <tr key={idx}>
+                                  <td className='min-w-36'>
+                                    <code>{param.name}</code>
+                                  </td>
+                                  <td className='min-w-36'>
+                                    {getParamRequiredText(param.required)}
+                                  </td>
+                                  <td className='w-full' aria-label={param.description}>
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        __html: getParamDescriptionText(param.description),
+                                      }}
+                                    />
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )
+                  })}
+
+                {route.samples && (
+                  <>
+                    <Heading as='h4' id={slugify(`${routeTitle}-samples`)}>
+                      Samples
+                    </Heading>
+                    <Samples samples={route.samples} />
+                  </>
+                )}
               </div>
-
-              {scopes.length > 0 && (
-                <>
-                  <Heading as='h4' id={slugify(`${routeTitle}-scopes`)}>
-                    {scopes.length > 1 ? 'Required scopes' : 'Required scope'}
-                  </Heading>
-                  {Object.entries(scopeMap).map(([scope, { read, write }]) => (
-                    <ScopeBadges key={scope} scope={scope} read={read} write={write} />
-                  ))}
-                </>
-              )}
-
-              {hasRouteDescription && (
-                <>
-                  <Heading as='h4' id={slugify(`${routeTitle}-description`)}>
-                    Notes
-                  </Heading>
-                  {routeDescription}
-                </>
-              )}
-
-              {sections
-                .filter((section) => {
-                  if (section.params.length === 0) {
-                    return false
-                  }
-
-                  if (normaliseMethod(route.method) === 'GET') {
-                    return section.title !== 'Body keys'
-                  }
-
-                  return true
-                })
-                .map((section) => {
-                  return (
-                    <div key={section.title}>
-                      <Heading as='h4' id={slugify(`${routeTitle}-${section.title}`)}>
-                        {section.title}
-                      </Heading>
-
-                      <table className='mt-0'>
-                        <thead>
-                          <tr>
-                            <th>Key</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          {section.params
-                            .sort((a, b) => a.name.localeCompare(b.name))
-                            .map((param, idx) => (
-                              <tr key={idx}>
-                                <td className='min-w-36'>
-                                  <code>{param.name}</code>
-                                </td>
-                                <td className='min-w-36'>{getParamRequiredText(param.required)}</td>
-                                <td className='w-full' aria-label={param.description}>
-                                  <span
-                                    dangerouslySetInnerHTML={{
-                                      __html: getParamDescriptionText(param.description),
-                                    }}
-                                  />
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )
-                })}
-
-              {route.samples && (
-                <>
-                  <Heading as='h4' id={slugify(`${routeTitle}-samples`)}>
-                    Samples
-                  </Heading>
-                  <Samples samples={route.samples} />
-                </>
-              )}
-              <hr />
             </div>
           )
         })}

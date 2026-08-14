@@ -14,16 +14,20 @@
     "fmt:fix": "oxfmt ."
   },
   "dependencies": {
-    "@react-router/node": "^8.3.0",
+    "@radix-ui/react-collapsible": "^1.1.20",
     "@tabler/icons-react": "^3.46.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cnfast": "^0.1.0",
     "fumadocs-core": "^16.14.0",
     "fumadocs-mdx": "^15.2.2",
     "fumadocs-ui": "^16.14.0",
     "isbot": "^5",
+    "lucide-react": "^1.31.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-router": "^8.3.0"
+    "react-router": "^8.3.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@react-router/dev": "^8.3.0",
@@ -31,7 +35,7 @@
     "@types/node": "^24",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "oxfmt": "^0.48.0",
+    "oxfmt": "^0.63.0",
     "oxlint": "^1.63.0",
     "serve": "^14.2.6",
     "tailwindcss": "^4.3.3",

@@ -4,7 +4,9 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page'
 import { use } from 'react'
 import { Breadcrumb } from '@/components/breadcrumb'
+import { Feedback } from '@/components/feedback/client'
 import { useMDXComponents } from '@/components/mdx'
+import { onPageFeedback } from '@/lib/feedback'
 import { baseOptions } from '@/lib/layout.shared'
 import { docs, source } from '@/lib/source'
 import type { Route } from './+types/docs'
@@ -24,7 +26,9 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 function Content({ path }: { path: string }) {
   const page = docs.getPage(path)
-  if (!page) throw new Error(`unknown page: ${path}`)
+  if (!page) {
+    throw new Error(`unknown page: ${path}`)
+  }
 
   const data = use(page.load())
   const Mdx = page.body
@@ -41,6 +45,7 @@ function Content({ path }: { path: string }) {
       <DocsBody>
         <Mdx components={useMDXComponents()} />
       </DocsBody>
+      <Feedback key={path} onSendAction={onPageFeedback} />
     </DocsPage>
   )
 }

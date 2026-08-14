@@ -53,7 +53,9 @@ export function Breadcrumb({
     return items
   }, [path, includePage, includeRoot, includeSeparator, root])
 
-  if (items.length === 0) return null
+  if (items.length === 0) {
+    return null
+  }
 
   return (
     <div
