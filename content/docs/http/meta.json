@@ -1,0 +1,24 @@
+{
+  "pages": [
+    "authentication",
+    "common-errors",
+    "dev-data",
+    "request-verification",
+    "bruno-collection",
+    "event-api",
+    "game-channel-api",
+    "game-config-api",
+    "game-feedback-api",
+    "game-save-api",
+    "game-stat-api",
+    "leaderboard-api",
+    "player-api",
+    "player-auth-api",
+    "player-group-api",
+    "player-presence-api",
+    "player-relationships-api",
+    "socket-ticket-api"
+  ],
+  "title": "API reference",
+  "icon": "http"
+}

@@ -1,12 +1,13 @@
 # Dependencies
 /node_modules
 
-# Production
-/build
+# React Router
+/.react-router/
+/build/
+.source
 
-# Generated files
-.docusaurus
-.cache-loader
+# Generated API docs
+app/lib/api-docs.json
 
 # Misc
 .DS_Store
@@ -16,3 +17,9 @@
 .env.production.local
 
 npm-debug.log*
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example

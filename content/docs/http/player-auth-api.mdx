@@ -1,0 +1,213 @@
+---
+description: Talo player authentication fully manages player login credentials, registrations and email verifications.
+title: Player auth API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'PlayerAuthAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+  {
+    title: 'Identifying players using Talo Authentication',
+    url: '#identifying-players-using-talo-authentication',
+    depth: 2,
+  },
+  { title: 'Error codes', url: '#error-codes', depth: 2 },
+]
+
+## Overview
+
+Talo provides a flexible and secure authentication system out of the box. You can use Talo to authenticate players using their email, username, or any other identifier you choose.
+
+Learn more about player authentication [here](https://trytalo.com/players#authentication?utm_source=docs&utm_medium=api-docs).
+
+## Identifying players using Talo Authentication
+
+Once you have registered a player, you can identify them using the [identify](/docs/http/player-api) endpoint. You will need to ensure that:
+
+1. The `identifier` is the one you used to register the player (email, username, etc.)
+2. The `service` is set to `talo`
+3. The `x-talo-session` header contains the session token you received from the login/register endpoint
+
+To create a new session token, you will need to go through the login flow again for the player.
+
+<Callout type='info' title='Session token lifetimes'>
+  By default session tokens are long-lived. You can opt in to short-lived (15-minute) session tokens
+  paired with a 30-day refresh token using the `withRefresh` parameter. See [Session token
+  lifetimes](/docs/http/authentication#session-token-lifetimes) for the full details.
+</Callout>
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's Player Authentication service supports emails, usernames, or Steamworks auth. Players can also reset their password, add two factor auth and more."
+/>
+
+## Error codes
+
+### `INVALID_CREDENTIALS`
+
+When authentication fails (i.e. wrong identifier or password), this error is returned. This error also occurs when changing a player password, email address, or identifier, or when toggling verification and the current password entered is incorrect.
+
+```javascript
+{
+	message: 'Incorrect identifier or password',
+	errorCode: 'INVALID_CREDENTIALS'
+}
+```
+
+```javascript
+{
+	message: 'Current password is incorrect',
+	errorCode: 'INVALID_CREDENTIALS'
+}
+```
+
+### `VERIFICATION_ALIAS_NOT_FOUND`
+
+When trying to verify a player login, this error is thrown if the `aliasId` is not valid.
+
+```javascript
+{
+	message: 'Player alias not found',
+	errorCode: 'VERIFICATION_ALIAS_NOT_FOUND'
+}
+```
+
+### `VERIFICATION_CODE_INVALID`
+
+When trying to verify a player login, this error is thrown if the `code` is not valid.
+
+```javascript
+{
+	message: 'Invalid code',
+	errorCode: 'VERIFICATION_CODE_INVALID'
+}
+```
+
+### `IDENTIFIER_TAKEN`
+
+When trying to create a new player or update an existing player's identifier, this error is thrown if the `identifier` is already taken.
+
+```javascript
+{
+	message: 'Player with identifier boz already exists',
+	errorCode: 'IDENTIFIER_TAKEN'
+}
+```
+
+### `MISSING_SESSION`
+
+Players that use Talo Authentication must provide a session token in the request headers. This error is thrown when the session token is missing.
+
+```javascript
+{
+	message: 'The x-talo-session header is required for this player',
+	errorCode: 'MISSING_SESSION'
+}
+```
+
+### `INVALID_SESSION`
+
+Players that use Talo Authentication must provide a session token in the request headers. This error is thrown when the session token is invalid.
+
+```javascript
+{
+	message: 'The x-talo-session header is invalid',
+	errorCode: 'INVALID_SESSION'
+}
+```
+
+### `NEW_PASSWORD_MATCHES_CURRENT_PASSWORD`
+
+When trying to change a player's password, this error is thrown if the new password matches the current password.
+
+```javascript
+{
+	message: 'Please choose a different password',
+	errorCode: 'NEW_PASSWORD_MATCHES_CURRENT_PASSWORD'
+}
+```
+
+### `NEW_EMAIL_MATCHES_CURRENT_EMAIL`
+
+When trying to change a player's email address, this error is thrown if the new email matches the current email.
+
+```javascript
+{
+	message: 'Please choose a different email address',
+	errorCode: 'NEW_EMAIL_MATCHES_CURRENT_EMAIL'
+}
+```
+
+### `NEW_IDENTIFIER_MATCHES_CURRENT_IDENTIFIER`
+
+When trying to change a player's identifier, this error is thrown if the new identifier matches the current identifier.
+
+```javascript
+{
+	message: 'Please choose a different identifier',
+	errorCode: 'NEW_IDENTIFIER_MATCHES_CURRENT_IDENTIFIER'
+}
+```
+
+### `PASSWORD_RESET_CODE_INVALID`
+
+When trying to reset a player password, this error is thrown if the reset code is incorrect or has expired.
+
+```javascript
+{
+	message: 'This code is either invalid or has expired',
+	errorCode: 'PASSWORD_RESET_CODE_INVALID'
+}
+```
+
+### `VERIFICATION_EMAIL_REQUIRED`
+
+When attempting to toggle verification on, this error is thrown if the player does not have an email address set and one is not provided in the request.
+
+```javascript
+{
+	message: 'An email address is required to enable verification',
+	errorCode: 'VERIFICATION_EMAIL_REQUIRED'
+}
+```
+
+### `EMAIL_TAKEN`
+
+When registering an auth account with email verification, enabling email verification or changing an account's email, this error will be thrown if another player is already using the chosen email address.
+
+```javascript
+{
+	message: 'This email address is already in use',
+	errorCode: 'EMAIL_TAKEN'
+}
+```
+
+### `INVALID_MIGRATION_TARGET`
+
+When starting a player auth account migration, this error is thrown if an invalid service is provided. Currently the only invalid service is "talo".
+
+```javascript
+{
+	message: 'Cannot migrate to the Talo service',
+	errorCode: 'INVALID_MIGRATION_TARGET'
+}
+```
+
+### `IDENTIFIER_PROFANITY`
+
+When registering an auth account, this error is thrown if the identifier contains profanity and the block alias identifier profanity setting is enabled.
+
+```javascript
+{
+	message: 'Alias identifier contains inappropriate language',
+	errorCode: 'IDENTIFIER_PROFANITY'
+}
+```

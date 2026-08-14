@@ -2,56 +2,54 @@
   "name": "talo-docs",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "docusaurus": "docusaurus",
-    "start": "docusaurus start --port 3009",
-    "build": "docusaurus build",
-    "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy",
-    "clear": "docusaurus clear",
-    "serve": "docusaurus serve",
-    "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc",
+    "dev": "react-router dev",
+    "build": "react-router build",
+    "start": "serve ./build/client --config serve.json",
+    "typecheck": "react-router typegen && tsc --noEmit && tsc --noEmit -p tsconfig.workers.json",
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
     "fmt": "oxfmt --check",
-    "fmt:fix": "oxfmt ."
+    "fmt:fix": "oxfmt .",
+    "deploy": "pnpm run build && wrangler deploy",
+    "preview": "pnpm run build && wrangler dev",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
-    "@docusaurus/core": "^3.10.1",
-    "@docusaurus/preset-classic": "^3.10.1",
-    "@mdx-js/react": "^3.0.1",
-    "@svgr/webpack": "^8.1.0",
-    "axios": "^1.18.0",
-    "clsx": "^2.1.1",
-    "file-loader": "^6.2.0",
-    "prism-react-renderer": "^2.3.1",
-    "react": "^19",
-    "react-dom": "^19",
-    "url-loader": "^4.1.1"
+    "@radix-ui/react-collapsible": "^1.1.20",
+    "@tabler/icons-react": "^3.46.0",
+    "class-variance-authority": "^0.7.1",
+    "cnfast": "^0.1.0",
+    "fumadocs-core": "^16.14.0",
+    "fumadocs-mdx": "^15.2.2",
+    "fumadocs-ui": "^16.14.0",
+    "lucide-react": "^1.31.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router": "^8.3.0",
+    "shiki": "^4.4.3",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.10.1",
-    "@docusaurus/tsconfig": "^3.10.1",
-    "@docusaurus/types": "^3.10.1",
-    "oxfmt": "^0.48.0",
+    "@cloudflare/vite-plugin": "^1.52.0",
+    "@cloudflare/workers-types": "^5.20260813.1",
+    "@react-router/dev": "^8.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^24",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "isbot": "^5.2.1",
+    "oxfmt": "^0.63.0",
     "oxlint": "^1.63.0",
-    "typescript": "^5"
-  },
-  "browserslist": {
-    "production": [
-      ">0.5%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "serve": "^14.2.6",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9",
+    "vite": "^8.2.0",
+    "wrangler": "^4.122.0"
   },
   "engines": {
-    "node": "24.x"
+    "node": ">=24"
   }
 }

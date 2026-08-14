@@ -1,0 +1,476 @@
+---
+description: Talo Channels can be used for player chats, sending data to specific groups, pushing game updates and storing shared game state.
+title: Channels and storage
+---
+
+import { ScopeBadges } from '@/components/documentation/ScopeBadges'
+
+## How channels work
+
+Channels allow you to send socket messages between players, making it extremely easy to add peer-to-peer (P2P) multiplayer mechanics.
+
+When players join a channel, they get subscribed to that channel's messages. Messages can be anything: plain strings for chat, enums for instructions/events or even JSON data.
+
+Channels can also store data inside special props that all subscribed players can modify.
+
+<Callout type='idea'>
+  Visit the [Channels feature page](https://trytalo.com/channels) for more details.
+</Callout>
+
+## Listing channels
+
+<ScopeBadges scope='gameChannels' read />
+
+To get all available channels for your game, use the `Talo.channels.get_channels()` function. This is a paginated function which takes a single `options` parameter.
+
+This function returns an array with 3 items: the channels, the total number of channels (if they weren't paginated) and if this is the last page.
+
+```gdscript
+var options := Talo.channels.GetChannelsOptions.new()
+options.page = 0
+var res := await Talo.channels.get_channels(options)
+
+var channels: Array[GameChannel] = res.channels
+var count: int = res.count
+var is_last_page: bool = res.is_last_page
+```
+
+### Filtering by prop keys and values
+
+The following code will only fetch channels that have the "guildId" key:
+
+```gdscript
+var options := Talo.channels.GetChannelsOptions.new()
+options.page = 0
+options.prop_key = "guildId"
+var res := await Talo.channels.get_channels(options)
+```
+
+You can also filter by a prop value. This code will now make sure there is a "guildId" key and its value is "157":
+
+```gdscript
+var options := Talo.channels.GetChannelsOptions.new()
+options.page = 0
+options.prop_key = "guildId"
+options.prop_value = "157"
+var res := await Talo.channels.get_channels(options)
+```
+
+### Searching for channels
+
+You can search for channels by name or owner identifier using the `search` option:
+
+```gdscript
+var options := Talo.channels.GetChannelsOptions.new()
+options.page = 0
+options.search = "search term"
+var res := await Talo.channels.get_channels(options)
+```
+
+## Listing subscribed channels
+
+<ScopeBadges scope='gameChannels' read />
+
+You can use `Talo.channels.get_subscribed_channels()` to find out which channels the current player is subscribed to. This returns an array of `TaloChannel`.
+
+### Filtering by prop keys and values
+
+Similar to `get_channels()`, you can filter by prop keys and values by providing options:
+
+```gdscript
+var options := Talo.channels.GetSubscribedChannelsOptions.new()
+options.prop_key = "guildId"
+options.prop_value = "157"
+var res := await Talo.channels.get_subscribed_channels(options)
+```
+
+## Finding a channel
+
+<ScopeBadges scope='gameChannels' read />
+
+You can find a channel by its ID using `Talo.channels.find()`. This function takes a channel ID integer and returns a `TaloChannel` object.
+
+## Creating a channel
+
+<ScopeBadges scope='gameChannels' write />
+
+To create a channel, call `Talo.channels.create()` with a channel name and (optionally) the auto cleanup value and/or props.
+
+When auto cleanup is enabled, the channel will be deleted when the owner or the last subscribed member leaves.
+
+Props (a dictionary of string key/value pairs) are a way of adding arbitrary data to your channels in the same way as you would for events, players and leaderboards.
+
+```gdscript
+var options := Talo.channels.CreateChannelOptions.new()
+options.name = "channel name"
+options.auto_cleanup = true
+options.props: Dictionary[String, String] = {
+	prop_key = "prop_value"
+}
+var channel := await Talo.channels.create(options)
+
+print(channel.name) # channel name
+print(channel.auto_cleanup) # true
+print(channel.props) # [{ "prop_key": "prop_value" }]
+```
+
+## Joining and leaving channels
+
+<ScopeBadges scope='gameChannels' write />
+
+To join or leave a channel, use `Talo.channels.join()` and `Talo.channels.leave()` respectively. Both functions take the ID of the channel as the only parameter.
+
+If you attempt to join a channel and the current player is already in that channel, nothing will happen. Leaving a channel also follows the same pattern.
+
+## Updating channels
+
+<ScopeBadges scope='gameChannels' write />
+
+The owner of a channel can update the channel using `Talo.channels.update()`. The name and owner of the channel can be updated using this function.
+
+To transfer ownership of the channel, you should specify the ID of the player alias that will own the channel. The new owner of the channel must be a member first before ownership can be transferred.
+
+You can also update the props of the channel: keys will be overrided with new values and keys with a value of `null` will be deleted.
+
+## Deleting channels
+
+<ScopeBadges scope='gameChannels' write />
+
+The owner of a channel can delete the channel using `Talo.channels.delete()`. All other members of the channel will be unsubscribed automatically.
+
+## Private channels
+
+You can also create invite-only private channels using the `private` option:
+
+```gdscript
+var options := Talo.channels.CreateChannelOptions.new()
+options.name = "channel name"
+options.auto_cleanup = true
+options.private = true
+
+var channel := await Talo.channels.create(options)
+print(channel.private) # true
+```
+
+Private channels will not be listed when using `Talo.channels.get_channels()`. They also cannot be joined in the same way: the channel owner must invite players to a private channel.
+
+### Channel invites
+
+<ScopeBadges scope='gameChannels' write />
+
+To create a channel invite, use `Talo.channels.invite()` with a channel ID and player alias ID.
+
+Invited players will automatically join the channel.
+
+```gdscript
+var options := Talo.channels.CreateChannelOptions.new()
+options.name = "channel name"
+options.auto_cleanup = true
+options.private = true
+
+var channel := await Talo.channels.create(options)
+await Talo.channels.invite(channel.id, invitee_player_alias.id)
+```
+
+<Callout type='info'>
+  You can use invites for public channels too.
+</Callout>
+
+## Temporary membership channels
+
+If players should only be members of a channel while they're online, you can choose to enable the `temporary_membership` option when creating your channel:
+
+```gdscript
+var options := Talo.channels.CreateChannelOptions.new()
+options.name = "channel name"
+options.temporary_membership = true
+
+var channel := await Talo.channels.create(options)
+```
+
+Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.channels.player_left` signal will emit with the reason `Talo.channels.ChannelLeavingReason.TEMPORARY_MEMBERSHIP`.
+
+## Getting channel members
+
+<ScopeBadges scope='gameChannels' read />
+
+You can fetch a list of channel members using `Talo.channels.get_members()`. This will return an `Talo.channels.MembersPage`:
+
+```gdscript
+var members_page := await Talo.channels.get_members(channel.id)
+print(members_page.members.map((func (member): return member.identifier)))
+```
+
+<Callout type='info'>
+  The current player can only fetch channel members for channels they are part of.
+</Callout>
+
+### Filtering channel members
+
+You can provide a `Talo.channels.GetMembersOptions` as the second parameter of `get_members()` to provide extra filters:
+
+```gdscript
+var options := Talo.channels.GetMembersOptions.new()
+options.page = 2
+options.prop_key = "guildId"
+options.prop_value = "5"
+var members_page := await Talo.channels.get_members(channel.id, options)
+
+var filtered_members := members_page.members
+var is_last_page := members_page.is_last_page
+```
+
+You can provide the following filtering options:
+
+- `page`: the current pagination index
+- `player_id`: find channel members with this player ID
+- `alias_id`: find a channel member with this ID
+- `identifier`: find a channel member with this identifier
+- `prop_key`: find channel members with this prop key
+- `prop_value`: find channel members with a matching `prop_key` and `prop_value`
+- `player_group_id`: find channel members that are part of this group
+
+## Listening for messages
+
+<ScopeBadges scope='gameChannels' read />
+
+To listen for messages, you can use the `Talo.channels.message_received` signal. This signal will return the `TaloPlayerChannel`, the sender's `TaloPlayerAlias` and the message.
+
+Here's an example of how to use this signal to update a chat UI:
+
+```gdscript
+func _ready():
+	Talo.channels.message_received.connect(_on_message_received)
+
+func _on_message_received(channel: TaloChannel, player_alias: TaloPlayerAlias, message: String) -> void:
+	if channel.id == _active_channel_id:
+		_add_chat_message("[%s] %s: %s" % [channel.name, player_alias.identifier, message])
+
+```
+
+### Listening for other signals
+
+You can also listen for the following signals:
+
+- `Talo.channels.player_joined`: Emitted when a player joins a channel. Returns the `TaloChannel` and the `TaloPlayerAlias` that joined.
+
+- `Talo.channels.player_left`: Emitted when a player leaves a channel. Returns the `TaloChannel`, the `TaloPlayerAlias` that left and a `Talo.channels.ChannelLeavingReason`.
+
+- `Talo.channels.channel_ownership_transferred`: Emitted when channel ownership is transferred. Returns the `TaloChannel` and the new owner's `TaloPlayerAlias`.
+
+- `Talo.channels.channel_deleted`: Emitted when a channel is deleted. Returns the `TaloChannel` that was deleted.
+
+- `Talo.channels.channel_updated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and an `Array[String]` of properties that were changed.
+
+- `Talo.channels.channel_props_rejected`: Emitted when channel props are rejected during creation or update. Returns an array of `TaloRejectedProp` objects. See [Handling rejected props](#handling-rejected-channel-props) for more details.
+
+## Handling rejected channel props
+
+Talo validates props when creating or updating channels. If one or more props are invalid, the channel will not be created or updated.
+
+You can listen for rejected props by connecting to the `Talo.channels.channel_props_rejected` signal:
+
+```gdscript
+func _ready() -> void:
+	Talo.channels.channel_props_rejected.connect(_on_channel_props_rejected)
+
+func _on_channel_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void:
+	for prop in rejected_props:
+		# e.g. "Rejected prop 'guild_name': Prop key exceeds 128 characters (PROP_KEY_TOO_LONG)"
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.error])
+```
+
+<Callout type='info'>
+  This signal only fires for channel props (set during `create()` and `update()`). For channel
+  **storage** prop errors, use `channel_storage_props_failed_to_set` instead.
+</Callout>
+
+See [Players and props - Prop rejection reasons](/docs/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+
+## Channel storage
+
+Channel storage is a shared pool of props (key/value pairs) that can be read, created, updated and deleted by all members of the channel.
+
+In an open world game, you could store a reference to all the gatherable resources using channel storage. When a resource is gathered, other players in the same channel can be automatically notified so their world can be synced with the global world state.
+
+### Setting storage props
+
+<ScopeBadges scope='gameChannels' write />
+
+Any player can update the global store using `Talo.channels.set_storage_props()`:
+
+```gdscript
+await Talo.channels.set_storage_props(channel.id, {
+	prop1: "value1",
+	prop2: "value2"
+})
+```
+
+This function accepts a dictionary of prop keys and values. You can set a prop value to `null` to delete it. Storage props that aren't being deleted will be upserted (updated if they exist, otherwise created).
+
+#### Handling failures
+
+Sometimes, setting storage props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters.
+
+The `Talo.channels.channel_storage_props_failed_to_set` signal lets you listen for these errors:
+
+```gdscript
+func _ready() -> void:
+	Talo.channels.channel_storage_props_failed_to_set.connect(
+		func (channel: TaloChannel, failed_props: Array[TaloChannelStoragePropError]):
+			for prop in failed_props:
+				# shared-gold: Prop value length (596) exceeds 512 characters (PROP_VALUE_TOO_LONG)
+				print("%s: %s (%s)" % [prop.key, prop.message, prop.error])
+	)
+```
+
+`TaloChannelStoragePropError` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/docs/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+
+### Setting storage prop arrays
+
+<ScopeBadges scope='gameChannels' write />
+
+Prop arrays are a special type of prop that can store multiple values under the same key. This is useful for storing lists of items, player IDs or other data that can have multiple values.
+
+<Callout type="info">
+Array keys are internally suffixed with [] (e.g. a key of "world_items" is stored as "world_items[]").
+
+When using the prop-array-specific functions, you should reference the key without the [] suffix.
+
+</Callout>
+
+```gdscript
+var key := "world_items"
+var items: Array[String] = ["sword", "shield", "potion"]
+
+await Talo.channels.set_storage_prop_array(channel.id, key, items)
+```
+
+Passing an empty array will delete all existing values for the prop.
+
+You can handle failures in the same way [described above](#handling-failures). Individual props have the same limitations as regular props and prop arrays have an additional limit of 1000 items.
+
+### Getting storage props
+
+<ScopeBadges scope='gameChannels' read />
+
+To get a prop, use `Talo.channels.get_storage_prop()`. In the example below, we're finding a channel for the player's guild and fetching the shared gold pool:
+
+```gdscript
+var options := Talo.channels.GetSubscribedChannelsOptions.new()
+options.prop_key = "guildId"
+options.prop_value = "157"
+var res := await Talo.channels.get_subscribed_channels(options)
+
+var channel := res[0]
+var prop := await Talo.channels.get_storage_prop(channel.id, "shared-gold")
+```
+
+After fetching a prop, you can access the `value`, `created_by_alias`, `last_updated_by_alias` (and more) from the `TaloChannelStorageProp` class.
+
+<Callout type="warn">
+Getting storage props immediately after an update can return stale data. This is because the internal cache is only updated when the `channel_storage_props_updated` signal is emitted.
+
+We recommend using the signal for prop updates, as described in the [Listening for storage updates](#listening-for-storage-updates) section.
+If you need to fetch the latest data immediately, you can skip the internal cache: see the [Cache-busting](#cache-busting) section below.
+
+</Callout>
+
+#### Cache-busting
+
+Talo keeps an internal cache of storage props which is automatically updated whenever props are created, updated or deleted. By default, Talo will pull from the internal cache which is generally up-to-date.
+
+To guarantee fetching the freshest data, you can skip the internal cache with the final parameter of `get_storage_prop()`:
+
+```gdscript
+# checks the internal cache first,
+# if the key isn't set, fetches the latest data directly from the database
+var prop := await Talo.channels.get_storage_prop(channel.id, "shared-gold", false) # default
+
+# fetches the latest data directly from the database
+var freshProp := await Talo.channels.get_storage_prop(channel.id, "shared-gold", true)
+```
+
+### Getting storage prop arrays
+
+<ScopeBadges scope='gameChannels' read />
+
+Prop arrays are made up of multiple props with the same key. To fetch all items in a prop array, use `Talo.channels.get_storage_prop_array()`:
+
+```gdscript
+var prop_key := "world_items"
+
+# checks the internal cache first
+var array_items := await Talo.channels.get_storage_prop_array(channel.id, prop_key, false) # default
+
+# fetches the latest data directly from the database
+var fresh_array_items := await Talo.channels.get_storage_prop_array(channel.id, prop_key, true)
+
+for prop in array_items:
+	print(prop.value)
+```
+
+### Getting multiple storage props
+
+<ScopeBadges scope='gameChannels' read />
+
+If you need to fetch multiple storage props, `Talo.channels.list_storage_props()` is much faster and more efficient than fetching them one by one:
+
+```gdscript
+await Talo.channels.set_storage_props(channel.id, {
+	"storage_prop_1": "true",
+	"storage_prop_2": "hello world"
+})
+
+# without cache busting
+var results := await Talo.channels.list_storage_props(channel.id, ["storage_prop_1", "storage_prop_2"])
+for prop in results:
+	print("Prop: %s = %s" % [prop.key, prop.value])
+
+
+# with cache busting
+var busted_results := await Talo.channels.list_storage_props(channel.id, ["storage_prop_1", "storage_prop_2"], true)
+for prop in busted_results:
+	print("Prop: %s = %s" % [prop.key, prop.value])
+```
+
+This function will return a `TaloChannelStorageProp` array, allowing you to iterate through the results.
+
+<Callout type='info'>
+  If a prop cannot be found, it will not appear in the list.
+</Callout>
+
+#### Prop arrays
+
+If any of the keys you pass are [prop arrays](/docs/godot/channels#getting-storage-prop-arrays), append `[]` to the key to fetch every item stored under it. Scalar and array keys can be mixed in a single call:
+
+```gdscript
+# storage_prop_1 is a scalar, world_items[] is a prop array
+var results := await Talo.channels.list_storage_props(channel.id, ["storage_prop_1", "world_items[]"])
+for prop in results:
+	print("Prop: %s = %s" % [prop.key, prop.value])
+```
+
+### Listening for storage updates
+
+<ScopeBadges scope='gameChannels' read />
+
+The `Talo.channels.channel_storage_props_updated` signal will emit when a storage update is received. It will list the channel, upserted (inserted or updated) props and deleted props:
+
+```gdscript
+func _ready() -> void:
+	Talo.channels.channel_storage_props_updated.connect(_on_channel_props_updated)
+
+func _on_channel_props_updated(channel: TaloChannel, upserted_props: Array[TaloChannelStorageProp], deleted_props: Array[TaloChannelStorageProp]) -> void:
+	if channel.id != demo_channel.id:
+		return
+
+	for prop in upserted_props:
+		# e.g. "shared-gold: 80 upserted by jim"
+		print("%s:%s upserted by %s" % [prop.key, prop.value, prop.last_updated_by_alias.identifier])
+
+	for prop in deleted_props:
+		# e.g. "shared-gold deleted by jim, previous value was 80"
+		print("%s deleted by %s, previous value was %s" % [prop.key, prop.last_updated_by_alias.identifier, prop.value])
+
+```
