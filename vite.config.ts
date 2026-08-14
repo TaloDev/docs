@@ -1,3 +1,4 @@
+import { cloudflare } from '@cloudflare/vite-plugin'
 import { reactRouter } from '@react-router/dev/vite'
 import tailwindcss from '@tailwindcss/vite'
 import { fumadocsMdx } from 'fumadocs-mdx/vite'
@@ -70,6 +71,11 @@ export default defineConfig({
     tailwindcss(),
     reactRouter(),
     taloApiDocs(),
+    cloudflare({
+      viteEnvironment: {
+        name: 'ssr',
+      },
+    }),
   ],
   resolve: {
     alias: {

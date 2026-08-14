@@ -1,0 +1,4 @@
+{
+  "extends": "../tsconfig.workers.json",
+  "include": ["./**/*", "../.react-router/types/+server-build.d.ts"]
+}
