@@ -1,0 +1,78 @@
+---
+description: Manage game stats via the admin API. Create stats, find them and view their metrics.
+title: Game stat admin API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'GameStatAdminAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+  { title: 'Types', url: '#types', depth: 2 },
+  { title: 'Stat', url: '#stat', depth: 3 },
+  { title: 'StatMetrics', url: '#statmetrics', depth: 3 },
+]
+
+## Overview
+
+The game stat admin API lets you create, update, delete and reset [game stats](/docs/http/game-stat-api) programmatically, as well as read stats and their metrics. This is useful for automation like creating stats ahead of a new patch or resetting player stats between competitive seasons.
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's game stat admin API lets you manage game stats and their metrics server-side using admin API keys."
+/>
+
+## Types
+
+### Stat
+
+```ts
+type Stat = {
+  id: number
+  internalName: string
+  name: string
+  global: boolean
+  globalValue: number
+  metrics?: StatMetrics // see below
+  defaultValue: number
+  maxChange: number | null
+  minValue: number | null
+  maxValue: number | null
+  minTimeBetweenUpdates: number
+  createdAt: string
+  updatedAt: string
+}
+```
+
+### StatMetrics
+
+Metrics are **optional** and only included when the `withMetrics` query parameter is set on [list](/docs/admin/game-stat-api#get-all-game-stats) and [find](/docs/admin/game-stat-api#get-an-individual-game-stat) requests. When `withMetrics` is set, the `metrics` property is included with the stat response.
+
+```ts
+type StatMetrics = {
+  globalCount: number
+  globalValue: GlobalValueMetrics
+  playerValue: PlayerValueMetrics
+}
+
+type GlobalValueMetrics = {
+  minValue: number
+  maxValue: number
+  medianValue: number
+  averageValue: number
+  averageChange: number
+}
+
+type PlayerValueMetrics = {
+  minValue: number
+  maxValue: number
+  medianValue: number
+  averageValue: number
+}
+```
