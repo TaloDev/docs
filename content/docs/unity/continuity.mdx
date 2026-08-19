@@ -19,6 +19,12 @@ Failed requests are cached and replayed when network connectivity is re-establis
   Continuity requires the `write:continuityRequests` API key scope. Without it, continuity won't work.
 </Callout>
 
+### How does it work?
+
+When a network request to Talo fails, the request is cached to the player's disk. Continuity periodically checks if the network connection to Talo has been restored and if it has, the cached requests will be replayed in batches.
+
+Continuity also works between sessions: any pending continuity requests will get picked up when the player reopens your game.
+
 ### Continuity timestamp
 
 Replayed requests send a special header indicating the original time when the request was made. Talo uses this header to set the `createdAt` of various entities like feedback, leaderboard entries and player stats.

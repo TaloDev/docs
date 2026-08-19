@@ -2,7 +2,6 @@
 description: Talo is designed to work online and offline. Talo will automatically keep data in sync for offline players.
 title: Continuity and offline mode
 ---
-
 import { ScopeBadges } from '@/components/documentation/ScopeBadges'
 
 ## What is Continuity?
@@ -16,8 +15,16 @@ Continuity runs behind the scenes and catches server errors (like 502 Bad Gatewa
 Failed requests are cached and replayed when network connectivity is re-established. Internally, a health check endpoint is polled to assess Talo's availability.
 
 <Callout type='info'>
+
   Continuity requires the `write:continuityRequests` API key scope. Without it, continuity won't work.
+
 </Callout>
+
+### How does it work?
+
+When a network request to Talo fails, the request is cached to the player's disk. Continuity periodically checks if the network connection to Talo has been restored and if it has, the cached requests will be replayed in batches.
+
+Continuity also works between sessions: any pending continuity requests will get picked up when the player reopens your game.
 
 ### Continuity timestamp
 
@@ -30,8 +37,11 @@ As with anything on the client-side, Continuity could potentially be exploited b
 ### Testing Continuity
 
 Continuity happens in the background and there are no direct APIs exposed for it. You can simulate being offline and toggle Continuity in the Talo Playground scene.
+
 <Callout type='info'>
+
   Toggling these options will not update your `settings.cfg`.
+
 </Callout>
 
 If you have [request logging enabled](settings-reference#loggingrequests), the replayed requests will be highlighted for you in the console.
@@ -79,7 +89,9 @@ Use this function to handle custom offline interactions, such as building your o
 After a successful online identification, player data is cached locally for future offline use. You can disable this interaction with the [`cache_player_on_identify` setting](settings-reference#cache_player_on_identify).
 
 <Callout type='info'>
+
   Players cannot be created while offline.
+
 </Callout>
 
 ### Game saves
