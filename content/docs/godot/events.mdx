@@ -24,6 +24,10 @@ func _on_pressed() -> void:
 	})
 ```
 
+<Callout type='warn'>
+  `Talo.events.track()` does not currently support prop arrays.
+</Callout>
+
 ## Flushing
 
 Events are automatically sent to Talo in batches. You can manually call `Talo.events.flush()` to send the events currently waiting in the queue. Flushing also happens automatically when:

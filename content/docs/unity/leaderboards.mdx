@@ -82,6 +82,34 @@ private void BuildEntries()
 
 The code above is available in the leaderboards sample included with the Talo Unity package.
 
+### Array props
+
+To send a prop array with an entry, repeat the key with a `[]` suffix for each value:
+
+```csharp
+(LeaderboardEntry entry, bool updated) = await Talo.Leaderboards.AddEntry(
+	leaderboardName,
+	score,
+	("equipment[]", "sword"),
+	("equipment[]", "shield"),
+	("equipment[]", "helmet")
+);
+```
+
+### Mixed props
+
+Array props can be mixed with scalar props in the same call:
+
+```csharp
+(LeaderboardEntry entry, bool updated) = await Talo.Leaderboards.AddEntry(
+	leaderboardName,
+	score,
+	("team", team),
+	("equipment[]", "sword"),
+	("equipment[]", "shield")
+);
+```
+
 ### Handling rejected entry props
 
 Talo validates entry props. If one or more props are invalid, the entry will not be saved.
