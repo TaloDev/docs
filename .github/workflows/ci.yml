@@ -1,0 +1,32 @@
+name: Lint + typecheck
+
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Format
+        run: pnpm fmt
+
+      - name: Lint
+        run: pnpm lint
+
+  build-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
