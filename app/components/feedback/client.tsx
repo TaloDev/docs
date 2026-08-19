@@ -102,7 +102,10 @@ export function Feedback({
               />
               <button
                 type='submit'
-                className={cn(buttonVariants({ color: 'outline' }), 'w-fit cursor-pointer px-3 hover:bg-gray-800')}
+                className={cn(
+                  buttonVariants({ color: 'outline' }),
+                  'w-fit cursor-pointer px-3 hover:bg-gray-800',
+                )}
               >
                 Submit
               </button>
