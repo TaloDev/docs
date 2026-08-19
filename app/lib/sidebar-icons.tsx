@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react'
-import { IconExchange, IconServer, IconTopologyBus, IconWorld } from '@tabler/icons-react'
+import { IconExchange, IconKey, IconServer, IconTopologyBus, IconWorld } from '@tabler/icons-react'
 import { GodotIcon, UnityIcon } from '@/components/brand-icons'
 
 const icons: Record<string, ReactNode> = {
   godot: <GodotIcon />,
   unity: <UnityIcon />,
   http: <IconWorld />,
+  admin: <IconKey />,
   sockets: <IconTopologyBus />,
   selfhosting: <IconServer />,
   integrations: <IconExchange />,
