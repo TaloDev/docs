@@ -1,5 +1,5 @@
 {
-  "pages": ["authentication", "game-stat-api"],
+  "pages": ["authentication", "game-stat-api", "leaderboard-api"],
   "title": "Admin API reference",
   "icon": "admin"
 }
