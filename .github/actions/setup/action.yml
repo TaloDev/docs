@@ -3,11 +3,8 @@ name: Setup CI
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v6
+    - uses: pnpm/setup@v1
       with:
-        node-version: 24
-        cache: pnpm
-
-    - name: Install deps
-      run: pnpm install --frozen-lockfile
-      shell: bash
+        version: 11
+        runtime: node@24
+        cache: true
