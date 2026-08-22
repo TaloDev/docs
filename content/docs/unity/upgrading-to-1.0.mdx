@@ -1,0 +1,278 @@
+---
+description: Upgrade the Talo Unity package to 1.0 and migrate code from v0.60.2 and earlier.
+title: Upgrading to 1.0
+---
+## How to upgrade
+
+1. Download the latest release from the [Unity Asset Store](https://assetstore.unity.com/packages/tools/game-toolkits/talo-game-services-292832), [itch.io](https://sleepystudios.itch.io/talo-unity) or [GitHub releases](https://github.com/TaloDev/unity/releases).
+2. Re-import the package over your existing install (Asset Store: re-download from `Window > My Assets`; itch.io: re-open the `.unitypackage`).
+3. Go through each section below and update any code that uses the affected APIs.
+
+## Identifying players
+
+### Player aliases
+
+`Identify()`, `IdentifySteam()`, `IdentifyGooglePlayGames()` and `IdentifyGameCenter()` now return a `PlayerAlias` instead of a `Player`, and the `OnIdentified` event passes a `PlayerAlias` ([#223](https://github.com/TaloDev/unity/pull/223)).
+
+You can access the underlying player via `alias.player`:
+
+```csharp
+// before
+var player = await Talo.Players.Identify("username", "bob");
+Debug.Log(player.id);
+
+// after
+var alias = await Talo.Players.Identify("username", "bob");
+Debug.Log(alias.player.id);
+```
+
+### Identification errors
+
+The `OnIdentificationFailed` event now passes an `IdentifyException` with an `ErrorCode` enum (`UNKNOWN_ERROR`, `IDENTIFIER_PROFANITY`, `IDENTIFIER_TAKEN`) instead of firing with no arguments ([#224](https://github.com/TaloDev/unity/pull/224)):
+
+```csharp
+// before
+Talo.Players.OnIdentificationFailed += () => GoToLogin();
+
+// after
+Talo.Players.OnIdentificationFailed += (ex) =>
+{
+    Debug.LogError($"Identification failed: {ex.ErrorCode}");
+    GoToLogin();
+};
+```
+
+## Player props
+
+### Awaitable prop updates
+
+All six prop mutators (`SetProp`, `DeleteProp`, `SetPropArray`, `DeletePropArray`, `InsertIntoPropArray`, `RemoveFromPropArray`) now return a `Task<PlayerUpdateResult>` that resolves with a new `PlayerUpdateResult` (`Success`, `RejectedProps`) after the debounce settles ([#227](https://github.com/TaloDev/unity/pull/227)):
+
+```csharp
+// fire-and-forget (still works - the return value can be ignored)
+Talo.CurrentPlayer.SetProp("level", "5");
+
+// await the settle result
+var result = await Talo.CurrentPlayer.SetProp("level", "5");
+// result.Success       - whether the update was successful
+// result.RejectedProps - which props Talo rejected (if any)
+
+// a local update (no network request); returns a valid result
+var local = await Talo.CurrentPlayer.SetProp("level", "5", false);
+```
+
+### Rejected props
+
+The `Talo.Players.OnPropsRejected` event has been removed - rejected props come back on the result ([#228](https://github.com/TaloDev/unity/pull/228)).
+
+### Trailing-only debounce
+
+The debounce timer is now **trailing-only** - the leading-edge mode has been removed, so the first call no longer fires immediately ([#229](https://github.com/TaloDev/unity/pull/229)). Pending player and save updates are now flushed when the game quits, so queued updates are no longer dropped.
+
+## Leaderboards
+
+### Current player entries
+
+The deprecated `GetEntriesForCurrentPlayer()`, `GetCachedEntriesForCurrentPlayer()` and the `GetEntries(name, page, aliasId, includeArchived)` overloads have been removed ([#219](https://github.com/TaloDev/unity/pull/219), [#220](https://github.com/TaloDev/unity/pull/220), [#221](https://github.com/TaloDev/unity/pull/221)).
+
+Use the options-based methods with `aliasId` or `playerId` filtering instead:
+
+```csharp
+// before
+var res = await Talo.Leaderboards.GetEntriesForCurrentPlayer(internalName);
+var cached = Talo.Leaderboards.GetCachedEntriesForCurrentPlayer(internalName);
+var paged = await Talo.Leaderboards.GetEntries(internalName, 0, aliasId, true);
+
+// after
+var res = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions
+{
+    aliasId = Talo.CurrentAlias.id
+});
+var cached = Talo.Leaderboards.GetCachedEntries(internalName, new GetCachedEntriesOptions
+{
+    aliasId = Talo.CurrentAlias.id
+});
+var paged = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOptions
+{
+    page = 0,
+    aliasId = aliasId,
+    includeArchived = true
+});
+```
+
+### Rejected entry props
+
+The `OnPropsRejected` event has been removed. `AddEntry()` now returns an `AddEntryResult` (`Success`, `Entry`, `Updated`, `RejectedProps`) instead of a `(LeaderboardEntry, bool)` tuple ([#228](https://github.com/TaloDev/unity/pull/228)):
+
+```csharp
+// before
+(LeaderboardEntry entry, bool updated) = await Talo.Leaderboards.AddEntry(internalName, score, ("team", "red"));
+Debug.Log(entry.position);
+
+// after
+var result = await Talo.Leaderboards.AddEntry(internalName, score, ("team", "red"));
+if (!result.Success)
+{
+    foreach (var prop in result.RejectedProps)
+    {
+        Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+    }
+    return;
+}
+Debug.Log(result.Entry.position);
+```
+
+## Stats
+
+### `GetStat()` removed
+
+The deprecated `Talo.Stats.GetStat()` method has been removed. Use `Talo.Stats.Find()` instead ([#215](https://github.com/TaloDev/unity/pull/215)):
+
+```csharp
+// before
+var stat = await Talo.Stats.GetStat("gold-collected");
+
+// after
+var stat = await Talo.Stats.Find("gold-collected");
+```
+
+## Channels
+
+### Deprecated methods removed
+
+The deprecated `GetChannels(int page)`, `CreatePrivate()` and `Create(string name, ...)` overloads have been removed ([#216](https://github.com/TaloDev/unity/pull/216), [#217](https://github.com/TaloDev/unity/pull/217), [#218](https://github.com/TaloDev/unity/pull/218)):
+
+```csharp
+// before
+var res = await Talo.Channels.GetChannels(page);
+var privateChannel = await Talo.Channels.CreatePrivate("secret-guild", autoCleanup: true);
+var guild = await Talo.Channels.Create("guild", true, ("team", "red"));
+
+// after
+var res = await Talo.Channels.GetChannels(new GetChannelsOptions { page = page });
+var privateResult = await Talo.Channels.Create(new CreateChannelOptions
+{
+    name = "secret-guild",
+    autoCleanup = true,
+    isPrivate = true
+});
+var guildResult = await Talo.Channels.Create(new CreateChannelOptions
+{
+    name = "guild",
+    autoCleanup = true,
+    props = new[] { ("team", "red") }
+});
+```
+
+### Updating channels
+
+`Update()` now takes an `UpdateChannelOptions` object instead of positional arguments. `Create()` and `Update()` now return a `ChannelUpsertResult` (`Success`, `Channel`, `RejectedProps`) instead of a `Channel` ([#226](https://github.com/TaloDev/unity/pull/226), [#228](https://github.com/TaloDev/unity/pull/228)):
+
+```csharp
+// before
+await Talo.Channels.Update(channelId, "new name", newOwnerAliasId, ("team", "red"));
+
+// after
+var options = new UpdateChannelOptions
+{
+    name = "new name",
+    newOwnerAliasId = newOwnerAliasId,
+    props = new[] { ("team", "red") }
+};
+var result = await Talo.Channels.Update(channelId, options);
+if (!result.Success)
+{
+    foreach (var prop in result.RejectedProps) { ... }
+    return;
+}
+```
+
+`UpdateChannelOptions` also adds nullable toggles - `autoCleanup`, `isPrivate` and `temporaryMembership` are `bool?` - so you can leave a field unchanged (`null`) or explicitly set it to `true`/`false`. `name` (empty string) and `newOwnerAliasId` (`-1`) work the same way.
+
+### Channel storage errors
+
+`ChannelStoragePropError` has been removed. The `OnChannelStoragePropsFailedToSet` event now passes `RejectedProp[]` instead of `ChannelStoragePropError[]` ([#222](https://github.com/TaloDev/unity/pull/222)):
+
+```csharp
+// before
+Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, ChannelStoragePropError[] errors) =>
+{
+    foreach (var prop in errors) Debug.Log($"{prop.key}: {prop.message} ({prop.error})");
+};
+
+// after
+Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, RejectedProp[] errors) =>
+{
+    foreach (var prop in errors) Debug.Log($"{prop.key}: {prop.message} ({prop.error})");
+};
+```
+
+`RejectedProp` keeps the same shape (`key`, `error`, `message`), so only the type annotation changes.
+
+## Saves
+
+### Updating the current save
+
+`UpdateCurrentSave()` now returns a `SaveUpdateResult` (`Success`, `Save`) on **both** the debounced content-sync path and the immediate rename path (previously the rename path returned a `GameSave`) ([#227](https://github.com/TaloDev/unity/pull/227)):
+
+```csharp
+// rename path (immediate, same shape as the content-sync path):
+var result = await Talo.Saves.UpdateCurrentSave("new name");
+// result.Success - whether the PATCH round-trip OK
+// result.Save    - the save that was synced (null on failure)
+```
+
+## Feedback
+
+### Sending feedback
+
+`Send()` now returns a `FeedbackSendResult` (`Success`, `RejectedProps`) instead of `void`, and the `OnPropsRejected` event has been removed ([#228](https://github.com/TaloDev/unity/pull/228)):
+
+```csharp
+// before
+await Talo.Feedback.Send(category, comment, ("version", "1.2"));
+
+// after
+var result = await Talo.Feedback.Send(category, comment, ("version", "1.2"));
+if (!result.Success)
+{
+    foreach (var prop in result.RejectedProps)
+    {
+        Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+    }
+}
+```
+
+## Exception handling
+
+`PlayerAuthException.ErrorCode` and `SocketException.ErrorCode` now fall back to `API_ERROR` when the server returns an unrecognised code, instead of throwing ([#225](https://github.com/TaloDev/unity/pull/225)).
+
+## Quick reference
+
+
+| Removed / renamed                                                    | Replacement                                                                |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `Talo.Players.Identify*()` → `Player`                                | `Talo.Players.Identify*()` → `PlayerAlias` (use `.player`)                 |
+| `Talo.Players.OnIdentified(Player)`                                  | `Talo.Players.OnIdentified(PlayerAlias)`                                   |
+| `Talo.Players.OnIdentificationFailed` (no args)                      | `Talo.Players.OnIdentificationFailed(IdentifyException)`                   |
+| `Talo.Players.OnPropsRejected`                                       | `PlayerUpdateResult.RejectedProps`                                         |
+| Prop editing on players, e.g. `SetProp()`, returns `void`            | `Talo.CurrentPlayer.SetProp()` is awaitable → `Task<PlayerUpdateResult>`   |
+| Leading debounce (first call sends immediately)                      | Trailing-only: all calls coalesce into one request after the window        |
+| `Talo.Leaderboards.GetEntriesForCurrentPlayer()`                     | `Talo.Leaderboards.GetEntries()` + `aliasId`/`playerId` options            |
+| `Talo.Leaderboards.GetCachedEntriesForCurrentPlayer()`               | `Talo.Leaderboards.GetCachedEntries()` + `aliasId`/`playerId` options      |
+| `Talo.Leaderboards.GetEntries(name, page, aliasId, includeArchived)` | `Talo.Leaderboards.GetEntries(name, GetEntriesOptions)`                    |
+| `Talo.Leaderboards.AddEntry()` → `(LeaderboardEntry, bool)` tuple    | `Talo.Leaderboards.AddEntry()` → `AddEntryResult` (`.Entry`, `.Updated`)   |
+| `Talo.Leaderboards.OnPropsRejected`                                  | `AddEntryResult.RejectedProps`                                             |
+| `Talo.Stats.GetStat(name)`                                           | `Talo.Stats.Find(name)`                                                    |
+| `Talo.Channels.GetChannels(page)`                                    | `Talo.Channels.GetChannels(new GetChannelsOptions { page = page })`        |
+| `Talo.Channels.CreatePrivate(name, ...)`                             | `Talo.Channels.Create(new CreateChannelOptions { isPrivate = true, ... })` |
+| `Talo.Channels.Create(name, autoCleanup, props)`                     | `Talo.Channels.Create(new CreateChannelOptions { ... })`                   |
+| `Talo.Channels.Update(id, name, ownerId, props)`                     | `Talo.Channels.Update(id, new UpdateChannelOptions { ... })`               |
+| `Talo.Channels.Create()`/`Update()` returned `Channel`                | `ChannelUpsertResult` (use `.Channel`, check `.Success`)                  |
+| `Talo.Channels.OnChannelPropsRejected`                               | `ChannelUpsertResult.RejectedProps`                                        |
+| `ChannelStoragePropError`                                            | `RejectedProp`                                                             |
+| `Talo.Saves.UpdateCurrentSave()` → `GameSave`                        | `Talo.Saves.UpdateCurrentSave()` → `SaveUpdateResult` (both paths)         |
+| `Talo.Feedback.Send()` → `void`                                      | `Talo.Feedback.Send()` → `FeedbackSendResult`                              |
+| `Talo.Feedback.OnPropsRejected`                                      | `FeedbackSendResult.RejectedProps`                                         |
+
+
