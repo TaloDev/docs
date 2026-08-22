@@ -1,6 +1,7 @@
 {
   "pages": [
     "install",
+    "upgrading-to-1.0",
     "settings-reference",
     "dev-data",
     "request-verification",
