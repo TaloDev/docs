@@ -26,12 +26,12 @@ To get all available channels for your game, use the `Talo.Channels.GetChannels(
 This function returns an array with 3 items: the channels, the total number of channels (if they weren't paginated) and if this is the last page.
 
 ```csharp
-var page = 0
-var res = await Talo.Channels.GetChannels(new GetChannelsOptions { page = page })
+var page = 0;
+var res = await Talo.Channels.GetChannels(new GetChannelsOptions { page = page });
 
-var channels: Channel[] = res.channels
-var count: int = res.count
-var isLastPage: bool = res.isLastPage
+Channel[] channels = res.channels;
+int count = res.count;
+bool isLastPage = res.isLastPage;
 ```
 
 ## Finding a channel
@@ -45,15 +45,15 @@ You can find a channel by its ID using `Talo.Channels.Find()`. This function tak
 The following code will only fetch channels that have the "guildId" key:
 
 ```csharp
-var options = new GetChannelsOptions() { page = page, propKey = "guildId" }
-var res = await Talo.Channels.GetChannels(options)
+var options = new GetChannelsOptions() { page = page, propKey = "guildId" };
+var res = await Talo.Channels.GetChannels(options);
 ```
 
 You can also filter by a prop value. This code will now make sure there is a "guildId" key and its value is "157":
 
 ```csharp
-var options = new GetChannelsOptions() { page = page, propKey = "guildId", propValue = "157" }
-var res = await Talo.Channels.GetChannels(options)
+var options = new GetChannelsOptions() { page = page, propKey = "guildId", propValue = "157" };
+var res = await Talo.Channels.GetChannels(options);
 ```
 
 ### Searching for channels
@@ -61,8 +61,8 @@ var res = await Talo.Channels.GetChannels(options)
 You can search for channels by name or owner identifier using the `search` option:
 
 ```csharp
-var options = new GetChannelsOptions() { page = page, search = "search term" }
-var res = await Talo.Channels.GetChannels(options)
+var options = new GetChannelsOptions() { page = page, search = "search term" };
+var res = await Talo.Channels.GetChannels(options);
 ```
 
 ## Listing subscribed channels
@@ -76,8 +76,8 @@ You can use `Talo.Channels.GetSubscribedChannels()` which returns a `Channel[]` 
 Similar to `GetChannels()`, you can filter by prop keys and values by providing options:
 
 ```csharp
-var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" }
-var res = await Talo.Channels.GetSubscribedChannels(options)
+var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" };
+var res = await Talo.Channels.GetSubscribedChannels(options);
 ```
 
 ## Creating a channel
@@ -138,7 +138,7 @@ To create a channel invite, use `Talo.Channels.Invite()` with a channel ID and p
 Invited players will automatically join the channel.
 
 ```csharp
-var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", isPrivate = true }
+var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", isPrivate = true });
 await Talo.Channels.Invite(channel.id, inviteePlayerAlias.id);
 ```
 
@@ -151,7 +151,7 @@ await Talo.Channels.Invite(channel.id, inviteePlayerAlias.id);
 If players should only be members of a channel while they're online, you can choose to enable the `temporary_membership` option when creating your channel:
 
 ```csharp
-var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", temporaryMembership = true }
+var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", temporaryMembership = true });
 ```
 
 Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.Channels.OnChannelLeft` event will invoke with the reason `ChannelLeavingReason.TemporaryMembership`.
@@ -348,7 +348,7 @@ var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValu
 var res = await Talo.Channels.GetSubscribedChannels(options);
 
 var channel = res[0];
-var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold")
+var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold");
 ```
 
 After fetching a prop, you can access the `value`, `createdBy`, `lastUpdatedBy` (and more) from the `ChannelStorageProp` class.

@@ -30,7 +30,7 @@ var options := Talo.channels.GetChannelsOptions.new()
 options.page = 0
 var res := await Talo.channels.get_channels(options)
 
-var channels: Array[GameChannel] = res.channels
+var channels: Array[TaloChannel] = res.channels
 var count: int = res.count
 var is_last_page: bool = res.is_last_page
 ```
