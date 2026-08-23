@@ -26,12 +26,12 @@ To get all available channels for your game, use the `Talo.Channels.GetChannels(
 This function returns an array with 3 items: the channels, the total number of channels (if they weren't paginated) and if this is the last page.
 
 ```csharp
-var page = 0
-var res = await Talo.Channels.GetChannels(new GetChannelsOptions { page = page })
+var page = 0;
+var res = await Talo.Channels.GetChannels(new GetChannelsOptions { page = page });
 
-var channels: Channel[] = res.channels
-var count: int = res.count
-var isLastPage: bool = res.isLastPage
+Channel[] channels = res.channels;
+int count = res.count;
+bool isLastPage = res.isLastPage;
 ```
 
 ## Finding a channel
@@ -45,15 +45,15 @@ You can find a channel by its ID using `Talo.Channels.Find()`. This function tak
 The following code will only fetch channels that have the "guildId" key:
 
 ```csharp
-var options = new GetChannelsOptions() { page = page, propKey = "guildId" }
-var res = await Talo.Channels.GetChannels(options)
+var options = new GetChannelsOptions() { page = page, propKey = "guildId" };
+var res = await Talo.Channels.GetChannels(options);
 ```
 
 You can also filter by a prop value. This code will now make sure there is a "guildId" key and its value is "157":
 
 ```csharp
-var options = new GetChannelsOptions() { page = page, propKey = "guildId", propValue = "157" }
-var res = await Talo.Channels.GetChannels(options)
+var options = new GetChannelsOptions() { page = page, propKey = "guildId", propValue = "157" };
+var res = await Talo.Channels.GetChannels(options);
 ```
 
 ### Searching for channels
@@ -61,8 +61,8 @@ var res = await Talo.Channels.GetChannels(options)
 You can search for channels by name or owner identifier using the `search` option:
 
 ```csharp
-var options = new GetChannelsOptions() { page = page, search = "search term" }
-var res = await Talo.Channels.GetChannels(options)
+var options = new GetChannelsOptions() { page = page, search = "search term" };
+var res = await Talo.Channels.GetChannels(options);
 ```
 
 ## Listing subscribed channels
@@ -76,8 +76,8 @@ You can use `Talo.Channels.GetSubscribedChannels()` which returns a `Channel[]` 
 Similar to `GetChannels()`, you can filter by prop keys and values by providing options:
 
 ```csharp
-var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" }
-var res = await Talo.Channels.GetSubscribedChannels(options)
+var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValue = "157" };
+var res = await Talo.Channels.GetSubscribedChannels(options);
 ```
 
 ## Creating a channel
@@ -93,10 +93,12 @@ Props (an array of `(string, string)` tuples) are a way of adding arbitrary data
 ```csharp
 var props = new (string, string)[]
 {
-		("propKey", "propValue")
+	("propKey", "propValue")
 };
 
-var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = channelName, autoCleanup = true, props = props });
+var result = await Talo.Channels.Create(new CreateChannelOptions() { name = channelName, autoCleanup = true, props = props });
+if (!result.Success) return;
+var channel = result.Channel;
 ```
 
 ## Joining and leaving channels
@@ -115,7 +117,25 @@ The owner of a channel can update the channel using `Talo.Channels.Update()`. Th
 
 To transfer ownership of the channel, you should specify the ID of the player alias that will own the channel. The new owner of the channel must be a member first before ownership can be transferred.
 
-You can also update the props of the channel: keys will be overrided with new values and keys with a value of `null` will be deleted.
+You can also update the props of the channel: keys will be overridden with new values and keys with a value of `null` will be deleted.
+
+`Update()` takes an `UpdateChannelOptions` object:
+
+```csharp
+var options = new UpdateChannelOptions
+{
+	name = "new channel name",
+	newOwnerAliasId = newOwnerAliasId,
+	props = new[] { ("team", "red") },
+	autoCleanup = true,
+	isPrivate = null,
+	temporaryMembership = false
+};
+var result = await Talo.Channels.Update(channelId, options);
+if (!result.Success) return;
+```
+
+The `autoCleanup`, `isPrivate` and `temporaryMembership` options are nullable (`bool?`) so you can leave a field unchanged (`null`) or explicitly set it to `true`/`false`. `name` (empty string) and `newOwnerAliasId` (`-1`) work the same way.
 
 ## Deleting channels
 
@@ -138,8 +158,9 @@ To create a channel invite, use `Talo.Channels.Invite()` with a channel ID and p
 Invited players will automatically join the channel.
 
 ```csharp
-var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", isPrivate = true }
-await Talo.Channels.Invite(channel.id, inviteePlayerAlias.id);
+var result = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", isPrivate = true });
+if (!result.Success) return;
+await Talo.Channels.Invite(result.Channel.id, inviteePlayerAlias.id);
 ```
 
 <Callout type='info'>
@@ -151,7 +172,8 @@ await Talo.Channels.Invite(channel.id, inviteePlayerAlias.id);
 If players should only be members of a channel while they're online, you can choose to enable the `temporary_membership` option when creating your channel:
 
 ```csharp
-var channel = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", temporaryMembership = true }
+var result = await Talo.Channels.Create(new CreateChannelOptions() { name = "channel name", temporaryMembership = true });
+if (!result.Success) return;
 ```
 
 Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.Channels.OnChannelLeft` event will invoke with the reason `ChannelLeavingReason.TemporaryMembership`.
@@ -235,38 +257,26 @@ You can also listen for the following events:
 
 - `Talo.Channels.OnChannelUpdated`: Invoked when a channel is updated. Returns the `TaloChannel` that was updated and a `string[]` of properties that were changed.
 
-- `Talo.Channels.OnChannelPropsRejected`: Invoked when channel props are rejected during creation or update. Returns an array of `RejectedProp` objects. See [Handling rejected props](#handling-rejected-channel-props) for more details.
-
 ## Handling rejected channel props
 
 Talo validates props when creating or updating channels. If one or more props are invalid, the channel will not be created or updated.
 
-You can listen for rejected props using the `Talo.Channels.OnChannelPropsRejected` event:
+`Create()` and `Update()` return a `ChannelUpsertResult` with a `Success` flag and a `RejectedProps` array:
 
 ```csharp
-private void OnEnable()
-{
-		Talo.Channels.OnChannelPropsRejected += OnChannelPropsRejected;
-}
+var result = await Talo.Channels.Create(createOptions);
 
-private void OnDisable()
+if (!result.Success)
 {
-		Talo.Channels.OnChannelPropsRejected -= OnChannelPropsRejected;
-}
-
-private void OnChannelPropsRejected(RejectedProp[] rejectedProps)
-{
-		foreach (var prop in rejectedProps)
-		{
-				Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
-		}
+	foreach (var prop in result.RejectedProps)
+	{
+		Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+	}
+	return;
 }
 ```
 
-<Callout type='info'>
-  This event only fires for channel props (set during `Create()` and `Update()`). For channel
-  **storage** prop errors, use `OnChannelStoragePropsFailedToSet` instead.
-</Callout>
+For **channel storage** prop errors, use the `OnChannelStoragePropsFailedToSet` event instead.
 
 See [Players and props - Prop rejection reasons](/docs/1.x/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
@@ -301,7 +311,7 @@ The `Talo.Channels.OnChannelStoragePropsFailedToSet` event lets you listen for t
 ```csharp
 void Start()
 {
-		Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, ChannelStoragePropError[] errors) => {
+		Talo.Channels.OnChannelStoragePropsFailedToSet += (Channel channel, RejectedProp[] errors) => {
 				foreach (var prop in errors)
 				{
 						// shared-gold: Prop value length (596) exceeds 512 characters (PROP_VALUE_TOO_LONG)
@@ -311,7 +321,7 @@ void Start()
 }
 ```
 
-`ChannelStoragePropError` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/docs/1.x/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+`RejectedProp` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/docs/1.x/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
 ### Setting storage prop arrays
 
@@ -348,7 +358,7 @@ var options = new GetSubscribedChannelsOptions() { propKey = "guildId", propValu
 var res = await Talo.Channels.GetSubscribedChannels(options);
 
 var channel = res[0];
-var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold")
+var prop = await Talo.Channels.GetStorageProp(channel.id, "shared-gold");
 ```
 
 After fetching a prop, you can access the `value`, `createdBy`, `lastUpdatedBy` (and more) from the `ChannelStorageProp` class.

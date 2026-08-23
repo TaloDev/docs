@@ -173,7 +173,9 @@ Offline copies of saves are created in the [`Application.persistentDataPath`](ht
 
 <ScopeBadges scope='gameSaves' write />
 
-To update a save, use `Talo.Saves.UpdateSave()`. You can optionally pass in a new name for your save.
+To update a save, use `Talo.Saves.UpdateSave()`. You can optionally pass in a new name for your save. You can also update the current save using `Talo.Saves.UpdateCurrentSave()`.
+
+`UpdateCurrentSave()` returns a `SaveUpdateResult` (`Success`, `Save`). The `Talo.Saves.OnSaveUpdated(bool success, GameSave save)` event fires after every save update settles (`save` is `null` on failure), and `Talo.Saves.FlushUpdates()` immediately flushes any pending or in-flight update (returning a `FlushResult`). Pending updates are also flushed automatically when the game quits.
 
 ## Deleting saves
 

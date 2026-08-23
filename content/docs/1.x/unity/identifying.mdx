@@ -17,14 +17,14 @@ For example, a player could have Steam and Google Play accounts. Both accounts c
 
 You should identify a player _after_ you know who they are (post-authentication) but _before_ you attempt to track any events, add leaderboard entries or do anything related directly to the player.
 
-You can identify a player using `Talo.Players.Identify()`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground):
+You can identify a player using `Talo.Players.Identify()`, which returns a `PlayerAlias`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground):
 
 ```csharp title="IdentifyPlayer.cs"
 using TaloGameServices;
 
 public class IdentifyPlayer: MonoBehaviour
 {
-	public string service = 'username', identifier = '123456';
+	public string service = "username", identifier = "123456";
 
 	public void OnButtonClick()
 	{
@@ -56,10 +56,10 @@ Visit the [Player authentication docs](/docs/1.x/unity/player-authentication) to
 
 ### The "OnIdentified" event
 
-After a successful identification, the `Talo.Players.OnIdentified()` event will invoke, returning the identified player. This allows you to, for example, immediately fetch that player's saves:
+After a successful identification, the `Talo.Players.OnIdentified()` event will invoke, returning the identified player's alias. This allows you to, for example, immediately fetch that player's saves:
 
 ```csharp
-Talo.Players.OnIdentified += async (player) =>
+Talo.Players.OnIdentified += async (alias) =>
 {
 	await Talo.Saves.GetSaves();
 };
@@ -69,7 +69,7 @@ Talo.Players.OnIdentified += async (player) =>
 
 When `Talo.Players.Identify()` is called, the `Talo.Players.OnIdentificationStarted` event is invoked.
 
-If identification fails, the `Talo.Players.OnIdentificationFailed` event is invoked.
+If identification fails, the `Talo.Players.OnIdentificationFailed` event is invoked. It passes an `IdentifyException` with an `ErrorCode` enum (`UNKNOWN_ERROR`, `IDENTIFIER_PROFANITY`, `IDENTIFIER_TAKEN`).
 
 ## Checking identification
 
@@ -320,9 +320,9 @@ public class IdentifyPlayer : MonoBehaviour
 		);
 	}
 
-	private void OnIdentified(Player player)
+	private void OnIdentified(PlayerAlias alias)
 	{
-		Debug.Log($"Player identifier: {player.id}");
+		Debug.Log($"Player identifier: {alias.player.id}");
 	}
 }
 ```
@@ -342,7 +342,7 @@ public class WelcomeLabel : MonoBehaviour
 {
 	private void Start()
 	{
-		Talo.Players.OnIdentified += (player) =>
+		Talo.Players.OnIdentified += (alias) =>
 		{
 			Debug.Log($"Welcome, {Talo.CurrentAlias.displayName}!");
 		};

@@ -85,25 +85,18 @@ public async void OnButtonClick()
 
 Talo validates feedback props. If one or more props are invalid, the feedback will not be saved.
 
-You can listen for rejected props using the `Talo.Feedback.OnPropsRejected` event:
+`Send()` returns a `FeedbackSendResult` with a `Success` flag and a `RejectedProps` array:
 
 ```csharp
-private void OnEnable()
-{
-	Talo.Feedback.OnPropsRejected += OnPropsRejected;
-}
+var result = await Talo.Feedback.Send(categoryInternalName, comment, ("version", "1.2"));
 
-private void OnDisable()
+if (!result.Success)
 {
-	Talo.Feedback.OnPropsRejected -= OnPropsRejected;
-}
-
-private void OnPropsRejected(RejectedProp[] rejectedProps)
-{
-	foreach (var prop in rejectedProps)
+	foreach (var prop in result.RejectedProps)
 	{
 		Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
 	}
+	return;
 }
 ```
 
