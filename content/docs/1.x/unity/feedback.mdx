@@ -1,0 +1,110 @@
+---
+description: Talo Feedback allows you to receive feedback directly from players. Feedback can be categorised, analysed and filtered to improve your game.
+title: Feedback
+---
+
+import { ScopeBadges } from '@/components/documentation/ScopeBadges'
+
+## Creating feedback categories
+
+To create a feedback category, visit [the feedback page](https://dashboard.trytalo.com/feedback) inside the Talo dashboard and click "Edit categories". Take note of the `Internal name` of the category you create as this is how you'll be referring to it inside your game.
+
+## Getting available categories
+
+<ScopeBadges scope='gameFeedback' read />
+
+To list all the feedback categories for your game, use the `GetCategories()` function:
+
+```csharp title="GetCategories.cs"
+using UnityEngine;
+using TaloGameServices;
+using System.Threading.Tasks;
+using System.Linq;
+
+public class GetCategories : MonoBehaviour
+{
+	public async void OnButtonClick()
+	{
+		await FetchCategories();
+	}
+
+	private async Task FetchCategories()
+	{
+		var categories = await Talo.Feedback.GetCategories();
+
+		if (categories.Length == 0)
+		{
+			Debug.Log("No categories found. Create some in the Talo dashboard!");
+		}
+		else
+		{
+			var mapped = categories.Select((c) => c.internalName);
+			Debug.Log($"Categories: " + string.Join(',', mapped)); // prints: "bugs, gameplay-feedback, terrain-issues"
+		}
+	}
+}
+```
+
+## Sending feedback
+
+<ScopeBadges scope='gameFeedback' write />
+
+To send feedback, call the `Send()` function with the player's comment and your chosen category's internal name:
+
+```csharp title="SendFeedback.cs"
+using UnityEngine;
+using TaloGameServices;
+
+public class SendFeedback : MonoBehaviour
+{
+	public string internalName, feedbackComment;
+
+	public async void OnButtonClick()
+	{
+		await Talo.Feedback.Send(internalName, feedbackComment);
+		Debug.Log($"Feedback sent for {internalName}: {feedbackComment}");
+	}
+}
+```
+
+### Additional context with props
+
+You can also provide extra information with `props` by providing `(string, string)` tuples as the final parameter(s) of `Send()`. Props are displayed in the Talo dashboard and can be used as filters. For example, you could look at all feedback from a specific game version.
+
+```csharp
+public async void OnButtonClick()
+{
+	var categoryInternalName = "worldgen_feedback";
+	var feedbackComment = "Too many spikes!";
+
+	await Talo.Feedback.Send(categoryInternalName, feedbackComment, ("seed", "432423432"), ("difficultyLevel", "EASY"));
+}
+```
+
+### Handling rejected props
+
+Talo validates feedback props. If one or more props are invalid, the feedback will not be saved.
+
+You can listen for rejected props using the `Talo.Feedback.OnPropsRejected` event:
+
+```csharp
+private void OnEnable()
+{
+	Talo.Feedback.OnPropsRejected += OnPropsRejected;
+}
+
+private void OnDisable()
+{
+	Talo.Feedback.OnPropsRejected -= OnPropsRejected;
+}
+
+private void OnPropsRejected(RejectedProp[] rejectedProps)
+{
+	foreach (var prop in rejectedProps)
+	{
+		Debug.Log($"Rejected prop '{prop.key}': {prop.message} ({prop.error})");
+	}
+}
+```
+
+See [Players and props - Prop rejection reasons](/docs/1.x/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.

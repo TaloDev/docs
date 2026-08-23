@@ -1,0 +1,49 @@
+---
+description: Event tracking allows you to understand what players are doing inside your game.
+title: Event API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'EventAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+  { title: 'Types', url: '#types', depth: 2 },
+  { title: 'EventData', url: '#eventdata', depth: 3 },
+]
+
+## Overview
+
+Event tracking lets you get rid of the guess-work. By tracking important actions when they happen, you're able to gauge how well a mechanic is being used and even track the overall progress of your players
+
+See how often potions get used, items get bought and how many level-ups there are per day, month or year.
+
+Learn more about events <a href='https://trytalo.com/events?utm_source=docs&utm_medium=api-docs'>here</a>.
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo Events let you easily track and analyse player engagement in your game. See what players like the most and what they're missing."
+/>
+
+## Types
+
+### EventData
+
+```ts
+type EventData = {
+  name: string // name of the event
+  timestamp: number // UNIX milisecond timestamp, e.g. 1656971058297
+  props?: Prop[]
+}
+
+type Prop = {
+  key: string
+  value: string
+}
+```

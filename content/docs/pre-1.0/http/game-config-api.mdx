@@ -1,0 +1,30 @@
+---
+description: Live config lets you push data to your game from the Talo dashboard without releasing a new update.
+title: Game config API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'GameConfigAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+]
+
+## Overview
+
+Talo's live config allows you to configure your game directly from the dashboard. Your game can then fetch this config on-demand, allowing your game and players to have the latest data without downloading a new update.
+
+Live config is simply a collection of key-value pairs. For example, you could have a key of "maxLevel" which has value of "10". While running a beta test you can incrementally increase this maximum level to allow access to more content at your own pace.
+
+Learn more about live config [here](https://trytalo.com/live-config?utm_source=docs&utm_medium=api-docs).
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's live config lets you update your game's easily configure events, tests and updates to your game directly from the web."
+/>

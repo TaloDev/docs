@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "install",
+    "settings-reference",
+    "exporting",
+    "request-verification",
+    "continuity",
+    "identifying",
+    "player-authentication",
+    "player-props",
+    "events",
+    "leaderboards",
+    "saves",
+    "stats",
+    "groups",
+    "live-config",
+    "feedback",
+    "socket",
+    "channels",
+    "player-presence",
+    "player-relationships"
+  ],
+  "title": "Godot plugin",
+  "icon": "godot"
+}

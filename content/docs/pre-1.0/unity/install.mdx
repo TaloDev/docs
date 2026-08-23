@@ -1,0 +1,52 @@
+---
+description: Learn how to add Talo's Unity package to your game.
+title: Installation
+---
+
+## Required Unity version
+
+Talo is built and tested with Unity 6.
+
+Talo takes advantage of features from C# 9.0+. If you receive compilation errors after installing the package, you may need to make some configuration changes in your Unity project. For more information, [check out this article](https://learn.microsoft.com/en-us/visualstudio/gamedev/unity/unity-scripting-upgrade).
+
+## Import into Unity
+
+### Using the Unity Asset Store (recommended)
+
+The easiest way to add Talo to your project is by downloading it from the Unity Asset Store. Simply visit the [Talo Asset Store page](https://assetstore.unity.com/packages/tools/game-toolkits/talo-game-services-292832) and click "Add to My Assets".
+
+To add Talo to your project, open the `Window > My Assets` window, find `Talo Game Services` and click `Download`.
+
+![Importing Talo into a Unity project](/img/unity-my-assets.png)
+
+If you want to update your package, simply repeat the same process.
+
+### Downloading from itch.io
+
+You can download the latest version of the Unity package from our [itch.io page](https://sleepystudios.itch.io/talo-unity).
+
+Once downloaded, you can open the `talo.unitypackage` file to import it into your project.
+
+## Generate an API key
+
+Visit [the Talo dashboard](https://dashboard.trytalo.com), login or create an account (and confirm your email address), and visit the API Keys page.
+
+Choose the scopes available to your API key (you'll need the `read:players` and `write:players` scope to use the package) and create your API key.
+Save your API key somewhere securely.
+
+## Create a Talo asset
+
+Once the package has been imported, right-click in your Resources folder, click `Create > Talo > Settings Asset`. Paste your newly-created API key into the API key field and you're ready to go.
+
+<Callout type='warn'>
+  Your settings asset must always be at the top-level in the Resources folder and named `Talo
+  Settings`.
+</Callout>
+
+### Self-hosting
+
+If you're self-hosting Talo, you can configure your custom endpoint here in the Settings Asset.
+
+### Settings reference
+
+You can visit the [settings reference](/docs/pre-1.0/unity/settings-reference) for a detailed overview of Talo's configuration options.

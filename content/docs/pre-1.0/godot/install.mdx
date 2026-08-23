@@ -1,0 +1,65 @@
+---
+description: Learn how to add Talo's Godot plugin to your game.
+title: Installation
+---
+
+## Import into Godot
+
+<Callout type='idea'>
+  Check out this blog post on [installing the Talo Godot
+  plugin](https://trytalo.com/blog/godot-plugin-announcement?utm_source=docs&utm_medium=tip) for a
+  detailed walkthrough
+</Callout>
+
+### Using the Asset Library
+
+The Godot Asset Library is the recommended way to download Godot plugins. Open the `AssetLib` tab in Godot and search for "Talo". Click into the asset and click `Download`. Here's a [direct link](https://godotengine.org/asset-library/asset/2936) to the asset.
+
+![Talo in the Godot AssetLib tab](/img/godot-install-assetlib.png)
+
+### Downloading from itch.io
+
+You can download the latest version of the Godot plugin from our [itch.io page](https://sleepystudios.itch.io/talo-godot). Simply unzip the plugin and copy the `addons/talo` folder into your project.
+
+## Enable the plugin
+
+<Callout type="warn">
+After installing the plugin, you must enable it in the `Project > Project Settings > Plugins` window.
+</Callout>
+
+![Enabling the Talo plugin](/img/godot-install-enable.png)
+
+## Generate an API key
+
+Visit [the Talo dashboard](https://dashboard.trytalo.com), login or create an account (and confirm your email address), and visit the API Keys page.
+
+Choose the scopes available to your API key (you'll need the `read:players` and `write:players` scope to use the plugin) and create your API key.
+Save your API key somewhere securely.
+
+## Create and update settings
+
+The first time you run your game with the Talo plugin enabled, it'll create a `settings.cfg` inside the `addons/talo` folder. You can also create this file for yourself, the default file looks like this:
+
+```gdscript title="addons/talo/settings.cfg"
+access_key=""
+api_url="https://api.trytalo.com"
+socket_url="wss://api.trytalo.com"
+```
+
+You can also add the following section for logging:
+
+```gdscript title="addons/talo/settings.cfg"
+...
+
+[logging]
+requests=true
+responses=true
+```
+
+### Self-hosting
+
+If you're self-hosting Talo, you can configure your custom endpoint here in the `settings.cfg`.
+
+### Settings reference
+
+You can visit the [settings reference](/docs/pre-1.0/godot/settings-reference) for a detailed overview of Talo's configuration options.

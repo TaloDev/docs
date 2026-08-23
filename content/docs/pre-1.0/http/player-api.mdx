@@ -1,0 +1,43 @@
+---
+description: Talo allows you to easily authenticate players, create player aliases and sync identities with external identity providers.
+title: Player API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'PlayerAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+  { title: 'Types', url: '#types', depth: 2 },
+  { title: 'Prop', url: '#prop', depth: 3 },
+]
+
+## Overview
+
+Talo provides a flexible and secure player authentication system. You can use Talo to authenticate players using their email, username, or any other identifier you choose.
+
+Players can have any number of properties that will persist between game sessions and all of their identities. You can use these, for example, to store a player's current health or level.
+
+Learn more about player management [here](https://trytalo.com/players?utm_source=docs&utm_medium=api-docs).
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's Player service lets you manage players and persist data. Players can be authenticated using email, username, Steamworks and more."
+/>
+
+## Types
+
+### Prop
+
+```ts
+type Prop = {
+  key: string
+  value: string | null
+}
+```

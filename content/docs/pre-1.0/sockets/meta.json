@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "intro",
+    "common-errors",
+    "requests",
+    "responses",
+    "custom-ping-pongs",
+    "request-verification"
+  ],
+  "title": "Socket reference",
+  "icon": "sockets"
+}
