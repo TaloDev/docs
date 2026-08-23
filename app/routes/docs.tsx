@@ -3,6 +3,7 @@ import { useFumadocsLoader } from 'fumadocs-core/source/client'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page'
 import { use } from 'react'
+import { redirect } from 'react-router'
 import { Breadcrumb } from '@/components/breadcrumb'
 import { Feedback } from '@/components/feedback/client'
 import { useMDXComponents } from '@/components/mdx'
@@ -11,10 +12,25 @@ import { baseOptions } from '@/lib/layout.shared'
 import { docs, source } from '@/lib/source'
 import type { Route } from './+types/docs'
 
+// Pre-versioning paths (e.g. /docs/godot/install) redirect to the 1.x version.
+const LEGACY_SECTIONS = ['godot', 'unity', 'http', 'sockets', 'selfhosting', 'integrations']
+const VERSION_REDIRECTS: Record<string, string> = {
+  '1.0': '1.x',
+  '0.49': 'pre-1.0',
+  '0.60': 'pre-1.0',
+}
+
 export async function loader({ params }: Route.LoaderArgs) {
   const slugs = params['*'].split('/').filter((v) => v.length > 0)
   const page = source.getPage(slugs)
   if (!page) {
+    const first = slugs[0] ?? ''
+    if (LEGACY_SECTIONS.includes(first)) {
+      throw redirect(`/docs/1.x/${slugs.join('/')}`)
+    }
+    if (VERSION_REDIRECTS[first]) {
+      throw redirect(`/docs/${VERSION_REDIRECTS[first]}/${slugs.slice(1).join('/')}`)
+    }
     throw new Response('Not found', { status: 404 })
   }
 
