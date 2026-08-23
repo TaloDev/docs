@@ -37,7 +37,9 @@ print("Found %s results: %s" % [search_page.count, ", ".join(identifiers)])
 
 Players can have a list of arbitrary properties that are persisted across all of their aliases. These props are identified by their unique key and can have any string value. Keys can be up to 128 characters long and values can be up to 512 characters long.
 
-All functions that modify props accept an optional `update` parameter (default `true`) that controls whether the player is synced with Talo after the change. Set it to `false` to batch multiple changes and avoid redundant [debounces](/docs/1.x/godot/settings-reference#debounce_timer_seconds).
+All functions that modify props accept an optional `update` parameter (default `true`) that controls whether the player is synced with Talo after the change. They return an awaitable `PlayerUpdateResult`, and setting `update` to `false` returns a valid result without triggering a sync - use it to batch multiple changes and avoid redundant [debounces](/docs/1.x/godot/settings-reference#debounce_timer_seconds).
+
+The `Talo.players.player_updated(success: bool)` signal fires after every player update settles, and `Talo.players.flush_updates()` immediately flushes any pending or in-flight update (returning a `FlushResult`). Pending updates are also flushed automatically when the game quits.
 
 ### Getting props
 
@@ -142,24 +144,22 @@ Talo.current_player.delete_prop_array("inventory_items")
 
 Player prop updates support partial success. If an update contains a mix of valid and invalid props, the valid props will be set and only the invalid ones will fail ([see rejection reasons](#prop-rejection-reasons)).
 
-You can listen for rejected props by connecting to the `Talo.players.props_rejected` signal:
+The prop mutators return an awaitable `PlayerUpdateResult`. Rapid mutations are coalesced into a single PATCH and every caller in the same batch settles together - you can read the rejected props off the result:
 
 ```gdscript
-func _ready() -> void:
-	Talo.players.props_rejected.connect(_on_props_rejected)
+var result: PlayersAPI.PlayerUpdateResult = await Talo.current_player.set_prop("level", "5")
 
-func _on_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void:
-	for prop in rejected_props:
-		# prop.key: the key of the rejected prop
-		# prop.error: the rejection reason code (e.g. TaloRejectedProp.RejectionReason.PROP_VALUE_TOO_LONG)
-		# prop.message: a human-readable description of the rejection
-		# e.g. "Rejected prop 'username': Prop value exceeds 512 characters (PROP_VALUE_TOO_LONG)"
-		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.error])
+for prop in result.rejected_props:
+	# prop.key: the key of the rejected prop
+	# prop.code: the rejection reason code (e.g. TaloRejectedProp.ErrorCode.PROP_VALUE_TOO_LONG)
+	# prop.message: a human-readable description of the rejection
+	# e.g. "Rejected prop 'username': Prop value exceeds 512 characters (PROP_VALUE_TOO_LONG)"
+	print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.code])
 ```
 
 ### Prop rejection reasons
 
-The `TaloRejectedProp` class exposes an `error` property of type `TaloRejectedProp.RejectionReason`:
+The `TaloRejectedProp` class exposes a `code` property of type `TaloRejectedProp.ErrorCode`:
 
 | Reason                    | Description                              |
 | ------------------------- | ---------------------------------------- |
@@ -170,15 +170,16 @@ The `TaloRejectedProp` class exposes an `error` property of type `TaloRejectedPr
 | `PROP_KEY_RESERVED`       | The prop key is reserved by Talo         |
 
 ```gdscript
-func _on_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void:
-	for rejected_prop in rejected_props:
-		match rejected_prop.error:
-			TaloRejectedProp.RejectionReason.PROP_KEY_TOO_LONG:
-				push_warning("Key too long: %s" % rejected_prop.key)
-			TaloRejectedProp.RejectionReason.PROP_VALUE_TOO_LONG:
-				push_warning("Value too long for key: %s" % rejected_prop.key)
-			TaloRejectedProp.RejectionReason.PROP_CONTAINS_PROFANITY:
-				push_warning("Profanity detected in key: %s" % rejected_prop.key)
-			_:
-				push_warning("Prop '%s' was rejected: %s" % [rejected_prop.key, rejected_prop.message])
+var result: PlayersAPI.PlayerUpdateResult = await Talo.current_player.set_prop("level", "5")
+
+for rejected_prop in result.rejected_props:
+	match rejected_prop.code:
+		TaloRejectedProp.ErrorCode.PROP_KEY_TOO_LONG:
+			push_warning("Key too long: %s" % rejected_prop.key)
+		TaloRejectedProp.ErrorCode.PROP_VALUE_TOO_LONG:
+			push_warning("Value too long for key: %s" % rejected_prop.key)
+		TaloRejectedProp.ErrorCode.PROP_CONTAINS_PROFANITY:
+			push_warning("Profanity detected in key: %s" % rejected_prop.key)
+		_:
+			push_warning("Prop '%s' was rejected: %s" % [rejected_prop.key, rejected_prop.message])
 ```

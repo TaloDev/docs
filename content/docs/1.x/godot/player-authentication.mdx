@@ -31,15 +31,15 @@ If you want the player to be able to verify their logins via email (two factor a
 
 ...
 
-var res = await Talo.player_auth.register(username.text, password.text, email.text, enable_verification.button_pressed)
-if res != OK:
-	match Talo.player_auth.last_error.get_code():
-		TaloAuthError.ErrorCode.IDENTIFIER_TAKEN:
+var res := await Talo.player_auth.register(username.text, password.text, email.text, enable_verification.button_pressed)
+if not res.success:
+	match res.error.code:
+		TaloPlayerAuthError.ErrorCode.IDENTIFIER_TAKEN:
 			validation_label.text = "Username is already taken"
-		TaloAuthError.ErrorCode.IDENTIFIER_PROFANITY:
+		TaloPlayerAuthError.ErrorCode.IDENTIFIER_PROFANITY:
 			validation_label.text = "Username contains profanity"
 		_:
-			validation_label.text = Talo.player_auth.last_error.get_string()
+			validation_label.text = res.error.message
 ```
 
 Once a player is registered, a session will automatically be created for them and they will be logged in.
@@ -50,11 +50,7 @@ Once a player is registered, a session will automatically be created for them an
 
 To start a session, call the `Talo.player_auth.login()` function with the player's username and password.
 
-The `login()` function returns a `Talo.player_auth.LoginResult` which maps to:
-
-1. A successful login
-2. A successful login but the player must verify their details before creating the session
-3. An unsuccessful login attempt
+The `login()` function returns a `PlayerAuthLoginResult` with a `success` flag and a `verification_required` flag. Check `verification_required` to see if the player must verify their details before their session is created:
 
 ```gdscript
 signal verification_required
@@ -66,17 +62,14 @@ signal verification_required
 ...
 
 var res := await Talo.player_auth.login(username.text, password.text)
-match res:
-	Talo.player_auth.LoginResult.FAILED:
-		match Talo.player_auth.last_error.get_code():
-			TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
-				validation_label.text = "Username or password is incorrect"
-			_:
-				validation_label.text = Talo.player_auth.last_error.get_string()
-	Talo.player_auth.LoginResult.VERIFICATION_REQUIRED:
-		verification_required.emit()
-	Talo.player_auth.LoginResult.OK:
-		pass
+if res.verification_required:
+	verification_required.emit()
+elif not res.success:
+	match res.error.code:
+		TaloPlayerAuthError.ErrorCode.INVALID_CREDENTIALS:
+			validation_label.text = "Username or password is incorrect"
+		_:
+			validation_label.text = res.error.message
 ```
 
 ### Automatic logins
@@ -119,12 +112,12 @@ To verify a player's login, you need to call `Talo.player_auth.verify()` with th
 ...
 
 var res := await Talo.player_auth.verify(code.text)
-if res != OK:
-	match Talo.player_auth.last_error.get_code():
-		TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
+if not res.success:
+	match res.error.code:
+		TaloPlayerAuthError.ErrorCode.VERIFICATION_CODE_INVALID:
 			validation_label.text = "Verification code is incorrect"
 		_:
-			validation_label.text = Talo.player_auth.last_error.get_string()
+			validation_label.text = res.error.message
 ```
 
 ## Changing a player's password
@@ -142,17 +135,17 @@ signal password_change_success
 
 ...
 
-var res = await Talo.player_auth.change_password(current_password.text, new_password.text)
-if res != OK:
-	match Talo.player_auth.last_error.get_code():
-		TaloAuthError.ErrorCode.INVALID_CREDENTIALS:
+var res := await Talo.player_auth.change_password(current_password.text, new_password.text)
+if res.success:
+	password_change_success.emit()
+else:
+	match res.error.code:
+		TaloPlayerAuthError.ErrorCode.INVALID_CREDENTIALS:
 			validation_label.text = "Current password is incorrect"
-		TaloAuthError.ErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD:
+		TaloPlayerAuthError.ErrorCode.NEW_PASSWORD_MATCHES_CURRENT_PASSWORD:
 			validation_label.text = "New password must be different from the current password"
 		_:
-			validation_label.text = Talo.player_auth.last_error.get_string()
-else:
-	password_change_success.emit()
+			validation_label.text = res.error.message
 ```
 
 ## Changing a player's email
@@ -161,7 +154,7 @@ else:
 
 You can change a player's email with the `Talo.player_auth.change_email()` function - just pass in their current password and a new email.
 
-If the email is already in use, the error code will be `TaloAuthError.ErrorCode.EMAIL_TAKEN`.
+If the email is already in use, the error code will be `TaloPlayerAuthError.ErrorCode.EMAIL_TAKEN`.
 
 ## Changing a player's identifier
 
@@ -184,7 +177,7 @@ signal forgot_password_success
 
 ...
 
-if await Talo.player_auth.forgot_password(email.text) == OK:
+if (await Talo.player_auth.forgot_password(email.text)).success:
 	forgot_password_success.emit()
 ```
 
@@ -201,15 +194,15 @@ signal password_reset_success
 
 ...
 
-var res = await Talo.player_auth.reset_password(code.text, new_password.text)
-if res != OK:
-	match Talo.player_auth.last_error.get_code():
-		TaloAuthError.ErrorCode.PASSWORD_RESET_CODE_INVALID:
+var res := await Talo.player_auth.reset_password(code.text, new_password.text)
+if res.success:
+	password_reset_success.emit()
+else:
+	match res.error.code:
+		TaloPlayerAuthError.ErrorCode.PASSWORD_RESET_CODE_INVALID:
 			validation_label.text = "Reset code is invalid"
 		_:
-			validation_label.text = Talo.player_auth.last_error.get_string()
-else:
-	password_reset_success.emit()
+			validation_label.text = res.error.message
 ```
 
 ## Toggling verification
@@ -268,20 +261,18 @@ func _on_get_ticket_for_web_api(_auth_ticket: int, _result: int, _ticket_size: i
 	_migrate_account(PackedByteArray(ticket_buffer).hex_encode())
 
 func _migrate_account(ticket: String) -> void:
-	var res = await Talo.player_auth.migrate_account(current_password.text, "steam", "%s:%s" % [ticket_identity, ticket])
+	var res := await Talo.player_auth.migrate_account(current_password.text, "steam", "%s:%s" % [ticket_identity, ticket])
 
-	if res != OK:
-		validation_label.text = Talo.player_auth.last_error.get_string()
+	if not res.success:
+		validation_label.text = res.error.message
 ```
 
 You can also migrate to the `google_play_games` service by providing an [auth code](/docs/1.x/godot/identifying#google-play-games-integration).
 
 When a migration is successful, the current session is cleared, the player's alias is updated to the new service and identifier, and the `Talo.players.identified` signal is emitted.
 
-## Getting the last error
+## Reading errors
 
-As shown in the examples above, whenever a request fails you can query the last error returned using the `Talo.player_auth.last_error` variable.
-
-You can get the `TaloAuthError.ErrorCode` enum value using the `get_code()` function or the raw string using the `get_string()` function.
+As shown in the examples above, every auth method returns a result object. On failure, `res.success` is `false` and `res.error` holds a `TaloPlayerAuthError` with a machine-readable `code` enum value and a human-readable `message`.
 
 You can view all the authentication errors and their descriptions [here](/docs/1.x/http/player-auth-api#error-codes).

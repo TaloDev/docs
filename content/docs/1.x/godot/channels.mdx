@@ -30,7 +30,7 @@ var options := Talo.channels.GetChannelsOptions.new()
 options.page = 0
 var res := await Talo.channels.get_channels(options)
 
-var channels: Array[GameChannel] = res.channels
+var channels: Array[TaloChannel] = res.channels
 var count: int = res.count
 var is_last_page: bool = res.is_last_page
 ```
@@ -107,11 +107,13 @@ options.auto_cleanup = true
 options.props: Dictionary[String, String] = {
 	prop_key = "prop_value"
 }
-var channel := await Talo.channels.create(options)
+var result := await Talo.channels.create(options)
+if not result.success:
+	return
 
-print(channel.name) # channel name
-print(channel.auto_cleanup) # true
-print(channel.props) # [{ "prop_key": "prop_value" }]
+print(result.channel.name) # channel name
+print(result.channel.auto_cleanup) # true
+print(result.channel.props) # [{ "prop_key": "prop_value" }]
 ```
 
 ## Joining and leaving channels
@@ -130,7 +132,27 @@ The owner of a channel can update the channel using `Talo.channels.update()`. Th
 
 To transfer ownership of the channel, you should specify the ID of the player alias that will own the channel. The new owner of the channel must be a member first before ownership can be transferred.
 
-You can also update the props of the channel: keys will be overrided with new values and keys with a value of `null` will be deleted.
+You can also update the props of the channel: keys will be overridden with new values and keys with a value of `null` will be deleted.
+
+`update()` takes an `UpdateChannelOptions` object:
+
+```gdscript
+var options := Talo.channels.UpdateChannelOptions.new()
+options.name = "new channel name"
+options.new_owner_alias_id = new_owner_alias.id
+options.props = {
+	team = "red"
+}
+options.auto_cleanup = Talo.channels.UpdateChannelOptions.AutoCleanup.ENABLED
+options.private = Talo.channels.UpdateChannelOptions.Privacy.DEFAULT
+options.temporary_membership = Talo.channels.UpdateChannelOptions.TemporaryMembership.ENABLED
+
+var result := await Talo.channels.update(channel.id, options)
+if not result.success:
+	return
+```
+
+The `auto_cleanup` and `temporary_membership` options are tri-state toggles (`DEFAULT` / `ENABLED` / `DISABLED`), and `private` is `DEFAULT` / `PRIVATE` / `PUBLIC`. A `DEFAULT` value leaves the field unchanged - set it explicitly to change it.
 
 ## Deleting channels
 
@@ -148,8 +170,10 @@ options.name = "channel name"
 options.auto_cleanup = true
 options.private = true
 
-var channel := await Talo.channels.create(options)
-print(channel.private) # true
+var result := await Talo.channels.create(options)
+if not result.success:
+	return
+print(result.channel.private) # true
 ```
 
 Private channels will not be listed when using `Talo.channels.get_channels()`. They also cannot be joined in the same way: the channel owner must invite players to a private channel.
@@ -168,8 +192,10 @@ options.name = "channel name"
 options.auto_cleanup = true
 options.private = true
 
-var channel := await Talo.channels.create(options)
-await Talo.channels.invite(channel.id, invitee_player_alias.id)
+var result := await Talo.channels.create(options)
+if not result.success:
+	return
+await Talo.channels.invite(result.channel.id, invitee_player_alias.id)
 ```
 
 <Callout type='info'>
@@ -185,7 +211,9 @@ var options := Talo.channels.CreateChannelOptions.new()
 options.name = "channel name"
 options.temporary_membership = true
 
-var channel := await Talo.channels.create(options)
+var result := await Talo.channels.create(options)
+if not result.success:
+	return
 ```
 
 Any player that joins the channel and then goes offline will automatically be removed from the channel. The `Talo.channels.player_left` signal will emit with the reason `Talo.channels.ChannelLeavingReason.TEMPORARY_MEMBERSHIP`.
@@ -262,28 +290,21 @@ You can also listen for the following signals:
 
 - `Talo.channels.channel_updated`: Emitted when a channel is updated. Returns the `TaloChannel` that was updated and an `Array[String]` of properties that were changed.
 
-- `Talo.channels.channel_props_rejected`: Emitted when channel props are rejected during creation or update. Returns an array of `TaloRejectedProp` objects. See [Handling rejected props](#handling-rejected-channel-props) for more details.
-
 ## Handling rejected channel props
 
 Talo validates props when creating or updating channels. If one or more props are invalid, the channel will not be created or updated.
 
-You can listen for rejected props by connecting to the `Talo.channels.channel_props_rejected` signal:
+`create()` and `update()` return a `ChannelUpsertResult` with a `success` flag and a `rejected_props` array:
 
 ```gdscript
-func _ready() -> void:
-	Talo.channels.channel_props_rejected.connect(_on_channel_props_rejected)
-
-func _on_channel_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void:
-	for prop in rejected_props:
+var result := await Talo.channels.create(options)
+if not result.success:
+	for prop in result.rejected_props:
 		# e.g. "Rejected prop 'guild_name': Prop key exceeds 128 characters (PROP_KEY_TOO_LONG)"
-		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.error])
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.code])
 ```
 
-<Callout type='info'>
-  This signal only fires for channel props (set during `create()` and `update()`). For channel
-  **storage** prop errors, use `channel_storage_props_failed_to_set` instead.
-</Callout>
+For channel **storage** prop errors, use the `channel_storage_props_failed_to_set` signal instead.
 
 See [Players and props - Prop rejection reasons](/docs/1.x/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
@@ -312,19 +333,19 @@ This function accepts a dictionary of prop keys and values. You can set a prop v
 
 Sometimes, setting storage props can fail. This usually happens when you set a prop key with a size over 128 characters or a prop value with a size over 512 characters.
 
-The `Talo.channels.channel_storage_props_failed_to_set` signal lets you listen for these errors:
+The `Talo.channels.channel_storage_props_failed_to_set` signal lets you listen for these errors. It passes an array of `TaloRejectedProp` objects:
 
 ```gdscript
 func _ready() -> void:
 	Talo.channels.channel_storage_props_failed_to_set.connect(
-		func (channel: TaloChannel, failed_props: Array[TaloChannelStoragePropError]):
+		func (channel: TaloChannel, failed_props: Array[TaloRejectedProp]):
 			for prop in failed_props:
 				# shared-gold: Prop value length (596) exceeds 512 characters (PROP_VALUE_TOO_LONG)
-				print("%s: %s (%s)" % [prop.key, prop.message, prop.error])
+				print("%s: %s (%s)" % [prop.key, prop.message, prop.code])
 	)
 ```
 
-`TaloChannelStoragePropError` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/docs/1.x/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+`TaloRejectedProp` includes a `message` with a human-readable description of the error, alongside the `code`. See [Players and props - Prop rejection reasons](/docs/1.x/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
 ### Setting storage prop arrays
 

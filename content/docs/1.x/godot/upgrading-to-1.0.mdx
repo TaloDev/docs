@@ -1,0 +1,269 @@
+---
+description: Upgrade the Talo Godot plugin to 1.0 and migrate code from v0.49.1 and earlier.
+title: Upgrading to 1.0
+---
+## How to upgrade
+
+1. Download the latest release from the [Godot Asset Library](https://godotengine.org/asset-library/asset/2936), [itch.io](https://sleepystudios.itch.io/talo-godot) or [GitHub releases](https://github.com/TaloDev/godot/releases).
+2. Replace your existing `addons/talo` folder with the new one.
+3. Go through each section below and update any code that uses the affected APIs.
+
+## Identifying players
+
+### Player aliases
+
+`identify()`, `identify_steam()`, `identify_google_play_games()`, `identify_game_center()` and `identify_offline()` return a `TaloPlayerAlias` instead of a `TaloPlayer` ([#223](https://github.com/TaloDev/godot/pull/223)).
+
+You can access the underlying player via `alias.player`:
+
+```gdscript
+# before
+var player: TaloPlayer = await Talo.players.identify("username", "bob")
+func _on_identified(_player: TaloPlayer) -> void: ...
+
+# after
+var alias: TaloPlayerAlias = await Talo.players.identify("username", "bob")
+func _on_identified(player_alias: TaloPlayerAlias) -> void: ...
+```
+
+### Identification errors
+
+The `identification_failed` signal now passes a `TaloIdentifyError` with a `code` enum (`UNKNOWN_ERROR`, `IDENTIFIER_PROFANITY`, `IDENTIFIER_TAKEN`) ([#224](https://github.com/TaloDev/godot/pull/224)):
+
+```gdscript
+Talo.players.identification_failed.connect(func (error: TaloIdentifyError):
+	push_error("Identification failed: %s" % error.code)
+	go_to_login()
+)
+```
+
+## Player props
+
+### Awaitable prop updates
+
+All six prop mutators (`set_prop`, `delete_prop`, `set_prop_array`, `delete_prop_array`, `insert_into_prop_array`, `remove_from_prop_array`) now return a signal you can `await`, which resolves with a new `PlayerUpdateResult` (`success`, `rejected_props`) after the debounce settles ([#232](https://github.com/TaloDev/godot/pull/232)):
+
+```gdscript
+# fire-and-forget (still works - the return value can be ignored)
+Talo.current_player.set_prop("xp", "100")
+
+# await the settle result
+var result: PlayersAPI.PlayerUpdateResult = await Talo.current_player.set_prop("xp", "100")
+# result.success        - whether the update was successful
+# result.rejected_props - which props Talo rejected (if any)
+
+# a local update (no network request); returns a valid result
+var local := Talo.current_player.set_prop("xp", "100", false)
+```
+
+### Rejected props
+
+The `Talo.players.props_rejected` signal has been removed - rejected props come back on the result ([#233](https://github.com/TaloDev/godot/pull/233)).
+
+### Trailing-only debounce
+
+Debounce timers are now **trailing-only** - the leading-edge mode and its `leading` constructor param were removed ([#234](https://github.com/TaloDev/godot/pull/234)). Pending player and save updates are now flushed when the game quits, so queued/in-flight updates are no longer dropped.
+
+## Player authentication
+
+### Result objects
+
+Every auth method (`register`, `login`, `verify`, `change_password`, `forgot_password`, `migrate_account`, etc.) now returns a **result object** instead of a bare `Error`.
+
+Errors now live inside this result object and `Talo.player_auth.last_error` has been removed ([#228](https://github.com/TaloDev/godot/pull/228)):
+
+```gdscript
+# before
+var res := await Talo.player_auth.register(username.text, password.text, email.text)
+if res != OK:
+	match Talo.player_auth.last_error.get_code():
+		TaloAuthError.ErrorCode.IDENTIFIER_TAKEN:
+			validation_label.text = "Username is already taken"
+		_:
+			validation_label.text = Talo.player_auth.last_error.get_string()
+
+# after
+var res := await Talo.player_auth.register(username.text, password.text, email.text, verification_enabled)
+if not res.success:
+	match res.error.code:
+		TaloPlayerAuthError.ErrorCode.IDENTIFIER_TAKEN:
+			validation_label.text = "Username is already taken"
+		_:
+			validation_label.text = res.error.message
+```
+
+### Login verification
+
+The `LoginResult` enum has been removed. `login()` returns a `PlayerAuthLoginResult` - check `verification_required` instead:
+
+```gdscript
+# before
+var res := await Talo.player_auth.login(username.text, password.text)
+match res:
+	Talo.player_auth.LoginResult.VERIFICATION_REQUIRED:
+		verification_required.emit()
+	Talo.player_auth.LoginResult.FAILED: ...
+
+# after
+var res := await Talo.player_auth.login(username.text, password.text)
+if res.verification_required:
+	verification_required.emit()
+elif not res.success:
+	match res.error.code: ...
+```
+
+## Leaderboards
+
+### Current player entries
+
+The deprecated `get_entries_for_current_player()` and `get_cached_entries_for_current_player()` have been removed ([#220](https://github.com/TaloDev/godot/pull/220), [#221](https://github.com/TaloDev/godot/pull/221)).
+
+Use the options-based methods with `player_id` or `alias_id` filtering instead:
+
+```gdscript
+# before
+var entries := Talo.leaderboards.get_entries_for_current_player(internal_name)
+var cached := Talo.leaderboards.get_cached_entries_for_current_player(internal_name)
+
+# after
+var options := Talo.leaderboards.GetEntriesOptions.new()
+options.player_id = Talo.current_player.id
+var res := await Talo.leaderboards.get_entries(internal_name, options)
+
+var cached_options := Talo.leaderboards.GetCachedEntriesOptions.new()
+cached_options.player_id = Talo.current_player.id
+var cached := Talo.leaderboards.get_cached_entries(internal_name, cached_options)
+```
+
+### Rejected entry props
+
+The `props_rejected` signal has been removed. `add_entry()` now returns an `AddEntryResult` with `success`, `entry`, `updated` and `rejected_props` ([#233](https://github.com/TaloDev/godot/pull/233), [#235](https://github.com/TaloDev/godot/pull/235)):
+
+```gdscript
+# before
+Talo.leaderboards.props_rejected.connect(_on_props_rejected)
+func _on_props_rejected(rejected_props: Array[TaloRejectedProp]):
+	for prop in rejected_props:
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.error])
+
+# after
+var res := await Talo.leaderboards.add_entry(internal_name, score)
+if not res.success:
+	for prop in res.rejected_props:
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.code])
+```
+
+## Channels
+
+### Updating channels
+
+`update()` now takes an `UpdateChannelOptions` object instead of positional arguments. `create()` and `update()` now return a `ChannelUpsertResult` (`success`, `channel`, `rejected_props`) ([#231](https://github.com/TaloDev/godot/pull/231)):
+
+```gdscript
+# before
+var channel := await Talo.channels.create(options)
+await Talo.channels.update(channel_id, "new name", 123, { team = "red" })
+
+# after
+var options := Talo.channels.UpdateChannelOptions.new()
+options.name = "new name"
+options.new_owner_alias_id = 123
+options.props = { team = "red" }
+var result := await Talo.channels.update(channel_id, options)
+if not result.success:
+	for prop in result.rejected_props: ...
+	print(result.channel.name)
+```
+
+`UpdateChannelOptions` also adds tri-state toggles so you can leave a field unchanged (`DEFAULT`) or explicitly set it - `auto_cleanup` and `temporary_membership` are `ENABLED`/`DISABLED`, while `private` is `PRIVATE`/`PUBLIC`.
+
+### Rejected channel props
+
+The `channel_props_rejected` signal has been removed - rejected props come back on the result object ([#233](https://github.com/TaloDev/godot/pull/233)).
+
+The `channel_storage_props_failed_to_set` signal still exists but now emits `Array[TaloRejectedProp]` instead of `Array[TaloChannelStoragePropError]` ([#222](https://github.com/TaloDev/godot/pull/222)):
+
+```gdscript
+# before
+func _on_failed(channel: TaloChannel, failed_props: Array[TaloChannelStoragePropError]):
+	for prop in failed_props:
+		print("%s: %s (%s)" % [prop.key, prop.message, prop.error])
+
+# after
+func _on_failed(channel: TaloChannel, failed_props: Array[TaloRejectedProp]):
+	for prop in failed_props:
+		print("%s: %s (%s)" % [prop.key, prop.message, prop.code])
+```
+
+## Saves
+
+### Updating the current save
+
+`update_current_save()` now returns a `SaveUpdateResult` (`success`, `save`) on **both** the debounced content-sync path and the immediate rename path ([#232](https://github.com/TaloDev/godot/pull/232)).
+
+### Updating a save
+
+`update_save(save, new_name)` is unchanged in signature but now returns `null` on a non-200 response (previously it returned the local save, masking failures) ([#232](https://github.com/TaloDev/godot/pull/232)).
+
+## Feedback
+
+### Sending feedback
+
+`send()` now returns a `FeedbackSendResult` (`success`, `rejected_props`) instead of `void`, and the `props_rejected` signal has been removed ([#233](https://github.com/TaloDev/godot/pull/233)):
+
+```gdscript
+# before
+await Talo.feedback.send(category, comment, props)
+
+# after
+var result := await Talo.feedback.send(category, comment, props)
+if not result.success:
+	for prop in result.rejected_props:
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.code])
+```
+
+## Error classes
+
+### Error class renames
+
+- `TaloAuthError` has been renamed to `TaloPlayerAuthError` ([#225](https://github.com/TaloDev/godot/pull/225)).
+- `get_code()` / `get_string()` have been replaced by the typed `code: ErrorCode` and `message: String` properties ([#226](https://github.com/TaloDev/godot/pull/226)).
+- `.error` has been renamed to `.code` on every error class, and `TaloRejectedProp.RejectionReason` is now `TaloRejectedProp.ErrorCode` ([#227](https://github.com/TaloDev/godot/pull/227)).
+
+```gdscript
+# before
+prop.error                              # TaloRejectedProp.RejectionReason.PROP_VALUE_TOO_LONG
+Talo.player_auth.last_error.get_string()
+
+# after
+prop.code                               # TaloRejectedProp.ErrorCode.PROP_VALUE_TOO_LONG
+res.error.message                       # TaloPlayerAuthError.message
+```
+
+### Channel storage errors
+
+`TaloChannelStoragePropError` has been removed - channel storage failures now use the shared `TaloRejectedProp` class ([#222](https://github.com/TaloDev/godot/pull/222)).
+
+## Quick reference
+
+| Removed / renamed                                                 | Replacement                                                               |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `Talo.players.identify()` → `TaloPlayer`                          | `Talo.players.identify()` → `TaloPlayerAlias` (use `.player`)             |
+| `Talo.players.props_rejected`                                     | `PlayerUpdateResult.rejected_props`                                       |
+| Prop editing on players, e.g. `set_prop()`, returns `void`        | `Talo.current_player.set_prop()` is awaitable → `PlayerUpdateResult`      |
+| `TaloDebounceTimer(..., leading)`                                 | leading mode removed (trailing-only)                                      |
+| `Talo.player_auth.last_error`                                     | `.error` on the returned result                                           |
+| `Talo.player_auth.LoginResult` enum                               | `PlayerAuthLoginResult` + `verification_required`                         |
+| `Talo.leaderboards.get_entries_for_current_player()`              | `Talo.leaderboards.get_entries()` + `player_id`/`alias_id` options        |
+| `Talo.leaderboards.get_cached_entries_for_current_player()`       | `Talo.leaderboards.get_cached_entries()` + `player_id`/`alias_id` options |
+| `Talo.leaderboards.props_rejected`                                | `AddEntryResult.rejected_props`                                           |
+| `Talo.channels.update(id, name, owner, props)`                    | `Talo.channels.update(id, UpdateChannelOptions)`                          |
+| `Talo.channels.channel_props_rejected`                            | `ChannelUpsertResult.rejected_props`                                      |
+| `Talo.saves.update_current_save()` → `TaloGameSave`               | `Talo.saves.update_current_save()` → `SaveUpdateResult`                   |
+| `Talo.saves.update_save()` returns local save on failure          | `Talo.saves.update_save()` returns `null` on non-200                      |
+| `Talo.feedback.props_rejected`                                    | `FeedbackSendResult.rejected_props`                                       |
+| `TaloAuthError`                                                   | `TaloPlayerAuthError`                                                     |
+| `get_code()` / `get_string()` on `TaloPlayerAuthError`            | `.code` / `.message`                                                      |
+| `TaloRejectedProp.RejectionReason`                                | `TaloRejectedProp.ErrorCode`                                              |
+| `.error` property on error classes (e.g. `TaloRejectedProp`)        | `.code` (e.g. `prop.error` → `prop.code`)                                 |
+| `TaloChannelStoragePropError`                                     | `TaloRejectedProp`                                                        |

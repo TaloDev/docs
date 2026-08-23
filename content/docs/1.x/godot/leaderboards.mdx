@@ -96,16 +96,15 @@ var res := await Talo.leaderboards.add_entry(leaderboard_internal_name, score, {
 
 Talo validates entry props. If one or more props are invalid, the entry will not be saved.
 
-You can listen for rejected props by connecting to the `Talo.leaderboards.props_rejected` signal:
+`add_entry()` returns an `AddEntryResult` with a `success` flag and a `rejected_props` array:
 
 ```gdscript
-func _ready() -> void:
-	Talo.leaderboards.props_rejected.connect(_on_props_rejected)
+var res := await Talo.leaderboards.add_entry(leaderboard_internal_name, score, { team = team })
 
-func _on_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void:
-	for prop in rejected_props:
+if not res.success:
+	for prop in res.rejected_props:
 		# e.g. "Rejected prop 'team': Prop key or value contains profanity (PROP_CONTAINS_PROFANITY)"
-		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.error])
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.code])
 ```
 
 See [Players and props - Prop rejection reasons](/docs/1.x/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.

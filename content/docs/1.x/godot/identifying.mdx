@@ -17,7 +17,7 @@ For example, a player could have Steam and Google Play accounts. Both accounts c
 
 You should identify a player _after_ you know who they are (post-authentication) but _before_ you attempt to track any events, add leaderboard entries or do anything related directly to the player.
 
-You can identify a player using `Talo.players.identify()`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground scene):
+You can identify a player using `Talo.players.identify()`, which returns a `TaloPlayerAlias`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground scene):
 
 ```gdscript title="identify_button.gd"
 extends Button
@@ -44,7 +44,7 @@ You can easily create an identifier with `Talo.players.generate_identifier()`. T
 
 ### The "identified" signal
 
-After a successful identification, the `Talo.players.identified` signal will emit, returning the identified player. This allows you to, for example, put the player's identifier on a label:
+After a successful identification, the `Talo.players.identified` signal will emit, returning the identified player's alias. This allows you to, for example, put the player's identifier on a label:
 
 ```gdscript title="player_name.gd"
 extends Label
@@ -52,7 +52,7 @@ extends Label
 func _ready() -> void:
 	Talo.players.identified.connect(_on_identified)
 
-func _on_identified(_player: TaloPlayer) -> void:
+func _on_identified(player_alias: TaloPlayerAlias) -> void:
 	text = Talo.current_alias.identifier
 ```
 
@@ -60,12 +60,16 @@ func _on_identified(_player: TaloPlayer) -> void:
 
 When `Talo.players.identify()` is called, the `Talo.players.identification_started` signal is emitted.
 
-If identification fails, the `Talo.players.identification_failed` signal is emitted.
+If identification fails, the `Talo.players.identification_failed` signal is emitted. It passes a `TaloIdentifyError` with a `code` enum (`UNKNOWN_ERROR`, `IDENTIFIER_PROFANITY`, `IDENTIFIER_TAKEN`):
 
 ```gdscript
 func _ready() -> void:
-		Talo.players.identification_started.connect(func (): go_to_loading())
-		Talo.players.identification_failed.connect(func (): go_to_login())
+	Talo.players.identification_started.connect(func (): go_to_loading())
+	Talo.players.identification_failed.connect(_on_identification_failed)
+
+func _on_identification_failed(error: TaloIdentifyError) -> void:
+	push_error("Identification failed: %s" % error.code)
+	go_to_login()
 ```
 
 ## Checking identification
@@ -300,7 +304,7 @@ extends Label
 func _ready() -> void:
 	Talo.players.identified.connect(_on_identified)
 
-func _on_identified(_player: TaloPlayer) -> void:
+func _on_identified(player_alias: TaloPlayerAlias) -> void:
 	text = "Welcome, %s!" % Talo.current_alias.display_name
 ```
 
