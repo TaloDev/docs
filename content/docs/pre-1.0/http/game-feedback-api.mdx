@@ -1,0 +1,28 @@
+---
+description: Talo Feedback allows you to receive feedback directly from players. Feedback can be categorised, analysed and filtered to improve your game.
+title: Game feedback API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'GameFeedbackAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+]
+
+## Overview
+
+Using Talo's Feedback API, you can effortlessly collect valuable player feedback to improve your game.
+
+Learn more about feedback [here](https://trytalo.com/feedback?utm_source=docs&utm_medium=api-docs).
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's Feedback service lets you easily collect feedback directly from your players. Categories can be configured to help segment feedback."
+/>

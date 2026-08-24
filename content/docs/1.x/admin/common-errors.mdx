@@ -1,0 +1,69 @@
+---
+description: Debug common issues with Admin API requests.
+title: Common errors
+---
+
+## Missing authentication
+
+`401 Unauthorized`
+
+The `Authorization` header is required, with its value set to `Bearer your-admin-api-key`.
+
+Admin API keys are prefixed with `ta_` and are created inside the [dashboard](https://dashboard.trytalo.com/api-keys). Unlike the gameplay [HTTP API](/docs/1.x/http/authentication), admin API keys are scoped to a single game rather than authenticating on behalf of a player.
+
+## Missing scopes
+
+```json
+403 Forbidden
+
+{ "message": "Missing admin API key scope(s): [scopes]" }
+```
+
+This means your admin API key is missing the scopes required by the endpoint. You can update the scopes of an admin API key inside the dashboard.
+
+Generally, `GET` requests require `read` access and `POST/PUT/PATCH/DELETE` requests require `write` access.
+
+## Missing parameters
+
+`400 Bad Request`
+
+When omitting or providing an invalid parameter (e.g. a body param, query param or route param), you'll receive this error. Refer to the documentation for the endpoint to make sure your request is correct.
+
+The error object returns a key for every invalid/missing field, with an array of messages for each:
+
+```json
+"errors": {
+	"internalName": ["internalName is required"],
+	"minValue": ["minValue must be less than maxValue"]
+}
+```
+
+Each message corresponds to a failed validation rule on that field, so the response can include more than one error at a time.
+
+## Resource not found
+
+`404 Not Found`
+
+The requested resource doesn't exist for your game. This commonly happens when an ID in the route doesn't match an existing stat or leaderboard, for example:
+
+```json
+{ "message": "Stat not found" }
+```
+
+```json
+{ "message": "Leaderboard not found" }
+```
+
+## Rate-limiting
+
+`429 Too Many Requests`
+
+Receiving this status means you've hit Talo's rate limit. Rate limits use a fixed window (resets every minute), so you should aim to make less than 100 requests per minute.
+
+The `Retry-After` header will return how many seconds to wait before retrying - typically this will be set to '60' (the remaining seconds until the window resets).
+
+## Dev data
+
+Admin endpoints that read entities (e.g. listing leaderboard entries or listing stats) respect the `X-Talo-Include-Dev-Data` header. Set it to `1` to include development data, or leave it unset to only return live data.
+
+Learn more in the [dev data guide](/docs/1.x/admin/dev-data).

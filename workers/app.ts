@@ -3,6 +3,15 @@ import { createRequestHandler } from 'react-router'
 
 type Env = {}
 
+// Pre-versioning paths (e.g. /docs/godot/install) redirect to the default version.
+const DEFAULT_VERSION = '1.x'
+const LEGACY_SECTIONS = ['godot', 'unity', 'http', 'sockets', 'selfhosting', 'integrations']
+const VERSION_REDIRECTS: Record<string, string> = {
+  '1.0': '1.x',
+  '0.49': 'pre-1.0',
+  '0.60': 'pre-1.0',
+}
+
 const requestHandler = createRequestHandler(
   () => import('virtual:react-router/server-build'),
   import.meta.env.MODE,
@@ -10,6 +19,24 @@ const requestHandler = createRequestHandler(
 
 export default {
   async fetch(request) {
+    const { pathname, origin } = new URL(request.url)
+    // Default the docs root to the default version.
+    if (pathname === '/docs' || pathname === '/docs/') {
+      return Response.redirect(`${origin}/docs/${DEFAULT_VERSION}`, 301)
+    }
+    const match = pathname.match(/^\/docs\/([^/]+)(\/.*)?$/)
+    if (match) {
+      const [, first, rest = ''] = match
+      let target: string | null = null
+      if (LEGACY_SECTIONS.includes(first)) {
+        target = `/docs/${DEFAULT_VERSION}/${first}${rest}`
+      } else if (VERSION_REDIRECTS[first]) {
+        target = `/docs/${VERSION_REDIRECTS[first]}${rest}`
+      }
+      if (target) {
+        return Response.redirect(`${origin}${target}`, 301)
+      }
+    }
     return requestHandler(request)
   },
 } satisfies ExportedHandler<Env>

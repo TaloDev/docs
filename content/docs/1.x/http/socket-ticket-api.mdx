@@ -1,0 +1,28 @@
+---
+description: Connect to Talo's socket to effortlessly send messages between players.
+title: Socket ticket API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'SocketTicketAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+]
+
+## Overview
+
+Talo provides a secure socket system for real-time communication between your game and players. The Talo Socket powers services like [channels](https://trytalo.com/channels?utm_source=socket-docs&utm_medium=api-docs) and [player relationships](https://trytalo.com/player-relationships?utm_source=socket-docs&utm_medium=api-docs).
+
+To connect to the socket server, you need to obtain a socket ticket. Learn more about socket authentication [here](/docs/1.x/sockets/intro#authentication).
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription='Talo provides a secure socket system for real-time communication between your game and players.'
+/>

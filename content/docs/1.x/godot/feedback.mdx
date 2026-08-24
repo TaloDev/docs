@@ -1,0 +1,78 @@
+---
+description: Talo Feedback allows you to receive feedback directly from players. Feedback can be categorised, analysed and filtered to improve your game.
+title: Feedback
+---
+
+import { ScopeBadges } from '@/components/documentation/ScopeBadges'
+
+## Creating feedback categories
+
+To create a feedback category, visit [the feedback page](https://dashboard.trytalo.com/feedback) inside the Talo dashboard and click "Edit categories". Take note of the `Internal name` of the category you create as this is how you'll be referring to it inside your game.
+
+## Getting available categories
+
+<ScopeBadges scope='gameFeedback' read />
+
+To list all the feedback categories for your game, use the `get_categories()` function:
+
+```gdscript title="get_categories_button.gd"
+extends Button
+
+func _on_pressed() -> void:
+	var categories := await Talo.feedback.get_categories()
+
+	if categories.size() == 0:
+		print("No categories found. Create some in the Talo dashboard!")
+	else:
+		var mapped := categories.map(func (c): return c.internal_name)
+		print("Category internal names: " + ", ".join(mapped)) # prints: "bugs, gameplay-feedback, terrain-issues"
+```
+
+## Sending feedback
+
+<ScopeBadges scope='gameFeedback' write />
+
+To send feedback, call the `send()` function with the player's comment and your chosen category's internal name:
+
+```gdscript title="send_feedback_button.gd"
+extends Button
+
+@export var internal_name: String
+@export var feedback_comment: String
+
+func _on_pressed() -> void:
+	await Talo.feedback.send(internal_name, feedback_comment)
+	print("Feedback sent for %s: %s" % [internal_name, feedback_comment])
+```
+
+### Additional context with props
+
+You can also provide extra information with `props`. This is an optional `Dictionary[String, String]` that are displayed in the Talo dashboard and can be used as filters. For example, you could look at all feedback from a specific game version.
+
+```gdscript
+extends Button
+
+func _on_pressed() -> void:
+	var category_internal_name := "worldgen_feedback"
+	var comment := "Too many spikes!"
+	var props: Dictionary[String, String] = {
+		seed = "32523523"
+	}
+	await Talo.feedback.send(category_internal_name, comment, props)
+```
+
+### Handling rejected props
+
+Talo validates feedback props. If one or more props are invalid, the feedback will not be saved.
+
+`send()` returns a `FeedbackSendResult` with a `success` flag and a `rejected_props` array:
+
+```gdscript
+var result := await Talo.feedback.send(category_internal_name, comment, props)
+if not result.success:
+	for prop in result.rejected_props:
+		# e.g. "Rejected prop 'seed': Prop value exceeds 512 characters (PROP_VALUE_TOO_LONG)"
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.code])
+```
+
+See [Players and props - Prop rejection reasons](/docs/1.x/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.

@@ -1,0 +1,9 @@
+{
+  "pages": [
+    "steamworks",
+    "google-play-games",
+    "apple-game-center"
+  ],
+  "title": "Integrations",
+  "icon": "integrations"
+}

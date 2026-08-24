@@ -1,0 +1,6 @@
+{
+  "pages": ["index", "godot", "unity", "http", "admin", "sockets", "selfhosting", "integrations"],
+  "title": "1.x (latest)",
+  "root": true,
+  "defaultOpen": true
+}

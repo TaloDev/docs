@@ -1,0 +1,32 @@
+---
+description: Separate development data from live data when using the Admin API.
+title: Separating development data
+---
+## Dev build headers
+
+When creating players through the [HTTP API](/docs/1.x/http/dev-data), you can optionally specify if the player belongs to a development build and therefore if they should be excluded from live data.
+
+By default, the Admin API only returns data associated with live players. To include development data in these reads, set the `X-Talo-Include-Dev-Data` header to `1`.
+
+Some endpoints  behave differently depending on whether this header is set. For example, when fetching stat metrics,  data from dev players will only be included if the header is set.
+
+## Resetting dev data
+
+Some entities like leaderboards and stats can be reset. This is controlled by the `mode` query parameter rather than the header. It accepts one of:
+
+- `all` - reset everything (the default)
+- `live` - reset only live players
+- `dev` - reset only dev players
+
+For example, to reset only dev player leaderboard entries:
+
+```
+DELETE /admin/v1/leaderboards/12345/entries?mode=dev
+```
+
+Or to reset only dev player stats:
+
+```
+DELETE /admin/v1/game-stats/67890/player-stats?mode=dev
+```
+

@@ -1,0 +1,317 @@
+---
+description: The Talo Godot plugin allows you to authenticate players, create player aliases and sync identities with external identity providers.
+title: Identifying a player
+---
+
+import { ScopeBadges } from '@/components/documentation/ScopeBadges'
+
+
+## Player aliases
+
+In Talo, players can have multiple aliases.
+For example, a player could have Steam and Google Play accounts. Both accounts can be linked to the same player, allowing them to use either service to log in to your game.
+
+## Identifying
+
+<ScopeBadges scope='players' read write />
+
+You should identify a player _after_ you know who they are (post-authentication) but _before_ you attempt to track any events, add leaderboard entries or do anything related directly to the player.
+
+You can identify a player using `Talo.players.identify()`, which returns a `TaloPlayerAlias`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground scene):
+
+```gdscript title="identify_button.gd"
+extends Button
+
+@export var service: String
+@export var identifier: String
+
+func _on_pressed():
+	Talo.players.identify(service, identifier)
+```
+
+<Callout type="warn">
+You cannot use "Talo" for the `service` parameter as this is reserved for **Talo Player Authentication**.
+
+If you are using Talo Player Authentication, `Talo.players.identify()` will be invoked automatically and the `Talo.players.identified` signal will also emit as normal.
+
+Visit the [Player authentication docs](/docs/1.x/godot/player-authentication) to learn more about identifying players with authentication enabled.
+
+</Callout>
+
+### Generating a mostly-unique identifier
+
+You can easily create an identifier with `Talo.players.generate_identifier()`. This is useful for temporarily identifying players before you know who they are, and then merging them with an identified player later on.
+
+### The "identified" signal
+
+After a successful identification, the `Talo.players.identified` signal will emit, returning the identified player's alias. This allows you to, for example, put the player's identifier on a label:
+
+```gdscript title="player_name.gd"
+extends Label
+
+func _ready() -> void:
+	Talo.players.identified.connect(_on_identified)
+
+func _on_identified(player_alias: TaloPlayerAlias) -> void:
+	text = Talo.current_alias.identifier
+```
+
+### The "identification_started" and "identification_failed" signals
+
+When `Talo.players.identify()` is called, the `Talo.players.identification_started` signal is emitted.
+
+If identification fails, the `Talo.players.identification_failed` signal is emitted. It passes a `TaloIdentifyError` with a `code` enum (`UNKNOWN_ERROR`, `IDENTIFIER_PROFANITY`, `IDENTIFIER_TAKEN`):
+
+```gdscript
+func _ready() -> void:
+	Talo.players.identification_started.connect(func (): go_to_loading())
+	Talo.players.identification_failed.connect(_on_identification_failed)
+
+func _on_identification_failed(error: TaloIdentifyError) -> void:
+	push_error("Identification failed: %s" % error.code)
+	go_to_login()
+```
+
+## Checking identification
+
+You can use `Talo.identity_check()` to verify whether a player has been identified - it returns `ERR_UNAUTHORIZED` if a player hasn't been identified yet:
+
+```gdscript
+func do_stuff_if_authenticated() -> void:
+	if Talo.identity_check() != OK:
+		return
+
+	# do stuff
+```
+
+## Clearing the identified player
+
+You can clear the current player using `Talo.players.clear_identity()`.
+
+This will set `Talo.current_alias` and `Talo.current_player` to `null`. It will also clear any stored or pending data such as the [offline player cache](#offline-player-cache), pending events and continuity requests. For players using Talo authentication, it will also clear session data.
+
+Once all the relevant data has been cleared, the `Talo.players.identity_cleared` signal will be emitted.
+
+## Merging players
+
+<ScopeBadges scope='players' read write />
+
+Sometimes you might start tracking a player's actions before you know their true identity. For example, you could be tracking events with an "anonymous" identifier and then later on the same player chooses their username before submitting a leaderboard entry. Since both of these players need to be identified, two players will be created.
+
+You can merge players using `Talo.players.merge()` by providing the IDs of both players. The merge process takes all the props, aliases, and associated data (events, leaderboard entries, saves, etc.) from **Player 2** and merges them into **Player 1**. This means that duplicate props in **Player 1** will be replaced by the ones from **Player 2**.
+
+<Callout type="warn">
+Player merging has some limitations:
+
+- **Player 2** cannot have a Talo Player Authentication, Steam, Google Play Games or Apple Game Center alias.
+- If **Player 1** has a Talo Player Authentication, Steam, Google Play Games or Apple Game Center alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.current_alias` must belong to Player 1). In this case, make sure your last `Talo.players.identify()` call before merging uses Player 1's alias.
+- Both players cannot have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
+</Callout>
+
+You can provide the `post_merge_identity_service` option to automatically re-identify the player once merging is complete:
+
+```gdscript
+await Talo.players.identify("anonymous", Talo.players.generate_identifier())
+var player1_id = Talo.current_player.id
+await Talo.players.identify("username", "guyman")
+var player2_id = Talo.current_player.id
+
+print(Talo.current_alias.service) # "username"
+
+var mergeOpts := Talo.players.MergeOptions.new()
+mergeOpts.post_merge_identity_service = "anonymous" # go back to the anonymous alias
+var merged_player := await Talo.players.merge(player1_id, player2_id, mergeOpts)
+
+print(Talo.current_alias.service) # "anonymous"
+```
+
+In the example above, the two players created with `Talo.players.identify()` are merged. Before merging, the current alias service was **"username"** (because that was the most recently identified player). Setting the `post_merge_identity_service` option will invoke `Talo.players.identify()` with the **"anonymous"** alias.
+
+## Steamworks integration
+
+<Callout type='idea'>
+  You can enable this integration on the [integrations
+  page](https://dashboard.trytalo.com/integrations).
+</Callout>
+
+If you have the Steamworks integration enabled, Talo can sync a Steam player ([as described here](/docs/1.x/integrations/steamworks#authentication)). You can do this via the `Talo.players.identify_steam` function. Here's an example using [GodotSteam](https://godotsteam.com):
+
+```gdscript
+extends Node
+
+var identity = "talo"
+
+func _ready() -> void:
+	Steam.steamInitEx()
+	Steam.get_ticket_for_web_api.connect(_on_get_ticket_for_web_api)
+	Steam.getAuthTicketForWebApi(identity)
+
+func _on_get_ticket_for_web_api(_auth_ticket: int, _result: int, _ticket_size: int, ticket_buffer: Array) -> void:
+	Talo.players.identify_steam(PackedByteArray(ticket_buffer).hex_encode(), identity)
+
+func _process(_delta: float) -> void:
+	Steam.run_callbacks()
+```
+
+The `identity` parameter is optional but strongly recommended as it ensures proper identification of the service verifying the ticket. It can be anything you like but must be the same as the `identity` passed to Steam when fetching the ticket.
+
+### Steamworks player props
+
+After successfully authenticating the player, several [props](/docs/1.x/godot/player-props) will automatically be created for them:
+
+- `META_STEAMWORKS_VAC_BANNED` - "true" or "false"
+- `META_STEAMWORKS_PUBLISHER_BANNED` - "true" or "false"
+- `META_STEAMWORKS_OWNS_APP` - "true" or "false"
+- `META_STEAMWORKS_OWNS_APP_PERMANENTLY` - "true" or "false"
+- `META_STEAMWORKS_OWNS_APP_FROM_DATE` - ISO date e.g. "2025-11-08T17:30:00Z"
+- `META_STEAMWORKS_PERSONA_NAME` - the player's current display name
+- `META_STEAMWORKS_AVATAR_HASH` - e.g. "5bfdbd8cd4407d6cd37dfba06851b62a4856bb2d"
+
+You can build an avatar URL by replacing **[AVATAR_HASH]** with the `META_STEAMWORKS_AVATAR_HASH` prop value in the following URL: `https://avatars.steamstatic.com/[AVATAR_HASH]_full.jpg`.
+
+These props will be updated each time the player is identified using `Talo.players.identify_steam()`.
+
+## Google Play Games integration
+
+<Callout type='idea'>
+  You can enable this integration on the [integrations
+  page](https://dashboard.trytalo.com/integrations).
+</Callout>
+
+If you have the Google Play Games integration enabled, Talo can identify a player using an OAuth client. Follow Google's official documentation for setting up [Game Server credentials](https://developer.android.com/games/pgs/console/setup#generate_an_oauth_20_client_id).
+
+All you need to do is pass a server auth code to the `Talo.players.identify_google_play_games` function. Here's an example using the [Godot Play Games Services plugin](https://github.com/godot-sdk-integrations/godot-play-game-services):
+
+```gdscript
+extends Node2D
+
+@onready var play_games_sign_in_client: PlayGamesSignInClient = %PlayGamesSignInClient
+
+func _enter_tree() -> void:
+	GodotPlayGameServices.initialize()
+
+func _ready() -> void:
+	play_games_sign_in_client.user_authenticated.connect(
+		func (is_authenticated):
+			if is_authenticated:
+				play_games_sign_in_client.request_server_side_access("yourid.apps.googleusercontent.com", false)
+	)
+
+	play_games_sign_in_client.server_side_access_requested.connect(
+		func (auth_code):
+			Talo.players.identify_google_play_games(auth_code)
+	)
+
+	play_games_sign_in_client.is_authenticated()
+```
+
+Replace "yourid.apps.googleusercontent.com" with the client ID you generated earlier.
+
+### Google Play Games player props
+
+After successfully authenticating the player, these [props](/docs/1.x/godot/player-props) will automatically be created for them:
+
+- `META_GOOGLE_PLAY_GAMES_DISPLAY_NAME` - The player's chosen display name
+- `META_GOOGLE_PLAY_GAMES_AVATAR_URL` - A direct link to the player's avatar
+
+These props will be updated each time the player is identified using `Talo.players.identify_google_play_games()`.
+
+## Apple Game Center integration
+
+<Callout type='idea'>
+  You can enable this integration on the [integrations
+  page](https://dashboard.trytalo.com/integrations).
+</Callout>
+
+If you have the Apple Game Center integration enabled, Talo can identify a player using Apple's identity verification signature. You can do this via the `Talo.players.identify_game_center` function.
+
+<Callout type='warn'>
+  The Game Center plugin singleton is only available on iOS and macOS. It will not exist when
+  running from the Godot editor. Make sure to check for its availability before calling any Game
+  Center methods.
+</Callout>
+
+You'll need to fetch the local player's identity verification signature and pass the resulting values to Talo. Here's an example using the [GodotApplePlugins](https://github.com/migueldeicaza/GodotApplePlugins):
+
+```gdscript
+extends Node
+
+# replace with your own bundle identifier
+const bundle_id := "com.example.game"
+
+var game_center: GameCenterManager
+
+func _ready() -> void:
+	game_center = GameCenterManager.new()
+
+	game_center.authentication_error.connect(
+		func (err: String):
+			push_error("Game Center auth failed: %s" % err)
+	)
+
+	game_center.authentication_result.connect(
+		func (success: bool):
+			if success:
+				_handle_auth_success()
+	)
+
+	game_center.authenticate()
+
+func _handle_auth_success() -> void:
+	var local_player := game_center.local_player
+
+	local_player.fetch_items_for_identity_verification_signature(
+		func (res: Dictionary, err: Variant):
+			if err:
+				push_error(err)
+			else:
+				await Talo.players.identify_game_center(
+					res.url,
+					Marshalls.raw_to_base64(res.data),
+					Marshalls.raw_to_base64(res.salt),
+					res.timestamp,
+					local_player.team_player_id,
+					bundle_id
+				)
+	)
+```
+
+## Offline player cache
+
+If the `cache_player_on_identify` setting is enabled (default `true`), Talo will store player data locally. If a player tries to identify while offline, Talo will try to use local data if it exists.
+
+### Saving identifiers for future sessions
+
+The offline player cache enables you to store and retrieve player identifiers. You can leverage this in situations where players choose their own identifiers and you need them in subsequent sessions:
+
+```gdscript
+func retrieve_identifier() -> String:
+	var alias := TaloPlayerAlias.get_offline_alias()
+	if alias != null:
+		return alias.identifier
+	return ""
+```
+
+This function will return the identifier (if one exists) or an empty string. If the return value is not empty, you can safely call `Talo.players.identify()`.
+
+## Display names
+
+Every player alias has a `display_name` that provides a human-readable name for the player. You can read it from `Talo.current_alias.display_name` after a player has been identified. Display names are resolved from a [player's props](/docs/1.x/godot/player-props) - arbitrary properties persisted across all of a player's aliases.
+
+```gdscript title="welcome_label.gd"
+extends Label
+
+func _ready() -> void:
+	Talo.players.identified.connect(_on_identified)
+
+func _on_identified(player_alias: TaloPlayerAlias) -> void:
+	text = "Welcome, %s!" % Talo.current_alias.display_name
+```
+
+By default, a player's display name is their alias `identifier`. You can configure the **display name prop key** on the [game settings page](https://dashboard.trytalo.com/game-settings) in the Talo dashboard. When set, Talo resolves each alias's `display_name` to the value of the player's prop with that key.
+
+![The display name prop key setting in the dashboard](/img/display-name-prop-key-setting.png)
+
+For example, if your game's display name prop key is `playerChosenName` and a player has a prop `playerChosenName = "TheGuy"`, their alias `display_name` will be "TheGuy".
+
+If a player doesn't have a prop matching the configured key, their display name falls back to their alias `identifier`. The display name is resolved by Talo on each identification, so it stays up to date as the player's props change.
