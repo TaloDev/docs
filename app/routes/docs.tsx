@@ -12,7 +12,8 @@ import { baseOptions } from '@/lib/layout.shared'
 import { docs, source } from '@/lib/source'
 import type { Route } from './+types/docs'
 
-// Pre-versioning paths (e.g. /docs/godot/install) redirect to the 1.x version.
+// Pre-versioning paths (e.g. /docs/godot/install) redirect to the default version.
+const DEFAULT_VERSION = '1.x'
 const LEGACY_SECTIONS = ['godot', 'unity', 'http', 'sockets', 'selfhosting', 'integrations']
 const VERSION_REDIRECTS: Record<string, string> = {
   '1.0': '1.x',
@@ -26,12 +27,16 @@ export async function loader({ params }: Route.LoaderArgs) {
   if (!page) {
     const first = slugs[0] ?? ''
     if (LEGACY_SECTIONS.includes(first)) {
-      throw redirect(`/docs/1.x/${slugs.join('/')}`)
+      throw redirect(`/docs/${DEFAULT_VERSION}/${slugs.join('/')}`)
     }
     if (VERSION_REDIRECTS[first]) {
       throw redirect(`/docs/${VERSION_REDIRECTS[first]}/${slugs.slice(1).join('/')}`)
     }
     throw new Response('Not found', { status: 404 })
+  }
+  // Default the docs root to the default version.
+  if (slugs.length === 0) {
+    throw redirect(`/docs/${DEFAULT_VERSION}`)
   }
 
   return {
