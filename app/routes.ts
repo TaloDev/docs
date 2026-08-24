@@ -2,8 +2,7 @@ import { index, route, type RouteConfig } from '@react-router/dev/routes'
 
 export default [
   index('routes/home.tsx'),
-  route('docs/intro', 'routes/intro-redirect.tsx'),
-  route('docs/*', 'routes/docs.tsx'),
+  route('intro', 'routes/intro-redirect.tsx'),
   route('api/search', 'routes/search.ts'),
-  route('*', 'routes/not-found.tsx'),
+  route(':version/*', 'routes/docs.tsx'),
 ] satisfies RouteConfig

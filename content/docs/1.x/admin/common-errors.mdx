@@ -9,7 +9,7 @@ title: Common errors
 
 The `Authorization` header is required, with its value set to `Bearer your-admin-api-key`.
 
-Admin API keys are prefixed with `ta_` and are created inside the [dashboard](https://dashboard.trytalo.com/api-keys). Unlike the gameplay [HTTP API](/docs/1.x/http/authentication), admin API keys are scoped to a single game rather than authenticating on behalf of a player.
+Admin API keys are prefixed with `ta_` and are created inside the [dashboard](https://dashboard.trytalo.com/api-keys). Unlike the gameplay [HTTP API](/1.x/http/authentication), admin API keys are scoped to a single game rather than authenticating on behalf of a player.
 
 ## Missing scopes
 
@@ -66,4 +66,4 @@ The `Retry-After` header will return how many seconds to wait before retrying - 
 
 Admin endpoints that read entities (e.g. listing leaderboard entries or listing stats) respect the `X-Talo-Include-Dev-Data` header. Set it to `1` to include development data, or leave it unset to only return live data.
 
-Learn more in the [dev data guide](/docs/1.x/admin/dev-data).
+Learn more in the [dev data guide](/1.x/admin/dev-data).

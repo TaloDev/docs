@@ -7,7 +7,7 @@ title: Socket basics
 
 The socket used by Talo follows the web socket standard and is compatible with libraries that also do the same.
 
-One major difference is that the Talo Socket will validate messages against a request type and payload structure. For example, if you send a message with the `v1.players.identified` request, your payload's data must also match the expected schema. The list of available [requests](/docs/pre-1.0/requests) and [responses](/docs/pre-1.0/responses) are available on their respective pages.
+One major difference is that the Talo Socket will validate messages against a request type and payload structure. For example, if you send a message with the `v1.players.identified` request, your payload's data must also match the expected schema. The list of available [requests](/pre-1.0/requests) and [responses](/pre-1.0/responses) are available on their respective pages.
 
 Using the identification example, here is the JSON expected by the Talo Socket when identifying a player:
 
@@ -51,7 +51,7 @@ Responses use a similar message structure, except that `req` is replaced by `res
 
 The Talo Socket provides two layers of authentication:
 
-1. You must provide a [socket ticket](/docs/pre-1.0/http/socket-ticket-api) when opening a socket connection. This identifies your game and the key's scopes are used to determine whether a client is eligible to receive specific responses.
+1. You must provide a [socket ticket](/pre-1.0/http/socket-ticket-api) when opening a socket connection. This identifies your game and the key's scopes are used to determine whether a client is eligible to receive specific responses.
 2. When players are identified, a `socketToken` is stored against the player alias for 1 hour. While the socket token is valid, you can use it to authenticate your player with the socket.
 
 <Callout type='info'>
@@ -72,7 +72,7 @@ The default socket URL is `wss://api.trytalo.com`. When opening a socket connect
 wss://api.trytalo.com/socket?ticket=your-ticket-here
 ```
 
-Your ticket should be a valid socket ticket, i.e. it was created within the last 5 minutes. Visit the [API docs](/docs/pre-1.0/http/socket-ticket-api) for more information on how to obtain a socket ticket.
+Your ticket should be a valid socket ticket, i.e. it was created within the last 5 minutes. Visit the [API docs](/pre-1.0/http/socket-ticket-api) for more information on how to obtain a socket ticket.
 
 ## Error responses
 
@@ -103,4 +103,4 @@ Some errors may also return a "cause" key which drills down into why a request f
 }
 ```
 
-For a more detailed look into the available error codes, visit the [common errors](/docs/pre-1.0/common-errors) page.
+For a more detailed look into the available error codes, visit the [common errors](/pre-1.0/common-errors) page.

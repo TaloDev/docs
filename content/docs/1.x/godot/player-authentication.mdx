@@ -242,7 +242,7 @@ You can migrate a player's account to a different service and identifier using `
 
 The original player auth account will be deleted and they will only be able to use their new identifier.
 
-Here is an example of migrating to a [Steam alias](/docs/1.x/godot/identifying#steamworks-integration):
+Here is an example of migrating to a [Steam alias](/1.x/godot/identifying#steamworks-integration):
 
 ```gdscript
 @onready var current_password: TextEdit = %CurrentPassword
@@ -267,7 +267,7 @@ func _migrate_account(ticket: String) -> void:
 		validation_label.text = res.error.message
 ```
 
-You can also migrate to the `google_play_games` service by providing an [auth code](/docs/1.x/godot/identifying#google-play-games-integration).
+You can also migrate to the `google_play_games` service by providing an [auth code](/1.x/godot/identifying#google-play-games-integration).
 
 When a migration is successful, the current session is cleared, the player's alias is updated to the new service and identifier, and the `Talo.players.identified` signal is emitted.
 
@@ -275,4 +275,4 @@ When a migration is successful, the current session is cleared, the player's ali
 
 As shown in the examples above, every auth method returns a result object. On failure, `res.success` is `false` and `res.error` holds a `TaloPlayerAuthError` with a machine-readable `code` enum value and a human-readable `message`.
 
-You can view all the authentication errors and their descriptions [here](/docs/1.x/http/player-auth-api#error-codes).
+You can view all the authentication errors and their descriptions [here](/1.x/http/player-auth-api#error-codes).

@@ -2,7 +2,7 @@ import type { Config } from '@react-router/dev/config'
 import { createGetUrl, getSlugs } from 'fumadocs-core/source'
 import { glob } from 'node:fs/promises'
 
-const getUrl = createGetUrl('/docs')
+const getUrl = createGetUrl('/')
 
 export default {
   ssr: false,
@@ -10,7 +10,7 @@ export default {
     const paths: string[] = []
 
     for (const path of getStaticPaths()) {
-      // `/` redirects to `/docs` via the client loader
+      // `/` navigates to the default version via the client component
       if (path !== '/') {
         paths.push(path)
       }

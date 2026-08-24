@@ -51,7 +51,7 @@ private async void SearchPlayers()
 
 Players can have a list of arbitrary properties that are persisted across all of their aliases. These props are identified by their unique key and can have any string value. Keys can be up to 128 characters long and values can be up to 512 characters long.
 
-All functions that modify props accept an optional `update` parameter (default `true`) that controls whether the player is synced with Talo after the change. They return an awaitable `Task<PlayerUpdateResult>`, and setting `update` to `false` returns a valid result without triggering a sync - use it to batch multiple changes and avoid redundant [debounces](/docs/1.x/unity/settings-reference#debouncetimerseconds).
+All functions that modify props accept an optional `update` parameter (default `true`) that controls whether the player is synced with Talo after the change. They return an awaitable `Task<PlayerUpdateResult>`, and setting `update` to `false` returns a valid result without triggering a sync - use it to batch multiple changes and avoid redundant [debounces](/1.x/unity/settings-reference#debouncetimerseconds).
 
 ### Getting props
 

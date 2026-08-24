@@ -278,7 +278,7 @@ if (!result.Success)
 
 For **channel storage** prop errors, use the `OnChannelStoragePropsFailedToSet` event instead.
 
-See [Players and props - Prop rejection reasons](/docs/1.x/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+See [Players and props - Prop rejection reasons](/1.x/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
 ## Channel storage
 
@@ -321,7 +321,7 @@ void Start()
 }
 ```
 
-`RejectedProp` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/docs/1.x/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+`RejectedProp` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/1.x/unity/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
 ### Setting storage prop arrays
 
@@ -444,7 +444,7 @@ This function will return a `ChannelStorageProp` array, allowing you to iterate 
 
 #### Prop arrays
 
-If any of the keys you pass are [prop arrays](/docs/1.x/unity/channels#getting-storage-prop-arrays), append `[]` to the key to fetch every item stored under it. Scalar and array keys can be mixed in a single call:
+If any of the keys you pass are [prop arrays](/1.x/unity/channels#getting-storage-prop-arrays), append `[]` to the key to fetch every item stored under it. Scalar and array keys can be mixed in a single call:
 
 ```csharp
 // storage_prop_1 is a scalar, world_items[] is a prop array

@@ -28,15 +28,15 @@ Most endpoints perform actions on behalf of players.If you are using [player aut
 <Callout type='idea'>
   The Godot plugin and Unity package will automatically populate these headers for you. If you're
   receiving session-related errors, visit the [Common
-  errors](/docs/pre-1.0/http/common-errors#missing-or-invalid-session) page for more information.
+  errors](/pre-1.0/http/common-errors#missing-or-invalid-session) page for more information.
 </Callout>
 
 ### Session token lifetimes
 
-By default, session tokens returned by [register, login, verify, and refresh](/docs/pre-1.0/http/player-auth-api) are long-lived and do not need to be renewed. Your game can store the token on the device and reuse it for as long as the player keeps playing.
+By default, session tokens returned by [register, login, verify, and refresh](/pre-1.0/http/player-auth-api) are long-lived and do not need to be renewed. Your game can store the token on the device and reuse it for as long as the player keeps playing.
 
 If you prefer shorter-lived sessions, you can opt in to the refresh token flow using the `withRefresh` parameter. When enabled:
 
 - The session token expires after **15 minutes**.
 - A **30-day refresh token** is returned alongside it.
-- Call the [refresh session](/docs/pre-1.0/http/player-auth-api) endpoint with the refresh token to receive a new session and refresh token.
+- Call the [refresh session](/pre-1.0/http/player-auth-api) endpoint with the refresh token to receive a new session and refresh token.
