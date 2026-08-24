@@ -1,0 +1,42 @@
+---
+description: Interactive API explorer for the Admin API
+title: Bruno request collection
+---
+
+[Bruno](https://www.usebruno.com) is an open-source API client (a Postman alternative) for exploring and testing REST APIs. A pre-built Talo collection is available so you can try every endpoint, including the Admin API.
+
+## Interactive explorer
+
+<a href='/bruno-collection.html' target='_blank' rel='noopener noreferrer'>
+  Open the API explorer in a new tab
+</a>
+
+## Install Bruno
+
+Bruno is a desktop app available for macOS, Windows and Linux. You can download it from [usebruno.com](https://www.usebruno.com).
+
+## Import the Talo collection
+
+1. Open Bruno and click **Import Collection**.
+2. Paste the repository URL: `https://github.com/TaloDev/bruno-collection.git`.
+3. Choose a location to save the collection locally.
+4. Click **Clone**.
+
+The full collection is available in [this repository](https://github.com/TaloDev/bruno-collection).
+
+## Collection structure
+
+The collection's **Admin API** folder contains **Leaderboards** and **Stats** requests, mirroring the endpoints documented in the [Admin API reference](/1.x/admin/authentication).
+
+## Configure the environment
+
+The collection ships with a `Prod` environment with these variables:
+
+| Variable      | Description                                                                                           |
+| ------------- | ----------------------------------------------------------------------------------------------------- |
+| `baseUrl`     | The API root. Defaults to `https://api.trytalo.com` - change this to point at a self-hosted instance. |
+| `adminApiKey` | An admin API key from the [Talo dashboard](https://dashboard.trytalo.com/api-keys). The **Admin API** folder uses this. |
+
+<Callout type='warn'>Admin API requests will return `401 Unauthorized` until you set `adminApiKey`.</Callout>
+
+To edit the environment in Bruno: click the environment name (`Prod`) in the top-right, then click **Configure**.

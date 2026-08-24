@@ -24,14 +24,18 @@ Bruno is a desktop app available for macOS, Windows and Linux. You can download 
 
 The full collection is available in [this repository](https://github.com/TaloDev/bruno-collection).
 
+## Collection structure
+
+The collection's **Game API** folder contains requests for the gameplay-orientated endpoints used by your game, organised into subfolders like **Players**, **Stats**, **Leaderboards** and **Player auth**.
+
 ## Configure the environment
 
-The collection ships with a `Prod` environment that has two variables:
+The collection ships with a `Prod` environment with these variables:
 
 | Variable  | Description                                                                                           |
 | --------- | ----------------------------------------------------------------------------------------------------- |
 | `baseUrl` | The API root. Defaults to `https://api.trytalo.com` - change this to point at a self-hosted instance. |
-| `apiKey`  | An API key from the [Talo dashboard](https://dashboard.trytalo.com/api-keys).                      |
+| `apiKey`  | A game API key from the [Talo dashboard](https://dashboard.trytalo.com/api-keys). The **Game API** folder uses this. |
 
 <Callout type='warn'>Requests will return `401 Unauthorized` until you set `apiKey`.</Callout>
 
@@ -44,12 +48,12 @@ Most player-scoped endpoints expect two headers in addition to the API key:
 1. `x-talo-player` - the player's ID
 2. `x-talo-alias` - the ID of one of the player's identified alias
 
-To get these, run the [Identify](/1.x/http/player-api) endpoint first (found in the **Players** folder of the collection). This will automatically set the variables for both of those headers.
+To get these, run the [Identify](/1.x/http/player-api) endpoint first (found in the **Game API** > **Players** folder of the collection). This will automatically set the variables for both of those headers.
 
 ### Talo player authentication
 
 If your game uses [Talo's player authentication](/1.x/http/player-auth-api), you'll also need the `x-talo-session` header.
 
-Run the **register** and **login** requests (from the **Player auth** folder). This will set the `x-talo-session` variable and refresh token variable (for refreshing the short-lived session token).
+Run the **register** and **login** requests (from the **Game API** > **Player auth** folder). This will set the `x-talo-session` variable and refresh token variable (for refreshing the short-lived session token).
 
 See [Player authentication](/1.x/http/authentication#player-authentication) for the full flow.
