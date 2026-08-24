@@ -1,5 +1,5 @@
 {
-  "pages": ["index", "godot", "unity", "http", "sockets", "selfhosting", "integrations"],
+  "pages": ["index", "godot", "unity", "http", "admin", "sockets", "selfhosting", "integrations"],
   "title": "Pre-1.0",
   "root": true
 }
