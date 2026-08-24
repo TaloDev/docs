@@ -44,12 +44,12 @@ Most player-scoped endpoints expect two headers in addition to the API key:
 1. `x-talo-player` - the player's ID
 2. `x-talo-alias` - the ID of one of the player's identified alias
 
-To get these, run the [Identify](/docs/1.x/http/player-api) endpoint first (found in the **Players** folder of the collection). This will automatically set the variables for both of those headers.
+To get these, run the [Identify](/1.x/http/player-api) endpoint first (found in the **Players** folder of the collection). This will automatically set the variables for both of those headers.
 
 ### Talo player authentication
 
-If your game uses [Talo's player authentication](/docs/1.x/http/player-auth-api), you'll also need the `x-talo-session` header.
+If your game uses [Talo's player authentication](/1.x/http/player-auth-api), you'll also need the `x-talo-session` header.
 
 Run the **register** and **login** requests (from the **Player auth** folder). This will set the `x-talo-session` variable and refresh token variable (for refreshing the short-lived session token).
 
-See [Player authentication](/docs/1.x/http/authentication#player-authentication) for the full flow.
+See [Player authentication](/1.x/http/authentication#player-authentication) for the full flow.

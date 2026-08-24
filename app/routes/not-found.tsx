@@ -1,11 +1,6 @@
 import { HomeLayout } from 'fumadocs-ui/layouts/home'
 import { Link } from 'react-router'
 import { baseOptions } from '@/lib/layout.shared'
-import type { Route } from './+types/not-found'
-
-export function meta({}: Route.MetaArgs) {
-  return [{ title: 'Not Found' }]
-}
 
 export default function NotFound() {
   return (
@@ -15,7 +10,7 @@ export default function NotFound() {
         <p className='text-fd-muted-foreground mb-4'>This page could not be found.</p>
         <Link
           className='text-sm bg-fd-primary text-fd-primary-foreground rounded-full font-medium px-4 py-2.5'
-          to='/docs'
+          to='/1.x'
         >
           Back to Docs
         </Link>

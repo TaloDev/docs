@@ -289,7 +289,7 @@ You can migrate a player's account to a different service and identifier using `
 
 The original player auth account will be deleted and they will only be able to use their new identifier.
 
-Here is an example of migrating to a [Steam alias](/docs/1.x/unity/identifying#steamworks-integration):
+Here is an example of migrating to a [Steam alias](/1.x/unity/identifying#steamworks-integration):
 
 ```csharp
 Callback<GetTicketForWebApiResponse_t> m_AuthTicketForWebApiResponseCallback;
@@ -318,7 +318,7 @@ async void OnAuthCallback(GetTicketForWebApiResponse_t callback)
 }
 ```
 
-You can also migrate to the `google_play_games` service by providing an [auth code](/docs/1.x/unity/identifying#google-play-games-integration).
+You can also migrate to the `google_play_games` service by providing an [auth code](/1.x/unity/identifying#google-play-games-integration).
 
 When a migration is successful, the current session is cleared, the player's alias is updated to the new service and identifier, and the `OnPlayerIdentified` event is invoked.
 
@@ -328,4 +328,4 @@ As shown in the examples above, whenever a request fails with an authentication-
 
 The exception provides a `ErrorCode` property that returns a matching `PlayerAuthErrorCode` enum value for the error response.
 
-You can view all the authentication errors and their descriptions [here](/docs/1.x/http/player-auth-api#error-codes).
+You can view all the authentication errors and their descriptions [here](/1.x/http/player-auth-api#error-codes).

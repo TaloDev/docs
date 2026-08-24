@@ -285,7 +285,7 @@ func _on_channel_props_rejected(rejected_props: Array[TaloRejectedProp]) -> void
   **storage** prop errors, use `channel_storage_props_failed_to_set` instead.
 </Callout>
 
-See [Players and props - Prop rejection reasons](/docs/pre-1.0/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+See [Players and props - Prop rejection reasons](/pre-1.0/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
 ## Channel storage
 
@@ -324,7 +324,7 @@ func _ready() -> void:
 	)
 ```
 
-`TaloChannelStoragePropError` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/docs/pre-1.0/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+`TaloChannelStoragePropError` includes a `message` with a human-readable description of the error, alongside the `error` code. See [Players and props - Prop rejection reasons](/pre-1.0/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
 ### Setting storage prop arrays
 
@@ -442,7 +442,7 @@ This function will return a `TaloChannelStorageProp` array, allowing you to iter
 
 #### Prop arrays
 
-If any of the keys you pass are [prop arrays](/docs/pre-1.0/godot/channels#getting-storage-prop-arrays), append `[]` to the key to fetch every item stored under it. Scalar and array keys can be mixed in a single call:
+If any of the keys you pass are [prop arrays](/pre-1.0/godot/channels#getting-storage-prop-arrays), append `[]` to the key to fetch every item stored under it. Scalar and array keys can be mixed in a single call:
 
 ```gdscript
 # storage_prop_1 is a scalar, world_items[] is a prop array

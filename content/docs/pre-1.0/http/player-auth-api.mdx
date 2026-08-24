@@ -28,7 +28,7 @@ Learn more about player authentication [here](https://trytalo.com/players#authen
 
 ## Identifying players using Talo Authentication
 
-Once you have registered a player, you can identify them using the [identify](/docs/pre-1.0/http/player-api) endpoint. You will need to ensure that:
+Once you have registered a player, you can identify them using the [identify](/pre-1.0/http/player-api) endpoint. You will need to ensure that:
 
 1. The `identifier` is the one you used to register the player (email, username, etc.)
 2. The `service` is set to `talo`
@@ -39,7 +39,7 @@ To create a new session token, you will need to go through the login flow again 
 <Callout type='info' title='Session token lifetimes'>
   By default session tokens are long-lived. You can opt in to short-lived (15-minute) session tokens
   paired with a 30-day refresh token using the `withRefresh` parameter. See [Session token
-  lifetimes](/docs/pre-1.0/http/authentication#session-token-lifetimes) for the full details.
+  lifetimes](/pre-1.0/http/authentication#session-token-lifetimes) for the full details.
 </Callout>
 
 ## Endpoints

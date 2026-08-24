@@ -11,7 +11,7 @@ Ideally you should never need to use the socket directly because individual serv
 
 The socket connection is automatically established (this can disabled by setting `autoConnectSocket` to `false` in your config). When a player gets identified, they also get automatically identified with the socket server.
 
-You can learn more about how the socket works [here](/docs/pre-1.0/sockets/intro).
+You can learn more about how the socket works [here](/pre-1.0/sockets/intro).
 
 ## Obtaining a socket ticket
 
@@ -23,7 +23,7 @@ Opening a socket connection using `Talo.Socket.OpenConnection()` will automatica
 
 ## Receiving messages
 
-The `OnMessageReceived` event provides you with a [response](/docs/pre-1.0/sockets/responses) and payload. For example, if you were building a chat system, you would connect a function similar to the one below to listen for new chat messages:
+The `OnMessageReceived` event provides you with a [response](/pre-1.0/sockets/responses) and payload. For example, if you were building a chat system, you would connect a function similar to the one below to listen for new chat messages:
 
 ```csharp
 private void Start()
@@ -51,7 +51,7 @@ private void OnMessageReceived(SocketResponse response)
 
 ## Sending messages
 
-Sending messages is handled by functions in services like `Talo.Channels.SendMessage()` where the correct data is prepared and sent for you. You can also use the `Talo.Socket.Send()` function to send your own [requests](/docs/pre-1.0/sockets/requests):
+Sending messages is handled by functions in services like `Talo.Channels.SendMessage()` where the correct data is prepared and sent for you. You can also use the `Talo.Socket.Send()` function to send your own [requests](/pre-1.0/sockets/requests):
 
 ```csharp
 public void SendMessage(int channelId, string message)
@@ -72,7 +72,7 @@ public void SendMessage(int channelId, string message)
 
 <ScopeBadges scope='players' read write />
 
-The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](/docs/pre-1.0/sockets/common-errors#rate-limit-exceeded). The socket will invoke a `OnConnectionClosed` event with a status code and reason.
+The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](/pre-1.0/sockets/common-errors#rate-limit-exceeded). The socket will invoke a `OnConnectionClosed` event with a status code and reason.
 
 The Talo socket automatically reconnects when the [connection is restored](continuity#onconnectionrestored). If you need to manually re-open the socket, you can establish a connection and re-identify the player like this:
 
@@ -94,7 +94,7 @@ You can choose to manually end the socket connection using `Talo.Socket.CloseCon
 
 ## Request verification
 
-If your game has [request verification](/docs/pre-1.0/unity/request-verification) enabled, socket messages are automatically signed for players. The server validates these signatures to prevent replay attacks and tampering.
+If your game has [request verification](/pre-1.0/unity/request-verification) enabled, socket messages are automatically signed for players. The server validates these signatures to prevent replay attacks and tampering.
 
 ## Error handling
 
