@@ -7,7 +7,7 @@ title: Socket basics
 
 The socket used by Talo follows the web socket standard and is compatible with libraries that also do the same.
 
-One major difference is that the Talo Socket will validate messages against a request type and payload structure. For example, if you send a message with the `v1.players.identified` request, your payload's data must also match the expected schema. The list of available [requests](/1.x/requests) and [responses](/1.x/responses) are available on their respective pages.
+One major difference is that the Talo Socket will validate messages against a request type and payload structure. For example, if you send a message with the `v1.players.identified` request, your payload's data must also match the expected schema. The list of available [requests](/1.x/sockets/requests) and [responses](/1.x/sockets/responses) are available on their respective pages.
 
 Using the identification example, here is the JSON expected by the Talo Socket when identifying a player:
 
@@ -103,4 +103,4 @@ Some errors may also return a "cause" key which drills down into why a request f
 }
 ```
 
-For a more detailed look into the available error codes, visit the [common errors](/1.x/common-errors) page.
+For a more detailed look into the available error codes, visit the [common errors](/1.x/sockets/common-errors) page.

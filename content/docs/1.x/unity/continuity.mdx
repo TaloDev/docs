@@ -93,13 +93,13 @@ private void OnConnectionRestored()
 
 ### Checking if the player is offline
 
-`Talo.IsOffline()` returns a boolean indicating if offline mode is enabled. Offline mode occurs when Unity detects that the player is offline or when the [`offlineMode` setting](settings-reference#offlinemode) is enabled.
+`Talo.IsOffline()` returns a boolean indicating if offline mode is enabled. Offline mode occurs when Unity detects that the player is offline or when the [`offlineMode` setting](/1.x/unity/settings-reference#offlinemode) is enabled.
 
 Use this function to handle custom offline interactions, such as building your own offline caches.
 
 ### Player identification
 
-After a successful online identification, player data is cached locally for future offline use. You can disable this interaction with the [`cachePlayerOnIdentify` setting](settings-reference#cacheplayeronidentify).
+After a successful online identification, player data is cached locally for future offline use. You can disable this interaction with the [`cachePlayerOnIdentify` setting](/1.x/unity/settings-reference#cacheplayeronidentify).
 
 <Callout type='info'>
   players cannot be created while offline.

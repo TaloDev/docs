@@ -74,7 +74,7 @@ public void SendMessage(int channelId, string message)
 
 The socket server can disconnect for a number of reasons such as the player going offline or being [rate limited](/1.x/sockets/common-errors#rate-limit-exceeded). The socket will invoke a `OnConnectionClosed` event with a status code and reason.
 
-The Talo socket automatically reconnects when the [connection is restored](continuity#onconnectionrestored). If you need to manually re-open the socket, you can establish a connection and re-identify the player like this:
+The Talo socket automatically reconnects when the [connection is restored](/1.x/unity/continuity#onconnectionrestored). If you need to manually re-open the socket, you can establish a connection and re-identify the player like this:
 
 ```csharp
 private async void ReconnectSocket()

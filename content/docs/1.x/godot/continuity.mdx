@@ -44,7 +44,7 @@ Continuity happens in the background and there are no direct APIs exposed for it
 
 </Callout>
 
-If you have [request logging enabled](settings-reference#loggingrequests), the replayed requests will be highlighted for you in the console.
+If you have [request logging enabled](/1.x/godot/settings-reference#loggingrequests), the replayed requests will be highlighted for you in the console.
 
 ## Network connection signals
 
@@ -80,13 +80,13 @@ func _on_connection_restored():
 
 ### Checking if the player is offline
 
-`Talo.is_offline()` returns a boolean indicating if offline mode is enabled. Offline mode occurs when Talo can't be reached (server unavailable or no internet connection) or when the [`debug.offline_mode` setting](settings-reference#debugoffline_mode) is enabled.
+`Talo.is_offline()` returns a boolean indicating if offline mode is enabled. Offline mode occurs when Talo can't be reached (server unavailable or no internet connection) or when the [`debug.offline_mode` setting](/1.x/godot/settings-reference#debugoffline_mode) is enabled.
 
 Use this function to handle custom offline interactions, such as building your own offline caches.
 
 ### Player identification
 
-After a successful online identification, player data is cached locally for future offline use. You can disable this interaction with the [`cache_player_on_identify` setting](settings-reference#cache_player_on_identify).
+After a successful online identification, player data is cached locally for future offline use. You can disable this interaction with the [`cache_player_on_identify` setting](/1.x/godot/settings-reference#cache_player_on_identify).
 
 <Callout type='info'>
 
