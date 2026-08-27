@@ -98,7 +98,6 @@ export function ServiceDocumentation({
 
   return (
     <>
-      <meta name='description' content={metaDescription} />
       <meta property='og:description' content={metaDescription} />
       {routes
         .sort((a, b) => getSortOrder(a.method) - getSortOrder(b.method))
