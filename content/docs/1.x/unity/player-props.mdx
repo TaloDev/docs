@@ -156,6 +156,12 @@ Talo.CurrentPlayer.DeletePropArray("inventoryItems");
 
 Player prop updates support partial success. If an update contains a mix of valid and invalid props, the valid props will be set and only the invalid ones will fail ([see rejection reasons](#prop-rejection-reasons)).
 
+<Callout type="info">
+  The result's `Success` property only reflects whether the network request succeeded - it will be set to `true` even when props are rejected.
+
+  To find out whether your props were actually accepted, check `RejectedProps`.
+</Callout>
+
 The prop mutators return an awaitable `Task<PlayerUpdateResult>`. Rapid mutations are coalesced into a single PATCH and every caller in the same debounce window settles together - you can read the rejected props off the result:
 
 ```csharp
