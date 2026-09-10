@@ -309,3 +309,40 @@ var entries = await Talo.Leaderboards.GetEntries(internalName, new GetEntriesOpt
 	// startDate is omitted - returns all entries created before October 1, 2025 00:00:00 UTC
 });
 ```
+
+## Getting top entries
+
+<ScopeBadges scope='leaderboards' read />
+
+`Talo.Leaderboards.GetTopEntries()` fetches a leaderboard's top entries alongside the current player's own entries. This is the quickest way to build a leaderboard screen without paginating:
+
+```csharp title="GetTopEntries.cs"
+string internalName = "time-survived";
+int limit = 10;
+
+public async void FetchTopEntries()
+{
+	var res = await Talo.Leaderboards.GetTopEntries(internalName, limit);
+
+	foreach (var entry in res.topEntries)
+	{
+		Debug.Log($"#{entry.position + 1}: {entry.playerAlias.displayName} scored {entry.score}");
+	}
+
+	foreach (var entry in res.playerEntries)
+	{
+		Debug.Log($"You are #{entry.position + 1} with {entry.score}");
+	}
+}
+```
+
+<Callout type='info'>
+  The `limit` argument applies to both arrays and must be between 1 and 200.
+</Callout>
+
+`GetTopEntries()` returns a `LeaderboardTopEntriesResponse` with two sorted arrays:
+
+- `topEntries` - the leaderboard's top entries
+- `playerEntries` - the current player's entries, each with its global `position`
+
+Neither array is added to the [entry cache](#entry-cache).
