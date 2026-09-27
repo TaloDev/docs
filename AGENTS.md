@@ -31,15 +31,10 @@ pnpm build
 
 Generates static content in the `build/` directory (React Router SPA mode with all docs pages prerendered to static HTML).
 
-**Typecheck:**
+**Checks:**
 
 ```bash
 pnpm typecheck
-```
-
-**Lint / format:**
-
-```bash
 pnpm lint
 pnpm fmt
 ```
