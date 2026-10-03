@@ -10,7 +10,6 @@ export default {
     const paths: string[] = []
 
     for (const path of getStaticPaths()) {
-      // `/` navigates to the default version via the client component
       if (path !== '/') {
         paths.push(path)
       }
@@ -20,6 +19,8 @@ export default {
       const slugs = getSlugs(entry)
       paths.push(getUrl(slugs))
     }
+
+    paths.push('/sitemap.xml')
 
     return paths
   },
