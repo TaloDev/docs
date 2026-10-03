@@ -28,6 +28,12 @@ auto_start_session=true
 
 You can use the `Talo.settings` object to get or set individual options. You will need to call `Talo.settings.save_config()` after modifying a setting to persist the change.
 
+## Settings file location
+
+Talo reads and writes all of the options below from a single `settings.cfg` file. Its location is stored in the `talo/settings/settings_path` project setting, which the plugin creates when it's enabled. The default is `res://addons/talo/settings.cfg`.
+
+To use a different path, search for `talo/settings/settings_path` in `Project > Project Settings` and enter a new `res://` path.
+
 ## Settings
 
 ### access_key
