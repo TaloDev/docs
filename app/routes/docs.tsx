@@ -8,6 +8,7 @@ import { Feedback } from '@/components/feedback/client'
 import { useMDXComponents } from '@/components/mdx'
 import { onPageFeedback } from '@/lib/feedback'
 import { baseOptions } from '@/lib/layout.shared'
+import { docTitle } from '@/lib/seo'
 import { docs, source } from '@/lib/source'
 import type { Route } from './+types/docs'
 
@@ -27,6 +28,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   }
 }
 
+// The 1.x root is the docs landing page, so it keeps the marketing title.
+const INDEX_PATH = '1.x/index.mdx'
+
 function Content({ path }: { path: string }) {
   const page = docs.getPage(path)
   if (!page) {
@@ -45,9 +49,7 @@ function Content({ path }: { path: string }) {
       footer={path === 'index.mdx' ? { className: 'mt-8' } : {}}
       slots={{ breadcrumb: Breadcrumb }}
     >
-      <title>
-        {path === 'index.mdx' ? 'Talo - open source, self-hostable game backend' : page.title}
-      </title>
+      <title>{docTitle(page, path === INDEX_PATH)}</title>
       <meta name='description' content={page.description} />
       <DocsTitle>{page.title}</DocsTitle>
       <DocsDescription>{page.description}</DocsDescription>
