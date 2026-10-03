@@ -1,3 +1,4 @@
 User-agent: *
 Disallow:
 # Algolia-Crawler-Verif: 50BA364995958603
+Sitemap: https://docs.trytalo.com/sitemap.xml

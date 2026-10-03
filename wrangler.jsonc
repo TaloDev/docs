@@ -5,5 +5,9 @@
   "observability": {
     "enabled": true,
   },
+  "assets": {
+    "html_handling": "drop-trailing-slash",
+    "run_worker_first": ["/"],
+  },
   "main": "./workers/app.ts",
 }

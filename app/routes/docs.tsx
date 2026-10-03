@@ -9,6 +9,7 @@ import { useMDXComponents } from '@/components/mdx'
 import { onPageFeedback } from '@/lib/feedback'
 import { baseOptions } from '@/lib/layout.shared'
 import { docTitle } from '@/lib/seo'
+import { siteOrigin } from '@/lib/shared'
 import { docs, source } from '@/lib/source'
 import type { Route } from './+types/docs'
 
@@ -24,6 +25,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
   return {
     path: page.path,
+    url: page.url,
     pageTree: await source.serializePageTree(source.getPageTree()),
   }
 }
@@ -31,7 +33,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 // The 1.x root is the docs landing page, so it keeps the marketing title.
 const INDEX_PATH = '1.x/index.mdx'
 
-function Content({ path }: { path: string }) {
+function Content({ path, url }: { path: string; url: string }) {
   const page = docs.getPage(path)
   if (!page) {
     throw new Error(`unknown page: ${path}`)
@@ -50,6 +52,7 @@ function Content({ path }: { path: string }) {
       slots={{ breadcrumb: Breadcrumb }}
     >
       <title>{docTitle(page, path === INDEX_PATH)}</title>
+      <link rel='canonical' href={`${siteOrigin}${url}`} />
       <meta name='description' content={page.description} />
       <DocsTitle>{page.title}</DocsTitle>
       <DocsDescription>{page.description}</DocsDescription>
@@ -64,11 +67,11 @@ function Content({ path }: { path: string }) {
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { path, pageTree } = useFumadocsLoader(loaderData)
+  const { path, url, pageTree } = useFumadocsLoader(loaderData)
 
   return (
     <DocsLayout {...baseOptions()} tree={pageTree}>
-      <Content path={path} />
+      <Content path={path} url={url} />
     </DocsLayout>
   )
 }
