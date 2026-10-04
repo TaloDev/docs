@@ -41,6 +41,8 @@ Save your API key somewhere securely.
 
 The first time you run your game with the Talo plugin enabled, it'll create a `settings.cfg` inside the `addons/talo` folder. You can also create this file for yourself, the default file looks like this:
 
+The plugin stores the location of this file in the `talo/settings/settings_path` project setting. If you'd rather keep your settings somewhere else, change it in `Project > Project Settings` - see [settings file location](/1.x/godot/settings-reference#settings-file-location).
+
 ```gdscript title="addons/talo/settings.cfg"
 access_key=""
 api_url="https://api.trytalo.com"
