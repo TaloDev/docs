@@ -17,6 +17,7 @@ handle_tree_quit=true
 cache_player_on_identify=true
 debounce_timer_seconds=0.5
 requests_use_threads=false
+compress_requests=true
 
 [continuity]
 enabled=true
@@ -119,3 +120,7 @@ The version of the verification key being used (e.g. `"1"`).
 ### verification.key_value
 
 The value for the verification key.
+
+### compress_requests
+
+If enabled, request bodies of 1KB or larger are gzipped before being sent. This reduces upload sizes for large payloads such as batches of events. Smaller bodies are sent uncompressed. The default value is `true`.
