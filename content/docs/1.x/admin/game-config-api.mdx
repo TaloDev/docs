@@ -1,0 +1,56 @@
+---
+description: Manage your game's live config via the admin API. Read and update props and schedule future changes.
+title: Game config admin API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'GameConfigAdminAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+  { title: 'Types', url: '#types', depth: 2 },
+  { title: 'Prop', url: '#prop', depth: 3 },
+  { title: 'ScheduledGameConfigChange', url: '#scheduledgameconfigchange', depth: 3 },
+]
+
+## Overview
+
+The game config admin API lets you read and update your [live config](/1.x/http/game-config-api) programmatically, as well as schedule future changes. This is useful for automation like raising `maxLevel` ahead of a patch or enabling an event at a specific time.
+
+Reading config requires the `read:gameConfig` scope. Updating config and managing scheduled changes requires the `write:gameConfig` scope.
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's game config admin API lets you read and update your game's live config and schedule future changes server-side using admin API keys."
+/>
+
+## Types
+
+### Prop
+
+```ts
+type Prop = {
+  key: string
+  value: string
+}
+```
+
+### ScheduledGameConfigChange
+
+A scheduled change is applied at `applyAt`. Setting `value` to `null` deletes the prop instead of updating it.
+
+```ts
+type ScheduledGameConfigChange = {
+  id: number
+  key: string
+  value: string | null // null deletes the prop when the change is applied
+  applyAt: string
+  createdAt: string
+}
+```
