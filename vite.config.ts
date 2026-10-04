@@ -56,7 +56,27 @@ function taloApiDocs(): Plugin {
   }
 }
 
+// React Router dev serves no HTML entry to crawl, so Vite discovers deps on
+// demand and bumps the dep hash mid-load: two React copies in SSR, dead hydration
+// in the browser. Give both crawlers the graph.
+const DEV_GRAPH = ['app/**/*.{ts,tsx}', 'content/docs/**/*.mdx']
+
 export default defineConfig({
+  environments: {
+    client: {
+      optimizeDeps: {
+        entries: DEV_GRAPH,
+      },
+    },
+    ssr: {
+      optimizeDeps: {
+        entries: DEV_GRAPH,
+        // Only exists in the macro output of `app/lib/source.ts`, which the dep
+        // scanner never sees.
+        include: ['fumadocs-mdx/runtime/macro'],
+      },
+    },
+  },
   plugins: [
     fumadocsMdx({
       globalOptions: {
