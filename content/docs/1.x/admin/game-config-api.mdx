@@ -13,7 +13,6 @@ export const pageToc = [
   { title: 'Endpoints', url: '#endpoints', depth: 2 },
   ...generateServiceTOC(service),
   { title: 'Types', url: '#types', depth: 2 },
-  { title: 'Prop', url: '#prop', depth: 3 },
   { title: 'ScheduledGameConfigChange', url: '#scheduledgameconfigchange', depth: 3 },
 ]
 
@@ -31,15 +30,6 @@ Reading config requires the `read:gameConfig` scope. Updating config and managin
 />
 
 ## Types
-
-### Prop
-
-```ts
-type Prop = {
-  key: string
-  value: string
-}
-```
 
 ### ScheduledGameConfigChange
 
