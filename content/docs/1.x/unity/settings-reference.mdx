@@ -81,3 +81,7 @@ The version of the verification key being used (e.g. `"1"`).
 ### verificationKeyValue
 
 The value for the verification key.
+
+### compressRequests
+
+If enabled, request bodies of 1KB or larger are gzipped before being sent. This reduces upload sizes for large payloads such as batches of events. Smaller bodies are sent uncompressed. The default value is `true`.
