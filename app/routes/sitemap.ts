@@ -2,7 +2,7 @@ import { siteOrigin } from '@/lib/shared'
 import { source } from '@/lib/source'
 
 export function loader() {
-  const urls = source.getPages().map((page) => `<loc>${siteOrigin}${page.url}</loc>`)
+  const urls = source.getPages().map((page) => `<url><loc>${siteOrigin}${page.url}</loc></url>`)
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join('\n')}
