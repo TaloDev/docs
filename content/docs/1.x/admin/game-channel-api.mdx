@@ -1,0 +1,102 @@
+---
+description: Manage game channels via the admin API. Create, update, delete and list channels and their storage.
+title: Game channel admin API
+seoTitle: Admin game channels API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'GameChannelAdminAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+  { title: 'Types', url: '#types', depth: 2 },
+  { title: 'GameChannel', url: '#gamechannel', depth: 3 },
+  { title: 'Prop', url: '#prop', depth: 3 },
+  { title: 'GameChannelStorageProp', url: '#gamechannelstorageprop', depth: 3 },
+  { title: 'PlayerAlias', url: '#playeralias', depth: 3 },
+  { title: 'RejectedProp', url: '#rejectedprop', depth: 3 },
+]
+
+## Overview
+
+The game channel admin API lets you create, update, delete and list [game channels](/1.x/http/game-channel-api) programmatically, as well as read their storage props.
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's game channel admin API lets you manage game channels and their storage props server-side using admin API keys."
+/>
+
+## Types
+
+### GameChannel
+
+```ts
+type GameChannel = {
+  id: number
+  name: string
+  owner: PlayerAlias | null
+  totalMessages: number
+  memberCount: number // cost of the X-Talo-Include-Dev-Data header
+  props: Prop[]
+  autoCleanup: boolean
+  private: boolean
+  temporaryMembership: boolean
+  createdAt: string
+  updatedAt: string
+}
+```
+
+### Prop
+
+```ts
+type Prop = {
+  key: string
+  value: string
+}
+```
+
+### GameChannelStorageProp
+
+```ts
+type GameChannelStorageProp = {
+  key: string
+  value: string
+  createdBy: PlayerAlias
+  lastUpdatedBy: PlayerAlias
+  createdAt: string
+  updatedAt: string
+}
+```
+
+### PlayerAlias
+
+```ts
+type PlayerAlias = {
+  id: number
+  service: string
+  identifier: string
+  displayName: string
+  player: Player // aliases are omitted to avoid a circular reference
+  lastSeenAt: string
+  createdAt: string
+  updatedAt: string
+}
+```
+
+### RejectedProp
+
+```ts
+type RejectedProp = {
+  key: string
+  error: 'PROP_KEY_TOO_LONG' | 'PROP_VALUE_TOO_LONG' | 'PROP_ARRAY_TOO_LONG' | 'PROP_CONTAINS_PROFANITY' | 'PROP_KEY_RESERVED'
+  message: string
+}
+```
+
+Creating or updating a channel whose props fail the size or profanity checks returns `400` with `errors.props` and a `rejectedProps` array.
