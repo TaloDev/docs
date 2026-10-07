@@ -1,0 +1,94 @@
+---
+description: Manage players via the admin API. Search for players, update and delete them.
+title: Player admin API
+seoTitle: Admin players API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'PlayerAdminAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+  { title: 'Types', url: '#types', depth: 2 },
+  { title: 'Player', url: '#player', depth: 3 },
+  { title: 'PlayerAlias', url: '#playeralias', depth: 3 },
+  { title: 'Prop', url: '#prop', depth: 3 },
+  { title: 'RejectedProp', url: '#rejectedprop', depth: 3 },
+]
+
+## Overview
+
+The player admin API lets you search for and read [players](/1.x/http/player-api) programmatically, as well as update their props and completely delete them.
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's player admin API lets you manage players server-side using admin API keys."
+/>
+
+## Types
+
+### Player
+
+```ts
+type Player = {
+  id: string
+  props: Prop[]
+  aliases: PlayerAlias[]
+  devBuild: boolean
+  createdAt: string
+  lastSeenAt: string
+  groups: {
+    id: string
+    name: string
+  }[]
+}
+```
+
+### PlayerAlias
+
+Each alias includes the player it belongs to, without its aliases to avoid a circular reference.
+
+```ts
+type PlayerAlias = {
+  id: number
+  service: string
+  identifier: string
+  displayName: string
+  player: Player
+  lastSeenAt: string
+  createdAt: string
+  updatedAt: string
+}
+```
+
+### Prop
+
+```ts
+type Prop = {
+  key: string
+  value: string
+}
+```
+
+### RejectedProp
+
+Props that could not be saved are returned in `rejectedProps` when [updating a player](/1.x/admin/player-api#update-a-players-props-or-dev-build-status).
+
+```ts
+type RejectedProp = {
+  key: string
+  error:
+    | 'PROP_KEY_TOO_LONG'
+    | 'PROP_VALUE_TOO_LONG'
+    | 'PROP_ARRAY_TOO_LONG'
+    | 'PROP_CONTAINS_PROFANITY'
+    | 'PROP_KEY_RESERVED'
+  message: string
+}
+```
