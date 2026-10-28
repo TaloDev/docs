@@ -6,9 +6,9 @@ seoTitle: Unity request verification
 
 ## How it works
 
-Request verification adds an extra layer of security by cryptographically signing every request and socket message sent by identified players. This prevents replay attacks and ensures requests haven't been tampered with in transit.
+Request verification adds an extra layer of security by cryptographically signing requests that update data (e.g. submitting a score or saving a game) and every socket message. This prevents replay attacks and ensures requests haven't been tampered with in transit.
 
-When enabled, the Unity package automatically generates a signature for each request using your verification key. Talo validates the signature before processing the request.
+When enabled, the Unity package automatically generates a signature for each of these requests using your verification key. Talo validates the signature before processing the request.
 
 ## Configuration
 
@@ -20,7 +20,7 @@ Before enabling verification in your game, you must:
 
 ![The verify requests setting in the dashboard](/img/verify-requests-setting.png)
 
-Once configured, requests and socket messages are automatically signed for identified players.
+Once configured, requests that update data and socket messages are automatically signed for identified players.
 
 ### Talo Settings
 

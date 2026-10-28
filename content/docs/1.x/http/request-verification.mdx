@@ -8,7 +8,7 @@ seoTitle: API request verification
 
 Request verification adds an extra layer of security to your game by cryptographically validating that requests come from a legitimate client and haven't been tampered with or replayed.
 
-When enabled, Talo requires every HTTP request and socket message (sent by identified players) to include a signature. Talo validates this signature against a verification key that you manage in the dashboard.
+When enabled, Talo requires a signature on every HTTP request (except for `GET` requests) and on every socket message (sent by identified players). The signature is validated using verification keys managed in the dashboard.
 
 ## Enabling request verification
 
@@ -103,5 +103,6 @@ Request verification is only enforced when:
 
 - `verifyRequests` is enabled for the game.
 - The request is sent by an identified player (i.e. when the `x-talo-alias` header is also present).
+- The request is not a `GET` request. Every other method is verified.
 
 Requests without a player alias do not require a signature, even when `verifyRequests` is enabled.
