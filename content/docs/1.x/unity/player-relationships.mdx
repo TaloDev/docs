@@ -143,7 +143,7 @@ foreach (var subscriber in subscribersPage.subscriptions)
 
 <ScopeBadges scope='playerRelationships' write />
 
-Once relationships have been established, players can communicate with each other using broadcasts. When a player broadcasts a message, it is delivered to all of their confirmed subscribers (in a future release, Talo will support private/targeted broadcasts).
+Once relationships have been established, players can communicate with each other using broadcasts. When a player broadcasts a message, it is delivered to all of their confirmed subscribers.
 
 To send a broadcast, use `Talo.PlayerRelationships.Broadcast()`:
 
@@ -162,6 +162,27 @@ Talo.PlayerRelationships.Broadcast(JsonUtility.ToJson(eventData));
 ```
 
 Subscribers will receive these broadcasts via the `OnMessageReceived` event (see [Events](#events) below).
+
+### Targeted broadcasts
+
+Pass an array of player alias IDs as the second argument to reach only a subset of your subscribers:
+
+```csharp
+using System.Linq;
+
+var options = new GetSubscribersOptions
+{
+	confirmed = ConfirmedFilter.Confirmed
+};
+var subscribersPage = await Talo.PlayerRelationships.GetSubscribers(options);
+
+// collect the alias IDs of the first 5 subscribers
+var playerAliasIds = subscribersPage.subscriptions.Take(5).Select(s => s.subscriber.id).ToArray();
+
+Talo.PlayerRelationships.Broadcast("Hello, friends!", playerAliasIds);
+```
+
+A missing or empty list targets all confirmed subscribers. Up to 1000 aliases can be targeted.
 
 ## Unsubscribing
 
