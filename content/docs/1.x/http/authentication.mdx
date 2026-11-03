@@ -20,7 +20,7 @@ curl \
 
 ## Player authentication
 
-Most endpoints perform actions on behalf of players.If you are using [player authentication](https://trytalo.com/players#authentication) for these endpoints, you must send the following headers:
+Most endpoints perform actions on behalf of players. If you are using [player authentication](https://trytalo.com/players#authentication) for these endpoints, you must send the following headers:
 
 1. `x-talo-player`: the ID of the player
 2. `x-talo-alias`: the ID of the player's identified alias
@@ -41,3 +41,21 @@ If you prefer shorter-lived sessions, you can opt in to the refresh token flow u
 - The session token expires after **15 minutes**.
 - A **30-day refresh token** is returned alongside it.
 - Call the [refresh session](/1.x/http/player-auth-api) endpoint with the refresh token to receive a new session and refresh token.
+
+### Claim keys
+
+Aliases that don't use [Talo Player Authentication](https://trytalo.com/players#authentication) can be protected with a claim key:
+
+```
+curl \
+-X POST \
+-H 'Authorization: Bearer eyJhb..........w5c' \
+-H 'x-talo-claim-key: 4a5e6f0c-1c2b-4c8e-9f3a-0f1d2c3b4a59' \
+-H 'Content-type: application/json' \
+-d '{ "service": "username", "identifier": "jimbo" }' \
+'https://api.trytalo.com/v1/players/identify'
+```
+
+A key is only stored for a new player or one verified by an integration (Steamworks, Google Play Games or Apple Game Center).
+
+Talo never returns the key, so generate it yourself and store it on the player's device. Once a player has one, every request that acts on their behalf must send the same key in the `x-talo-claim-key` header.
