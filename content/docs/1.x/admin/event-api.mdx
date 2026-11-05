@@ -1,0 +1,85 @@
+---
+description: Read events via the admin API. Page through events and count them by day, week, month or year.
+title: Event admin API
+seoTitle: Admin events API
+---
+
+import { ServiceDocumentation } from '@/components/documentation/ServiceDocumentation'
+import { generateServiceTOC } from '@/lib/api-docs'
+
+export const service = 'EventAdminAPI'
+
+export const pageToc = [
+  { title: 'Overview', url: '#overview', depth: 2 },
+  { title: 'Endpoints', url: '#endpoints', depth: 2 },
+  ...generateServiceTOC(service),
+  { title: 'Types', url: '#types', depth: 2 },
+  { title: 'Event', url: '#event', depth: 3 },
+  { title: 'EventBucket', url: '#eventbucket', depth: 3 },
+  { title: 'EventSeries', url: '#eventseries', depth: 3 },
+  { title: 'Prop', url: '#prop', depth: 3 },
+]
+
+## Overview
+
+The event admin API lets you read [events](/1.x/http/event-api) programmatically. This API is useful for exporting events into other analytics systems and answering complex questions about your data.
+
+Events themselves are tracked from your game, not through the admin API.
+
+## Endpoints
+
+<ServiceDocumentation
+  service={service}
+  metaDescription="Talo's event admin API lets you read raw game events and bucketed event counts using admin API keys."
+/>
+
+## Types
+
+### Event
+
+`props` is **optional** and only included when the `includeProps` query parameter is set on a [list](/1.x/admin/event-api#list-raw-game-events-in-a-utc-date-range-oldest-first) request. Events are returned oldest first and paged with `nextCursor`. Keep requesting new pages with the previous `nextCursor` - when it becomes `null`, you've reached the end of the list.
+
+A page can hold fewer events than `limit` while `nextCursor` is still set, because pages have a   5MB data cap. Omit the `includeProps` parameter to ensure pages stay under the cap.
+
+```ts
+type Event = {
+  id: string
+  name: string
+  playerAliasId: number
+  devBuild: boolean
+  createdAt: string
+  props?: Prop[]
+}
+```
+
+### EventBucket
+
+`start` is inclusive and `end` is exclusive, so a day bucket runs midnight to midnight. Buckets snap to calendar boundaries: days start at midnight, weeks on Monday, months on the 1st and years on January 1st. The first and last bucket are clipped to `from`/`to`, so their counts can be partial.
+
+```ts
+type EventBucket = {
+  start: string
+  end: string
+  count: number
+}
+```
+
+### EventSeries
+
+The `name` query parameter returns one series per event name, so you can compare events side by side. Every bucket in the range is present, with empty buckets counted as `0`. Without `name` you get a single series covering every event in the game, with its `name` set to `null`.
+
+```ts
+type EventSeries = {
+  name: string | null
+  buckets: EventBucket[]
+}
+```
+
+### Prop
+
+```ts
+type Prop = {
+  key: string
+  value: string
+}
+```
