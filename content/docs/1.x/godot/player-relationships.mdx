@@ -43,13 +43,63 @@ var search_page := await Talo.players.search("target_player_identifier")
 var target_alias_id := search_page.players[0].get_alias().id # this assumes we found at least one player
 
 # unidirectional relationship
-await Talo.player_relationships.subscribe_to(target_alias_id, TaloPlayerAliasSubscription.RelationshipType.UNIDIRECTIONAL)
+var result := await Talo.player_relationships.subscribe_to(target_alias_id, TaloPlayerAliasSubscription.RelationshipType.UNIDIRECTIONAL)
 
 # or, bidirectional relationship
-await Talo.player_relationships.subscribe_to(target_alias_id, TaloPlayerAliasSubscription.RelationshipType.BIDIRECTIONAL)
+result = await Talo.player_relationships.subscribe_to(target_alias_id, TaloPlayerAliasSubscription.RelationshipType.BIDIRECTIONAL)
 ```
 
+`subscribe_to()` returns a `SubscriptionUpsertResult` (`success`, `subscription`, `rejected_props`) rather than the subscription itself - read the created subscription from `result.subscription`.
+
 This creates an **unconfirmed** subscription (or two for bidirectional relationships). Players will need to confirm subscription requests before broadcasts can be received by the subscribers.
+
+### Subscribing with props
+
+To store extra data on the subscription, pass a dictionary of props as the third argument:
+
+```gdscript
+var result := await Talo.player_relationships.subscribe_to(target_alias_id, TaloPlayerAliasSubscription.RelationshipType.BIDIRECTIONAL, { "nickname": "bestie" })
+```
+
+Props are validated all-or-nothing: if any prop is rejected, no subscription is created. See [Players and props - Prop rejection reasons](/1.x/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
+
+## Updating subscription props
+
+<ScopeBadges scope='playerRelationships' write />
+
+Subscribers can add, update or delete props on their subscriptions using `Talo.player_relationships.update_subscription_props()`.
+
+Props are merged with the existing ones: new keys are added and existing keys are overwritten. Sending a [prop array](/1.x/godot/player-props#prop-arrays) (a key ending in `[]`) replaces all existing values for that key.
+
+```gdscript
+# add or overwrite props
+var result := await Talo.player_relationships.update_subscription_props(subscription.id, { "nickname": "bestie" })
+
+# delete a prop by passing a null value
+result = await Talo.player_relationships.update_subscription_props(subscription.id, { "nickname": null })
+```
+
+<Callout type='warn'>
+  Only the subscriber (the player who created the subscription) can update props.
+</Callout>
+
+Like `subscribe_to()`, this returns a `SubscriptionUpsertResult`. Props are validated all-or-nothing: if any prop is rejected, `success` is `false` and nothing is written:
+
+```gdscript
+if not result.success:
+	for prop in result.rejected_props:
+		print("Rejected prop '%s': %s (%s)" % [prop.key, prop.message, prop.code])
+	return
+
+# props are available on the returned subscription
+var nickname := result.subscription.get_prop("nickname")
+print(nickname)
+
+for prop in result.subscription.props:
+	print("%s: %s" % [prop.key, prop.value])
+```
+
+See [Players and props - Prop rejection reasons](/1.x/godot/player-props#prop-rejection-reasons) for the full list of rejection reason codes.
 
 ## Confirming subscriptions
 
