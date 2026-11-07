@@ -48,15 +48,24 @@ The `Retry-After` header will return how many seconds to wait before retrying - 
 ## Missing or invalid session
 
 ```json
-401 Authorized
+401 Unauthorized
 { "message": "The x-talo-session header is required for this player", "errorCode": "MISSING_SESSION" }
 ```
 
 ```json
-401 Authorized
+401 Unauthorized
 { "message": "The x-talo-session header is invalid", "errorCode": "INVALID_SESSION" }
 ```
 
 When calling API endpoints on behalf of a player (i.e. using the `x-talo-player` or `x-talo-alias` header) that is using [player authentication](https://trytalo.com/players#authentication) you must also send a valid `x-talo-session` header.
 
 You'll need to include the `x-talo-player`, `x-talo-alias` and `x-talo-session` header which should be set to the token you receive from registering or logging-in a player.
+
+## Missing or invalid claim key
+
+```json
+401 Unauthorized
+{ "message": "The x-talo-claim-key header is missing or invalid", "errorCode": "INVALID_CLAIM_KEY" }
+```
+
+Endpoints that act on behalf of a player require the `x-talo-claim-key` header when the player has a [claim key](/1.x/http/authentication#claim-keys). Claim keys are optional, but once a player has one every request that acts as them must send it.
