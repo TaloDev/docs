@@ -272,6 +272,12 @@ You can also migrate to the `google_play_games` service by providing an [auth co
 
 When a migration is successful, the current session is cleared, the player's alias is updated to the new service and identifier, and the `Talo.players.identified` signal is emitted.
 
+### Claim keys and migration
+
+`migrate_account()` takes an optional [claim key](/1.x/godot/identifying#claim-keys) as its fourth argument. Talo players never have one, so migration is where an existing player gets theirs.
+
+Migrating a player deletes their password, so a claim key is what stops anyone else from acting as them afterwards.
+
 ## Reading errors
 
 As shown in the examples above, every auth method returns a result object. On failure, `res.success` is `false` and `res.error` holds a `TaloPlayerAuthError` with a machine-readable `code` enum value and a human-readable `message`.
