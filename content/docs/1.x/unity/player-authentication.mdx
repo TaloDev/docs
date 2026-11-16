@@ -323,6 +323,12 @@ You can also migrate to the `google_play_games` service by providing an [auth co
 
 When a migration is successful, the current session is cleared, the player's alias is updated to the new service and identifier, and the `OnPlayerIdentified` event is invoked.
 
+### Claim keys and migration
+
+`MigrateAccount()` takes an optional [claim key](/1.x/unity/identifying#claim-keys) as its fourth argument. Talo players never have one, so migration is where an existing player gets theirs.
+
+Migrating a player deletes their password, so a claim key is what stops anyone else from acting as them afterwards.
+
 ## Exceptions and error codes
 
 As shown in the examples above, whenever a request fails with an authentication-related error, a `PlayerAuthException` will be thrown.
