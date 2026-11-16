@@ -134,7 +134,7 @@ for subscriber in subscribers_page.subscriptions:
 
 <ScopeBadges scope='playerRelationships' write />
 
-Once relationships have been established, players can communicate with each other using broadcasts. When a player broadcasts a message, it is delivered to all of their confirmed subscribers (in a future release, Talo will support private/targeted broadcasts).
+Once relationships have been established, players can communicate with each other using broadcasts. When a player broadcasts a message, it is delivered to all of their confirmed subscribers.
 
 To send a broadcast, use `Talo.player_relationships.broadcast()`:
 
@@ -152,6 +152,25 @@ Talo.player_relationships.broadcast(JSON.stringify(event_data))
 ```
 
 Subscribers will receive these broadcasts via the `message_received` signal (see [Signals](#signals) below).
+
+### Targeted broadcasts
+
+Pass a `PackedInt32Array` of player alias IDs as the second argument to reach only a subset of your subscribers:
+
+```gdscript
+var options := Talo.player_relationships.GetSubscribersOptions.new()
+options.confirmed = Talo.player_relationships.ConfirmedFilter.CONFIRMED
+var subscribers_page := await Talo.player_relationships.get_subscribers(options)
+
+# collect the alias IDs of the first 5 subscribers
+var alias_ids := PackedInt32Array()
+for subscription in subscribers_page.subscriptions.slice(0, 5):
+	alias_ids.append(subscription.subscriber.id)
+
+Talo.player_relationships.broadcast("Hello, friends!", alias_ids)
+```
+
+A missing or empty list targets all confirmed subscribers. Up to 1000 aliases can be targeted.
 
 ## Unsubscribing
 
