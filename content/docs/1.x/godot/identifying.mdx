@@ -18,7 +18,7 @@ For example, a player could have Steam and Google Play accounts. Both accounts c
 
 You should identify a player _after_ you know who they are (post-authentication) but _before_ you attempt to track any events, add leaderboard entries or do anything related directly to the player.
 
-You can identify a player using `Talo.players.identify()`, which returns a `TaloPlayerAlias`. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground scene):
+You can identify a player using `Talo.players.identify()`, which returns a `TaloPlayerAlias`. It takes an optional [claim key](#claim-keys) as its third argument. The code sample below shows you how you could identify a player using a UI element (this example is also available in the Playground scene):
 
 ```gdscript title="identify_button.gd"
 extends Button
@@ -61,7 +61,7 @@ func _on_identified(player_alias: TaloPlayerAlias) -> void:
 
 When `Talo.players.identify()` is called, the `Talo.players.identification_started` signal is emitted.
 
-If identification fails, the `Talo.players.identification_failed` signal is emitted. It passes a `TaloIdentifyError` with a `code` enum (`UNKNOWN_ERROR`, `IDENTIFIER_PROFANITY`, `IDENTIFIER_TAKEN`):
+If identification fails, the `Talo.players.identification_failed` signal is emitted. It passes a `TaloIdentifyError` with a `code` enum (`UNKNOWN_ERROR`, `IDENTIFIER_PROFANITY`, `IDENTIFIER_TAKEN`, `INVALID_CLAIM_KEY`):
 
 ```gdscript
 func _ready() -> void:
@@ -107,6 +107,7 @@ Player merging has some limitations:
 - **Player 2** cannot have a Talo Player Authentication, Steam, Google Play Games or Apple Game Center alias.
 - If **Player 1** has a Talo Player Authentication, Steam, Google Play Games or Apple Game Center alias, the merge must be initiated while identified as **Player 1** (i.e. `Talo.current_alias` must belong to Player 1). In this case, make sure your last `Talo.players.identify()` call before merging uses Player 1's alias.
 - Both players cannot have overlapping alias services. For example, if both players have an alias with the service "username", the merging process will fail.
+- If either player has a [claim key](#merging-with-claim-keys), the merge must come from **Player 1**'s alias and send **Player 2**'s claim key when they have one.
 </Callout>
 
 You can provide the `post_merge_identity_service` option to automatically re-identify the player once merging is complete:
@@ -276,6 +277,50 @@ func _handle_auth_success() -> void:
 				)
 	)
 ```
+
+## Claim keys
+
+A claim key is an optional secret (255 characters or fewer) that your game creates for a player. When a player has one, Talo requires it on every request that acts as that player.
+
+Pass the claim key when you identify, merge or [migrate](/1.x/godot/player-authentication#claim-keys-and-migration) a player. The plugin stores it and automatically sends it for you after that.
+
+<Callout type="warn">
+Your game owns the claim key. Talo never sends it back, and only sets one for a player that has none. Keep your own copy safe whichever way you identify the player, because a lost claim key locks the player out for good.
+</Callout>
+
+### Identifying with a claim key
+
+Pass the claim key as the third argument of `Talo.players.identify()`:
+
+```gdscript
+Talo.players.identify("username", "guyman", player_claim_key)
+```
+
+`Talo.players.identify()` stores the claim key only when it creates the player. Claim keys cannot be updated.
+
+An incorrect claim key fails `Talo.players.identify()` and the `identification_failed` signal emits a `TaloIdentifyError` with the code `INVALID_CLAIM_KEY`.
+
+### Claim keys with integrations
+
+Pass the claim key as the last argument of `identify_steam()`, `identify_google_play_games()` and `identify_game_center()`:
+
+```gdscript
+Talo.players.identify_steam(ticket, identity, player_claim_key)
+```
+
+An enabled integration proves who the player is, so the claim key does not need to guard the identify. Instead, it guards every request that acts as the player afterwards.
+
+### Merging with claim keys
+
+A merge that involves a claim key must carry **Player 2**'s claim key. The plugin can automatically send Player 2's claim key if they were identified on the same device. Otherwise pass it in the `player2_claim_key` option:
+
+```gdscript
+var mergeOpts := Talo.players.MergeOptions.new()
+mergeOpts.player2_claim_key = player2_claim_key
+await Talo.players.merge(player1_id, player2_id, mergeOpts)
+```
+
+If either player has a claim key, the merge must also come from **Player 1**'s alias. An incorrect claim key fails the merge and leaves both players unchanged. **Player 1** takes **Player 2**'s claim key if **Player 1** didn't have one.
 
 ## Offline player cache
 
