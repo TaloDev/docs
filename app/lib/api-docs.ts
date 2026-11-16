@@ -46,6 +46,39 @@ export function slugify(text?: string) {
     .replace(/^-+|-+$/g, '')
 }
 
+const METHOD_ORDER = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+
+export function getRouteTitle(route: ServiceRoute) {
+  return route.description?.split('\n')[0] ?? 'No title'
+}
+
+function methodRank(route: ServiceRoute) {
+  const index = METHOD_ORDER.indexOf(route.method.toUpperCase())
+  return index === -1 ? METHOD_ORDER.length : index
+}
+
+// Sorted by method, except a route whose title extends the title of a route on the
+// same path is moved up next to it, so 'Identify a player' and 'Identify a player
+// with a claim key' stay together instead of being split across GET and POST.
+export function orderRoutes(routes: ServiceRoute[]) {
+  const ordered: ServiceRoute[] = []
+
+  for (const route of [...routes].sort((a, b) => methodRank(a) - methodRank(b))) {
+    const title = getRouteTitle(route)
+    const anchor = ordered.findIndex(
+      (placed) => placed.path === route.path && title.startsWith(getRouteTitle(placed)),
+    )
+
+    if (anchor === -1) {
+      ordered.push(route)
+    } else {
+      ordered.splice(anchor + 1, 0, route)
+    }
+  }
+
+  return ordered
+}
+
 export function generateServiceTOC(serviceName: string) {
   const serviceData = getService(serviceName)
 
@@ -53,12 +86,8 @@ export function generateServiceTOC(serviceName: string) {
     return []
   }
 
-  const order = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
-
-  return [...serviceData.routes]
-    .sort((a, b) => order.indexOf(a.method.toUpperCase()) - order.indexOf(b.method.toUpperCase()))
-    .map((route) => {
-      const title = route.description?.split('\n')[0] ?? 'No title'
-      return { title, url: `#${slugify(title)}`, depth: 3 }
-    })
+  return orderRoutes(serviceData.routes).map((route) => {
+    const title = getRouteTitle(route)
+    return { title, url: `#${slugify(title)}`, depth: 3 }
+  })
 }
