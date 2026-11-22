@@ -59,3 +59,5 @@ curl \
 A key is only stored for a new player or one verified by an integration (Steamworks, Google Play Games or Apple Game Center).
 
 Talo never returns the key, so generate it yourself and store it on the player's device. Once a player has one, every request that acts on their behalf must send the same key in the `x-talo-claim-key` header.
+
+Sending the header with an empty value is a validation error, so omit the header instead of sending it blank.
