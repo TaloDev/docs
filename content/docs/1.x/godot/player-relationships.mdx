@@ -155,7 +155,7 @@ Subscribers will receive these broadcasts via the `message_received` signal (see
 
 ### Targeted broadcasts
 
-Pass a `PackedInt32Array` of player alias IDs as the second argument to reach only a subset of your subscribers:
+Use `Talo.player_relationships.broadcast_to()` to reach only a subset of your subscribers. It takes a `PackedInt32Array` of player alias IDs:
 
 ```gdscript
 var options := Talo.player_relationships.GetSubscribersOptions.new()
@@ -167,10 +167,10 @@ var alias_ids := PackedInt32Array()
 for subscription in subscribers_page.subscriptions.slice(0, 5):
 	alias_ids.append(subscription.subscriber.id)
 
-Talo.player_relationships.broadcast("Hello, friends!", alias_ids)
+Talo.player_relationships.broadcast_to("Hello, friends!", alias_ids)
 ```
 
-A missing or null list targets all confirmed subscribers, while an empty list targets nobody. Up to 1000 aliases can be targeted.
+`broadcast()` reaches every confirmed subscriber. `broadcast_to()` skips unconfirmed subscribers, and an empty array reaches nobody. Up to 1000 aliases can be targeted.
 
 ## Unsubscribing
 
