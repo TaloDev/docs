@@ -182,7 +182,7 @@ var playerAliasIds = subscribersPage.subscriptions.Take(5).Select(s => s.subscri
 Talo.PlayerRelationships.Broadcast("Hello, friends!", playerAliasIds);
 ```
 
-A missing or empty list targets all confirmed subscribers. Up to 1000 aliases can be targeted.
+A missing or null list targets all confirmed subscribers, while an empty list targets nobody. Up to 1000 aliases can be targeted.
 
 ## Unsubscribing
 
