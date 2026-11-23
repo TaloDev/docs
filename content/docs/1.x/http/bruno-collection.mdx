@@ -32,10 +32,11 @@ The collection's **Game API** folder contains requests for the gameplay-orientat
 
 The collection ships with a `Prod` environment with these variables:
 
-| Variable  | Description                                                                                           |
-| --------- | ----------------------------------------------------------------------------------------------------- |
-| `baseUrl` | The API root. Defaults to `https://api.trytalo.com` - change this to point at a self-hosted instance. |
-| `apiKey`  | A game API key from the [Talo dashboard](https://dashboard.trytalo.com/api-keys). The **Game API** folder uses this. |
+| Variable    | Description                                                                                           |
+| ----------- | ----------------------------------------------------------------------------------------------------- |
+| `baseUrl`   | The API root. Defaults to `https://api.trytalo.com` - change this to point at a self-hosted instance. |
+| `socketUrl` | The socket root. Defaults to `wss://api.trytalo.com` - change this to point at a self-hosted instance. |
+| `apiKey`    | A game API key from the [Talo dashboard](https://dashboard.trytalo.com/api-keys). The **Game API** folder uses this. |
 
 <Callout type='warn'>Requests will return `401 Unauthorized` until you set `apiKey`.</Callout>
 
