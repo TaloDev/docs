@@ -1,0 +1,25 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://api.trytalo.com",
+      "service-desc": [
+        {
+          "href": "https://api.trytalo.com/public/docs",
+          "type": "application/json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://docs.trytalo.com/1.x/http/authentication",
+          "type": "text/html"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://status.trytalo.com",
+          "type": "text/html"
+        }
+      ]
+    }
+  ]
+}
