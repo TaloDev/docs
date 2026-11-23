@@ -6,8 +6,9 @@
     "enabled": true,
   },
   "assets": {
+    "binding": "ASSETS",
     "html_handling": "drop-trailing-slash",
-    "run_worker_first": ["/"],
+    "run_worker_first": true,
   },
   "main": "./workers/app.ts",
 }
