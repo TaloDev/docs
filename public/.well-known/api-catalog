@@ -16,8 +16,8 @@
       ],
       "status": [
         {
-          "href": "https://status.trytalo.com",
-          "type": "text/html"
+          "href": "https://trytalo.com/.well-known/api-status",
+          "type": "application/json"
         }
       ]
     }

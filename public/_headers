@@ -3,6 +3,17 @@
   Link: <https://api.trytalo.com/public/docs>; rel="service-desc"; type="application/json"
   Link: </.well-known/api-catalog>; rel="api-catalog"
 
+/1.x/*
+  Link: </1.x/http/authentication>; rel="service-doc"; type="text/html"
+  Link: <https://api.trytalo.com/public/docs>; rel="service-desc"; type="application/json"
+  Link: </.well-known/api-catalog>; rel="api-catalog"
+
+/llms.mdx/*
+  Link: </1.x/http/authentication>; rel="service-doc"; type="text/html"
+  Link: <https://api.trytalo.com/public/docs>; rel="service-desc"; type="application/json"
+  Link: </.well-known/api-catalog>; rel="api-catalog"
+
 /.well-known/api-catalog
   Content-Type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"
-  Link: </.well-known/api-catalog>; rel="api-catalog"
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
