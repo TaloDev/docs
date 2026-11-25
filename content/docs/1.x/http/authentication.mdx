@@ -8,23 +8,83 @@ seoTitle: HTTP API authentication
 
 To create an API key, visit the [API keys page](https://dashboard.trytalo.com/api-keys) inside the Talo dashboard.
 
-After creating the key, you should use it in the `Authorization` header:
+After creating the key, you should use it in the `Authorization` header. Every request must send it:
 
 ```
+Authorization: Bearer eyJhb..........w5c
+```
+
+## Identifying the player
+
+Most endpoints act on behalf of a player. Two headers tell Talo which player.
+
+1. `x-talo-alias`: the ID of the alias that makes the request.
+2. `x-talo-player`: the ID of the player.
+
+You receive both IDs from [identify](/1.x/http/player-api) and from [register, login or verify](/1.x/http/player-auth-api). Login returns only the alias ID when the player must verify their email, so call verify to get the player ID and the session token.
+
+<Callout type='info'>
+  You will not always need to send both headers. The documentation for each API lists the headers
+  it needs, but sending both is good practice. Players who use Talo Player Authentication must send
+  both, plus `x-talo-session`, on every request.
+</Callout>
+
+This request sends an event for a player:
+
+```bash
 curl \
 -X POST \
 -H 'Authorization: Bearer eyJhb..........w5c' \
+-H 'x-talo-player: 5e1a6c9d-2f7b-4a1e-9d3c-8b6f0a2c4e71' \
+-H 'x-talo-alias: 1234' \
 -H 'Content-type: application/json' \
+-d '{ "events": [{ "name": "potion_used", "timestamp": 1656971058297 }] }' \
 'https://api.trytalo.com/v1/events'
 ```
 
-## Player authentication
+## Claim keys
 
-Most endpoints perform actions on behalf of players. If you are using [player authentication](https://trytalo.com/players#authentication) for these endpoints, you must send the following headers:
+A claim key is a secret that your game creates (255 characters or fewer). It proves that a request may act as a player that does not use [Talo Player Authentication](#talo-player-authentication). Without a key, any request that has your API key and the player's IDs can act as that player.
 
-1. `x-talo-player`: the ID of the player
-2. `x-talo-alias`: the ID of the player's identified alias
-3. `x-talo-session`: the session token received after registering or logging-in a player
+You set the key when you identify a player:
+
+```bash
+curl \
+-X POST \
+-H 'Authorization: Bearer eyJhb..........w5c' \
+-H 'x-talo-claim-key: 4a5e6f0c-1c2b-4c8e-9f3a-0f1d2c3b4a59' \
+-H 'Content-type: application/json' \
+-d '{ "service": "username", "identifier": "jimbo" }' \
+'https://api.trytalo.com/v1/players/identify'
+```
+
+A key is only stored for a new player or one verified by an integration (Steamworks, Google Play Games or Apple Game Center).
+
+Talo never returns the key, so generate it yourself and store it on the player's device. Once a player has one, every request that acts on their behalf must send the same key in the `x-talo-claim-key` header.
+
+Sending the header with an empty value is a validation error, so omit the header instead of sending it blank.
+
+## Talo Player Authentication
+
+Players that use [Talo Player Authentication](/1.x/http/player-auth-api) get a session token from register, verify and refresh. Login returns one too, unless verification is enabled. Talo identifies these players with the token, so they never have a claim key.
+
+Send the token in `x-talo-session`, together with `x-talo-player` and `x-talo-alias`. Talo rejects a token that does not belong to that player and alias.
+
+```bash
+curl \
+-X POST \
+-H 'Authorization: Bearer eyJhb..........w5c' \
+-H 'x-talo-player: 5e1a6c9d-2f7b-4a1e-9d3c-8b6f0a2c4e71' \
+-H 'x-talo-alias: 1234' \
+-H 'x-talo-session: eyJhb..........w5c' \
+-H 'Content-type: application/json' \
+-d '{ "events": [{ "name": "potion_used", "timestamp": 1656971058297 }] }' \
+'https://api.trytalo.com/v1/events'
+```
+
+On [identify](/1.x/http/player-api), send the `identifier` you registered, `service` set to `talo` and an unexpired token in `x-talo-session`.
+
+You do not need `x-talo-player` or `x-talo-alias` here, because the endpoint reads the player from the token.
 
 <Callout type='idea'>
   The Godot plugin and Unity package will automatically populate these headers for you. If you're
@@ -41,23 +101,3 @@ If you prefer shorter-lived sessions, you can opt in to the refresh token flow u
 - The session token expires after **15 minutes**.
 - A **30-day refresh token** is returned alongside it.
 - Call the [refresh session](/1.x/http/player-auth-api) endpoint with the refresh token to receive a new session and refresh token.
-
-### Claim keys
-
-Aliases that don't use [Talo Player Authentication](https://trytalo.com/players#authentication) can be protected with a claim key:
-
-```
-curl \
--X POST \
--H 'Authorization: Bearer eyJhb..........w5c' \
--H 'x-talo-claim-key: 4a5e6f0c-1c2b-4c8e-9f3a-0f1d2c3b4a59' \
--H 'Content-type: application/json' \
--d '{ "service": "username", "identifier": "jimbo" }' \
-'https://api.trytalo.com/v1/players/identify'
-```
-
-A key is only stored for a new player or one verified by an integration (Steamworks, Google Play Games or Apple Game Center).
-
-Talo never returns the key, so generate it yourself and store it on the player's device. Once a player has one, every request that acts on their behalf must send the same key in the `x-talo-claim-key` header.
-
-Sending the header with an empty value is a validation error, so omit the header instead of sending it blank.
